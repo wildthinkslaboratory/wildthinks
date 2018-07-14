@@ -1,10 +1,5 @@
-### Stuff to Do
 
-- figure out how to ceter text on the y dimension
-- code clean up
-- get dots to annihilate
-- clean up appearence of value and code
-
+### Hold the SHIFT key down when you click to add an antidot
 
 ```p5js/playable
 this.div.style.position = 'relative';
@@ -228,7 +223,10 @@ var drawMaskRect = function() {
 	p5.push();
 	p5.fill(200,255,200);                // draw a background rect
 	p5.noStroke();
-	p5.rect(boxesX-20,boxesY-20,boxesW+40,boxesH+40,10);
+
+	var marginX = 20;
+	var marginY = 60;
+	p5.rect(boxesX-marginX, boxesY-marginY,boxesW + 2 * marginX - xSpacer, boxesH + 2 * marginY, 10);
 	p5.pop();
 
 }
@@ -240,7 +238,7 @@ var drawCodeBoxes = function() {
 	p5.fill(vf[0],vf[1],vf[2]);
 	var i=0;
 	var x = boxesX;
-	var y = boxesY + boxesH + 50;
+	var y = boxesY + boxesH + 10;
 	var width = boxesW / numBoxes;
 	var height = 40;
 	for (i=0; i < numBoxes; i++) {
@@ -251,7 +249,8 @@ var drawCodeBoxes = function() {
 	p5.noStroke();
 	p5.textSize(vtSize);
 	p5.fill(wf[0],wf[1],wf[2]);
-	p5.text("code", x - width, y + height - (height - p5.textAscent("code"))/2 - 5);
+	var textY = y + height - 10;
+	//p5.text("code", x - width, textY);
 	for (i=0; i < numBoxes; i++) {
 		var code = dots[0].dots[i].length;
 		code -= dots[1].dots[i].length;
@@ -261,7 +260,7 @@ var drawCodeBoxes = function() {
 		if (code === 0) { p5.fill(vs[0],vs[1],vs[2]); }
 		else { p5.fill(wf[0],wf[1],wf[2]); }
 
-		p5.text(t,x + (numBoxes - 1 - i)*width + tInset, y + height - (height - p5.textAscent(t))/2 - 5);
+		p5.text(t,x + (numBoxes - 1 - i)*width + tInset, textY);
 	}
 
 	p5.pop();	
@@ -274,19 +273,23 @@ var drawValueBoxes = function() {
 	p5.fill(vf[0],vf[1],vf[2]);
 	var i=0;
 	var x = boxesX;
-	var y = boxesY - 100;
+	var y = boxesY - 50;
 	var width = boxesW / numBoxes;
 	var height = 40;
 	for (i=0; i < numBoxes; i++) {
 		p5.rect(x + i*width, y, width - xSpacer, height, 10);
 	}
+
+	p5.stroke(wf[0],wf[1],wf[2]);
+	p5.strokeWeight(5);
 	p5.rect(x + boxesW + 25, y, width - xSpacer, height, 10);
 
 
 	p5.noStroke();
 	p5.fill(wf[0],wf[1],wf[2]);
 	p5.textSize(vtSize);
-	p5.text("value", x - width, y + height - (height - p5.textAscent("value"))/2 - 5);
+	var textY = y + height - 10;
+	//p5.text("value", x - width, textY);
 	var sum = 0;
 	for (i=0; i < numBoxes; i++) {
 		var value = dots[0].dots[i].length * p5.pow(base,i);
@@ -298,12 +301,12 @@ var drawValueBoxes = function() {
 		if (value === 0) { p5.fill(vs[0],vs[1],vs[2]); }
 		else { p5.fill(wf[0],wf[1],wf[2]); }
 	
-		p5.text(t,x + (numBoxes - 1 - i)*width + tInset, y + height - (height - p5.textAscent(t))/2 - 5);
+		p5.text(t,x + (numBoxes - 1 - i)*width + tInset, textY);
 	}
 
 	p5.fill(wf[0],wf[1],wf[2]);
 	var offset_x = (width - xSpacer - p5.textWidth(sum.toString())) / 2;
-	p5.text(sum.toString(),x + boxesW + 25 + offset_x, y + height - (height - p5.textAscent("value"))/2 - 5);
+	p5.text(sum.toString(),x + boxesW + 25 + offset_x, textY);
 	p5.pop();	
 }
 
