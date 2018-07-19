@@ -153,7 +153,7 @@ function getCanvasRelativePos(rx, ry, _box) {
 }
 
 
-///
+////
 // Risizing helper functions
 //////////////////////////////////////////////////////////////////////////////
 
@@ -496,15 +496,7 @@ function drawSummaryBox() {
 
 ///////////////////////////////////////////////////////////////////////////////////
 
-/*
-unused
 
-function mouseOnCanvas() {
-  if (p5.mouseX < 0 || p5.mouseX > canvasW ) return false;
-  if (p5.mouseY < 0 || p5.mouseY > canvasH ) return false;
-  return true;
-}
-*/
 
 
 function mouseOnBoxes() {
@@ -593,6 +585,7 @@ function finishDotDrag() {
       }
       else {                                              // drag between boxes
         if (recievingBox > sendingBox) {                // drag left
+
           var dotsNeeded = p5.pow(p5.abs(base), recievingBox - sendingBox);
           if (dots[currentId[0]].dots[sendingBox].length >= dotsNeeded) {     // explode the dot
 
@@ -603,7 +596,7 @@ function finishDotDrag() {
             var dotArrayID = ((recievingBox - sendingBox) % 2 ? 1 - currentId[0] : currentId[0]);
 
             dots[dotArrayID].dots[recievingBox].push(newDot);
-            // console.log('finishDotDrag added', newDot, dotsNeeded, sendingBox, recievingBox, dots[dotArrayID].dots[recievingBox]);
+            console.log('finishDotDrag added', recievingBox, sendingBox, currentId[0], dotArrayID);
 
             //remove this dot from it's old box
             dots[currentId[0]].deleteDot(currentId[1], currentId[2]);
@@ -627,21 +620,19 @@ function finishDotDrag() {
     }
   }
   else {  // dragged out of bounds
-    // deleteCurrentDot();
-    dots[currentId[0]].resetOldPosition(currentId);
+    deleteCurrentDot();
   }
 }
 
 
-/*
-unused
+
 
 function deleteCurrentDot() {
   if (currentId[0] != DotEnum.UNDEF) {
     dots[currentId[0]].deleteDot(currentId[1], currentId[2]);
   }
 }
-*/
+
 
 
 /////////////////////////////  MAIN USER EVENTS  /////////////////////////////
@@ -660,11 +651,11 @@ function addDot() {
 
 function toggleDot() {
   if (mouseOnDot()) {
-    // const boxId = currentId[1];
+
     const arrayId = currentId[0];
     const toggleArrayId = arrayId === 0 ? 1 : 0;
     var current_dot = dots[arrayId].dots[currentId[1]][currentId[2]];
-    // console.log('toggleDot', boxId, toggleArrayId, currentId, current_dot, dots);
+    console.log('toggleDot', toggleArrayId, currentId, current_dot, dots);
 
     var newDot = new DotCopy(current_dot);
 
@@ -754,14 +745,6 @@ p5.windowResized = function() {
 p5.draw = function() {
   p5.frameRate(15);
 
-  // p5.noFill();
-  // p5.strokeWeight(5);
-  // p5.stroke('red');
-  // p5.rect(0, 0, canvasW, canvasH);
-
-  // p5.stroke('yellow');
-  // p5.rect(boxesX, boxesY, boxesW - xSpacer, boxesH);
-
   //drawMaskRect();
   boxes.draw();
   dots[0].draw();
@@ -795,8 +778,11 @@ p5.mousePressed = function()
 
 p5.doubleClicked = function()
 {
+
+  // toggleDot is getting called sometimes on a drag to the left
+  // turning it off until I can figure out a fix
   // console.log('doubleClicked');
-  toggleDot();
+  //toggleDot();
 };
 
 p5.mouseDragged = function() {
@@ -823,6 +809,7 @@ p5.mouseReleased = function() {
 
 - The ability to drag a Dot and drop it outside of any boxes is currently disabled. Instead, dropping out of bounds will simply cancel the drag. This is because I want to make a *no-dot's-land* between the boxes, so that we don't end up with dots in an ambigous area between boxes.
 - We can probably eliminate the need for `drawMaskRect` if we erase the previous image of the dot explicitly as we are dragging. I don't know how to do this, but I'm imagining that redrawing with a transparent fill color might do the trick. The Mask is a pain, unless we just make the whole canvas the mask.
+- The toggleDot is being called sometimes on a drag.  Turning it off until I can find a fix.
 
 
 ---
