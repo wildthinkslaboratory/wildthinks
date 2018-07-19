@@ -55,49 +55,45 @@ var valueStroke = lightLilac;
 
 
 ////
-//   Data Model Variables 
-/////////////////////////////////////////////////////////////////////////////
+// Game state
+////////////////////////////////////////////////////////////////////////////
 
 var DotEnum = Object.freeze({UNDEF : -1, DOT : 0, ANTIDOT : 1});
 var base = -2;
-
-// formatting variables for the boxes
 var numBoxes = 5;
-
-
-
-////
-// Values that change on window-resize
-//
-
-var canvasW;  // canvas width
-var canvasH;  // canvas height
-var boxesW; // width of all the boxes together
-var boxesH; // height of boxes
-var boxesX;
-var boxesY;
-var endcapH;
-var btSize;        // box font size
-var dotD;  // dot diameter
-var xSpacer = 10;  // how much space between the boxes
-var marginX;
-var marginY;
-var vtSize;
-
-
-////
-// Game state
-//
-
 var boxes;
 var dots;
 var currentId = [0, 0, 0];  // the id of the current dot
 var uniqueId = 0;
 var currentSum = 0;
 
+
+
+
+////
+// Values that change on window-resize
+//////////////////////////////////////////////////////////////////////////////
+
+var canvasW;  // canvas width
+var canvasH;  // canvas height
+var boxesW;   // width of all the boxes together
+var boxesH;   // height of boxes
+var boxesX;
+var boxesY;
+var endcapH;
+var dotD;     // dot diameter
+var xSpacer = 10;  // how much space between the boxes
+var marginX;
+var marginY;
+var boxTextSize;
+var valueTextSize;
+
+
+
+
 ////
 // Pre-playable initialization
-//
+/////////////////////////////////////////////////////////////////////////////
 
 // Adjust the surrounding DIV(s) a little
 
@@ -122,10 +118,11 @@ myDiv.style.border = '5px solid gray';
 
 
 
+
 ////
 // Coordinate transforms between box-relative and canvas-relative
 // Convention: (x, y) are canvas coordinates. (rx, ry) are box coordinates
-//
+//////////////////////////////////////////////////////////////////////////////
 
 function getBoxRelativePos(x, y, _box) {
   const boxWidth = boxes.width;
@@ -138,6 +135,7 @@ function getBoxRelativePos(x, y, _box) {
 
   return result;
 }
+
 
 function getCanvasRelativePos(rx, ry, _box) {
   const boxWidth = boxes.width;
@@ -153,7 +151,13 @@ function getCanvasRelativePos(rx, ry, _box) {
 }
 
 
-function nextId() {
+
+
+///
+// Dot class, DotArray and other Dot functions
+//////////////////////////////////////////////////////////////////////////////
+
+function nextId() {        // get the next dot ID
   var i = uniqueId;
   uniqueId += 1;
   return i;
@@ -171,7 +175,6 @@ function Dot(x, y, box) {
 
   // console.log('Dot', x, y, rx, ry, box, boxID, boxes);
 }
-
 
 
 // we move dots between boxes so they need a copy with the same id for the new box
@@ -252,7 +255,12 @@ DotArray.prototype.updateDotPosition = function(pos) {
 };
 
 
-// class for the boxes
+
+
+///
+// Box class and functions
+///////////////////////////////////////////////////////////////////////////
+
 function Boxes(base, numberBoxes, x, y, boxesWidth, boxHeight) {
   this.base = base;
   this.numberBoxes = numberBoxes;
@@ -328,16 +336,21 @@ Boxes.prototype.draw = function() {
 
   p5.noStroke();
   p5.fill(boxStroke);
-  p5.textSize(btSize);
+  p5.textSize(boxTextSize);
   for (let i=0; i < this.numberBoxes; i++) {
     var t = p5.pow(this.base, this.numberBoxes - i - 1).toString();
     var tInset = (this.width - p5.textWidth(t) - xSpacer) / 2;
-    p5.text(t, x + i * this.width + tInset, y + this.height - btSize / 2);
+    p5.text(t, x + i * this.width + tInset, y + this.height - boxTextSize / 2);
   }
 
   p5.pop();
 };
 
+
+
+///
+// Additional Draw Functions
+/////////////////////////////////////////////////////////////////////////////////
 
 function drawMaskRect() {
   p5.push();
@@ -369,7 +382,7 @@ function drawCodeBoxes() {
   }
 
   p5.noStroke();
-  p5.textSize(vtSize);
+  p5.textSize(valueTextSize);
   p5.fill(writingFill);
   var textY = y + height - 10;
   //p5.text("code", x - width, textY);
@@ -405,7 +418,7 @@ function drawValueBoxes() {
 
   p5.noStroke();
   p5.fill(writingFill);
-  p5.textSize(vtSize);
+  p5.textSize(valueTextSize);
   var textY = y + height - 10;
 
   currentSum = 0;
@@ -435,22 +448,29 @@ function drawSummaryBox() {
   var y = canvasH * 0.01;
   var height = endcapH;
   var textY = y + height * 0.7;
+  var x = boxesX + boxesW * (numBoxes - 1)/numBoxes;
+  var boxW = boxesW / numBoxes;
+  var textX = x + (boxW)/2;
 
   p5.push();
 
   p5.stroke(writingFill);
   p5.strokeWeight(2);
   p5.fill(boxFill);
-  p5.rect(boxesX, y, boxesW - xSpacer, height, 10);
+  p5.rect(x, y, boxW - xSpacer, height, 10);
 
-  p5.textSize(btSize);
+  p5.textSize(valueTextSize);
   p5.fill(writingFill);
   p5.stroke(writingFill);
   p5.strokeWeight(1);
-  p5.text(currentSum.toString(), boxesX + boxesW / 2, textY);
+  p5.text(currentSum.toString(), textX, textY);
 
   p5.pop();
 }
+
+
+
+///////////////////////////////////////////////////////////////////////////////////
 
 /*
 unused
@@ -689,16 +709,16 @@ p5.windowResized = function() {
 
   const boxWidth = boxesW / numBoxes;
 
-  boxesH = canvasH * 0.6; // height of boxes
+  boxesH = canvasH * 0.5; // height of boxes
   boxesX = (p5.windowWidth - boxesW) / 2;
   boxesY = canvasH * 0.25;
-  dotD = p5.min(boxWidth * 0.25, boxesH * 0.25);
+  dotD = p5.min(boxWidth * 0.2, boxesH * 0.2);
   const dotMax = p5.min(boxWidth * 0.25, boxesH * 0.25);
   marginX = 2 * dotMax;
   marginY = dotD * 0.5;
-  xSpacer = dotD;
-  btSize = boxesH * 0.1;
-  vtSize = btSize;
+  xSpacer = dotD/2;
+  boxTextSize = boxesH * 0.5;
+  valueTextSize = boxesH * 0.1;
 
   boxes.updateSize(boxesX, boxesY, boxesW, boxesH);
   p5.resizeCanvas(p5.windowWidth, canvasH);
@@ -717,7 +737,7 @@ p5.draw = function() {
   // p5.stroke('yellow');
   // p5.rect(boxesX, boxesY, boxesW - xSpacer, boxesH);
 
-  drawMaskRect();
+  //drawMaskRect();
   boxes.draw();
   dots[0].draw();
   dots[1].draw();
