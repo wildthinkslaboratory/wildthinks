@@ -707,6 +707,8 @@ p5.setup = function() {
 
   p5.createCanvas(canvasW, canvasH);
   p5.windowResized();
+
+  p5.pixelDensity(1);   // this should be taken out as soon as they fix the clear() function in p5js
 };
 
 
@@ -745,7 +747,8 @@ p5.windowResized = function() {
 p5.draw = function() {
   p5.frameRate(15);
 
-  //drawMaskRect();
+ 
+  p5.clear();
   boxes.draw();
   dots[0].draw();
   dots[1].draw();
@@ -808,7 +811,7 @@ p5.mouseReleased = function() {
 ### Known Bugs
 
 - The ability to drag a Dot and drop it outside of any boxes is currently disabled. Instead, dropping out of bounds will simply cancel the drag. This is because I want to make a *no-dot's-land* between the boxes, so that we don't end up with dots in an ambigous area between boxes.
-- We can probably eliminate the need for `drawMaskRect` if we erase the previous image of the dot explicitly as we are dragging. I don't know how to do this, but I'm imagining that redrawing with a transparent fill color might do the trick. The Mask is a pain, unless we just make the whole canvas the mask.
+
 - The toggleDot is being called sometimes on a drag.  Turning it off until I can find a fix.
 
 
