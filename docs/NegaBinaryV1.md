@@ -14,31 +14,56 @@
 
 const bgURL = 'https://gist.githubusercontent.com/wildthinkslaboratory/ac98c0bb68ccf7528dc39fa1922d2bdb/raw/a813f0d1c5d0108a8b923ce73dd17ebddc692972/ExpDotsBackground.001.jpeg';
 
-// data model variables
+
+
+
+////
+// Color Pallette
+//////////////////////////////////////////////////////////////////////////////
+
+
+var purple =        [200, 0,  255];
+var darkpurple =    [50,  0,   50];
+var cyan =          [0,   200, 255];
+var darkbluegreen = [0,   100, 100];
+var lightLilac =    [220, 220, 255];
+var white =         [255, 255, 255];
+var paleLime =      [200, 255, 200];
+
+
+
+
+////
+// Color Formatting 
+//////////////////////////////////////////////////////////////////////////////
+
+var boxStroke = lightLilac;                // boxes color formatting
+var boxFill = white; 
+
+
+var dotFill = purple;                      // dot color formatting 
+var dotStroke = darkpurple; 
+var antidotFill = cyan; 
+var antidotStroke = darkbluegreen; 
+
+                                           // value boxes color formatting
+var writingFill = darkbluegreen;
+var valueFill = white;
+var valueStroke = lightLilac;
+
+
+
+
+////
+//   Data Model Variables 
+/////////////////////////////////////////////////////////////////////////////
+
 var DotEnum = Object.freeze({UNDEF : -1, DOT : 0, ANTIDOT : 1});
 var base = -2;
 
 // formatting variables for the boxes
 var numBoxes = 5;
-var bs = [220, 220, 255]; // box stroke color
-var bf = [255, 255, 255]; // box fill color
 
-// dot formatting Goldfish version
-//var df = [255, 100, 0]; // dot fill color
-//var ds = [100, 50, 0]; // dot fill color
-//var adf = [200, 200, 200]; // antidot fill color
-//var ads = [50, 50, 50]; // antidot fill color
-
-// dot formatting Heidi version
-var df = [200, 0, 255]; // dot fill color
-var ds = [50, 0, 50]; // dot fill color
-var adf = [0, 200, 255]; // antidot fill color
-var ads = [0, 50, 50]; // antidot fill color
-
-// formatting for code and value boxes
-var wf = [0, 100, 100];
-var vf = bf;
-var vs = bs;
 
 
 ////
@@ -187,7 +212,6 @@ function DotArray(size, fillColor, strokeColor) {
 DotArray.prototype.draw = function() {
   p5.push();
   p5.stroke(this.s);
-  p5.noStroke();
   p5.fill(this.f);
   for (var i=0; i < this.dots.length; i++) {
     for (var j=0; j < this.dots[i].length; j++) {
@@ -295,7 +319,7 @@ Boxes.prototype.draw = function() {
   p5.push();
 
   p5.noStroke();
-  p5.fill(bf);
+  p5.fill(boxFill);
   var x = boxesX;
   var y = boxesY;
   for (let i=0; i < this.numberBoxes; i++) {
@@ -303,7 +327,7 @@ Boxes.prototype.draw = function() {
   }
 
   p5.noStroke();
-  p5.fill(bs);
+  p5.fill(boxStroke);
   p5.textSize(btSize);
   for (let i=0; i < this.numberBoxes; i++) {
     var t = p5.pow(this.base, this.numberBoxes - i - 1).toString();
@@ -317,7 +341,7 @@ Boxes.prototype.draw = function() {
 
 function drawMaskRect() {
   p5.push();
-  p5.fill(200, 255, 200);                // draw a background rect
+  p5.fill(paleLime);                // draw a background rect
   p5.noStroke();
 
   p5.rect(
@@ -338,7 +362,7 @@ function drawCodeBoxes() {
 
   p5.push();
   p5.noStroke();
-  p5.fill(vf[0], vf[1], vf[2]);
+  p5.fill(valueFill);
 
   for (let i=0; i < numBoxes; i++) {
     p5.rect(x + i*width, y , width - xSpacer, height, 10);
@@ -346,7 +370,7 @@ function drawCodeBoxes() {
 
   p5.noStroke();
   p5.textSize(vtSize);
-  p5.fill(wf[0], wf[1], wf[2]);
+  p5.fill(writingFill);
   var textY = y + height - 10;
   //p5.text("code", x - width, textY);
   for (let i=0; i < numBoxes; i++) {
@@ -355,8 +379,8 @@ function drawCodeBoxes() {
     var t = code.toString();
     var tInset = (width - p5.textWidth(t) - xSpacer)/2;
 
-    if (code === 0) { p5.fill(vs[0], vs[1], vs[2]); }
-    else { p5.fill(wf[0], wf[1], wf[2]); }
+    if (code === 0) { p5.fill(valueStroke); }
+    else { p5.fill(writingFill); }
 
     p5.text(t, x + (numBoxes - 1 - i)*width + tInset, textY);
   }
@@ -373,14 +397,14 @@ function drawValueBoxes() {
 
   p5.push();
   p5.noStroke();
-  p5.fill(vf);
+  p5.fill(valueFill);
 
   for (let i = 0; i < numBoxes; i++) {
     p5.rect(x + i*width, y, width - xSpacer, height, 10);
   }
 
   p5.noStroke();
-  p5.fill(wf[0], wf[1], wf[2]);
+  p5.fill(writingFill);
   p5.textSize(vtSize);
   var textY = y + height - 10;
 
@@ -393,10 +417,10 @@ function drawValueBoxes() {
     var tInset = (width - p5.textWidth(t) - xSpacer)/2;
 
     if (value === 0) {
-      p5.fill(vs);
+      p5.fill(valueStroke);
     }
     else {
-      p5.fill(wf);
+      p5.fill(writingFill);
     }
 
     p5.text(t, x + (numBoxes - 1 - i)*width + tInset, textY);
@@ -414,14 +438,14 @@ function drawSummaryBox() {
 
   p5.push();
 
-  p5.stroke(wf);
+  p5.stroke(writingFill);
   p5.strokeWeight(2);
-  p5.fill(bf);
+  p5.fill(boxFill);
   p5.rect(boxesX, y, boxesW - xSpacer, height, 10);
 
   p5.textSize(btSize);
-  p5.fill(wf);
-  p5.stroke(wf);
+  p5.fill(writingFill);
+  p5.stroke(writingFill);
   p5.strokeWeight(1);
   p5.text(currentSum.toString(), boxesX + boxesW / 2, textY);
 
@@ -637,8 +661,8 @@ var annihilateSound;
 p5.setup = function() {
   boxes = new Boxes(base, numBoxes, boxesX, boxesY, boxesW, boxesH);
   dots = [];
-  dots.push(new DotArray(numBoxes, df, ds));
-  dots.push(new DotArray(numBoxes, adf, ads));
+  dots.push(new DotArray(numBoxes, dotFill, dotStroke));
+  dots.push(new DotArray(numBoxes, antidotFill, antidotStroke));
 
   // attribution 3.0  mark diangelo
   addDotSound = p5.loadSound('https://gist.githubusercontent.com/wildthinkslaboratory/ac98c0bb68ccf7528dc39fa1922d2bdb/raw/bd0a27a5a92c1f904fe0713f6664d9a8b28cb476/Blop-Mark_DiAngelo-79054334.wav');
