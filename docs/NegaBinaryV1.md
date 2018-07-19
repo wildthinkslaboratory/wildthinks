@@ -1,7 +1,7 @@
-### NegaBinary Instructions
+### Negative Binary Instructions
 
 - Tap to add a Dot to a Box
-- Double-Tap to invert a Dot
+- SHIFT-click to add an antidot
 - Drag Dot Left to *transform* a group.
 
 
@@ -781,10 +781,6 @@ p5.mousePressed = function()
 
 p5.doubleClicked = function()
 {
-
-  // toggleDot is getting called sometimes on a drag to the left
-  // turning it off until I can figure out a fix
-  // console.log('doubleClicked');
   //toggleDot();
 };
 
@@ -812,7 +808,9 @@ p5.mouseReleased = function() {
 
 - The ability to drag a Dot and drop it outside of any boxes is currently disabled. Instead, dropping out of bounds will simply cancel the drag. This is because I want to make a *no-dot's-land* between the boxes, so that we don't end up with dots in an ambigous area between boxes.
 
-- The toggleDot is being called sometimes on a drag.  Turning it off until I can find a fix.
+- The toggleDot is being called sometimes on a drag.  It also is causing annihilations when it's not supposed to. Turning it off until I can find fixes.
+
+- Annihilation is sometimes deleting the wrong dots.  
 
 
 ---

@@ -15,5 +15,5 @@ It's a pretty cool name! And also, blah blah blah.
 
 Eventually, we might want this tour to begin with something simpler than NegaBinary, but it's all we have working, so we'll just go straight there.
 
-[Go to NegaBinary Example](:@NegaBinaryV1)
+[Go to NegativeBinary Example](:@NegaBinaryV1)
 
