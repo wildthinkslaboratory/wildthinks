@@ -88,6 +88,8 @@ var marginY;
 var boxTextSize;
 var valueTextSize;
 
+var maxText = "16";  // use this text for setting textSize on window resizing
+
 
 
 
@@ -148,6 +150,23 @@ function getCanvasRelativePos(rx, ry, _box) {
   // console.log('getCanvasRelativePos', rx, ry, box, boxes, result);
 
   return result;
+}
+
+
+///
+// Risizing helper functions
+//////////////////////////////////////////////////////////////////////////////
+
+var textHeight = function() {
+  return p5.textAscent() * 0.8; 
+}
+
+var centerTextInRect = function(x,y,width,height,text) {
+  var textW = p5.textWidth(text);
+  var textH = textHeight();
+  var xoffset = (width - textW) / 2;
+  var yoffset = (height - textH) / 2;
+  return [x + xoffset, y + height - yoffset];
 }
 
 
@@ -326,10 +345,11 @@ Boxes.prototype.getBoxID = function(x, y) {
 Boxes.prototype.draw = function() {
   p5.push();
 
-  p5.noStroke();
-  p5.fill(boxFill);
+
   var x = boxesX;
   var y = boxesY;
+  p5.noStroke();
+  p5.fill(boxFill);
   for (let i=0; i < this.numberBoxes; i++) {
     p5.rect(x + i*this.width, y , this.width - xSpacer, this.height, 20);
   }
@@ -339,8 +359,10 @@ Boxes.prototype.draw = function() {
   p5.textSize(boxTextSize);
   for (let i=0; i < this.numberBoxes; i++) {
     var t = p5.pow(this.base, this.numberBoxes - i - 1).toString();
-    var tInset = (this.width - p5.textWidth(t) - xSpacer) / 2;
-    p5.text(t, x + i * this.width + tInset, y + this.height - boxTextSize / 2);
+
+
+    var [textX,textY] = centerTextInRect(x + i*this.width, y , this.width - xSpacer, this.height,t);
+    p5.text(t, textX, textY);
   }
 
   p5.pop();
@@ -384,18 +406,19 @@ function drawCodeBoxes() {
   p5.noStroke();
   p5.textSize(valueTextSize);
   p5.fill(writingFill);
-  var textY = y + height - 10;
-  //p5.text("code", x - width, textY);
+
+  
+
   for (let i=0; i < numBoxes; i++) {
     var code = dots[0].dots[i].length;
     code -= dots[1].dots[i].length;
     var t = code.toString();
-    var tInset = (width - p5.textWidth(t) - xSpacer)/2;
 
     if (code === 0) { p5.fill(valueStroke); }
     else { p5.fill(writingFill); }
 
-    p5.text(t, x + (numBoxes - 1 - i)*width + tInset, textY);
+    var [textX,textY] = centerTextInRect(x + i*width, y , width - xSpacer, height,t);
+    p5.text(t, textX, textY);
   }
 
   p5.pop();
@@ -419,7 +442,6 @@ function drawValueBoxes() {
   p5.noStroke();
   p5.fill(writingFill);
   p5.textSize(valueTextSize);
-  var textY = y + height - 10;
 
   currentSum = 0;
   for (let i = 0; i < numBoxes; i++) {
@@ -427,8 +449,7 @@ function drawValueBoxes() {
     value -= dots[1].dots[i].length * p5.pow(base, i);
     currentSum += value;
     var t = value.toString();
-    var tInset = (width - p5.textWidth(t) - xSpacer)/2;
-
+ 
     if (value === 0) {
       p5.fill(valueStroke);
     }
@@ -436,7 +457,8 @@ function drawValueBoxes() {
       p5.fill(writingFill);
     }
 
-    p5.text(t, x + (numBoxes - 1 - i)*width + tInset, textY);
+    var [textX,textY] = centerTextInRect(x + (numBoxes - i - 1)*width, y , width - xSpacer, height,t);
+    p5.text(t, textX, textY);
   }
 
   p5.pop();
@@ -447,10 +469,8 @@ function drawValueBoxes() {
 function drawSummaryBox() {
   var y = canvasH * 0.01;
   var height = endcapH;
-  var textY = y + height * 0.7;
   var x = boxesX + boxesW * (numBoxes - 1)/numBoxes;
   var boxW = boxesW / numBoxes;
-  var textX = x + (boxW)/2;
 
   p5.push();
 
@@ -463,7 +483,11 @@ function drawSummaryBox() {
   p5.fill(writingFill);
   p5.stroke(writingFill);
   p5.strokeWeight(1);
-  p5.text(currentSum.toString(), textX, textY);
+
+  var t = currentSum.toString();
+
+  var [textX,textY] = centerTextInRect(x, y, boxW - xSpacer, height, t);
+  p5.text(t, textX, textY);
 
   p5.pop();
 }
@@ -698,6 +722,7 @@ p5.setup = function() {
 p5.windowResized = function() {
   // console.log('p5.window', p5.windowWidth, p5.windowHeight);
   // console.log('myDiv.offset', myDiv.offsetWidth, myDiv.offsetHeight);
+
   canvasW = myDiv.offsetWidth - 10;
   canvasH = p5.windowHeight - 75;
   const minHeight = 200;
@@ -718,7 +743,7 @@ p5.windowResized = function() {
   marginY = dotD * 0.5;
   xSpacer = dotD/2;
   boxTextSize = boxesH * 0.5;
-  valueTextSize = boxesH * 0.1;
+  valueTextSize = endcapH * 0.5;
 
   boxes.updateSize(boxesX, boxesY, boxesW, boxesH);
   p5.resizeCanvas(p5.windowWidth, canvasH);
