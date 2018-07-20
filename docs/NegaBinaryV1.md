@@ -1,8 +1,17 @@
+### Welcome to our Negative Binary Prototype Page
+
+Below you will find a Negative Binary machine to play with.  Negative Binary is just what it sounds like.  It's a base $-2$ machine.  It allows you to represent both positive and negative integers with just zeros and ones.  
+
+
 ### Negative Binary Instructions
 
 - Tap to add a Dot to a Box
-- SHIFT-click to add an antidot
-- Drag Dot Left to *transform* a group.
+- SHIFT-click to add an Antidot
+- Drag a Dot Left to *implode* the dot.
+- Drag a Dot out of the frame to delete it.
+- Drag a Dot over an Antidot to annihilate them
+- Drag a Dot to the right to *explode* it (not implemented yet)
+- Drag a Dot to the left for | 1 | 1 | $\longleftarrow$ | 0 |-1 | rule (not implemented yet)
 
 
 ```p5js/playable/autoplay
