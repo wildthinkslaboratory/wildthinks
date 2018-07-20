@@ -866,7 +866,6 @@ p5.mouseReleased = function() {
 ### Known Bugs
 
 
-- The toggleDot is being called sometimes on a drag.  It also is causing annihilations when it's not supposed to. Turning it off until I can find fixes.
 
 
 
