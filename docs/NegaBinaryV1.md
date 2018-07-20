@@ -7,6 +7,7 @@ Below you will find a Negative Binary machine to play with.  Negative Binary is 
 
 - Tap to add a Dot to a Box
 - SHIFT-click to add an Antidot
+- Double click a dot to toggle between dot and antidot
 - Drag a Dot Left to *implode* the dot.
 - Drag a Dot out of the frame to delete it.
 - Drag a Dot over an Antidot to annihilate them
@@ -656,25 +657,24 @@ function getSendingAndRecievingBox() {
 
 
 
-/*
 function toggleDot() {
   if (mouseOnDot()) {
 
     const arrayId = currentId[0];
-    const toggleArrayId = arrayId === 0 ? 1 : 0;
+    const toggleArrayId = (arrayId === 0 ? 1 : 0);
     var current_dot = dots[arrayId].dots[currentId[1]][currentId[2]];
-    console.log('toggleDot', toggleArrayId, currentId, current_dot, dots);
+    //console.log('toggleDot', toggleArrayId, currentId, current_dot, dots);
 
     var newDot = new DotCopy(current_dot);
 
-    dots[toggleArrayID].pushDot(current_dot.box,newDot);
+    dots[toggleArrayId].pushDot(current_dot.box,newDot);
 
     //remove this dot from its old box
     dots[arrayId].deleteDot(currentId[1], currentId[2]);
   }
 
 }
-*/
+
 
 
 ////
@@ -817,7 +817,8 @@ p5.mousePressed = function()
 
 p5.doubleClicked = function()
 {
-  //toggleDot();
+  console.log("Double Clicked");
+  toggleDot();
 };
 
 p5.mouseDragged = function() {
