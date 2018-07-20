@@ -134,7 +134,7 @@ function getBoxRelativePos(x, y, _box) {
     rx: (x - boxes.x) / boxWidth,
     ry: (y - boxes.y) / boxHeight
   };
-  // console.log('getBoxRelativePos', x, y, box, boxes, result);
+  //  console.log('getBoxRelativePos', x, y, box, boxes, result);
 
   return result;
 }
@@ -148,7 +148,7 @@ function getCanvasRelativePos(rx, ry, _box) {
     y: ry * boxHeight + boxes.y
   };
 
-  // console.log('getCanvasRelativePos', rx, ry, box, boxes, result);
+  // console.log('getCanvasRelativePos', rx, ry, _box, boxes, result);
 
   return result;
 }
@@ -212,7 +212,9 @@ function overlap(d1, d2) {
   let result = false;
 
   if (d1.box === d2.box) {
-    var dist = p5.dist(d1.x, d1.y, d2.x, d2.y);
+    const c1 = getCanvasRelativePos(d1.x, d1.y, d1.box);
+    const c2 = getCanvasRelativePos(d2.x, d2.y, d2.box);
+    var dist = p5.dist(c1.x,c1.y,c2.x, c2.y);
     if (dist < dotD) {
       result = true;
     }
@@ -591,25 +593,6 @@ function mouseOnDot() {
 }
 
 
-/*
-unused
-
-function checkForDotAntidotAnnihilation() {
-  for (var n=0; n < numBoxes; n++) {    // walk through the boxes
-    for (var i=0; i < dots[0].dots[n].length; i++) {
-      for (var j=0; j < dots[1].dots[n].length; j++) {
-        if (overlap(dots[0].dots[n][i], dots[1].dots[n][j])) {
-          dots[0].deleteDot(n, i);
-          dots[1].deleteDot(n, j);
-          annihilateSound.play();
-        }
-      }
-
-    }
-
-  }
-}
-*/
 
 
 function annihilation(id) {
@@ -619,9 +602,11 @@ function annihilation(id) {
   const opposingDots = dots[opposing].dots;
 
   for (var i=0; i < opposingDots.length; i++) {
+    console.log("i", i);
     const opposingDot = opposingDots[id[1]][i];
     if (opposingDot && overlap(sourceDot, opposingDot)) {
       dots[id[0]].deleteDot(id[1], id[2]);
+      console.log("deleting i" , i);
       dots[opposing].deleteDot(id[1], i);
       annihilateSound.play();
       return true;
@@ -858,11 +843,9 @@ p5.mouseReleased = function() {
 
 ### Known Bugs
 
-- The ability to drag a Dot and drop it outside of any boxes is currently disabled. Instead, dropping out of bounds will simply cancel the drag. This is because I want to make a *no-dot's-land* between the boxes, so that we don't end up with dots in an ambigous area between boxes.
 
 - The toggleDot is being called sometimes on a drag.  It also is causing annihilations when it's not supposed to. Turning it off until I can find fixes.
 
-- Annihilation is sometimes deleting the wrong dots.  
 
 
 ---
