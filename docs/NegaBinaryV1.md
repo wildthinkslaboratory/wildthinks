@@ -446,7 +446,7 @@ function drawCodeBoxes() {
     if (code === 0) { p5.fill(valueStroke); }
     else { p5.fill(writingFill); }
 
-    var [textX,textY] = centerTextInRect(x + i*width, y , width - xSpacer, height,t);
+    var [textX,textY] = centerTextInRect(x + (numBoxes - i - 1)*width, y , width - xSpacer, height,t);
     p5.text(t, textX, textY);
   }
 
