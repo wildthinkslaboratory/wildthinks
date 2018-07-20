@@ -248,10 +248,44 @@ DotArray.prototype.draw = function() {
 };
 
 
+
+
+DotArray.prototype.snapToBox = function(x,y,boxId) {
+  var snappedY = y;
+  var snappedX = x;
+
+  const boxUpper = boxesY + dotD/2;
+  const boxLower = boxesY + boxesH - dotD/2;
+  if (y < boxUpper) {  snappedY = boxUpper; }
+  if (y > boxLower) {  snappedY = boxLower; }
+
+  const boxWidth = boxesW / numBoxes;
+  const boxLeft = boxesX + (numBoxes - boxId - 1) * boxWidth + dotD/2;
+  const boxRight = boxLeft + boxWidth - xSpacer - dotD;
+
+  if (x < boxLeft) snappedX = boxLeft;
+  if (x > boxRight) snappedX = boxRight;
+
+  return [snappedX,snappedY];
+}
+
+
 DotArray.prototype.addDot = function(x, y, box) {
-  this.dots[box].push(new Dot(x, y, box));
+  const [snappedX,snappedY] = this.snapToBox(x, y, box);
+  this.dots[box].push(new Dot(snappedX, snappedY, box));
   addDotSound.play();
 };
+
+DotArray.prototype.pushDot = function(boxID,dot) {
+
+  const {x, y} = getCanvasRelativePos(dot.x, dot.y, dot.box);
+  const [snappedX, snappedY] = this.snapToBox(x,y, dot.box);
+  const {rx, ry} = getBoxRelativePos(snappedX, snappedY, dot.box);
+
+  dot.x = rx;
+  dot.y = ry;
+  this.dots[boxID].push(dot);
+}
 
 
 DotArray.prototype.deleteDot = function(i, j) {
@@ -267,8 +301,16 @@ DotArray.prototype.resetOldPosition = function(pos) {
 
 
 DotArray.prototype.updateDotPosition = function(pos) {
-  const dot = this.dots[pos[1]][pos[2]];
+  var dot = this.dots[pos[1]][pos[2]];
 
+  const {x, y} = getCanvasRelativePos(dot.x, dot.y, dot.box);
+
+  const [snappedX, snappedY] = this.snapToBox(x,y, dot.box);
+
+  const {rx, ry} = getBoxRelativePos(snappedX, snappedY, dot.box);
+
+  dot.x = rx;
+  dot.y = ry;
   dot.oldx = dot.x;
   dot.oldy = dot.y;
 };
@@ -374,19 +416,6 @@ Boxes.prototype.draw = function() {
 // Additional Draw Functions
 /////////////////////////////////////////////////////////////////////////////////
 
-function drawMaskRect() {
-  p5.push();
-  p5.fill(paleLime);                // draw a background rect
-  p5.noStroke();
-
-  p5.rect(
-    boxesX - marginX,
-    boxesY - marginY,
-    boxesW + 2 * marginX - xSpacer,
-    boxesH + 2 * marginY,
-    10);
-  p5.pop();
-}
 
 
 function drawCodeBoxes() {
@@ -595,7 +624,8 @@ function finishDotDrag() {
 
             var dotArrayID = ((recievingBox - sendingBox) % 2 ? 1 - currentId[0] : currentId[0]);
 
-            dots[dotArrayID].dots[recievingBox].push(newDot);
+            dots[dotArrayID].pushDot(recievingBox,newDot);
+
             console.log('finishDotDrag added', recievingBox, sendingBox, currentId[0], dotArrayID);
 
             //remove this dot from it's old box
@@ -659,7 +689,7 @@ function toggleDot() {
 
     var newDot = new DotCopy(current_dot);
 
-    dots[toggleArrayId].dots[current_dot.box].push(newDot);
+    dots[toggleArrayID].pushDot(current_dot.box,newDot);
 
     //remove this dot from its old box
     dots[arrayId].deleteDot(currentId[1], currentId[2]);
@@ -667,25 +697,6 @@ function toggleDot() {
 
 }
 
-/*
-unused
-
-function dragLeft() {
-
-}
-
-function dragRight() {
-
-}
-
-function dragOffBoxes() {
-
-}
-
-function dragDotAnnihilation() {
-
-}
-*/
 
 
 ///////////////////////   MAIN STRUCTURE FUNCTIONS ////////////////////////////
@@ -788,7 +799,7 @@ p5.mouseDragged = function() {
   if (currentId[0] != DotEnum.UNDEF) {
     const dot = dots[currentId[0]].dots[currentId[1]][currentId[2]];
     const { rx, ry } = getBoxRelativePos(p5.mouseX, p5.mouseY, dot.box);
-    // console.log('mouseDragged', p5.mouseX, p5.mouseY, rx, ry, dot.box);
+    //console.log('mouseDragged', p5.mouseX, p5.mouseY, rx, ry, dot.box);
     dot.x = rx;  // update the x, y position of currentId dot
     dot.y = ry;
   }
