@@ -111,6 +111,7 @@ var maxText = "16";  // use this text for setting textSize on window resizing
 
 const myDiv = this.div;
 myDiv.style.position = 'relative';
+
 // const parent = myDiv.parentNode;
 // const grandparent = parent.parentNode;
 // parent.style.padding = '0 10px 0 0';
@@ -118,6 +119,7 @@ myDiv.style.position = 'relative';
 // grandparent.style.border = '5px solid orange';
 // grandparent.style.padding = '0';
 // grandparent.style.margin = '0';
+
 myDiv.style['background-image'] = `url(${bgURL})`;
 myDiv.style['background-repeat'] = 'no-repeat';
 myDiv.style['background-size'] = 'cover';
@@ -163,6 +165,8 @@ function getCanvasRelativePos(rx, ry, _box) {
 }
 
 
+
+
 ////
 // Risizing helper functions
 //////////////////////////////////////////////////////////////////////////////
@@ -195,8 +199,8 @@ function nextId() {        // get the next dot ID
 
 function Dot(x, y, box) {
   const {rx, ry} = getBoxRelativePos(x, y, box);
-  this.x = rx;                // a dot knows it's position
-  this.y = ry;
+  this.rx = rx;                // a dot knows it's position
+  this.ry = ry;
   this.oldx = rx;             // it remembers it's old position before being dragged
   this.oldy = ry;
   this.box = box;            // it knows what box it's in
@@ -208,10 +212,10 @@ function Dot(x, y, box) {
 
 // we move dots between boxes so they need a copy with the same id for the new box
 function DotCopy(d) {
-  this.x = d.x;
-  this.y = d.y;
-  this.oldx = d.x;
-  this.oldy = d.y;
+  this.rx = d.rx;
+  this.ry = d.ry;
+  this.oldx = d.rx;
+  this.oldy = d.ry;
   this.box = d.box;
   this.id = d.id;
 }
@@ -221,8 +225,8 @@ function overlap(d1, d2) {
   let result = false;
 
   if (d1.box === d2.box) {
-    const c1 = getCanvasRelativePos(d1.x, d1.y, d1.box);
-    const c2 = getCanvasRelativePos(d2.x, d2.y, d2.box);
+    const c1 = getCanvasRelativePos(d1.rx, d1.ry, d1.box);
+    const c2 = getCanvasRelativePos(d2.rx, d2.ry, d2.box);
     var dist = p5.dist(c1.x,c1.y,c2.x, c2.y);
     if (dist < dotD) {
       result = true;
@@ -250,7 +254,7 @@ DotArray.prototype.draw = function() {
   for (var i=0; i < this.dots.length; i++) {
     for (var j=0; j < this.dots[i].length; j++) {
       const dot = this.dots[i][j];
-      const {x, y} = getCanvasRelativePos(dot.x, dot.y, dot.box);
+      const {x, y} = getCanvasRelativePos(dot.rx, dot.ry, dot.box);
       if (boxes.in(x, y)) { // this line shouldn't be here need to fix
         p5.ellipse(x, y, dotD, dotD);
       }
@@ -267,6 +271,8 @@ DotArray.prototype.draw = function() {
 // or update a dot.  
 
 
+
+// this is all done with Canvas Relative positioning
 DotArray.prototype.snapToBox = function(x,y,boxId) {
   var snappedY = y;
   var snappedX = x;
@@ -287,30 +293,10 @@ DotArray.prototype.snapToBox = function(x,y,boxId) {
 }
 
 
-/*   
-// so I may switch this so it's done with box relative coordinates
-DotArray.prototype.snapToBox = function(rx,ry) {
-  var snappedRx = rx;
-  var snappedRy = ry;
-
-  const lowerBoundary = this.height - dotD/2;
-  if (ry < dotD/2) {  snappedRy = dotD/2; }
-  if (ry > lowerBoundary) {  snappedRy = lowerBoundary; }
-
-
-  const rightBoundary = this.width - xSpacer - dotD/2;
-  if (rx < dotD/2) { snappedRx = dotD/2; }
-  if (rx > rightBoundary) { snappedRx = rightBoundary; }
-
-  return [snappedRx,snappedRy];
-}
-*/
 
 
 
 DotArray.prototype.addDot = function(x, y, box) {
-
-
   const [snappedX,snappedY] = this.snapToBox(x, y, box);
   this.dots[box].push(new Dot(snappedX, snappedY, box));
   addDotSound.play();
@@ -318,28 +304,32 @@ DotArray.prototype.addDot = function(x, y, box) {
 
 
 
+
 DotArray.prototype.pushDot = function(boxID,dot) {
 
-  const {x, y} = getCanvasRelativePos(dot.x, dot.y, dot.box);
+  const {x, y} = getCanvasRelativePos(dot.rx, dot.ry, dot.box);
   const [snappedX, snappedY] = this.snapToBox(x,y, dot.box);
   const {rx, ry} = getBoxRelativePos(snappedX, snappedY, dot.box);
 
-  dot.x = rx;
-  dot.y = ry;
+  dot.rx = rx;
+  dot.ry = ry;
   this.dots[boxID].push(dot);
 }
+
+
+
 
 DotArray.prototype.updateDotPosition = function(pos) {
   var dot = this.dots[pos[1]][pos[2]];
 
-  const {x, y} = getCanvasRelativePos(dot.x, dot.y, dot.box);
+  const {x, y} = getCanvasRelativePos(dot.rx, dot.ry, dot.box);
   const [snappedX, snappedY] = this.snapToBox(x,y, dot.box);
   const {rx, ry} = getBoxRelativePos(snappedX, snappedY, dot.box);
 
-  dot.x = rx;
-  dot.y = ry;
-  dot.oldx = dot.x;
-  dot.oldy = dot.y;
+  dot.rx = rx;
+  dot.ry = ry;
+  dot.oldx = dot.rx;
+  dot.oldy = dot.ry;
 };
 
 
@@ -351,8 +341,8 @@ DotArray.prototype.deleteDot = function(i, j) {
 
 DotArray.prototype.resetOldPosition = function(pos) {
   const dot = this.dots[pos[1]][pos[2]];
-  dot.x = dot.oldx;
-  dot.y = dot.oldy;
+  dot.rx = dot.oldx;
+  dot.ry = dot.oldy;
 };
 
 
@@ -585,7 +575,7 @@ function mouseOnDot() {
     for (var i=0; i < dots[n].dots.length; i++) {
       for (var j=0; j < dots[n].dots[i].length; j++) {
         const dot = dots[n].dots[i][j];
-        const { x, y } = getCanvasRelativePos(dot.x, dot.y, dot.box);
+        const { x, y } = getCanvasRelativePos(dot.rx, dot.ry, dot.box);
         const dist = p5.dist(p5.mouseX, p5.mouseY, x, y);
         if (dist < dotD / 2) {
           // console.log('mouseOnDot', p5.mouseX, p5.mouseY, x, y, dist, dotD);
@@ -631,7 +621,7 @@ function finishDotDrag() {
   if (mouseOnBoxes() && currentId) {
     if (currentId[0] != DotEnum.UNDEF) {
       var current_dot = dots[currentId[0]].dots[currentId[1]][currentId[2]];
-      const {x, y} = getCanvasRelativePos(current_dot.x, current_dot.y, current_dot.box);
+      const {x, y} = getCanvasRelativePos(current_dot.rx, current_dot.ry, current_dot.box);
       // get the box id after drag
       var recievingBox = boxes.getBoxID(x, y);
       var sendingBox = current_dot.box;
@@ -835,8 +825,8 @@ p5.mouseDragged = function() {
     const dot = dots[currentId[0]].dots[currentId[1]][currentId[2]];
     const { rx, ry } = getBoxRelativePos(p5.mouseX, p5.mouseY, dot.box);
     //console.log('mouseDragged', p5.mouseX, p5.mouseY, rx, ry, dot.box);
-    dot.x = rx;  // update the x, y position of currentId dot
-    dot.y = ry;
+    dot.rx = rx;  // update the x, y position of currentId dot
+    dot.ry = ry;
   }
 };
 
