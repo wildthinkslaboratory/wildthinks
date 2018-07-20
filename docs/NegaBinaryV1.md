@@ -264,12 +264,6 @@ DotArray.prototype.draw = function() {
 };
 
 
-////
-//  SnapToBox issues   
-///////////////////////////////////////////////////////////////////////////////////////////////////
-// So all the snap to box happens at the DotArray level.  It needs to be automatic when you add 
-// or update a dot.  
-
 
 
 // this is all done with Canvas Relative positioning
@@ -344,6 +338,7 @@ DotArray.prototype.resetOldPosition = function(pos) {
   dot.rx = dot.oldx;
   dot.ry = dot.oldy;
 };
+
 
 
 
@@ -551,9 +546,88 @@ function drawSummaryBox() {
   p5.pop();
 }
 
+//////////////////////////////////////////////////////////////////////////////////////////
 
 
-///////////////////////////////////////////////////////////////////////////////////
+function annihilation(id) {
+  // look for overlap with an opposing dot in same box
+  var opposing = 1 - id[0];
+  const sourceDot = dots[id[0]].dots[id[1]][id[2]];
+  const opposingDots = dots[opposing].dots;
+
+  for (var i=0; i < opposingDots.length; i++) {
+    const opposingDot = opposingDots[id[1]][i];
+    if (opposingDot && overlap(sourceDot, opposingDot)) {
+      deleteDot(id);
+      deleteDot([opposing,id[1],i]);
+      annihilateSound.play();
+      return true;
+    }
+  }
+  return false;
+}
+
+
+
+function addAntidot() {
+  dots[1].addDot(p5.mouseX, p5.mouseY, boxes.getBoxID(p5.mouseX, p5.mouseY));
+}
+
+function addDot() {
+  const boxID = boxes.getBoxID(p5.mouseX, p5.mouseY);
+  if (boxID !== DotEnum.UNDEF) {
+    dots[0].addDot(p5.mouseX, p5.mouseY, boxID);
+  }
+}
+
+
+function implodeDot() {
+
+
+}
+
+function resetDotPosition(dotID) {
+  if (dotID[0] !== DotEnum.UNDEF) {
+    dots[dotID[0]].resetOldPosition(dotID);
+  }
+}
+
+
+function updatePosition(dotID) {
+  if (dotID[0] !== DotEnum.UNDEF) {
+    dots[dotID[0]].updateDotPosition(dotID);
+  }
+}
+
+function deleteDot(dotID) {
+  if (dotID[0] !== DotEnum.UNDEF) {
+    dots[dotID[0]].deleteDot(dotID[1], dotID[2]);
+  }
+}
+
+
+/*
+function toggleDot() {
+  if (mouseOnDot()) {
+
+    const arrayId = currentId[0];
+    const toggleArrayId = arrayId === 0 ? 1 : 0;
+    var current_dot = dots[arrayId].dots[currentId[1]][currentId[2]];
+    console.log('toggleDot', toggleArrayId, currentId, current_dot, dots);
+
+    var newDot = new DotCopy(current_dot);
+
+    dots[toggleArrayID].pushDot(current_dot.box,newDot);
+
+    //remove this dot from its old box
+    dots[arrayId].deleteDot(currentId[1], currentId[2]);
+  }
+
+}
+*/
+
+
+//////////////////////////////////////////////////////////////////////////////////////////
 
 // assumes the mouse isn't in a box
 var mouseInSpacers = function() {
@@ -594,26 +668,7 @@ function mouseOnDot() {
 
 
 
-function annihilation(id) {
-  // look for overlap with an opposing dot in same box
-  var opposing = 1 - id[0];
-  const sourceDot = dots[id[0]].dots[id[1]][id[2]];
-  const opposingDots = dots[opposing].dots;
-
-  for (var i=0; i < opposingDots.length; i++) {
-    console.log("i", i);
-    const opposingDot = opposingDots[id[1]][i];
-    if (opposingDot && overlap(sourceDot, opposingDot)) {
-      dots[id[0]].deleteDot(id[1], id[2]);
-      console.log("deleting i" , i);
-      dots[opposing].deleteDot(id[1], i);
-      annihilateSound.play();
-      return true;
-    }
-  }
-  return false;
-}
-
+/////////////////////////////////////////////////////////////////////////////////////////////
 
 
 
@@ -628,7 +683,7 @@ function finishDotDrag() {
 
       if (recievingBox === sendingBox) {                  // drag within a box
         if (!annihilation(currentId)) {
-          dots[currentId[0]].updateDotPosition(currentId);
+          updatePosition(currentId);
         }
       }
       else {                                              // drag between boxes
@@ -645,10 +700,8 @@ function finishDotDrag() {
 
             dots[dotArrayID].pushDot(recievingBox,newDot);
 
-            console.log('finishDotDrag added', recievingBox, sendingBox, currentId[0], dotArrayID);
-
             //remove this dot from it's old box
-            dots[currentId[0]].deleteDot(currentId[1], currentId[2]);
+            deleteDot(currentId);
 
             //remove other dots from old box
             for (var i=0; i < dotsNeeded-1; i++) {
@@ -656,13 +709,11 @@ function finishDotDrag() {
             }
           }
           else {
-            // console.log('finishDotDrag cancel', dots[currentId[0]].dots[sendingBox], dotsNeeded, recievingBox, sendingBox);
-
-            dots[currentId[0]].resetOldPosition(currentId);  // weren't enough dots, send it back
+            resetDotPosition(currentId);     // weren't enough dots, send it back
           }
         }
-        else {   // drag right
-          dots[currentId[0]].resetOldPosition(currentId);
+        else {                               // drag right
+          resetDotPosition(currentId);
         }
 
       }
@@ -670,57 +721,21 @@ function finishDotDrag() {
   }
   else {  
     if (mouseInSpacers()) {
-      dots[currentId[0]].resetOldPosition(currentId);
+      resetDotPosition(currentId);
     }
     else {
       // dragged out of bounds
-      deleteCurrentDot();
+      deleteDot(currentId);
     }
   }
 }
 
 
-
-
-function deleteCurrentDot() {
-  if (currentId[0] != DotEnum.UNDEF) {
-    dots[currentId[0]].deleteDot(currentId[1], currentId[2]);
-  }
-}
 
 
 
 /////////////////////////////  MAIN USER EVENTS  /////////////////////////////
 
-function addAntidot() {
-  dots[1].addDot(p5.mouseX, p5.mouseY, boxes.getBoxID(p5.mouseX, p5.mouseY));
-}
-
-function addDot() {
-  const boxID = boxes.getBoxID(p5.mouseX, p5.mouseY);
-  if (boxID !== DotEnum.UNDEF) {
-    dots[0].addDot(p5.mouseX, p5.mouseY, boxID);
-  }
-}
-
-
-function toggleDot() {
-  if (mouseOnDot()) {
-
-    const arrayId = currentId[0];
-    const toggleArrayId = arrayId === 0 ? 1 : 0;
-    var current_dot = dots[arrayId].dots[currentId[1]][currentId[2]];
-    console.log('toggleDot', toggleArrayId, currentId, current_dot, dots);
-
-    var newDot = new DotCopy(current_dot);
-
-    dots[toggleArrayID].pushDot(current_dot.box,newDot);
-
-    //remove this dot from its old box
-    dots[arrayId].deleteDot(currentId[1], currentId[2]);
-  }
-
-}
 
 
 
