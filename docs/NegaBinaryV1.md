@@ -8,6 +8,7 @@
 ```p5js/playable/autoplay
 /* global p5 */
 
+
 ////
 // Constants, independent of window-sizing
 // Some of these should be initialization parameters
@@ -248,6 +249,11 @@ DotArray.prototype.draw = function() {
 };
 
 
+////
+//  SnapToBox issues   
+///////////////////////////////////////////////////////////////////////////////////////////////////
+// So all the snap to box happens at the DotArray level.  It needs to be automatic when you add 
+// or update a dot.  
 
 
 DotArray.prototype.snapToBox = function(x,y,boxId) {
@@ -270,11 +276,36 @@ DotArray.prototype.snapToBox = function(x,y,boxId) {
 }
 
 
+/*   
+// so I may switch this so it's done with box relative coordinates
+DotArray.prototype.snapToBox = function(rx,ry) {
+  var snappedRx = rx;
+  var snappedRy = ry;
+
+  const lowerBoundary = this.height - dotD/2;
+  if (ry < dotD/2) {  snappedRy = dotD/2; }
+  if (ry > lowerBoundary) {  snappedRy = lowerBoundary; }
+
+
+  const rightBoundary = this.width - xSpacer - dotD/2;
+  if (rx < dotD/2) { snappedRx = dotD/2; }
+  if (rx > rightBoundary) { snappedRx = rightBoundary; }
+
+  return [snappedRx,snappedRy];
+}
+*/
+
+
+
 DotArray.prototype.addDot = function(x, y, box) {
+
+
   const [snappedX,snappedY] = this.snapToBox(x, y, box);
   this.dots[box].push(new Dot(snappedX, snappedY, box));
   addDotSound.play();
 };
+
+
 
 DotArray.prototype.pushDot = function(boxID,dot) {
 
@@ -287,6 +318,20 @@ DotArray.prototype.pushDot = function(boxID,dot) {
   this.dots[boxID].push(dot);
 }
 
+DotArray.prototype.updateDotPosition = function(pos) {
+  var dot = this.dots[pos[1]][pos[2]];
+
+  const {x, y} = getCanvasRelativePos(dot.x, dot.y, dot.box);
+  const [snappedX, snappedY] = this.snapToBox(x,y, dot.box);
+  const {rx, ry} = getBoxRelativePos(snappedX, snappedY, dot.box);
+
+  dot.x = rx;
+  dot.y = ry;
+  dot.oldx = dot.x;
+  dot.oldy = dot.y;
+};
+
+
 
 DotArray.prototype.deleteDot = function(i, j) {
   this.dots[i].splice(j, 1);
@@ -297,22 +342,6 @@ DotArray.prototype.resetOldPosition = function(pos) {
   const dot = this.dots[pos[1]][pos[2]];
   dot.x = dot.oldx;
   dot.y = dot.oldy;
-};
-
-
-DotArray.prototype.updateDotPosition = function(pos) {
-  var dot = this.dots[pos[1]][pos[2]];
-
-  const {x, y} = getCanvasRelativePos(dot.x, dot.y, dot.box);
-
-  const [snappedX, snappedY] = this.snapToBox(x,y, dot.box);
-
-  const {rx, ry} = getBoxRelativePos(snappedX, snappedY, dot.box);
-
-  dot.x = rx;
-  dot.y = ry;
-  dot.oldx = dot.x;
-  dot.oldy = dot.y;
 };
 
 
