@@ -546,10 +546,14 @@ function drawSummaryBox() {
   p5.pop();
 }
 
-//////////////////////////////////////////////////////////////////////////////////////////
+////
+// Main functions affecting model
+///////////////////////////////////////////////////////////
 
 
-function annihilation(id) {
+
+// two opposing dots collide and annihilate
+function dotAnnihilation(id) {
   // look for overlap with an opposing dot in same box
   var opposing = 1 - id[0];
   const sourceDot = dots[id[0]].dots[id[1]][id[2]];
@@ -569,10 +573,14 @@ function annihilation(id) {
 
 
 
+// add an antidot to the model
 function addAntidot() {
   dots[1].addDot(p5.mouseX, p5.mouseY, boxes.getBoxID(p5.mouseX, p5.mouseY));
 }
 
+
+
+// add a dot to the model
 function addDot() {
   const boxID = boxes.getBoxID(p5.mouseX, p5.mouseY);
   if (boxID !== DotEnum.UNDEF) {
@@ -581,11 +589,36 @@ function addDot() {
 }
 
 
-function implodeDot() {
 
+// dots implode as they are moved to the left
+function implodeDot(sendingBox, recievingBox) {
+  var dotsNeeded = p5.pow(p5.abs(base), recievingBox - sendingBox);
+  if (dots[currentId[0]].dots[sendingBox].length >= dotsNeeded) {     // explode the dot
+
+    var newDot = new DotCopy(dots[currentId[0]].dots[currentId[1]][currentId[2]]);
+    newDot.box = recievingBox;
+
+    var dotArrayID = ((recievingBox - sendingBox) % 2 ? 1 - currentId[0] : currentId[0]);
+
+    dots[dotArrayID].pushDot(recievingBox,newDot);
+
+    //remove this dot from it's old box
+    deleteDot(currentId);
+
+    //remove other dots from old box
+    for (var i=0; i < dotsNeeded-1; i++) {
+      dots[currentId[0]].dots[sendingBox].pop();
+    }
+  }
+  else {
+    resetDotPosition(currentId);     // weren't enough dots, send it back
+  }
 
 }
 
+
+
+// reset a dot to its previous position before being dragged
 function resetDotPosition(dotID) {
   if (dotID[0] !== DotEnum.UNDEF) {
     dots[dotID[0]].resetOldPosition(dotID);
@@ -593,17 +626,34 @@ function resetDotPosition(dotID) {
 }
 
 
+
+// update a dot to it's new position after drag
 function updatePosition(dotID) {
   if (dotID[0] !== DotEnum.UNDEF) {
     dots[dotID[0]].updateDotPosition(dotID);
   }
 }
 
+
+
 function deleteDot(dotID) {
   if (dotID[0] !== DotEnum.UNDEF) {
     dots[dotID[0]].deleteDot(dotID[1], dotID[2]);
   }
 }
+
+
+
+// a dot has been dragged, find out if it's moved to a new box
+function getSendingAndRecievingBox() {
+  if (currentId[0] !== DotEnum.UNDEF) {  
+    var current_dot = dots[currentId[0]].dots[currentId[1]][currentId[2]];
+    const {x, y} = getCanvasRelativePos(current_dot.rx, current_dot.ry, current_dot.box);
+    return [current_dot.box, boxes.getBoxID(x,y)];
+  }
+  return [-1,-1];
+}
+
 
 
 /*
@@ -627,8 +677,13 @@ function toggleDot() {
 */
 
 
-//////////////////////////////////////////////////////////////////////////////////////////
+////
+// App mouse events
+/////////////////////////////////////////////////////////////////////
 
+
+
+// Is the mouse in the spacers between the boxes
 // assumes the mouse isn't in a box
 var mouseInSpacers = function() {
   if (p5.mouseX < boxesX || p5.mouseX > boxesX + boxesW) return false;
@@ -641,6 +696,7 @@ var mouseInSpacers = function() {
 function mouseOnBoxes() {
   return boxes.getBoxID(p5.mouseX, p5.mouseY) != DotEnum.UNDEF;
 }
+
 
 
 function mouseOnDot() {
@@ -667,79 +723,10 @@ function mouseOnDot() {
 
 
 
+////
+// P5 Structure Functions
+///////////////////////////////////////////////////////////////////////////////////
 
-/////////////////////////////////////////////////////////////////////////////////////////////
-
-
-
-function finishDotDrag() {
-  if (mouseOnBoxes() && currentId) {
-    if (currentId[0] != DotEnum.UNDEF) {
-      var current_dot = dots[currentId[0]].dots[currentId[1]][currentId[2]];
-      const {x, y} = getCanvasRelativePos(current_dot.rx, current_dot.ry, current_dot.box);
-      // get the box id after drag
-      var recievingBox = boxes.getBoxID(x, y);
-      var sendingBox = current_dot.box;
-
-      if (recievingBox === sendingBox) {                  // drag within a box
-        if (!annihilation(currentId)) {
-          updatePosition(currentId);
-        }
-      }
-      else {                                              // drag between boxes
-        if (recievingBox > sendingBox) {                // drag left
-
-          var dotsNeeded = p5.pow(p5.abs(base), recievingBox - sendingBox);
-          if (dots[currentId[0]].dots[sendingBox].length >= dotsNeeded) {     // explode the dot
-
-            //add this dot to new box
-            var newDot = new DotCopy(current_dot);
-            newDot.box = recievingBox;
-
-            var dotArrayID = ((recievingBox - sendingBox) % 2 ? 1 - currentId[0] : currentId[0]);
-
-            dots[dotArrayID].pushDot(recievingBox,newDot);
-
-            //remove this dot from it's old box
-            deleteDot(currentId);
-
-            //remove other dots from old box
-            for (var i=0; i < dotsNeeded-1; i++) {
-              dots[currentId[0]].dots[sendingBox].pop();
-            }
-          }
-          else {
-            resetDotPosition(currentId);     // weren't enough dots, send it back
-          }
-        }
-        else {                               // drag right
-          resetDotPosition(currentId);
-        }
-
-      }
-    }
-  }
-  else {  
-    if (mouseInSpacers()) {
-      resetDotPosition(currentId);
-    }
-    else {
-      // dragged out of bounds
-      deleteDot(currentId);
-    }
-  }
-}
-
-
-
-
-
-/////////////////////////////  MAIN USER EVENTS  /////////////////////////////
-
-
-
-
-///////////////////////   MAIN STRUCTURE FUNCTIONS ////////////////////////////
 
 var addDotSound;
 var annihilateSound;
@@ -794,11 +781,9 @@ p5.windowResized = function() {
 };
 
 
-// the draw function runs about 30 times a second
+
 p5.draw = function() {
   p5.frameRate(15);
-
- 
   p5.clear();
   boxes.draw();
   dots[0].draw();
@@ -809,11 +794,11 @@ p5.draw = function() {
 };
 
 
+////
+// P5 event functions
+///////////////////////////////////////////////////////////////////////////////////////////
 
-///////////////////////   MAIN EVENT FUNCTIONS ////////////////////////////
 
-
-// P5 EVENTS
 
 p5.mousePressed = function()
 {
@@ -839,17 +824,39 @@ p5.mouseDragged = function() {
   if (currentId[0] != DotEnum.UNDEF) {
     const dot = dots[currentId[0]].dots[currentId[1]][currentId[2]];
     const { rx, ry } = getBoxRelativePos(p5.mouseX, p5.mouseY, dot.box);
-    //console.log('mouseDragged', p5.mouseX, p5.mouseY, rx, ry, dot.box);
     dot.rx = rx;  // update the x, y position of currentId dot
     dot.ry = ry;
   }
 };
 
 
+// there's a lot to do here
 p5.mouseReleased = function() {
-
-  finishDotDrag();
-
+  if (mouseOnBoxes() && currentId && currentId[0] !== DotEnum.UNDEF) {  // this is the end of a drag event
+    [sendingBox, recievingBox] = getSendingAndRecievingBox();
+      
+    if (recievingBox === sendingBox) {            // drag within a box
+      if (!dotAnnihilation(currentId)) {
+        updatePosition(currentId);
+      }
+    }
+    else {                                            
+      if (recievingBox > sendingBox) {            // drag left
+        implodeDot(sendingBox, recievingBox);
+      }
+      else {                                      // drag right
+        resetDotPosition(currentId);
+      }
+    }
+  }
+  else {                                          // we've dragged a dot out of box region
+    if (mouseInSpacers()) {                       // between the boxes
+      resetDotPosition(currentId);        
+    }
+    else {                                        // out of the boxes
+      deleteDot(currentId);
+    }
+  }
 };
 
 ```
