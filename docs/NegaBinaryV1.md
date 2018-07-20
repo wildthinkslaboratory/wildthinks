@@ -554,6 +554,12 @@ function drawSummaryBox() {
 
 ///////////////////////////////////////////////////////////////////////////////////
 
+// assumes the mouse isn't in a box
+var mouseInSpacers = function() {
+  if (p5.mouseX < boxesX || p5.mouseX > boxesX + boxesW) return false;
+  if (p5.mouseY < boxesY || p5.mouseY > boxesY + boxesH) return false;
+  return true;
+}
 
 
 
@@ -678,8 +684,14 @@ function finishDotDrag() {
       }
     }
   }
-  else {  // dragged out of bounds
-    deleteCurrentDot();
+  else {  
+    if (mouseInSpacers()) {
+      dots[currentId[0]].resetOldPosition(currentId);
+    }
+    else {
+      // dragged out of bounds
+      deleteCurrentDot();
+    }
   }
 }
 
