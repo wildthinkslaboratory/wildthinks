@@ -574,19 +574,63 @@ function drawRuleButton() {
   var x = ruleBoxX;
   var boxW = 2* boxesW / numBoxes;
 
+  
+  var littleBoxH = height * 0.75;
+  var dotSize = littleBoxH * 0.25;
+
   p5.push();
 
   p5.stroke(dotButtonStroke);
   p5.strokeWeight(1);
-
-  if (standardRule) {
-    p5.fill(dotButtonFill);
-  }
-  else {
-    p5.fill(dotFill);
-  }
+  p5.fill(dotButtonFill);
   p5.rect(x, y, boxW - xSpacer, height, 10);
 
+  var centerX = ruleBoxX + (boxW - xSpacer) / 2;
+  boxY = y + height * 0.125;
+  var shift = littleBoxH/2;
+
+  p5.line(centerX - shift, boxY + shift, centerX + shift, boxY + shift);
+  p5.line(centerX - shift, boxY + shift, centerX - 0.7 * shift, boxY + shift - 0.3 * shift );
+  p5.line(centerX - shift, boxY + shift, centerX - 0.7 * shift, boxY + shift + 0.3 * shift );
+
+  if (standardRule) {
+    var box1X = centerX + littleBoxH;
+    var box2X = centerX - 2*littleBoxH;
+
+    p5.rect(box1X, boxY,littleBoxH,littleBoxH,5);
+    p5.rect(box2X, boxY,littleBoxH,littleBoxH,5);
+    p5.stroke(dotStroke);
+    p5.fill(dotFill);
+
+    p5.ellipse(box1X + shift*0.7, boxY + shift*0.7, dotSize, dotSize);
+    p5.ellipse(box1X + shift*1.3, boxY + shift*1.3, dotSize, dotSize);
+
+    p5.stroke(antidotStroke);
+    p5.fill(antidotFill);   
+    p5.ellipse(box2X + shift, boxY + shift, dotSize, dotSize);
+  }
+  else {
+    var boxes1X = centerX + littleBoxH;
+    var boxes2X = centerX - 3*littleBoxH;
+    
+    p5.rect(boxes1X, boxY,littleBoxH,littleBoxH,5);  
+    p5.rect(boxes1X + littleBoxH, boxY,littleBoxH,littleBoxH,5); 
+    p5.rect(boxes2X, boxY,littleBoxH,littleBoxH,5); 
+    p5.rect(boxes2X + littleBoxH, boxY,littleBoxH,littleBoxH,5);   
+
+    p5.stroke(dotStroke);
+    p5.fill(dotFill);
+
+    p5.ellipse(boxes2X + shift, boxY + shift, dotSize, dotSize);
+    p5.ellipse(boxes2X + littleBoxH + shift, boxY + shift, dotSize, dotSize);
+
+    p5.stroke(antidotStroke);
+    p5.fill(antidotFill);   
+    p5.ellipse(boxes1X + littleBoxH + shift, boxY + shift, dotSize, dotSize);
+
+
+  }
+ 
   p5.pop();
 }
 
@@ -617,7 +661,8 @@ function drawDotButton() {
     p5.fill(antidotFill);
   }
 
-  p5.ellipse(x + boxW * 2/3,y + endcapH/2,dotD, dotD);
+  var dotSize = p5.min(dotD, endcapH * 0.75);
+  p5.ellipse(x + boxW * 2/3,y + endcapH/2,dotSize, dotSize);
 
   p5.fill(darkGray);
 
