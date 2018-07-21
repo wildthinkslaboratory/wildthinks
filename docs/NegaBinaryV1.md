@@ -11,7 +11,7 @@ Below you will find a Negative Binary machine to play with.  Negative Binary is 
 - Drag a Dot out of the frame to delete it.
 - Drag a Dot over an Antidot to annihilate them
 - Drag a Dot to the right to *unexplode* it 
-- SHIFT-Drag a Dot to the left for | 1 | 1 | $\longleftarrow$ | 0 |-1 | rule 
+- Toggle the Rule button to switch between the | $1$ | $1$ | $\longleftarrow$ | $0$ | $-1$ | rule and the standard $-1 \longleftarrow 2$ rule.
 
 
 ```p5js/playable/autoplay
