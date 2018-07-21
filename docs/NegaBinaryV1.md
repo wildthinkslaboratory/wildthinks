@@ -748,6 +748,7 @@ function explodeDot2(sendingBox, recievingBox) {
     dots[toggleArrayId].addDot(p5.mouseX, p5.mouseY, currentId[1] + 1);  // add a dot to the next box under the mouse
     resetDotPosition(currentId);                                         // send current dot back to old position
     toggleDot(currentId);                                                // and toggle it
+    return true;
   }
   return false;
 }
@@ -1021,7 +1022,9 @@ p5.mouseReleased = function() {
           }
         }
         else {
-          explodeDot2(sendingBox, recievingBox);
+          if (!explodeDot2(sendingBox, recievingBox)) {
+            resetDotPosition(currentId);
+          }
         }
       }
       else {                                      // drag right
