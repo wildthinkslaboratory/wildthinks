@@ -6,8 +6,7 @@ Below you will find a Negative Binary machine to play with.  Negative Binary is 
 ### Negative Binary Instructions
 
 - Tap to add a Dot to a Box
-- SHIFT-click to add an Antidot
-- Double click a dot to toggle between dot and antidot
+- Toggle the Add Dot but to switch to adding Antidots
 - Drag a Dot Left to *explode* the dot.
 - Drag a Dot out of the frame to delete it.
 - Drag a Dot over an Antidot to annihilate them
@@ -40,6 +39,7 @@ var darkbluegreen = [0,   100, 100];
 var lightLilac =    [220, 220, 255];
 var white =         [255, 255, 255];
 var paleLime =      [200, 255, 200];
+var darkGray =      [100, 100, 100];
 
 
 
@@ -62,7 +62,8 @@ var writingFill = darkbluegreen;
 var valueFill = white;
 var valueStroke = lightLilac;
 
-
+var dotButtonStroke = darkGray;
+var dotButtonFill = white;
 
 
 ////
@@ -77,6 +78,14 @@ var dots;
 var currentId = [0, 0, 0];  // the id of the current dot
 var uniqueId = 0;
 var currentSum = 0;
+
+
+
+////
+// Button States
+/////////////////////////////////////////////////////////////////////////////
+
+var addDots = true;
 
 
 
@@ -98,6 +107,12 @@ var marginX;
 var marginY;
 var boxTextSize;
 var valueTextSize;
+var dotButtonX;
+var topBoxesY;
+var valueBoxesY;
+var codeBoxesY;
+var ySpacer;
+
 
 var maxText = "16";  // use this text for setting textSize on window resizing
 
@@ -450,7 +465,7 @@ Boxes.prototype.draw = function() {
 
 function drawCodeBoxes() {
   var x = boxesX;
-  var y = boxesY + boxesH + 15;
+  var y = codeBoxesY;
   var width = boxesW / numBoxes;
   var height = endcapH;
 
@@ -486,7 +501,7 @@ function drawCodeBoxes() {
 
 function drawValueBoxes() {
   var x = boxesX;
-  var y = endcapH * 1.2;
+  var y = valueBoxesY;
   var width = boxesW / numBoxes;
   var height = endcapH;
 
@@ -526,7 +541,7 @@ function drawValueBoxes() {
 
 
 function drawSummaryBox() {
-  var y = canvasH * 0.01;
+  var y = topBoxesY;
   var height = endcapH;
   var x = boxesX + boxesW * (numBoxes - 1)/numBoxes;
   var boxW = boxesW / numBoxes;
@@ -553,10 +568,47 @@ function drawSummaryBox() {
 
 
 
+function drawDotButton() {
+  var y = topBoxesY;
+  var height = endcapH;
+  var x = boxesX;
+  var boxW = boxesW / numBoxes;
+
+  p5.push();
+
+  p5.stroke(dotButtonStroke);
+  p5.strokeWeight(1);
+  p5.fill(dotButtonFill);
+  p5.rect(x, y, boxW - xSpacer, height, 10);
+
+  p5.textSize(valueTextSize);
+  p5.fill(dotButtonStroke);
+ 
+  if (addDots) {
+    p5.stroke(dotStroke);
+    p5.fill(dotFill);
+  }
+  else {
+    p5.stroke(antidotStroke);
+    p5.fill(antidotFill);
+  }
+
+  p5.ellipse(x + boxW * 2/3,y + endcapH/2,dotD, dotD);
+
+  p5.fill(darkGray);
+
+  const t = "Add Dot"
+  var [textX,textY] = centerTextInRect(x, y, boxW - xSpacer, height, t);
+  p5.text("Add", textX, textY);
+
+  p5.pop();
+}
+
+
 
 ////
 // Main functions affecting model
-///////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////
 
 
 
@@ -702,10 +754,19 @@ function toggleDot(dotID) {
     currentId = [toggleArrayId, dotID[1], dotID[2]];
 }
 
+
+
+
+
 ////
 // App mouse events
-/////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////
 
+function mouseOnDotButton() {
+  if (p5.mouseX < boxesX || p5.mouseX > boxesX + boxesW/numBoxes) return false;
+  if (p5.mouseY < topBoxesY || p5.mouseY > topBoxesY + endcapH) return false;
+  return true;
+}
 
 
 // Is the mouse in the spacers between the boxes
@@ -785,6 +846,7 @@ p5.windowResized = function() {
   if (canvasH < minHeight) {
     canvasH = minHeight;
   }
+
   endcapH = canvasH * 0.1;
   boxesW = canvasW * 0.9; // width of all the boxes together
 
@@ -792,14 +854,21 @@ p5.windowResized = function() {
 
   boxesH = canvasH * 0.5; // height of boxes
   boxesX = (p5.windowWidth - boxesW) / 2;
-  boxesY = canvasH * 0.25;
+  boxesY = (canvasH - boxesH) / 2 + endcapH/2;
   dotD = p5.min(boxWidth * 0.2, boxesH * 0.2);
   const dotMax = p5.min(boxWidth * 0.25, boxesH * 0.25);
   marginX = 2 * dotMax;
   marginY = dotD * 0.5;
   xSpacer = dotD/2;
+  ySpacer = dotD/2;
   boxTextSize = boxesH * 0.5;
   valueTextSize = endcapH * 0.5;
+
+  topBoxesY = boxesY - 2*ySpacer - 2*endcapH;
+  valueBoxesY = boxesY - ySpacer - endcapH;
+  
+  codeBoxesY = boxesY + boxesH + ySpacer;
+
 
   boxes.updateSize(boxesX, boxesY, boxesW, boxesH);
   p5.resizeCanvas(p5.windowWidth, canvasH);
@@ -816,6 +885,7 @@ p5.draw = function() {
   drawValueBoxes();
   drawCodeBoxes();
   drawSummaryBox();
+  drawDotButton();
 };
 
 
@@ -827,13 +897,15 @@ p5.draw = function() {
 
 p5.mousePressed = function()
 {
+  if (mouseOnDotButton()) {  addDots = !addDots;  }
+
   if (mouseOnBoxes()) {
     if (!mouseOnDot()) {
-      if (p5.keyIsPressed === true && p5.keyCode === p5.SHIFT) {   // we're clicking to add a dot
-        addAntidot();
+      if (addDots) {
+        addDot();
       }
       else {
-        addDot();
+        addAntidot();
       }
     }
   }
@@ -842,9 +914,7 @@ p5.mousePressed = function()
 
 p5.doubleClicked = function()
 {
-  if (mouseOnDot()) {
-    toggleDot(currentId);
-  }
+
 };
 
 p5.mouseDragged = function() {
