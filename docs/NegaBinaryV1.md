@@ -11,8 +11,8 @@ Below you will find a Negative Binary machine to play with.  Negative Binary is 
 - Drag a Dot Left to *explode* the dot.
 - Drag a Dot out of the frame to delete it.
 - Drag a Dot over an Antidot to annihilate them
-- Drag a Dot to the right to *unexplode* it (not implemented yet)
-- Drag a Dot to the left for | 1 | 1 | $\longleftarrow$ | 0 |-1 | rule (not implemented yet)
+- Drag a Dot to the right to *unexplode* it 
+- SHIFT-Drag a Dot to the left for | 1 | 1 | $\longleftarrow$ | 0 |-1 | rule 
 
 
 ```p5js/playable/autoplay
@@ -184,6 +184,10 @@ var centerTextInRect = function(x,y,width,height,text) {
   return [x + xoffset, y + height - yoffset];
 }
 
+
+function randomJiggle(amount) {
+  return p5.random(-2*amount, 2*amount);
+}
 
 
 
@@ -629,6 +633,23 @@ function explodeDot2(sendingBox, recievingBox) {
 
 
 
+function unexplode(sendingBox, recievingBox) {
+
+  var dotsToAdd = p5.pow(p5.abs(base), sendingBox - recievingBox);
+  var newDot = new DotCopy(dots[currentId[0]].dots[currentId[1]][currentId[2]]);
+  newDot.box = recievingBox;
+  
+  var dotArrayID = ((sendingBox - recievingBox) % 2 ? 1 - currentId[0] : currentId[0]);
+
+  dots[dotArrayID].pushDot(recievingBox,newDot);   // add this dot to new box
+  deleteDot(currentId);                            // remove this dot from it's old box  
+  for (var i=0; i < dotsToAdd-1; i++) {           // remove other dots from old box
+    dots[dotArrayID].addDot(p5.mouseX + randomJiggle(dotD), p5.mouseY + randomJiggle(dotD), recievingBox);
+  }
+}
+
+
+
 
 // reset a dot to its previous position before being dragged
 function resetDotPosition(dotID) {
@@ -848,12 +869,18 @@ p5.mouseReleased = function() {
     }
     else {                                            
       if (recievingBox > sendingBox) {            // drag left
-        if (!explodeDot(sendingBox, recievingBox)) {
-          resetDotPosition(currentId);            // weren't enough dots, send it back
+        if (p5.keyIsPressed === true && p5.keyCode === p5.SHIFT) { 
+          explodeDot2(sendingBox, recievingBox);
+        }
+        else {
+          if (!explodeDot(sendingBox, recievingBox)) {
+            resetDotPosition(currentId);            // weren't enough dots, send it back
+          }
         }
       }
       else {                                      // drag right
-        resetDotPosition(currentId);
+        unexplode(sendingBox,recievingBox);
+        //resetDotPosition(currentId);
       }
     }
   }
@@ -873,6 +900,7 @@ p5.mouseReleased = function() {
 ### Known Bugs
 
 - If there's a lot of dots in a box the annihilation doesn't always work.  Need to figure out how to consistently reproduce it.
+- ToggleDot sometimes goes off when you're dragging a dot.  It's not a bug, but it's confusing when this happens.  The user may not realize that they acidentally double clicked.  
 
 
 
