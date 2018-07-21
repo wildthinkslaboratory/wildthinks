@@ -1038,7 +1038,9 @@ p5.mouseReleased = function() {
       resetDotPosition(currentId);        
     }
     else {                                        // out of the boxes
-      deleteDot(currentId);
+      if(mouseOnDot()) {
+        deleteDot(currentId);
+      }
     }
   }
 };
@@ -1048,7 +1050,6 @@ p5.mouseReleased = function() {
 
 ### Known Bugs
 
-- clicking the Add Dot and Rule buttons is triggering a delete dot event.  Need to differentiate a button click from a drag a dot out of bounds event.
 - If there's a lot of dots in a box the annihilation doesn't always work.  Need to figure out how to consistently reproduce it.
 
 
