@@ -1,6 +1,6 @@
 ### Welcome to our Negative Binary Prototype Page
 
-Below you will find a Negative Binary machine to play with.  Negative Binary is just what it sounds like.  It's a base $-2$ machine.  It allows you to represent both positive and negative integers with just zeros and ones.  
+Below you will find a Negative Binary machine to play with.  Negative Binary is a base $-2$ machine.  It allows you to represent both positive and negative integers with just zeros and ones.  
 
 
 ### Negative Binary Instructions
