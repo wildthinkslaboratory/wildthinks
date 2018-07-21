@@ -6,7 +6,7 @@ Below you will find a Negative Binary machine to play with.  Negative Binary is 
 ### Negative Binary Instructions
 
 - Tap to add a Dot to a Box
-- Toggle the Add Dot but to switch to adding Antidots
+- Toggle the Add Dot button to switch to adding Antidots
 - Drag a Dot Left to *explode* the dot.
 - Drag a Dot out of the frame to delete it.
 - Drag a Dot over an Antidot to annihilate them
@@ -86,7 +86,7 @@ var currentSum = 0;
 /////////////////////////////////////////////////////////////////////////////
 
 var addDots = true;
-
+var standardRule = true;
 
 
 
@@ -107,11 +107,11 @@ var marginX;
 var marginY;
 var boxTextSize;
 var valueTextSize;
-var dotButtonX;
 var topBoxesY;
 var valueBoxesY;
 var codeBoxesY;
 var ySpacer;
+var ruleBoxX;
 
 
 var maxText = "16";  // use this text for setting textSize on window resizing
@@ -568,6 +568,30 @@ function drawSummaryBox() {
 
 
 
+function drawRuleButton() {
+  var y = topBoxesY;
+  var height = endcapH;
+  var x = ruleBoxX;
+  var boxW = 2* boxesW / numBoxes;
+
+  p5.push();
+
+  p5.stroke(dotButtonStroke);
+  p5.strokeWeight(1);
+
+  if (standardRule) {
+    p5.fill(dotButtonFill);
+  }
+  else {
+    p5.fill(dotFill);
+  }
+  p5.rect(x, y, boxW - xSpacer, height, 10);
+
+  p5.pop();
+}
+
+
+
 function drawDotButton() {
   var y = topBoxesY;
   var height = endcapH;
@@ -768,6 +792,12 @@ function mouseOnDotButton() {
   return true;
 }
 
+function mouseOnRuleButton() {
+  if (p5.mouseX < ruleBoxX || p5.mouseX > ruleBoxX + 2 * boxesW/numBoxes) return false;
+  if (p5.mouseY < topBoxesY || p5.mouseY > topBoxesY + endcapH) return false;
+  return true;
+}
+
 
 // Is the mouse in the spacers between the boxes
 // assumes the mouse isn't in a box
@@ -863,11 +893,10 @@ p5.windowResized = function() {
   ySpacer = dotD/2;
   boxTextSize = boxesH * 0.5;
   valueTextSize = endcapH * 0.5;
-
   topBoxesY = boxesY - 2*ySpacer - 2*endcapH;
   valueBoxesY = boxesY - ySpacer - endcapH;
-  
   codeBoxesY = boxesY + boxesH + ySpacer;
+  ruleBoxX = boxesX + boxWidth;
 
 
   boxes.updateSize(boxesX, boxesY, boxesW, boxesH);
@@ -886,6 +915,7 @@ p5.draw = function() {
   drawCodeBoxes();
   drawSummaryBox();
   drawDotButton();
+  drawRuleButton();
 };
 
 
@@ -898,6 +928,7 @@ p5.draw = function() {
 p5.mousePressed = function()
 {
   if (mouseOnDotButton()) {  addDots = !addDots;  }
+  if (mouseOnRuleButton()) {  standardRule = !standardRule;  }
 
   if (mouseOnBoxes()) {
     if (!mouseOnDot()) {
@@ -939,13 +970,13 @@ p5.mouseReleased = function() {
     }
     else {                                            
       if (recievingBox > sendingBox) {            // drag left
-        if (p5.keyIsPressed === true && p5.keyCode === p5.SHIFT) { 
-          explodeDot2(sendingBox, recievingBox);
-        }
-        else {
+        if (standardRule) {
           if (!explodeDot(sendingBox, recievingBox)) {
             resetDotPosition(currentId);            // weren't enough dots, send it back
           }
+        }
+        else {
+          explodeDot2(sendingBox, recievingBox);
         }
       }
       else {                                      // drag right
@@ -970,7 +1001,7 @@ p5.mouseReleased = function() {
 ### Known Bugs
 
 - If there's a lot of dots in a box the annihilation doesn't always work.  Need to figure out how to consistently reproduce it.
-- ToggleDot sometimes goes off when you're dragging a dot.  It's not a bug, but it's confusing when this happens.  The user may not realize that they acidentally double clicked.  
+
 
 
 
