@@ -8,10 +8,10 @@ Below you will find a Negative Binary machine to play with.  Negative Binary is 
 - Tap to add a Dot to a Box
 - SHIFT-click to add an Antidot
 - Double click a dot to toggle between dot and antidot
-- Drag a Dot Left to *implode* the dot.
+- Drag a Dot Left to *explode* the dot.
 - Drag a Dot out of the frame to delete it.
 - Drag a Dot over an Antidot to annihilate them
-- Drag a Dot to the right to *explode* it (not implemented yet)
+- Drag a Dot to the right to *unexplode* it (not implemented yet)
 - Drag a Dot to the left for | 1 | 1 | $\longleftarrow$ | 0 |-1 | rule (not implemented yet)
 
 
@@ -314,7 +314,7 @@ DotArray.prototype.pushDot = function(boxID,dot) {
 
 
 
-DotArray.prototype.updateDotPosition = function(pos) {
+DotArray.prototype.updateDotPosition = function(pos) { 
   var dot = this.dots[pos[1]][pos[2]];
 
   const {x, y} = getCanvasRelativePos(dot.rx, dot.ry, dot.box);
@@ -547,6 +547,9 @@ function drawSummaryBox() {
   p5.pop();
 }
 
+
+
+
 ////
 // Main functions affecting model
 ///////////////////////////////////////////////////////////
@@ -591,31 +594,39 @@ function addDot() {
 
 
 
-// dots implode as they are moved to the left
-function implodeDot(sendingBox, recievingBox) {
+// dots explode as they are moved to the left
+function explodeDot(sendingBox, recievingBox) {
+  
   var dotsNeeded = p5.pow(p5.abs(base), recievingBox - sendingBox);
-  if (dots[currentId[0]].dots[sendingBox].length >= dotsNeeded) {     // explode the dot
 
-    var newDot = new DotCopy(dots[currentId[0]].dots[currentId[1]][currentId[2]]);
-    newDot.box = recievingBox;
+  if (dots[currentId[0]].dots[sendingBox].length < dotsNeeded) return false;
 
-    var dotArrayID = ((recievingBox - sendingBox) % 2 ? 1 - currentId[0] : currentId[0]);
+  var newDot = new DotCopy(dots[currentId[0]].dots[currentId[1]][currentId[2]]);
+  newDot.box = recievingBox;
+  var dotArrayID = ((recievingBox - sendingBox) % 2 ? 1 - currentId[0] : currentId[0]);
 
-    dots[dotArrayID].pushDot(recievingBox,newDot);
-
-    //remove this dot from it's old box
-    deleteDot(currentId);
-
-    //remove other dots from old box
-    for (var i=0; i < dotsNeeded-1; i++) {
-      dots[currentId[0]].dots[sendingBox].pop();
-    }
+  dots[dotArrayID].pushDot(recievingBox,newDot);   // add this dot to new box
+  deleteDot(currentId);                            // remove this dot from it's old box
+  for (var i=0; i < dotsNeeded-1; i++) {           // remove other dots from old box
+    dots[currentId[0]].dots[sendingBox].pop();
   }
-  else {
-    resetDotPosition(currentId);     // weren't enough dots, send it back
-  }
-
+  return true;
 }
+
+
+// dots explode as they are moved to the left
+function explodeDot2(sendingBox, recievingBox) {
+
+  if (recievingBox === sendingBox + 1) {
+    const arrayId = currentId[0];
+    const toggleArrayId = (arrayId === 0 ? 1 : 0);
+    dots[toggleArrayId].addDot(p5.mouseX, p5.mouseY, currentId[1] + 1);  // add a dot to the next box under the mouse
+    resetDotPosition(currentId);                                         // send current dot back to old position
+    toggleDot(currentId);                                                // and toggle it
+  }
+  return false;
+}
+
 
 
 
@@ -657,25 +668,18 @@ function getSendingAndRecievingBox() {
 
 
 
-function toggleDot() {
-  if (mouseOnDot()) {
-
-    const arrayId = currentId[0];
+function toggleDot(dotID) {
+    const arrayId = dotID[0];
     const toggleArrayId = (arrayId === 0 ? 1 : 0);
-    var current_dot = dots[arrayId].dots[currentId[1]][currentId[2]];
-    //console.log('toggleDot', toggleArrayId, currentId, current_dot, dots);
-
+    var current_dot = dots[arrayId].dots[dotID[1]][dotID[2]];
     var newDot = new DotCopy(current_dot);
 
     dots[toggleArrayId].pushDot(current_dot.box,newDot);
 
-    //remove this dot from its old box
-    dots[arrayId].deleteDot(currentId[1], currentId[2]);
-  }
+    dots[arrayId].deleteDot(dotID[1], dotID[2]);          //remove this dot from its old box
 
+    currentId = [toggleArrayId, dotID[1], dotID[2]];
 }
-
-
 
 ////
 // App mouse events
@@ -817,8 +821,9 @@ p5.mousePressed = function()
 
 p5.doubleClicked = function()
 {
-  console.log("Double Clicked");
-  toggleDot();
+  if (mouseOnDot()) {
+    toggleDot(currentId);
+  }
 };
 
 p5.mouseDragged = function() {
@@ -835,7 +840,7 @@ p5.mouseDragged = function() {
 p5.mouseReleased = function() {
   if (mouseOnBoxes() && currentId && currentId[0] !== DotEnum.UNDEF) {  // this is the end of a drag event
     [sendingBox, recievingBox] = getSendingAndRecievingBox();
-      
+    
     if (recievingBox === sendingBox) {            // drag within a box
       if (!dotAnnihilation(currentId)) {
         updatePosition(currentId);
@@ -843,7 +848,9 @@ p5.mouseReleased = function() {
     }
     else {                                            
       if (recievingBox > sendingBox) {            // drag left
-        implodeDot(sendingBox, recievingBox);
+        if (!explodeDot(sendingBox, recievingBox)) {
+          resetDotPosition(currentId);            // weren't enough dots, send it back
+        }
       }
       else {                                      // drag right
         resetDotPosition(currentId);
@@ -865,7 +872,7 @@ p5.mouseReleased = function() {
 
 ### Known Bugs
 
-
+- If there's a lot of dots in a box the annihilation doesn't always work.  Need to figure out how to consistently reproduce it.
 
 
 
