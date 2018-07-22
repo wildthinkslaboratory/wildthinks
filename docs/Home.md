@@ -1,3 +1,6 @@
+![](https://gist.githubusercontent.com/wildthinkslaboratory/ac98c0bb68ccf7528dc39fa1922d2bdb/raw/7f5b396d56cbb06748ebcc6fda251d6a10260a0d/banner2.png)
+
+
 ### Welcome to WildThinks
 
 This is the Home card of a multi-card Smartdown project that is intended to explain and demonstrate various teaching components, some of them inspired by the [ExplodingDots](https://www.explodingdots.org/g/giant-earwig-68) curricula.

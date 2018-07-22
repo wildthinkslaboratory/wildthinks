@@ -1,9 +1,14 @@
+
+
+
+![](https://gist.githubusercontent.com/wildthinkslaboratory/ac98c0bb68ccf7528dc39fa1922d2bdb/raw/7f5b396d56cbb06748ebcc6fda251d6a10260a0d/banner2.png)
+
 ### Welcome to our Negative Binary Prototype Page
 
 Below you will find a Negative Binary machine to play with.  Negative Binary is a base $-2$ machine.  It allows you to represent both positive and negative integers with just zeros and ones.  
 
 
-### Negative Binary Instructions
+## Negative Binary Instructions
 
 - Tap to add a Dot to a Box
 - Toggle the Add Dot button to switch to adding Antidots
