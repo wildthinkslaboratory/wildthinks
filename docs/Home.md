@@ -5,9 +5,12 @@
 Our goal is to build interactive explorations of our favorite topics in discrete mathematics, logic, proof writing, and theoretical computer science.  
 
 
+
+
 #### Negative Binary Exploding Dots
 
 In honor of Global Math Week 2018, our first interactive exploration we will be diving into Negative Binary [ExplodingDots](https://www.explodingdots.org).  If you haven't seen James Tanton's Exlpoding Dots, check out his fabulous website [G'Day Math!](http://gdaymath.com/courses/exploding-dots/) or the [Global Math Week Exploding Dots Page](https://www.explodingdots.org).  Then come back here for an exploration of a base $-2$  number system. To begin, just click the button below. 
+
 
 
 [Go to Negative Binary Page](:@NegaBinaryV1)
