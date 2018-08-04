@@ -68,8 +68,8 @@ var dotButtonFill = white;
 ////////////////////////////////////////////////////////////////////////////
 
 var DotEnum = Object.freeze({UNDEF : -1, DOT : 0, ANTIDOT : 1});
-var base = -2;
-var numBoxes = 8;
+var base = 2;
+var numBoxes = 6;
 var boxes;
 var dots;
 var currentId = [0, 0, 0];  // the id of the current dot
@@ -81,8 +81,10 @@ var currentSum = 0;
 // App Restrictions
 ////////////////////////////////////////////////////////////////////////////
 
-var dotButtonOn = false;
-var ruleButtonOn = false;
+
+var negaBinary = false;
+var dotButtonOn = true;
+var ruleButtonOn = negaBinary;
 
 
 
@@ -735,7 +737,12 @@ function explodeDot(sendingBox, recievingBox) {
 
   var newDot = new DotCopy(dots[currentId[0]].dots[currentId[1]][currentId[2]]);
   newDot.box = recievingBox;
-  var dotArrayID = ((recievingBox - sendingBox) % 2 ? 1 - currentId[0] : currentId[0]);
+
+
+  var dotArrayID = currentId[0];
+  if (base < 0) {
+    dotArrayID = ((sendingBox - recievingBox) % 2 ? 1 - currentId[0] : currentId[0]);
+  }
 
   dots[dotArrayID].pushDot(recievingBox,newDot);   // add this dot to new box
   deleteDot(currentId);                            // remove this dot from it's old box
@@ -747,7 +754,7 @@ function explodeDot(sendingBox, recievingBox) {
 
 
 // dots explode as they are moved to the left
-function explodeDot2(sendingBox, recievingBox) {
+function negaBinaryRule2(sendingBox, recievingBox) {
 
   if (recievingBox === sendingBox + 1) {
     const arrayId = currentId[0];
@@ -768,7 +775,10 @@ function unexplode(sendingBox, recievingBox) {
   var newDot = new DotCopy(dots[currentId[0]].dots[currentId[1]][currentId[2]]);
   newDot.box = recievingBox;
   
-  var dotArrayID = ((sendingBox - recievingBox) % 2 ? 1 - currentId[0] : currentId[0]);
+  var dotArrayID = currentId[0];
+  if (base < 0) {
+    dotArrayID = ((sendingBox - recievingBox) % 2 ? 1 - currentId[0] : currentId[0]);
+  }
 
   dots[dotArrayID].pushDot(recievingBox,newDot);   // add this dot to new box
   deleteDot(currentId);                            // remove this dot from it's old box  
@@ -1044,7 +1054,7 @@ p5.mouseReleased = function() {
           }
         }
         else {
-          if (!explodeDot2(sendingBox, recievingBox)) {
+          if (!negaBinaryRule2(sendingBox, recievingBox)) {
             resetDotPosition(currentId);
           }
         }
