@@ -1,20 +1,14 @@
 
 ![](https://gist.githubusercontent.com/wildthinkslaboratory/ac98c0bb68ccf7528dc39fa1922d2bdb/raw/eb65f6202d8185468cea211757f0700fcef3aacd/negaBinaryBanner1.png)
 
-### Welcome to our Negative Binary Prototype Page
+### Welcome to our Prototype Negative Binary Page
 
-Below you will find a Negative Binary machine to play with.  Negative Binary is a base $-2$ machine.  It allows you to represent both positive and negative integers with just zeros and ones.  
+---
+
+#### Let's write all of the integers, both positive and negative without any negative signs using just the symbols 0 and 1.
 
 
-## Negative Binary Instructions
-
-- Tap to add a Dot to a Box
-- Toggle the Add Dot button to switch to adding Antidots
-- Drag a Dot Left to *explode* the dot.
-- Drag a Dot out of the frame to delete it.
-- Drag a Dot over an Antidot to annihilate them
-- Drag a Dot to the right to *unexplode* it 
-- Toggle the Rule button to switch between the | $1$ | $1$ | $\longleftarrow$ | $0$ | $-1$ | rule and the standard $-1 \longleftarrow 2$ rule.
+___
 
 
 ```p5js/playable/autoplay
@@ -75,12 +69,20 @@ var dotButtonFill = white;
 
 var DotEnum = Object.freeze({UNDEF : -1, DOT : 0, ANTIDOT : 1});
 var base = -2;
-var numBoxes = 5;
+var numBoxes = 8;
 var boxes;
 var dots;
 var currentId = [0, 0, 0];  // the id of the current dot
 var uniqueId = 0;
 var currentSum = 0;
+
+
+//// 
+// App Restrictions
+////////////////////////////////////////////////////////////////////////////
+
+var dotButtonOn = false;
+var ruleButtonOn = false;
 
 
 
@@ -572,6 +574,7 @@ function drawSummaryBox() {
 
 
 function drawRuleButton() {
+  if (!ruleButtonOn) return;
   var y = topBoxesY;
   var height = endcapH;
   var x = ruleBoxX;
@@ -640,6 +643,7 @@ function drawRuleButton() {
 
 
 function drawDotButton() {
+  if (!dotButtonOn) return;
   var y = topBoxesY;
   var height = endcapH;
   var x = boxesX;
@@ -836,12 +840,14 @@ function toggleDot(dotID) {
 ////////////////////////////////////////////////////////////////////////////////////////////
 
 function mouseOnDotButton() {
+  if (!dotButtonOn) return;
   if (p5.mouseX < boxesX || p5.mouseX > boxesX + boxesW/numBoxes) return false;
   if (p5.mouseY < topBoxesY || p5.mouseY > topBoxesY + endcapH) return false;
   return true;
 }
 
 function mouseOnRuleButton() {
+  if (!ruleButtonOn) return;
   if (p5.mouseX < ruleBoxX || p5.mouseX > ruleBoxX + 2 * boxesW/numBoxes) return false;
   if (p5.mouseY < topBoxesY || p5.mouseY > topBoxesY + endcapH) return false;
   return true;
@@ -901,6 +907,7 @@ p5.setup = function() {
   dots = [];
   dots.push(new DotArray(numBoxes, dotFill, dotStroke));
   dots.push(new DotArray(numBoxes, antidotFill, antidotStroke));
+  if (numBoxes < 4) ruleButonOn = false;
 
   // attribution 3.0  mark diangelo
   addDotSound = p5.loadSound('https://gist.githubusercontent.com/wildthinkslaboratory/ac98c0bb68ccf7528dc39fa1922d2bdb/raw/bd0a27a5a92c1f904fe0713f6664d9a8b28cb476/Blop-Mark_DiAngelo-79054334.wav');
@@ -940,7 +947,19 @@ p5.windowResized = function() {
   marginY = dotD * 0.5;
   xSpacer = dotD/2;
   ySpacer = dotD/2;
+  
   boxTextSize = boxesH * 0.5;
+  
+  var boxW = boxesW / numBoxes - ySpacer;
+  var t = '-' + p5.abs(p5.pow(base,numBoxes-1)).toString();
+  p5.push();
+  p5.textSize(boxTextSize);
+  while (p5.textWidth(t) > boxW) {
+    boxTextSize *= 0.75;
+    p5.textSize(boxTextSize);
+  }
+  p5.pop();
+
   valueTextSize = endcapH * 0.5;
   topBoxesY = boxesY - 2*ySpacer - 2*endcapH;
   valueBoxesY = boxesY - ySpacer - endcapH;
@@ -1056,6 +1075,15 @@ p5.mouseReleased = function() {
 - If there's a lot of dots in a box the annihilation doesn't always work.  Need to figure out how to consistently reproduce it.
 
 
+## Negative Binary Instructions
+
+- Tap to add a Dot to a Box
+- Toggle the Add Dot button to switch to adding Antidots
+- Drag a Dot Left to *explode* the dot.
+- Drag a Dot out of the frame to delete it.
+- Drag a Dot over an Antidot to annihilate them
+- Drag a Dot to the right to *unexplode* it 
+- Toggle the Rule button to switch between the | $1$ | $1$ | $\longleftarrow$ | $0$ | $-1$ | rule and the standard $-1 \longleftarrow 2$ rule.
 
 
 ---
