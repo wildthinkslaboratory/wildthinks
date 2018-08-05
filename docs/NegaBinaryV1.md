@@ -1,11 +1,14 @@
 
 ![](https://gist.githubusercontent.com/wildthinkslaboratory/ac98c0bb68ccf7528dc39fa1922d2bdb/raw/eb65f6202d8185468cea211757f0700fcef3aacd/negaBinaryBanner1.png)
 
+
 ### Welcome to our Prototype Negative Binary Page
 
 ---
 
 #### Let's write all of the integers, both positive and negative without any negative signs using just the symbols 0 and 1.
+
+---
 
 ## Negative Binary Instructions
 
@@ -18,18 +21,31 @@
 - Toggle the Rule button to switch between the | $1$ | $1$ | $\longleftarrow$ | $0$ | $-1$ | rule and the standard $-1 \longleftarrow 2$ rule.
 
 
-___
-
 
 ```p5js/playable/autoplay
 /* global p5 */
 
 
-////
-// Constants, independent of window-sizing
-// Some of these should be initialization parameters
 
 const bgURL = 'https://gist.githubusercontent.com/wildthinkslaboratory/ac98c0bb68ccf7528dc39fa1922d2bdb/raw/a813f0d1c5d0108a8b923ce73dd17ebddc692972/ExpDotsBackground.001.jpeg';
+
+///
+// Pre-playable initialization
+/////////////////////////////////////////////////////////////////////////////
+
+// Adjust the surrounding DIV(s) a little
+
+const myDiv = this.div;
+myDiv.style.position = 'relative';
+myDiv.style['background-image'] = `url(${bgURL})`;
+myDiv.style['background-repeat'] = 'no-repeat';
+myDiv.style['background-size'] = 'cover';
+myDiv.style.height = '100%';
+myDiv.style.width = '100%';
+myDiv.style.padding = '0';
+myDiv.style.margin = '0';
+myDiv.style.overflow = 'hidden';
+myDiv.style.border = '5px solid gray';
 
 
 
@@ -72,7 +88,6 @@ var valueStroke = lightLilac;
 
 var dotButtonStroke = darkGray;
 var dotButtonFill = white;
-
 
 
 
@@ -138,29 +153,6 @@ var ySpacer;
 var ruleBoxX;
 
 
-var maxText = "16";  // use this text for setting textSize on window resizing
-
-
-
-
-////
-// Pre-playable initialization
-/////////////////////////////////////////////////////////////////////////////
-
-// Adjust the surrounding DIV(s) a little
-
-const myDiv = this.div;
-myDiv.style.position = 'relative';
-myDiv.style['background-image'] = `url(${bgURL})`;
-myDiv.style['background-repeat'] = 'no-repeat';
-myDiv.style['background-size'] = 'cover';
-myDiv.style.height = '100%';
-myDiv.style.width = '100%';
-myDiv.style.padding = '0';
-myDiv.style.margin = '0';
-myDiv.style.overflow = 'hidden';
-myDiv.style.border = '5px solid gray';
-
 
 
 
@@ -176,7 +168,6 @@ function getBoxRelativePos(x, y, _box) {
     rx: (x - boxes.x) / boxWidth,
     ry: (y - boxes.y) / boxHeight
   };
-  //  console.log('getBoxRelativePos', x, y, box, boxes, result);
 
   return result;
 }
@@ -188,9 +179,7 @@ function getCanvasRelativePos(rx, ry, _box) {
   const result = {
     x: rx * boxWidth + boxes.x,
     y: ry * boxHeight + boxes.y
-  };
-
-  // console.log('getCanvasRelativePos', rx, ry, _box, boxes, result);
+  }
 
   return result;
 }
@@ -232,16 +221,33 @@ function nextId() {        // get the next dot ID
 }
 
 
-function Dot(x, y, box) {
-  const {rx, ry} = getBoxRelativePos(x, y, box);
-  this.rx = rx;                // a dot knows it's position
-  this.ry = ry;
-  this.oldx = rx;             // it remembers it's old position before being dragged
-  this.oldy = ry;
-  this.box = box;            // it knows what box it's in
-  this.id = nextId();        // each dot has a unique id
 
-  // console.log('Dot', x, y, rx, ry, box, boxID, boxes);
+let _x = 0;
+let _y = 0;
+let _width = 0;
+let _height = 0;
+class Dot {
+  constructor(x, y, box) {
+    const {rx, ry} = getBoxRelativePos(x, y, box);
+    this.rx = rx;                // a dot knows it's position
+    this.ry = ry;
+    this.oldx = rx;             // it remembers it's old position before being dragged
+    this.oldy = ry;
+    this.box = box;            // it knows what box it's in
+    this.id = nextId();        // each dot has a unique id
+  }
+
+  get canvasx() { return _x; }
+  get canvasy() { return _y; }
+  get canvasWidth() { return _width; }
+  get canvasHeight() { return _height; }
+}
+
+function updateCanvasDimensions(x,y,width,height) {
+  _x = x;
+  _y = y;
+  _width = width;
+  _height = height;
 }
 
 
@@ -272,205 +278,184 @@ function overlap(d1, d2) {
 }
 
 
-function DotArray(size, fillColor, strokeColor) {
-  this.dots = [];
-  for (var i = 0; i < size; i++) {
-    this.dots[i] = [];
+
+
+
+class DotArray {
+  constructor(size, fillColor, strokeColor) {
+    this.dots = [];
+    for (var i = 0; i < size; i++) {
+      this.dots[i] = [];
+    }
+    this.f = fillColor;
+    this.s = strokeColor;
   }
-  this.f = fillColor;
-  this.s = strokeColor;
-}
 
-
-DotArray.prototype.draw = function() {
-  p5.push();
-  p5.stroke(this.s);
-  p5.fill(this.f);
-  for (var i=0; i < this.dots.length; i++) {
-    for (var j=0; j < this.dots[i].length; j++) {
-      const dot = this.dots[i][j];
-      const {x, y} = getCanvasRelativePos(dot.rx, dot.ry, dot.box);
-      if (boxes.in(x, y)) { // this line shouldn't be here need to fix
-        p5.ellipse(x, y, dotD, dotD);
+  draw() {
+    p5.push();
+    p5.stroke(this.s);
+    p5.fill(this.f);
+    for (var i=0; i < this.dots.length; i++) {
+      for (var j=0; j < this.dots[i].length; j++) {
+        const dot = this.dots[i][j];
+        const {x, y} = getCanvasRelativePos(dot.rx, dot.ry, dot.box);
+        if (boxes.in(x, y)) { // this line shouldn't be here need to fix
+          p5.ellipse(x, y, dotD, dotD);
+        }
       }
     }
+    p5.pop();
   }
-  p5.pop();
-};
+
+  // this is all done with Canvas Relative positioning
+  snapToBox(x,y,boxId) {
+    var snappedY = y;
+    var snappedX = x;
+
+    const boxUpper = boxesY + dotD/2;
+    const boxLower = boxesY + boxesH - dotD/2;
+    if (y < boxUpper) {  snappedY = boxUpper; }
+    if (y > boxLower) {  snappedY = boxLower; }
+
+    const boxWidth = boxesW / numBoxes;
+    const boxLeft = boxesX + (numBoxes - boxId - 1) * boxWidth + dotD/2;
+    const boxRight = boxLeft + boxWidth - xSpacer - dotD;
+
+    if (x < boxLeft) snappedX = boxLeft;
+    if (x > boxRight) snappedX = boxRight;
+
+    return [snappedX,snappedY];
+  }
+
+  addDot(x, y, box) {
+    const [snappedX,snappedY] = this.snapToBox(x, y, box);
+    this.dots[box].push(new Dot(snappedX, snappedY, box));
+    addDotSound.play();
+  }
+
+  pushDot(boxID,dot) {
+
+    const {x, y} = getCanvasRelativePos(dot.rx, dot.ry, dot.box);
+    const [snappedX, snappedY] = this.snapToBox(x,y, dot.box);
+    const {rx, ry} = getBoxRelativePos(snappedX, snappedY, dot.box);
+
+    dot.rx = rx;
+    dot.ry = ry;
+    this.dots[boxID].push(dot);
+  }
+
+  updateDotPosition(pos) { 
+    var dot = this.dots[pos[1]][pos[2]];
+
+    const {x, y} = getCanvasRelativePos(dot.rx, dot.ry, dot.box);
+    const [snappedX, snappedY] = this.snapToBox(x,y, dot.box);
+    const {rx, ry} = getBoxRelativePos(snappedX, snappedY, dot.box);
+
+    dot.rx = rx;
+    dot.ry = ry;
+    dot.oldx = dot.rx;
+    dot.oldy = dot.ry;
+  }
+
+  deleteDot(i, j) {
+    this.dots[i].splice(j, 1);
+  }
+
+  resetOldPosition(pos) {
+    const dot = this.dots[pos[1]][pos[2]];
+    dot.rx = dot.oldx;
+    dot.ry = dot.oldy;
+  }
 
 
-
-
-// this is all done with Canvas Relative positioning
-DotArray.prototype.snapToBox = function(x,y,boxId) {
-  var snappedY = y;
-  var snappedX = x;
-
-  const boxUpper = boxesY + dotD/2;
-  const boxLower = boxesY + boxesH - dotD/2;
-  if (y < boxUpper) {  snappedY = boxUpper; }
-  if (y > boxLower) {  snappedY = boxLower; }
-
-  const boxWidth = boxesW / numBoxes;
-  const boxLeft = boxesX + (numBoxes - boxId - 1) * boxWidth + dotD/2;
-  const boxRight = boxLeft + boxWidth - xSpacer - dotD;
-
-  if (x < boxLeft) snappedX = boxLeft;
-  if (x > boxRight) snappedX = boxRight;
-
-  return [snappedX,snappedY];
 }
-
-
-
-
-
-DotArray.prototype.addDot = function(x, y, box) {
-  const [snappedX,snappedY] = this.snapToBox(x, y, box);
-  this.dots[box].push(new Dot(snappedX, snappedY, box));
-  addDotSound.play();
-};
-
-
-
-
-DotArray.prototype.pushDot = function(boxID,dot) {
-
-  const {x, y} = getCanvasRelativePos(dot.rx, dot.ry, dot.box);
-  const [snappedX, snappedY] = this.snapToBox(x,y, dot.box);
-  const {rx, ry} = getBoxRelativePos(snappedX, snappedY, dot.box);
-
-  dot.rx = rx;
-  dot.ry = ry;
-  this.dots[boxID].push(dot);
-}
-
-
-
-
-DotArray.prototype.updateDotPosition = function(pos) { 
-  var dot = this.dots[pos[1]][pos[2]];
-
-  const {x, y} = getCanvasRelativePos(dot.rx, dot.ry, dot.box);
-  const [snappedX, snappedY] = this.snapToBox(x,y, dot.box);
-  const {rx, ry} = getBoxRelativePos(snappedX, snappedY, dot.box);
-
-  dot.rx = rx;
-  dot.ry = ry;
-  dot.oldx = dot.rx;
-  dot.oldy = dot.ry;
-};
-
-
-
-DotArray.prototype.deleteDot = function(i, j) {
-  this.dots[i].splice(j, 1);
-};
-
-
-DotArray.prototype.resetOldPosition = function(pos) {
-  const dot = this.dots[pos[1]][pos[2]];
-  dot.rx = dot.oldx;
-  dot.ry = dot.oldy;
-};
-
-
-
 
 
 ///
 // Box class and functions
 ///////////////////////////////////////////////////////////////////////////
 
-function Boxes(base, numberBoxes, x, y, boxesWidth, boxHeight) {
-  this.base = base;
-  this.numberBoxes = numberBoxes;
-  this.x = x;
-  this.y = y;
-  this.height = boxHeight;
-  this.width = boxesWidth/numberBoxes;
-  // console.log('Boxes', this);
-}
-
-
-Boxes.prototype.updateSize = function(boxesX, boxesY, boxesWidth, boxHeight) {
-  // console.log('Boxes.prototype.updateSize', boxesWidth, boxHeight);
-  this.height = boxHeight;
-  this.width = boxesWidth/this.numberBoxes;
-  this.x = boxesX;
-  this.y = boxesY;
-};
-
-
-Boxes.prototype.in = function(x, y) {
-  if (y < this.y || y > (this.y + this.height)) return false;   // it's not in the boxes
-  if (x < this.x || x > (this.x + this.width * this.numberBoxes)) return false;
-  return true;
-};
-
-
-Boxes.prototype.getBoxID = function(x, y) {
-  let result = -1;
-
-  // check the vertical range of the boxes
-  if (y < this.y || y > (this.y + this.height)) {
-    // its not in the boxes
+class Boxes {
+  constructor(base, numberBoxes, x, y, boxesWidth, boxHeight) {
+    this.base = base;
+    this.numberBoxes = numberBoxes;
+    this.x = x;
+    this.y = y;
+    this.height = boxHeight;
+    this.width = boxesWidth/numberBoxes;
   }
-  else {
-    // check the horizontal range
-    var rightX = this.x + this.width * this.numberBoxes;
-    if (x < this.x || x > rightX) {
+
+  updateSize(boxesX, boxesY, boxesWidth, boxHeight) {
+    this.height = boxHeight;
+    this.width = boxesWidth/this.numberBoxes;
+    this.x = boxesX;
+    this.y = boxesY;
+  }
+
+  in(x, y) {
+    if (y < this.y || y > (this.y + this.height)) return false;   // it's not in the boxes
+    if (x < this.x || x > (this.x + this.width * this.numberBoxes)) return false;
+    return true;
+  }
+
+  getBoxID(x, y) {
+    let result = -1;
+
+    // check the vertical range of the boxes
+    if (y < this.y || y > (this.y + this.height)) {
       // its not in the boxes
     }
     else {
-      // It is in a box's zone, but might be in the spacer.
-      const boxId = p5.floor((rightX - x) / this.width);
-      const boxWidth = boxesW / numBoxes;
-      const boxLeft = this.x + (numBoxes - boxId - 1) * boxWidth;
-      const boxRight = boxLeft + boxWidth - xSpacer;
-
-      if (x < boxLeft || x > boxRight) {
-        p5.rect(boxLeft, y, (boxRight - boxLeft), 10);
+      // check the horizontal range
+      var rightX = this.x + this.width * this.numberBoxes;
+      if (x < this.x || x > rightX) {
+      // its not in the boxes
       }
       else {
-        // console.log('getBoxID', boxId, x, boxLeft, boxRight);
-        result = boxId;
+        // It is in a box's zone, but might be in the spacer.
+        const boxId = p5.floor((rightX - x) / this.width);
+        const boxWidth = boxesW / numBoxes;
+        const boxLeft = this.x + (numBoxes - boxId - 1) * boxWidth;
+        const boxRight = boxLeft + boxWidth - xSpacer;
+
+        if (x < boxLeft || x > boxRight) {
+          p5.rect(boxLeft, y, (boxRight - boxLeft), 10);
+        }
+        else {
+          // console.log('getBoxID', boxId, x, boxLeft, boxRight);
+          result = boxId;
+        }
       }
     }
+
+    return result;
   }
 
-  // console.log('getBoxID', x, y, this.x, this.y, this.width, this.height, result);
-  return result;
-};
+
+  draw() {
+    p5.push();
+    var x = boxesX;
+    var y = boxesY;
+    p5.noStroke();
+    p5.fill(boxFill);
+    for (let i=0; i < this.numberBoxes; i++) {
+      p5.rect(x + i*this.width, y , this.width - xSpacer, this.height, 20);
+    }
+
+    p5.noStroke();
+    p5.fill(boxStroke);
+    p5.textSize(boxTextSize);
+    for (let i=0; i < this.numberBoxes; i++) {
+      var t = p5.pow(this.base, this.numberBoxes - i - 1).toString();
 
 
-Boxes.prototype.draw = function() {
-  p5.push();
-
-
-  var x = boxesX;
-  var y = boxesY;
-  p5.noStroke();
-  p5.fill(boxFill);
-  for (let i=0; i < this.numberBoxes; i++) {
-    p5.rect(x + i*this.width, y , this.width - xSpacer, this.height, 20);
+      var [textX,textY] = centerTextInRect(x + i*this.width, y , this.width - xSpacer, this.height,t);
+      p5.text(t, textX, textY);
+    }
+    p5.pop();
   }
 
-  p5.noStroke();
-  p5.fill(boxStroke);
-  p5.textSize(boxTextSize);
-  for (let i=0; i < this.numberBoxes; i++) {
-    var t = p5.pow(this.base, this.numberBoxes - i - 1).toString();
-
-
-    var [textX,textY] = centerTextInRect(x + i*this.width, y , this.width - xSpacer, this.height,t);
-    p5.text(t, textX, textY);
-  }
-
-  p5.pop();
-};
-
-
+}
 
 ///
 // Additional Draw Functions
