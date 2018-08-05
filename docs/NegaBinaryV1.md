@@ -171,20 +171,36 @@ function copyInstance (original) {
 // Convention: (x, y) are canvas coordinates. (rx, ry) are box coordinates
 //////////////////////////////////////////////////////////////////////////////
 
-function getBoxRelativePos(x, y, _box) {
-  const boxWidth = boxes.width;
-  const boxHeight = boxes.height;
+
+
+let boxX = 0;
+let boxY = 0;
+let boxWidth = 0;
+let boxHeight = 0;
+
+function updateCanvasDimensions(x,y,width,height) {
+  boxX = x;
+  boxY = y;
+  boxWidth = width;
+  boxHeight = height;
+}
+
+function getCanvasRelativePos(rx, ry) {
   const result = {
-    rx: (x - boxes.x) / boxWidth,
-    ry: (y - boxes.y) / boxHeight
+    x: rx * boxWidth + boxX,
+    y: ry * boxHeight + boxY
+  }
+  return result;
+}
+
+function getBoxRelativePos(x, y) {
+  const result = {
+    rx: (x - boxX) / boxWidth,
+    ry: (y - boxY) / boxHeight
   };
 
   return result;
 }
-
-
-
-
 
 ////
 // Risizing helper functions
@@ -220,11 +236,6 @@ function nextId() {        // get the next dot ID
 }
 
 
-
-let _x = 0;
-let _y = 0;
-let _width = 0;
-let _height = 0;
 class Dot {
   constructor(x, y, box) {
     const {rx, ry} = getBoxRelativePos(x, y, box);
@@ -236,17 +247,8 @@ class Dot {
     this.id = nextId();        // each dot has a unique id
   }
 
-  get canvasx() { return _x; }
-  get canvasy() { return _y; }
-  get canvasWidth() { return _width; }
-  get canvasHeight() { return _height; }
-
-  getCanvasRelativePos() {
-    const result = {
-      x: this.rx * this.canvasWidth + this.canvasx,
-      y: this.ry * this.canvasHeight + this.canvasy
-    }
-    return result;
+  getPosition() {
+    return getCanvasRelativePos(this.rx, this.ry);
   }
 
   setPosition(x,y) {
@@ -257,12 +259,6 @@ class Dot {
 
 }
 
-function updateCanvasDimensions(x,y,width,height) {
-  _x = x;
-  _y = y;
-  _width = width;
-  _height = height;
-}
 
 
 // we move dots between boxes so they need a copy with the same id for the new box
@@ -280,8 +276,8 @@ function overlap(d1, d2) {
   let result = false;
 
   if (d1.box === d2.box) {
-    const c1 = d1.getCanvasRelativePos();
-    const c2 = d2.getCanvasRelativePos();
+    const c1 = d1.getPosition();
+    const c2 = d2.getPosition();
     var dist = p5.dist(c1.x,c1.y,c2.x, c2.y);
     if (dist < dotD) {
       result = true;
@@ -312,7 +308,7 @@ class DotArray {
     for (var i=0; i < this.dots.length; i++) {
       for (var j=0; j < this.dots[i].length; j++) {
         const dot = this.dots[i][j];
-        const {x, y} = dot.getCanvasRelativePos();
+        const {x, y} = dot.getPosition();
         if (boxes.in(x, y)) { // this line shouldn't be here need to fix
           p5.ellipse(x, y, dotD, dotD);
         }
@@ -349,9 +345,9 @@ class DotArray {
 
   pushDot(boxID,dot) {
 
-    const {x, y} = dot.getCanvasRelativePos();
+    const {x, y} = dot.getPosition();
     const [snappedX, snappedY] = this.snapToBox(x,y, dot.box);
-    const {rx, ry} = getBoxRelativePos(snappedX, snappedY, dot.box);
+    const {rx, ry} = getBoxRelativePos(snappedX, snappedY);
 
     dot.rx = rx;
     dot.ry = ry;
@@ -361,9 +357,9 @@ class DotArray {
   updateDotPosition(pos) { 
     var dot = this.dots[pos[1]][pos[2]];
 
-    const {x, y} = dot.getCanvasRelativePos();
+    const {x, y} = dot.getPosition();
     const [snappedX, snappedY] = this.snapToBox(x,y, dot.box);
-    const {rx, ry} = getBoxRelativePos(snappedX, snappedY, dot.box);
+    const {rx, ry} = getBoxRelativePos(snappedX, snappedY);
 
     dot.rx = rx;
     dot.ry = ry;
@@ -827,7 +823,7 @@ function deleteDot(dotID) {
 function getSendingAndRecievingBox() {
   if (currentId[0] !== DotEnum.UNDEF) {  
     var current_dot = dots[currentId[0]].dots[currentId[1]][currentId[2]];
-    const {x, y} = current_dot.getCanvasRelativePos();
+    const {x, y} = current_dot.getPosition();
     return [current_dot.box, boxes.getBoxID(x,y)];
   }
   return [-1,-1];
@@ -893,7 +889,7 @@ function mouseOnDot() {
     for (var i=0; i < dots[n].dots.length; i++) {
       for (var j=0; j < dots[n].dots[i].length; j++) {
         const dot = dots[n].dots[i][j];
-        const { x, y } = dot.getCanvasRelativePos();
+        const { x, y } = dot.getPosition();
         const dist = p5.dist(p5.mouseX, p5.mouseY, x, y);
         if (dist < dotD / 2) {
           // console.log('mouseOnDot', p5.mouseX, p5.mouseY, x, y, dist, dotD);
@@ -1125,6 +1121,7 @@ p5.mouseReleased = function() {
 ### Known Bugs
 
 - If there's a lot of dots in a box the annihilation doesn't always work.  Need to figure out how to consistently reproduce it.
+- When I hit the rule button I get an undefined dot in dotsMouseDragged
 
 
 
