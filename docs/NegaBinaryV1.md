@@ -41,6 +41,7 @@ var darkGray =      [100, 100, 100];
 
 
 
+
 ////
 // Color Formatting 
 //////////////////////////////////////////////////////////////////////////////
@@ -63,18 +64,24 @@ var dotButtonStroke = darkGray;
 var dotButtonFill = white;
 
 
+
+
+
 ////
 // Game state
 ////////////////////////////////////////////////////////////////////////////
 
 var DotEnum = Object.freeze({UNDEF : -1, DOT : 0, ANTIDOT : 1});
-var base = 2;
-var numBoxes = 6;
+
+var base = -3;
+var numBoxes = 4;
 var boxes;
 var dots;
 var currentId = [0, 0, 0];  // the id of the current dot
 var uniqueId = 0;
 var currentSum = 0;
+var addDotSound;
+var annihilateSound;
 
 
 //// 
@@ -134,15 +141,6 @@ var maxText = "16";  // use this text for setting textSize on window resizing
 
 const myDiv = this.div;
 myDiv.style.position = 'relative';
-
-// const parent = myDiv.parentNode;
-// const grandparent = parent.parentNode;
-// parent.style.padding = '0 10px 0 0';
-// parent.style.margin = '0';
-// grandparent.style.border = '5px solid orange';
-// grandparent.style.padding = '0';
-// grandparent.style.margin = '0';
-
 myDiv.style['background-image'] = `url(${bgURL})`;
 myDiv.style['background-repeat'] = 'no-repeat';
 myDiv.style['background-size'] = 'cover';
@@ -902,142 +900,8 @@ function mouseOnDot() {
   return false;
 }
 
-
-
-////
-// P5 Structure Functions
-///////////////////////////////////////////////////////////////////////////////////
-
-
-var addDotSound;
-var annihilateSound;
-
-p5.setup = function() {
-  boxes = new Boxes(base, numBoxes, boxesX, boxesY, boxesW, boxesH);
-  dots = [];
-  dots.push(new DotArray(numBoxes, dotFill, dotStroke));
-  dots.push(new DotArray(numBoxes, antidotFill, antidotStroke));
-  if (numBoxes < 4) ruleButonOn = false;
-
-  // attribution 3.0  mark diangelo
-  addDotSound = p5.loadSound('https://gist.githubusercontent.com/wildthinkslaboratory/ac98c0bb68ccf7528dc39fa1922d2bdb/raw/bd0a27a5a92c1f904fe0713f6664d9a8b28cb476/Blop-Mark_DiAngelo-79054334.wav');
-
-  // attribution 3.0  mark diangelo
-  annihilateSound = p5.loadSound('https://gist.githubusercontent.com/wildthinkslaboratory/ac98c0bb68ccf7528dc39fa1922d2bdb/raw/e0ca3e1a7f8393c9c62b56650bb4b1ad01749265/Woosh-Mark_DiAngelo-4778593.wav');
-
-  p5.createCanvas(canvasW, canvasH);
-  p5.windowResized();
-
-  p5.pixelDensity(1);   // this should be taken out as soon as they fix the clear() function in p5js
-};
-
-
-p5.windowResized = function() {
-  // console.log('p5.window', p5.windowWidth, p5.windowHeight);
-  // console.log('myDiv.offset', myDiv.offsetWidth, myDiv.offsetHeight);
-
-  canvasW = myDiv.offsetWidth - 10;
-  canvasH = p5.windowHeight - 75;
-  const minHeight = 200;
-  if (canvasH < minHeight) {
-    canvasH = minHeight;
-  }
-
-  endcapH = canvasH * 0.1;
-  boxesW = canvasW * 0.9; // width of all the boxes together
-
-  const boxWidth = boxesW / numBoxes;
-
-  boxesH = canvasH * 0.5; // height of boxes
-  boxesX = (p5.windowWidth - boxesW) / 2;
-  boxesY = (canvasH - boxesH) / 2 + endcapH/2;
-  dotD = p5.min(boxWidth * 0.2, boxesH * 0.2);
-  const dotMax = p5.min(boxWidth * 0.25, boxesH * 0.25);
-  marginX = 2 * dotMax;
-  marginY = dotD * 0.5;
-  xSpacer = dotD/2;
-  ySpacer = dotD/2;
-  
-  boxTextSize = boxesH * 0.5;
-  
-  var boxW = boxesW / numBoxes - ySpacer;
-  var t = '-' + p5.abs(p5.pow(base,numBoxes-1)).toString();
-  p5.push();
-  p5.textSize(boxTextSize);
-  while (p5.textWidth(t) > boxW) {
-    boxTextSize *= 0.75;
-    p5.textSize(boxTextSize);
-  }
-  p5.pop();
-
-  valueTextSize = endcapH * 0.5;
-  topBoxesY = boxesY - 2*ySpacer - 2*endcapH;
-  valueBoxesY = boxesY - ySpacer - endcapH;
-  codeBoxesY = boxesY + boxesH + ySpacer;
-  ruleBoxX = boxesX + boxWidth;
-
-
-  boxes.updateSize(boxesX, boxesY, boxesW, boxesH);
-  p5.resizeCanvas(p5.windowWidth, canvasH);
-};
-
-
-
-p5.draw = function() {
-  p5.frameRate(15);
-  p5.clear();
-  boxes.draw();
-  dots[0].draw();
-  dots[1].draw();
-  drawValueBoxes();
-  drawCodeBoxes();
-  drawSummaryBox();
-  drawDotButton();
-  drawRuleButton();
-};
-
-
-////
-// P5 event functions
-///////////////////////////////////////////////////////////////////////////////////////////
-
-
-
-p5.mousePressed = function()
-{
-  if (mouseOnDotButton()) {  addDots = !addDots;  }
-  if (mouseOnRuleButton()) {  standardRule = !standardRule;  }
-
-  if (mouseOnBoxes()) {
-    if (!mouseOnDot()) {
-      if (addDots) {
-        addDot();
-      }
-      else {
-        addAntidot();
-      }
-    }
-  }
-};
-
-
-p5.doubleClicked = function()
-{
-
-};
-
-p5.mouseDragged = function() {
-  if (currentId[0] != DotEnum.UNDEF) {
-    const dot = dots[currentId[0]].dots[currentId[1]][currentId[2]];
-    const { rx, ry } = getBoxRelativePos(p5.mouseX, p5.mouseY, dot.box);
-    dot.rx = rx;  // update the x, y position of currentId dot
-    dot.ry = ry;
-  }
-};
-
-
-// there's a lot to do here
-p5.mouseReleased = function() {
+/////////////////////////////////////////////////////////////////////////////////
+function dotsMouseReleased() {
   if (mouseOnBoxes() && currentId && currentId[0] !== DotEnum.UNDEF) {  // this is the end of a drag event
     [sendingBox, recievingBox] = getSendingAndRecievingBox();
     
@@ -1076,6 +940,176 @@ p5.mouseReleased = function() {
     }
   }
 };
+
+
+
+function dotsMousePressed()
+{
+  if (mouseOnDotButton()) {  addDots = !addDots;  }
+  if (mouseOnRuleButton()) {  standardRule = !standardRule;  }
+
+  if (mouseOnBoxes()) {
+    if (!mouseOnDot()) {
+      if (addDots) {
+        addDot();
+      }
+      else {
+        addAntidot();
+      }
+    }
+  }
+};
+
+
+
+function dotsMouseDragged()
+{
+  if (currentId[0] != DotEnum.UNDEF) {
+    const dot = dots[currentId[0]].dots[currentId[1]][currentId[2]];
+    const { rx, ry } = getBoxRelativePos(p5.mouseX, p5.mouseY, dot.box);
+    dot.rx = rx;  // update the x, y position of currentId dot
+    dot.ry = ry;
+  }
+};
+
+
+function dotsDraw()
+{
+  p5.frameRate(15);
+  p5.clear();
+  boxes.draw();
+  dots[0].draw();
+  dots[1].draw();
+  drawValueBoxes();
+  drawCodeBoxes();
+  drawSummaryBox();
+  drawDotButton();
+  drawRuleButton();
+};
+
+function dotsWindowResized(width,height)
+{
+
+  canvasW = width;
+  canvasH = height;
+
+
+  const minHeight = 200;
+  if (canvasH < minHeight) {
+    canvasH = minHeight;
+  }
+
+  endcapH = canvasH * 0.1;
+  boxesW = canvasW * 0.9; // width of all the boxes together
+
+  const boxWidth = boxesW / numBoxes;
+
+  boxesH = canvasH * 0.5; // height of boxes
+  boxesX = (width - boxesW) / 2;
+  boxesY = (canvasH - boxesH) / 2 + endcapH/2;
+  dotD = p5.min(boxWidth * 0.2, boxesH * 0.2);
+  const dotMax = p5.min(boxWidth * 0.25, boxesH * 0.25);
+  marginX = 2 * dotMax;
+  marginY = dotD * 0.5;
+  xSpacer = dotD/2;
+  ySpacer = dotD/2;
+  
+  boxTextSize = boxesH * 0.5;
+  
+  var boxW = boxesW / numBoxes - ySpacer;
+  var t = '-' + p5.abs(p5.pow(base,numBoxes-1)).toString();
+  p5.push();
+  p5.textSize(boxTextSize);
+  while (p5.textWidth(t) > boxW) {
+    boxTextSize *= 0.75;
+    p5.textSize(boxTextSize);
+  }
+  p5.pop();
+
+  valueTextSize = endcapH * 0.5;
+  topBoxesY = boxesY - 2*ySpacer - 2*endcapH;
+  valueBoxesY = boxesY - ySpacer - endcapH;
+  codeBoxesY = boxesY + boxesH + ySpacer;
+  ruleBoxX = boxesX + boxWidth;
+
+
+  boxes.updateSize(boxesX, boxesY, boxesW, boxesH);
+};
+
+
+
+////
+// P5 Structure Functions
+///////////////////////////////////////////////////////////////////////////////////
+
+
+
+p5.setup = function() {
+
+
+  boxes = new Boxes(base, numBoxes, boxesX, boxesY, boxesW, boxesH);
+  dots = [];
+  dots.push(new DotArray(numBoxes, dotFill, dotStroke));
+  dots.push(new DotArray(numBoxes, antidotFill, antidotStroke));
+  if (numBoxes < 4) ruleButonOn = false;
+
+  // attribution 3.0  mark diangelo
+  addDotSound = p5.loadSound('https://gist.githubusercontent.com/wildthinkslaboratory/ac98c0bb68ccf7528dc39fa1922d2bdb/raw/bd0a27a5a92c1f904fe0713f6664d9a8b28cb476/Blop-Mark_DiAngelo-79054334.wav');
+
+  // attribution 3.0  mark diangelo
+  annihilateSound = p5.loadSound('https://gist.githubusercontent.com/wildthinkslaboratory/ac98c0bb68ccf7528dc39fa1922d2bdb/raw/e0ca3e1a7f8393c9c62b56650bb4b1ad01749265/Woosh-Mark_DiAngelo-4778593.wav');
+
+
+  var canvasWidth = p5.windowWidth;
+  var canvasHeight = p5.windowHeight * 0.8;
+  p5.createCanvas(canvasWidth,canvasHeight);
+
+  p5.windowResized();
+
+  p5.pixelDensity(1);   // this should be taken out as soon as they fix the clear() function in p5js
+};
+
+
+p5.windowResized = function() {
+
+  var canvasWidth = p5.windowWidth;
+  var canvasHeight = p5.windowHeight * 0.8;
+  dotsWindowResized(canvasWidth, canvasHeight);
+  p5.resizeCanvas(canvasWidth, canvasHeight);
+}
+
+
+p5.draw = function() {
+  dotsDraw();
+}
+
+
+////
+// P5 event functions
+///////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+p5.mousePressed = function()
+{
+  dotsMousePressed();
+};
+
+
+
+p5.mouseDragged = function() {
+  dotsMouseDragged();
+};
+
+
+
+
+
+// there's a lot to do here
+p5.mouseReleased = function() {
+  dotsMouseReleased();
+};
+
 
 ```
 
