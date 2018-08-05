@@ -7,6 +7,16 @@
 
 #### Let's write all of the integers, both positive and negative without any negative signs using just the symbols 0 and 1.
 
+## Negative Binary Instructions
+
+- Tap to add a Dot to a Box
+- Toggle the Add Dot button to switch to adding Antidots
+- Drag a Dot Left to *explode* the dot.
+- Drag a Dot out of the frame to delete it.
+- Drag a Dot over an Antidot to annihilate them
+- Drag a Dot to the right to *unexplode* it 
+- Toggle the Rule button to switch between the | $1$ | $1$ | $\longleftarrow$ | $0$ | $-1$ | rule and the standard $-1 \longleftarrow 2$ rule.
+
 
 ___
 
@@ -73,8 +83,8 @@ var dotButtonFill = white;
 
 var DotEnum = Object.freeze({UNDEF : -1, DOT : 0, ANTIDOT : 1});
 
-var base = -3;
-var numBoxes = 4;
+var base = -2;
+var numBoxes = 6;
 var boxes;
 var dots;
 var currentId = [0, 0, 0];  // the id of the current dot
@@ -89,7 +99,7 @@ var annihilateSound;
 ////////////////////////////////////////////////////////////////////////////
 
 
-var negaBinary = false;
+var negaBinary = true;
 var dotButtonOn = true;
 var ruleButtonOn = negaBinary;
 
@@ -1119,15 +1129,6 @@ p5.mouseReleased = function() {
 - If there's a lot of dots in a box the annihilation doesn't always work.  Need to figure out how to consistently reproduce it.
 
 
-## Negative Binary Instructions
-
-- Tap to add a Dot to a Box
-- Toggle the Add Dot button to switch to adding Antidots
-- Drag a Dot Left to *explode* the dot.
-- Drag a Dot out of the frame to delete it.
-- Drag a Dot over an Antidot to annihilate them
-- Drag a Dot to the right to *unexplode* it 
-- Toggle the Rule button to switch between the | $1$ | $1$ | $\longleftarrow$ | $0$ | $-1$ | rule and the standard $-1 \longleftarrow 2$ rule.
 
 
 ---
