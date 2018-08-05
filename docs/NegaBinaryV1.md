@@ -155,6 +155,16 @@ var ruleBoxX;
 
 
 
+function copyInstance (original) {
+  var copied = Object.assign(
+    Object.create(
+      Object.getPrototypeOf(original)
+    ),
+    original
+  );
+  return copied;
+}
+
 
 ////
 // Coordinate transforms between box-relative and canvas-relative
@@ -172,17 +182,6 @@ function getBoxRelativePos(x, y, _box) {
   return result;
 }
 
-
-function getCanvasRelativePos(rx, ry, _box) {
-  const boxWidth = boxes.width;
-  const boxHeight = boxes.height;
-  const result = {
-    x: rx * boxWidth + boxes.x,
-    y: ry * boxHeight + boxes.y
-  }
-
-  return result;
-}
 
 
 
@@ -241,6 +240,21 @@ class Dot {
   get canvasy() { return _y; }
   get canvasWidth() { return _width; }
   get canvasHeight() { return _height; }
+
+  getCanvasRelativePos() {
+    const result = {
+      x: this.rx * this.canvasWidth + this.canvasx,
+      y: this.ry * this.canvasHeight + this.canvasy
+    }
+    return result;
+  }
+
+  setPosition(x,y) {
+      const { rx, ry } = getBoxRelativePos(x,y);
+      this.rx = rx;  
+      this.ry = ry;
+  }
+
 }
 
 function updateCanvasDimensions(x,y,width,height) {
@@ -266,8 +280,8 @@ function overlap(d1, d2) {
   let result = false;
 
   if (d1.box === d2.box) {
-    const c1 = getCanvasRelativePos(d1.rx, d1.ry, d1.box);
-    const c2 = getCanvasRelativePos(d2.rx, d2.ry, d2.box);
+    const c1 = d1.getCanvasRelativePos();
+    const c2 = d2.getCanvasRelativePos();
     var dist = p5.dist(c1.x,c1.y,c2.x, c2.y);
     if (dist < dotD) {
       result = true;
@@ -298,7 +312,7 @@ class DotArray {
     for (var i=0; i < this.dots.length; i++) {
       for (var j=0; j < this.dots[i].length; j++) {
         const dot = this.dots[i][j];
-        const {x, y} = getCanvasRelativePos(dot.rx, dot.ry, dot.box);
+        const {x, y} = dot.getCanvasRelativePos();
         if (boxes.in(x, y)) { // this line shouldn't be here need to fix
           p5.ellipse(x, y, dotD, dotD);
         }
@@ -335,7 +349,7 @@ class DotArray {
 
   pushDot(boxID,dot) {
 
-    const {x, y} = getCanvasRelativePos(dot.rx, dot.ry, dot.box);
+    const {x, y} = dot.getCanvasRelativePos();
     const [snappedX, snappedY] = this.snapToBox(x,y, dot.box);
     const {rx, ry} = getBoxRelativePos(snappedX, snappedY, dot.box);
 
@@ -347,7 +361,7 @@ class DotArray {
   updateDotPosition(pos) { 
     var dot = this.dots[pos[1]][pos[2]];
 
-    const {x, y} = getCanvasRelativePos(dot.rx, dot.ry, dot.box);
+    const {x, y} = dot.getCanvasRelativePos();
     const [snappedX, snappedY] = this.snapToBox(x,y, dot.box);
     const {rx, ry} = getBoxRelativePos(snappedX, snappedY, dot.box);
 
@@ -728,7 +742,7 @@ function explodeDot(sendingBox, recievingBox) {
 
   if (dots[currentId[0]].dots[sendingBox].length < dotsNeeded) return false;
 
-  var newDot = new DotCopy(dots[currentId[0]].dots[currentId[1]][currentId[2]]);
+  var newDot = copyInstance(dots[currentId[0]].dots[currentId[1]][currentId[2]]);
   newDot.box = recievingBox;
 
 
@@ -765,7 +779,7 @@ function negaBinaryRule2(sendingBox, recievingBox) {
 function unexplode(sendingBox, recievingBox) {
 
   var dotsToAdd = p5.pow(p5.abs(base), sendingBox - recievingBox);
-  var newDot = new DotCopy(dots[currentId[0]].dots[currentId[1]][currentId[2]]);
+  var newDot = copyInstance(dots[currentId[0]].dots[currentId[1]][currentId[2]]);
   newDot.box = recievingBox;
   
   var dotArrayID = currentId[0];
@@ -813,7 +827,7 @@ function deleteDot(dotID) {
 function getSendingAndRecievingBox() {
   if (currentId[0] !== DotEnum.UNDEF) {  
     var current_dot = dots[currentId[0]].dots[currentId[1]][currentId[2]];
-    const {x, y} = getCanvasRelativePos(current_dot.rx, current_dot.ry, current_dot.box);
+    const {x, y} = current_dot.getCanvasRelativePos();
     return [current_dot.box, boxes.getBoxID(x,y)];
   }
   return [-1,-1];
@@ -825,7 +839,7 @@ function toggleDot(dotID) {
     const arrayId = dotID[0];
     const toggleArrayId = (arrayId === 0 ? 1 : 0);
     var current_dot = dots[arrayId].dots[dotID[1]][dotID[2]];
-    var newDot = new DotCopy(current_dot);
+    var newDot = copyInstance(current_dot);
 
     dots[toggleArrayId].pushDot(current_dot.box,newDot);
 
@@ -879,7 +893,7 @@ function mouseOnDot() {
     for (var i=0; i < dots[n].dots.length; i++) {
       for (var j=0; j < dots[n].dots[i].length; j++) {
         const dot = dots[n].dots[i][j];
-        const { x, y } = getCanvasRelativePos(dot.rx, dot.ry, dot.box);
+        const { x, y } = dot.getCanvasRelativePos();
         const dist = p5.dist(p5.mouseX, p5.mouseY, x, y);
         if (dist < dotD / 2) {
           // console.log('mouseOnDot', p5.mouseX, p5.mouseY, x, y, dist, dotD);
@@ -961,9 +975,7 @@ function dotsMouseDragged()
 {
   if (currentId[0] != DotEnum.UNDEF) {
     const dot = dots[currentId[0]].dots[currentId[1]][currentId[2]];
-    const { rx, ry } = getBoxRelativePos(p5.mouseX, p5.mouseY, dot.box);
-    dot.rx = rx;  // update the x, y position of currentId dot
-    dot.ry = ry;
+    dot.setPosition(p5.mouseX, p5.mouseY);
   }
 };
 
@@ -1029,6 +1041,7 @@ function dotsWindowResized(width,height)
 
 
   boxes.updateSize(boxesX, boxesY, boxesW, boxesH);
+  updateCanvasDimensions(boxesX,boxesY,boxesW/numBoxes,boxesH);
 };
 
 
