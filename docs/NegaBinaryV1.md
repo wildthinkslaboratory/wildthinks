@@ -50,6 +50,12 @@ myDiv.style.border = '5px solid gray';
 
 
 
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
 ////
 // Color Pallette
 //////////////////////////////////////////////////////////////////////////////
@@ -107,7 +113,8 @@ var uniqueId = 0;
 var currentSum = 0;
 var addDotSound;
 var annihilateSound;
-
+var addDotSoundFile = 'https://gist.githubusercontent.com/wildthinkslaboratory/ac98c0bb68ccf7528dc39fa1922d2bdb/raw/bd0a27a5a92c1f904fe0713f6664d9a8b28cb476/Blop-Mark_DiAngelo-79054334.wav';
+var annihilateSoundFile = 'https://gist.githubusercontent.com/wildthinkslaboratory/ac98c0bb68ccf7528dc39fa1922d2bdb/raw/e0ca3e1a7f8393c9c62b56650bb4b1ad01749265/Woosh-Mark_DiAngelo-4778593.wav';
 
 //// 
 // App Restrictions
@@ -1041,12 +1048,20 @@ function dotsWindowResized(width,height)
 };
 
 
+function dotsLoadSounds() {
+  addDotSound = p5.loadSound(addDotSoundFile);
+  annihilateSound = p5.loadSound(annihilateSoundFile);    
+}
 
 ////
 // P5 Structure Functions
 ///////////////////////////////////////////////////////////////////////////////////
 
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+p5.preload = function() {
+
+}
 
 p5.setup = function() {
 
@@ -1057,12 +1072,7 @@ p5.setup = function() {
   dots.push(new DotArray(numBoxes, antidotFill, antidotStroke));
   if (numBoxes < 4) ruleButonOn = false;
 
-  // attribution 3.0  mark diangelo
-  addDotSound = p5.loadSound('https://gist.githubusercontent.com/wildthinkslaboratory/ac98c0bb68ccf7528dc39fa1922d2bdb/raw/bd0a27a5a92c1f904fe0713f6664d9a8b28cb476/Blop-Mark_DiAngelo-79054334.wav');
-
-  // attribution 3.0  mark diangelo
-  annihilateSound = p5.loadSound('https://gist.githubusercontent.com/wildthinkslaboratory/ac98c0bb68ccf7528dc39fa1922d2bdb/raw/e0ca3e1a7f8393c9c62b56650bb4b1ad01749265/Woosh-Mark_DiAngelo-4778593.wav');
-
+  dotsLoadSounds();
 
   var canvasWidth = p5.windowWidth;
   var canvasHeight = p5.windowHeight * 0.8;
@@ -1074,8 +1084,8 @@ p5.setup = function() {
 };
 
 
-p5.windowResized = function() {
 
+p5.windowResized = function() {
   var canvasWidth = p5.windowWidth;
   var canvasHeight = p5.windowHeight * 0.8;
   dotsWindowResized(canvasWidth, canvasHeight);
