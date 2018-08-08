@@ -49,7 +49,7 @@ var dotButtonFill = white;
 
 var DotEnum = Object.freeze({UNDEF : -1, DOT : 0, ANTIDOT : 1});
 
-var base = -2;
+var base = 2;
 var numBoxes = 6;
 var boxes;
 var dots;
@@ -66,7 +66,7 @@ var annihilateSoundFile = 'https://gist.githubusercontent.com/wildthinkslaborato
 ////////////////////////////////////////////////////////////////////////////
 
 
-var negaBinary = true;
+var negaBinary = false;
 var dotButtonOn = true;
 var ruleButtonOn = negaBinary;
 
@@ -998,9 +998,18 @@ function loadSounds() {
   annihilateSound = p5.loadSound(annihilateSoundFile);    
 }
 
-function setup(playableP5) {
+function setup(playableP5, b, n) {
+
 
   p5 = playableP5;
+  base = b;
+  numBoxes = n;
+
+  if (base === -2) {
+    negaBinary = true;
+    ruleButtonOn = true;
+    console.log("turned on ruleButtonOn");
+  }
 
   boxes = new Boxes(base, numBoxes, boxesX, boxesY, boxesW, boxesH);
   dots = [];

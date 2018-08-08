@@ -64,10 +64,12 @@ myDiv.style.border = '5px solid gray';
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+const base = -2;
+const numberBoxes = 6;
 
 p5.setup = function() {
 
-  dl.setup(p5);
+  dl.setup(p5, base, numberBoxes);
 
   dl.loadSounds();
 
