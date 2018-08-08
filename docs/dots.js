@@ -1,20 +1,18 @@
 
-var p5;  // need to pass in the p5 library from the playable and bind it to this local p5 variable
+let p5;  // need to pass in the p5 library from the playable and bind it to this local p5 variable
 
 ////
 // Color Pallette
 //////////////////////////////////////////////////////////////////////////////
 
-
-var purple =        [200, 0,  255];
-var darkpurple =    [50,  0,   50];
-var cyan =          [0,   200, 255];
-var darkbluegreen = [0,   100, 100];
-var lightLilac =    [220, 220, 255];
-var white =         [255, 255, 255];
-var paleLime =      [200, 255, 200];
-var darkGray =      [100, 100, 100];
-
+const purple =        [200, 0,  255];
+const darkpurple =    [50,  0,   50];
+const cyan =          [0,   200, 255];
+const darkbluegreen = [0,   100, 100];
+const lightLilac =    [220, 220, 255];
+const white =         [255, 255, 255];
+const paleLime =      [200, 255, 200];
+const darkGray =      [100, 100, 100];
 
 
 
@@ -23,92 +21,30 @@ var darkGray =      [100, 100, 100];
 // Color Formatting 
 //////////////////////////////////////////////////////////////////////////////
 
-var boxStroke = lightLilac;                // boxes color formatting
-var boxFill = white; 
+const boxStroke = lightLilac;                // boxes color formatting
+const boxFill = white; 
 
+const dotFill = purple;                      // dot color formatting 
+const dotStroke = darkpurple; 
+const antidotFill = cyan; 
+const antidotStroke = darkbluegreen; 
+                                           
+const writingFill = darkbluegreen;           // value boxes color formatting
+const valueFill = white;
+const valueStroke = lightLilac;
 
-var dotFill = purple;                      // dot color formatting 
-var dotStroke = darkpurple; 
-var antidotFill = cyan; 
-var antidotStroke = darkbluegreen; 
-
-                                           // value boxes color formatting
-var writingFill = darkbluegreen;
-var valueFill = white;
-var valueStroke = lightLilac;
-
-var dotButtonStroke = darkGray;
-var dotButtonFill = white;
-
-
-
-
-////
-// Game state
-////////////////////////////////////////////////////////////////////////////
-
-var DotEnum = Object.freeze({UNDEF : -1, DOT : 0, ANTIDOT : 1});
-
-var base = 2;
-var numBoxes = 6;
-var boxes;
-var dots;
-var currentId = [0, 0, 0];  // the id of the current dot
-var uniqueId = 0;
-var currentSum = 0;
-var addDotSound;
-var annihilateSound;
-var addDotSoundFile = 'https://gist.githubusercontent.com/wildthinkslaboratory/ac98c0bb68ccf7528dc39fa1922d2bdb/raw/bd0a27a5a92c1f904fe0713f6664d9a8b28cb476/Blop-Mark_DiAngelo-79054334.wav';
-var annihilateSoundFile = 'https://gist.githubusercontent.com/wildthinkslaboratory/ac98c0bb68ccf7528dc39fa1922d2bdb/raw/e0ca3e1a7f8393c9c62b56650bb4b1ad01749265/Woosh-Mark_DiAngelo-4778593.wav';
-
-//// 
-// App Restrictions
-////////////////////////////////////////////////////////////////////////////
-
-
-var negaBinary = false;
-var dotButtonOn = true;
-var ruleButtonOn = negaBinary;
-
-
-
-////
-// Button States
-/////////////////////////////////////////////////////////////////////////////
-
-var addDots = true;
-var standardRule = true;
-
-
-
-////
-// Values that change on window-resize
-//////////////////////////////////////////////////////////////////////////////
-
-var canvasW;  // canvas width
-var canvasH;  // canvas height
-var boxesW;   // width of all the boxes together
-var boxesH;   // height of boxes
-var boxesX;
-var boxesY;
-var endcapH;
-var dotD;     // dot diameter
-var xSpacer = 10;  // how much space between the boxes
-var marginX;
-var marginY;
-var boxTextSize;
-var valueTextSize;
-var topBoxesY;
-var valueBoxesY;
-var codeBoxesY;
-var ySpacer;
-var ruleBoxX;
+const dotButtonStroke = darkGray;            // button color formatting
+const dotButtonFill = white;
 
 
 
 
+
+
+
+// general function for shallow copying of object. Keeps the associated methods.
 function copyInstance (original) {
-  var copied = Object.assign(
+  let copied = Object.assign(
     Object.create(
       Object.getPrototypeOf(original)
     ),
@@ -118,15 +54,15 @@ function copyInstance (original) {
 }
 
 
+
+
 ////
 // Coordinate transforms between box-relative and canvas-relative
 // Convention: (x, y) are canvas coordinates. (rx, ry) are box coordinates
 //////////////////////////////////////////////////////////////////////////////
 
-
-
-let boxX = 0;
-let boxY = 0;
+let boxX = 0;        // these varaibles are local to these functions 
+let boxY = 0;        // and only updated through the updateCanvasDimensions function
 let boxWidth = 0;
 let boxHeight = 0;
 
@@ -154,19 +90,23 @@ function getBoxRelativePos(x, y) {
   return result;
 }
 
+
+
+
+
 ////
-// Risizing helper functions
+// Drawing helper functions
 //////////////////////////////////////////////////////////////////////////////
 
-var textHeight = function() {
+function textHeight() {
   return p5.textAscent() * 0.8; 
 }
 
-var centerTextInRect = function(x,y,width,height,text) {
-  var textW = p5.textWidth(text);
-  var textH = textHeight();
-  var xoffset = (width - textW) / 2;
-  var yoffset = (height - textH) / 2;
+function centerTextInRect (x,y,width,height,text) {
+  const textW = p5.textWidth(text);
+  const textH = textHeight();
+  const xoffset = (width - textW) / 2;
+  const yoffset = (height - textH) / 2;
   return [x + xoffset, y + height - yoffset];
 }
 
@@ -178,11 +118,11 @@ function randomJiggle(amount) {
 
 
 ///
-// Dot class, DotArray and other Dot functions
+// Dot class
 //////////////////////////////////////////////////////////////////////////////
 
 function nextId() {        // get the next dot ID
-  var i = uniqueId;
+  let i = uniqueId;
   uniqueId += 1;
   return i;
 }
@@ -212,25 +152,13 @@ class Dot {
 }
 
 
-
-// we move dots between boxes so they need a copy with the same id for the new box
-function DotCopy(d) {
-  this.rx = d.rx;
-  this.ry = d.ry;
-  this.oldx = d.rx;
-  this.oldy = d.ry;
-  this.box = d.box;
-  this.id = d.id;
-}
-
-
 function overlap(d1, d2) {
   let result = false;
 
   if (d1.box === d2.box) {
     const c1 = d1.getPosition();
     const c2 = d2.getPosition();
-    var dist = p5.dist(c1.x,c1.y,c2.x, c2.y);
+    const dist = p5.dist(c1.x,c1.y,c2.x, c2.y);
     if (dist < dotD) {
       result = true;
     }
@@ -241,12 +169,14 @@ function overlap(d1, d2) {
 
 
 
-
+///
+// DotArray class
+//////////////////////////////////////////////////////////////////////////////
 
 class DotArray {
   constructor(size, fillColor, strokeColor) {
     this.dots = [];
-    for (var i = 0; i < size; i++) {
+    for (let i = 0; i < size; i++) {
       this.dots[i] = [];
     }
     this.f = fillColor;
@@ -257,8 +187,8 @@ class DotArray {
     p5.push();
     p5.stroke(this.s);
     p5.fill(this.f);
-    for (var i=0; i < this.dots.length; i++) {
-      for (var j=0; j < this.dots[i].length; j++) {
+    for (let i=0; i < this.dots.length; i++) {
+      for (let j=0; j < this.dots[i].length; j++) {
         const dot = this.dots[i][j];
         const {x, y} = dot.getPosition();
         if (boxes.in(x, y)) { // this line shouldn't be here need to fix
@@ -271,8 +201,8 @@ class DotArray {
 
   // this is all done with Canvas Relative positioning
   snapToBox(x,y,boxId) {
-    var snappedY = y;
-    var snappedX = x;
+    let snappedY = y;
+    let snappedX = x;
 
     const boxUpper = boxesY + dotD/2;
     const boxLower = boxesY + boxesH - dotD/2;
@@ -307,7 +237,7 @@ class DotArray {
   }
 
   updateDotPosition(pos) { 
-    var dot = this.dots[pos[1]][pos[2]];
+    let dot = this.dots[pos[1]][pos[2]];
 
     const {x, y} = dot.getPosition();
     const [snappedX, snappedY] = this.snapToBox(x,y, dot.box);
@@ -324,7 +254,7 @@ class DotArray {
   }
 
   resetOldPosition(pos) {
-    const dot = this.dots[pos[1]][pos[2]];
+    let dot = this.dots[pos[1]][pos[2]];
     dot.rx = dot.oldx;
     dot.ry = dot.oldy;
   }
@@ -369,7 +299,7 @@ class Boxes {
     }
     else {
       // check the horizontal range
-      var rightX = this.x + this.width * this.numberBoxes;
+      const rightX = this.x + this.width * this.numberBoxes;
       if (x < this.x || x > rightX) {
       // its not in the boxes
       }
@@ -396,8 +326,8 @@ class Boxes {
 
   draw() {
     p5.push();
-    var x = boxesX;
-    var y = boxesY;
+    const x = boxesX;
+    const y = boxesY;
     p5.noStroke();
     p5.fill(boxFill);
     for (let i=0; i < this.numberBoxes; i++) {
@@ -408,16 +338,45 @@ class Boxes {
     p5.fill(boxStroke);
     p5.textSize(boxTextSize);
     for (let i=0; i < this.numberBoxes; i++) {
-      var t = p5.pow(this.base, this.numberBoxes - i - 1).toString();
+      const t = p5.pow(this.base, this.numberBoxes - i - 1).toString();
 
 
-      var [textX,textY] = centerTextInRect(x + i*this.width, y , this.width - xSpacer, this.height,t);
+      const [textX,textY] = centerTextInRect(x + i*this.width, y , this.width - xSpacer, this.height,t);
       p5.text(t, textX, textY);
     }
     p5.pop();
   }
 
 }
+
+
+
+////
+// Values that change on window-resize
+//////////////////////////////////////////////////////////////////////////////
+
+// so these variables are a bit of a mess.  They are global and used throughout
+// the app.  
+
+let canvasW;  // canvas width
+let canvasH;  // canvas height
+let boxesW;   // width of all the boxes together
+let boxesH;   // height of boxes
+let boxesX;
+let boxesY;
+let endcapH;
+let dotD;     // dot diameter
+let xSpacer = 10;  // how much space between the boxes
+let marginX;
+let marginY;
+let boxTextSize;
+let valueTextSize;
+let topBoxesY;
+let valueBoxesY;
+let codeBoxesY;
+let ySpacer;
+let ruleBoxX;
+
 
 ///
 // Additional Draw Functions
@@ -426,10 +385,10 @@ class Boxes {
 
 
 function drawCodeBoxes() {
-  var x = boxesX;
-  var y = codeBoxesY;
-  var width = boxesW / numBoxes;
-  var height = endcapH;
+  const x = boxesX;
+  const y = codeBoxesY;
+  const width = boxesW / numBoxes;
+  const height = endcapH;
 
   p5.push();
   p5.noStroke();
@@ -446,14 +405,14 @@ function drawCodeBoxes() {
   
 
   for (let i=0; i < numBoxes; i++) {
-    var code = dots[0].dots[i].length;
+    let code = dots[0].dots[i].length;
     code -= dots[1].dots[i].length;
-    var t = code.toString();
+    const t = code.toString();
 
     if (code === 0) { p5.fill(valueStroke); }
     else { p5.fill(writingFill); }
 
-    var [textX,textY] = centerTextInRect(x + (numBoxes - i - 1)*width, y , width - xSpacer, height,t);
+    const [textX,textY] = centerTextInRect(x + (numBoxes - i - 1)*width, y , width - xSpacer, height,t);
     p5.text(t, textX, textY);
   }
 
@@ -461,11 +420,14 @@ function drawCodeBoxes() {
 }
 
 
+
+
+
 function drawValueBoxes() {
-  var x = boxesX;
-  var y = valueBoxesY;
-  var width = boxesW / numBoxes;
-  var height = endcapH;
+  const x = boxesX;
+  const y = valueBoxesY;
+  const width = boxesW / numBoxes;
+  const height = endcapH;
 
   p5.push();
   p5.noStroke();
@@ -481,10 +443,10 @@ function drawValueBoxes() {
 
   currentSum = 0;
   for (let i = 0; i < numBoxes; i++) {
-    var value = dots[0].dots[i].length * p5.pow(base, i);
+    let value = dots[0].dots[i].length * p5.pow(base, i);
     value -= dots[1].dots[i].length * p5.pow(base, i);
     currentSum += value;
-    var t = value.toString();
+    const t = value.toString();
  
     if (value === 0) {
       p5.fill(valueStroke);
@@ -493,7 +455,7 @@ function drawValueBoxes() {
       p5.fill(writingFill);
     }
 
-    var [textX,textY] = centerTextInRect(x + (numBoxes - i - 1)*width, y , width - xSpacer, height,t);
+    const [textX,textY] = centerTextInRect(x + (numBoxes - i - 1)*width, y , width - xSpacer, height,t);
     p5.text(t, textX, textY);
   }
 
@@ -503,10 +465,10 @@ function drawValueBoxes() {
 
 
 function drawSummaryBox() {
-  var y = topBoxesY;
-  var height = endcapH;
-  var x = boxesX + boxesW * (numBoxes - 1)/numBoxes;
-  var boxW = boxesW / numBoxes;
+  const y = topBoxesY;
+  const height = endcapH;
+  const x = boxesX + boxesW * (numBoxes - 1)/numBoxes;
+  const boxW = boxesW / numBoxes;
 
   p5.push();
 
@@ -520,9 +482,9 @@ function drawSummaryBox() {
   p5.stroke(writingFill);
   p5.strokeWeight(1);
 
-  var t = currentSum.toString();
+  const t = currentSum.toString();
 
-  var [textX,textY] = centerTextInRect(x, y, boxW - xSpacer, height, t);
+  const [textX,textY] = centerTextInRect(x, y, boxW - xSpacer, height, t);
   p5.text(t, textX, textY);
 
   p5.pop();
@@ -532,14 +494,14 @@ function drawSummaryBox() {
 
 function drawRuleButton() {
   if (!ruleButtonOn) return;
-  var y = topBoxesY;
-  var height = endcapH;
-  var x = ruleBoxX;
-  var boxW = 2* boxesW / numBoxes;
+  const y = topBoxesY;
+  const height = endcapH;
+  const x = ruleBoxX;
+  const boxW = 2* boxesW / numBoxes;
 
   
-  var littleBoxH = height * 0.75;
-  var dotSize = littleBoxH * 0.25;
+  const littleBoxH = height * 0.75;
+  const dotSize = littleBoxH * 0.25;
 
   p5.push();
 
@@ -548,17 +510,17 @@ function drawRuleButton() {
   p5.fill(dotButtonFill);
   p5.rect(x, y, boxW - xSpacer, height, 10);
 
-  var centerX = ruleBoxX + (boxW - xSpacer) / 2;
+  const centerX = ruleBoxX + (boxW - xSpacer) / 2;
   boxY = y + height * 0.125;
-  var shift = littleBoxH/2;
+  const shift = littleBoxH/2;
 
   p5.line(centerX - shift, boxY + shift, centerX + shift, boxY + shift);
   p5.line(centerX - shift, boxY + shift, centerX - 0.7 * shift, boxY + shift - 0.3 * shift );
   p5.line(centerX - shift, boxY + shift, centerX - 0.7 * shift, boxY + shift + 0.3 * shift );
 
   if (standardRule) {
-    var box1X = centerX + littleBoxH;
-    var box2X = centerX - 2*littleBoxH;
+    const box1X = centerX + littleBoxH;
+    const box2X = centerX - 2*littleBoxH;
 
     p5.rect(box1X, boxY,littleBoxH,littleBoxH,5);
     p5.rect(box2X, boxY,littleBoxH,littleBoxH,5);
@@ -573,8 +535,8 @@ function drawRuleButton() {
     p5.ellipse(box2X + shift, boxY + shift, dotSize, dotSize);
   }
   else {
-    var boxes1X = centerX + littleBoxH;
-    var boxes2X = centerX - 3*littleBoxH;
+    const boxes1X = centerX + littleBoxH;
+    const boxes2X = centerX - 3*littleBoxH;
     
     p5.rect(boxes1X, boxY,littleBoxH,littleBoxH,5);  
     p5.rect(boxes1X + littleBoxH, boxY,littleBoxH,littleBoxH,5); 
@@ -601,10 +563,10 @@ function drawRuleButton() {
 
 function drawDotButton() {
   if (!dotButtonOn) return;
-  var y = topBoxesY;
-  var height = endcapH;
-  var x = boxesX;
-  var boxW = boxesW / numBoxes;
+  const y = topBoxesY;
+  const height = endcapH;
+  const x = boxesX;
+  const boxW = boxesW / numBoxes;
 
   p5.push();
 
@@ -625,18 +587,61 @@ function drawDotButton() {
     p5.fill(antidotFill);
   }
 
-  var dotSize = p5.min(dotD, endcapH * 0.75);
+  const dotSize = p5.min(dotD, endcapH * 0.75);
   p5.ellipse(x + boxW * 2/3,y + endcapH/2,dotSize, dotSize);
 
   p5.fill(darkGray);
 
   const t = "Add Dot"
-  var [textX,textY] = centerTextInRect(x, y, boxW - xSpacer, height, t);
+  const [textX,textY] = centerTextInRect(x, y, boxW - xSpacer, height, t);
   p5.text("Add", textX, textY);
 
   p5.pop();
 }
 
+
+////
+// Game state
+////////////////////////////////////////////////////////////////////////////
+
+const DotEnum = Object.freeze({UNDEF : -1, DOT : 0, ANTIDOT : 1});
+
+let base = 2;
+let numBoxes = 6;
+let boxes;
+let dots;
+let currentId = [0, 0, 0];  // the id of the current dot
+let uniqueId = 0;
+let currentSum = 0;
+
+
+
+
+///  Sound file variables
+let addDotSound;
+let annihilateSound;
+const addDotSoundFile = 'https://gist.githubusercontent.com/wildthinkslaboratory/ac98c0bb68ccf7528dc39fa1922d2bdb/raw/bd0a27a5a92c1f904fe0713f6664d9a8b28cb476/Blop-Mark_DiAngelo-79054334.wav';
+const annihilateSoundFile = 'https://gist.githubusercontent.com/wildthinkslaboratory/ac98c0bb68ccf7528dc39fa1922d2bdb/raw/e0ca3e1a7f8393c9c62b56650bb4b1ad01749265/Woosh-Mark_DiAngelo-4778593.wav';
+
+
+
+
+//// 
+// App Restrictions
+////////////////////////////////////////////////////////////////////////////
+
+let negaBinary = false;
+let dotButtonOn = true;
+let ruleButtonOn = negaBinary;
+
+
+
+////
+// Button States
+/////////////////////////////////////////////////////////////////////////////
+
+let addDots = true;
+let standardRule = true;
 
 
 ////
@@ -648,11 +653,11 @@ function drawDotButton() {
 // two opposing dots collide and annihilate
 function dotAnnihilation(id) {
   // look for overlap with an opposing dot in same box
-  var opposing = 1 - id[0];
+  const opposing = 1 - id[0];
   const sourceDot = dots[id[0]].dots[id[1]][id[2]];
   const opposingDots = dots[opposing].dots;
 
-  for (var i=0; i < opposingDots.length; i++) {
+  for (let i=0; i < opposingDots.length; i++) {
     const opposingDot = opposingDots[id[1]][i];
     if (opposingDot && overlap(sourceDot, opposingDot)) {
       deleteDot(id);
@@ -686,22 +691,22 @@ function addDot() {
 // dots explode as they are moved to the left
 function explodeDot(sendingBox, recievingBox) {
   
-  var dotsNeeded = p5.pow(p5.abs(base), recievingBox - sendingBox);
+  const dotsNeeded = p5.pow(p5.abs(base), recievingBox - sendingBox);
 
   if (dots[currentId[0]].dots[sendingBox].length < dotsNeeded) return false;
 
-  var newDot = copyInstance(dots[currentId[0]].dots[currentId[1]][currentId[2]]);
+  let newDot = copyInstance(dots[currentId[0]].dots[currentId[1]][currentId[2]]);
   newDot.box = recievingBox;
 
 
-  var dotArrayID = currentId[0];
+  let dotArrayID = currentId[0];
   if (base < 0) {
     dotArrayID = ((sendingBox - recievingBox) % 2 ? 1 - currentId[0] : currentId[0]);
   }
 
   dots[dotArrayID].pushDot(recievingBox,newDot);   // add this dot to new box
   deleteDot(currentId);                            // remove this dot from it's old box
-  for (var i=0; i < dotsNeeded-1; i++) {           // remove other dots from old box
+  for (let i=0; i < dotsNeeded-1; i++) {           // remove other dots from old box
     dots[currentId[0]].dots[sendingBox].pop();
   }
   return true;
@@ -726,18 +731,18 @@ function negaBinaryRule2(sendingBox, recievingBox) {
 
 function unexplode(sendingBox, recievingBox) {
 
-  var dotsToAdd = p5.pow(p5.abs(base), sendingBox - recievingBox);
-  var newDot = copyInstance(dots[currentId[0]].dots[currentId[1]][currentId[2]]);
+  const dotsToAdd = p5.pow(p5.abs(base), sendingBox - recievingBox);
+  let newDot = copyInstance(dots[currentId[0]].dots[currentId[1]][currentId[2]]);
   newDot.box = recievingBox;
   
-  var dotArrayID = currentId[0];
+  let dotArrayID = currentId[0];
   if (base < 0) {
     dotArrayID = ((sendingBox - recievingBox) % 2 ? 1 - currentId[0] : currentId[0]);
   }
 
   dots[dotArrayID].pushDot(recievingBox,newDot);   // add this dot to new box
   deleteDot(currentId);                            // remove this dot from it's old box  
-  for (var i=0; i < dotsToAdd-1; i++) {           // remove other dots from old box
+  for (let i=0; i < dotsToAdd-1; i++) {           // remove other dots from old box
     dots[dotArrayID].addDot(p5.mouseX + randomJiggle(dotD), p5.mouseY + randomJiggle(dotD), recievingBox);
   }
 }
@@ -774,7 +779,7 @@ function deleteDot(dotID) {
 // a dot has been dragged, find out if it's moved to a new box
 function getSendingAndRecievingBox() {
   if (currentId[0] !== DotEnum.UNDEF) {  
-    var current_dot = dots[currentId[0]].dots[currentId[1]][currentId[2]];
+    const current_dot = dots[currentId[0]].dots[currentId[1]][currentId[2]];
     const {x, y} = current_dot.getPosition();
     return [current_dot.box, boxes.getBoxID(x,y)];
   }
@@ -786,8 +791,8 @@ function getSendingAndRecievingBox() {
 function toggleDot(dotID) {
     const arrayId = dotID[0];
     const toggleArrayId = (arrayId === 0 ? 1 : 0);
-    var current_dot = dots[arrayId].dots[dotID[1]][dotID[2]];
-    var newDot = copyInstance(current_dot);
+    const current_dot = dots[arrayId].dots[dotID[1]][dotID[2]];
+    let newDot = copyInstance(current_dot);
 
     dots[toggleArrayId].pushDot(current_dot.box,newDot);
 
@@ -821,7 +826,7 @@ function mouseOnRuleButton() {
 
 // Is the mouse in the spacers between the boxes
 // assumes the mouse isn't in a box
-var mouseInSpacers = function() {
+function mouseInSpacers() {
   if (p5.mouseX < boxesX || p5.mouseX > boxesX + boxesW) return false;
   if (p5.mouseY < boxesY || p5.mouseY > boxesY + boxesH) return false;
   return true;
@@ -837,9 +842,9 @@ function mouseOnBoxes() {
 
 function mouseOnDot() {
   // check the dots
-  for (var n=0; n < dots.length; n++) {
-    for (var i=0; i < dots[n].dots.length; i++) {
-      for (var j=0; j < dots[n].dots[i].length; j++) {
+  for (let n=0; n < dots.length; n++) {
+    for (let i=0; i < dots[n].dots.length; i++) {
+      for (let j=0; j < dots[n].dots[i].length; j++) {
         const dot = dots[n].dots[i][j];
         const { x, y } = dot.getPosition();
         const dist = p5.dist(p5.mouseX, p5.mouseY, x, y);
@@ -971,8 +976,8 @@ function windowResized(width,height)
   
   boxTextSize = boxesH * 0.5;
   
-  var boxW = boxesW / numBoxes - ySpacer;
-  var t = '-' + p5.abs(p5.pow(base,numBoxes-1)).toString();
+  const boxW = boxesW / numBoxes - ySpacer;
+  const t = '-' + p5.abs(p5.pow(base,numBoxes-1)).toString();
   p5.push();
   p5.textSize(boxTextSize);
   while (p5.textWidth(t) > boxW) {
@@ -1027,7 +1032,7 @@ function setup(playableP5, b, n) {
   } else if (typeof exports !== 'undefined') {
     factory(exports);
   } else {
-    var mod = {
+    let mod = {
       exports: {}
     };
     factory(mod.exports);
