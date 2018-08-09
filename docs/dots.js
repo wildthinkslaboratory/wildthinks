@@ -222,7 +222,8 @@ class DotArray {
   addDot(x, y, box) {
     const [snappedX,snappedY] = this.snapToBox(x, y, box);
     this.dots[box].push(new Dot(snappedX, snappedY, box));
-    addDotSound.play();
+    if (!addDotSound === null) { addDotSound.play(); }
+
   }
 
   pushDot(boxID,dot) {
@@ -610,7 +611,7 @@ let base = 2;
 let numBoxes = 6;
 let boxes;
 let dots;
-let currentId = [0, 0, 0];  // the id of the current dot
+let currentId = [DotEnum.UNDEF, 0, 0];  // the id of the current dot
 let uniqueId = 0;
 let currentSum = 0;
 
@@ -633,6 +634,8 @@ const annihilateSoundFile = 'https://gist.githubusercontent.com/wildthinkslabora
 let negaBinary = false;
 let dotButtonOn = true;
 let ruleButtonOn = negaBinary;
+let addDotsAllowed = true;
+let removeDotsAllowed = true;
 
 
 
@@ -865,6 +868,7 @@ function mouseOnDot() {
 /////////////////////////////////////////////////////////////////////////////////
 function mouseReleased() {
   if (mouseOnBoxes() && currentId && currentId[0] !== DotEnum.UNDEF) {  // this is the end of a drag event
+
     [sendingBox, recievingBox] = getSendingAndRecievingBox();
     
     if (recievingBox === sendingBox) {            // drag within a box
@@ -897,7 +901,11 @@ function mouseReleased() {
     }
     else {                                        // out of the boxes
       if(mouseOnDot()) {
-        deleteDot(currentId);
+        if (removeDotsAllowed) { 
+          deleteDot(currentId); 
+          currentId = [DotEnum.UNDEF,-1,-1];
+        }
+        else { resetDotPosition(currentId); }
       }
     }
   }
@@ -910,14 +918,12 @@ function mousePressed()
   if (mouseOnDotButton()) {  addDots = !addDots;  }
   if (mouseOnRuleButton()) {  standardRule = !standardRule;  }
 
-  if (mouseOnBoxes()) {
-    if (!mouseOnDot()) {
-      if (addDots) {
-        addDot();
-      }
-      else {
-        addAntidot();
-      }
+  if (mouseOnBoxes() && !mouseOnDot() && addDotsAllowed) {
+    if (addDots) {
+      addDot();
+    }
+    else {
+      addAntidot();
     }
   }
 };
@@ -1023,6 +1029,25 @@ function setup(playableP5, b, n) {
   if (numBoxes < 4) ruleButonOn = false;
 }
 
+function turnOffAddDotButton() {  dotButtonOn = false; }
+
+function turnOffRuleButton() {  ruleButtonOn = false; }
+
+function allowAddDots(b) { addDotsAllowed = b; }
+
+function allowRemoveDots(b) { removeDotsAllowed = b; }
+
+function addDotsToBox(numberOfDots, dotType, box) {
+  const dotArrayID = dotType;
+  if (dotArrayID > 1) dotArrayID = 1;
+  for (let i=0; i < numberOfDots; i++) {   
+    const boxW = boxesW/numBoxes;        
+    const x = boxesX + (numBoxes - box - 1)* boxW + boxW/2;
+    const y = boxesY + (boxesH/2);
+    dots[1-dotArrayID].addDot(x + randomJiggle(dotD), y + randomJiggle(dotD), box);
+  }
+
+}
 
 ///////////////////////////////////////////////////////////////////////////////////////
 
@@ -1049,6 +1074,11 @@ function setup(playableP5, b, n) {
   exports.mouseDragged = mouseDragged;
   exports.mousePressed = mousePressed;
   exports.mouseReleased = mouseReleased;
+  exports.turnOffAddDotButton = turnOffAddDotButton;
+  exports.turnOffRuleButton = turnOffRuleButton;
+  exports.allowAddDots = allowAddDots;
+  exports.allowRemoveDots = allowRemoveDots;
+  exports.addDotsToBox = addDotsToBox;
 });
 
 
