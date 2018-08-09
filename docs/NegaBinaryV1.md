@@ -22,7 +22,7 @@
 ```p5js/playable/autoplay
 /*//smartdown.import=http://127.0.0.1:5555/dots.js*/
 
-//smartdown.import=https://raw.githubusercontent.com/wildthinkslaboratory/wildthinks/master/docs/dots.js?token=AfXFVtIYDI3EmFNt695SHVJICTet-nL-ks5bdQKuwA%3D%3D
+//smartdown.import=https://wildthinkslaboratory.github.io/wildthinks/dots.js
 
 const bgURL = 'https://gist.githubusercontent.com/wildthinkslaboratory/ac98c0bb68ccf7528dc39fa1922d2bdb/raw/a813f0d1c5d0108a8b923ce73dd17ebddc692972/ExpDotsBackground.001.jpeg';
 
