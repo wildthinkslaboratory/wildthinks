@@ -6,10 +6,6 @@
 
 ---
 
-So today I'm just testing out the library.  So we'll begin with a base 4 machine with 3 boxes.
-
-#### Let's write all of the integers, both positive and negative without any negative signs using just the symbols 0 and 1.
-
 ---
 
 ## Negative Binary Instructions
@@ -23,7 +19,7 @@ So today I'm just testing out the library.  So we'll begin with a base 4 machine
 - Toggle the Rule button to switch between the | $1$ | $1$ | $\longleftarrow$ | $0$ | $-1$ | rule and the standard $-1 \longleftarrow 2$ rule.
 
 
-```p5js/playable
+```p5js/playable/autoplay
 //smartdown.import=http://127.0.0.1:5555/dots.js
 
 const bgURL = 'https://gist.githubusercontent.com/wildthinkslaboratory/ac98c0bb68ccf7528dc39fa1922d2bdb/raw/a813f0d1c5d0108a8b923ce73dd17ebddc692972/ExpDotsBackground.001.jpeg';
