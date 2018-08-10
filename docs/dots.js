@@ -117,14 +117,6 @@ function randomJiggle(amount) {
 
 
 
-function nextId() {        // get the next dot ID
-  let i = uniqueId;
-  uniqueId += 1;
-  return i;
-}
-
-
-
 ///
 // Dot class
 //////////////////////////////////////////////////////////////////////////////
@@ -138,8 +130,9 @@ class Dot {
     this.ry = ry;
     this.oldx = rx;             // it remembers it's old position before being dragged
     this.oldy = ry;
-    this.box = box;            // it knows what box it's in
-    this.id = nextId();        // each dot has a unique id
+    this.box = box;             // it knows what box it's in
+    this.id = Dot.uniqueId;     // each dot has a unique id
+    Dot.uniqueId += 1;
   }
 
   getPosition() {
@@ -154,6 +147,7 @@ class Dot {
 
 }
 
+Dot.uniqueId = 0;
 
 function overlap(d1, d2) {
   let result = false;
@@ -653,7 +647,6 @@ let numBoxes = 6;
 let boxes;
 let dots;
 let currentId = [DotEnum.UNDEF, 0, 0];  // the id of the current dot
-let uniqueId = 0;
 let currentSum = 0;
 let rc;
 
