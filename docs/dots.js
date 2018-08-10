@@ -307,8 +307,7 @@ class Boxes {
       else {
         // It is in a box's zone, but might be in the spacer.
         const boxId = p5.floor((rightX - x) / this.width);
-        const boxWidth = boxesW / numBoxes;
-        const boxLeft = this.x + (numBoxes - boxId - 1) * boxWidth;
+        const boxLeft = this.x + (this.numBoxes - boxId - 1) * this.width;
         const boxRight = boxLeft + boxWidth - xSpacer;
 
         if (x < boxLeft || x > boxRight) {
@@ -601,11 +600,21 @@ function drawDotButton() {
 }
 
 
+///  Sound file variables
+let addDotSound;
+let annihilateSound;
+const addDotSoundFile = 'https://gist.githubusercontent.com/wildthinkslaboratory/ac98c0bb68ccf7528dc39fa1922d2bdb/raw/bd0a27a5a92c1f904fe0713f6664d9a8b28cb476/Blop-Mark_DiAngelo-79054334.wav';
+const annihilateSoundFile = 'https://gist.githubusercontent.com/wildthinkslaboratory/ac98c0bb68ccf7528dc39fa1922d2bdb/raw/e0ca3e1a7f8393c9c62b56650bb4b1ad01749265/Woosh-Mark_DiAngelo-4778593.wav';
+
+
 ////
 // Game state
 ////////////////////////////////////////////////////////////////////////////
 
 const DotEnum = Object.freeze({UNDEF : -1, DOT : 0, ANTIDOT : 1});
+
+
+
 
 let base = 2;
 let numBoxes = 6;
@@ -614,18 +623,6 @@ let dots;
 let currentId = [DotEnum.UNDEF, 0, 0];  // the id of the current dot
 let uniqueId = 0;
 let currentSum = 0;
-
-
-
-
-///  Sound file variables
-let addDotSound;
-let annihilateSound;
-const addDotSoundFile = 'https://gist.githubusercontent.com/wildthinkslaboratory/ac98c0bb68ccf7528dc39fa1922d2bdb/raw/bd0a27a5a92c1f904fe0713f6664d9a8b28cb476/Blop-Mark_DiAngelo-79054334.wav';
-const annihilateSoundFile = 'https://gist.githubusercontent.com/wildthinkslaboratory/ac98c0bb68ccf7528dc39fa1922d2bdb/raw/e0ca3e1a7f8393c9c62b56650bb4b1ad01749265/Woosh-Mark_DiAngelo-4778593.wav';
-
-
-
 
 //// 
 // App Restrictions
