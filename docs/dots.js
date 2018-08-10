@@ -56,6 +56,15 @@ function copyInstance (original) {
 
 const DotEnum = Object.freeze({UNDEF : -1, DOT : 0, ANTIDOT : 1});
 
+
+///  Sound file variables
+let addDotSound;
+let annihilateSound;
+const addDotSoundFile = 'https://gist.githubusercontent.com/wildthinkslaboratory/ac98c0bb68ccf7528dc39fa1922d2bdb/raw/bd0a27a5a92c1f904fe0713f6664d9a8b28cb476/Blop-Mark_DiAngelo-79054334.wav';
+const annihilateSoundFile = 'https://gist.githubusercontent.com/wildthinkslaboratory/ac98c0bb68ccf7528dc39fa1922d2bdb/raw/e0ca3e1a7f8393c9c62b56650bb4b1ad01749265/Woosh-Mark_DiAngelo-4778593.wav';
+
+
+
 ////
 // Coordinate transforms between box-relative and canvas-relative
 // Convention: (x, y) are canvas coordinates. (rx, ry) are box coordinates
@@ -124,8 +133,8 @@ function randomJiggle(amount) {
 
 
 class Dot {
-  constructor(x, y, box) {
-    const {rx, ry} = rc.getBoxRelativePos(x, y, box);
+  constructor(x, y, box, relCoord) {
+    const {rx, ry} = relCoord.getBoxRelativePos(x, y, box);
     this.rx = rx;                // a dot knows it's position
     this.ry = ry;
     this.oldx = rx;             // it remembers it's old position before being dragged
@@ -133,14 +142,15 @@ class Dot {
     this.box = box;             // it knows what box it's in
     this.id = Dot.uniqueId;     // each dot has a unique id
     Dot.uniqueId += 1;
+    this.relativeCoordinates = relCoord;
   }
 
   getPosition() {
-    return rc.getCanvasRelativePos(this.rx, this.ry);
+    return relativeCoordinates.getCanvasRelativePos(this.rx, this.ry);
   }
 
   setPosition(x,y) {
-      const { rx, ry } = rc.getBoxRelativePos(x,y);
+      const { rx, ry } = relativeCoordinates.getBoxRelativePos(x,y);
       this.rx = rx;  
       this.ry = ry;
   }
@@ -595,13 +605,6 @@ function drawDotButton() {
 
   p5.pop();
 }
-
-
-///  Sound file variables
-let addDotSound;
-let annihilateSound;
-const addDotSoundFile = 'https://gist.githubusercontent.com/wildthinkslaboratory/ac98c0bb68ccf7528dc39fa1922d2bdb/raw/bd0a27a5a92c1f904fe0713f6664d9a8b28cb476/Blop-Mark_DiAngelo-79054334.wav';
-const annihilateSoundFile = 'https://gist.githubusercontent.com/wildthinkslaboratory/ac98c0bb68ccf7528dc39fa1922d2bdb/raw/e0ca3e1a7f8393c9c62b56650bb4b1ad01749265/Woosh-Mark_DiAngelo-4778593.wav';
 
 
 ////
