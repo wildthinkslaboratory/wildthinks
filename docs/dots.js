@@ -63,6 +63,7 @@ let annihilateSound;
 const addDotSoundFile = 'https://gist.githubusercontent.com/wildthinkslaboratory/ac98c0bb68ccf7528dc39fa1922d2bdb/raw/bd0a27a5a92c1f904fe0713f6664d9a8b28cb476/Blop-Mark_DiAngelo-79054334.wav';
 const annihilateSoundFile = 'https://gist.githubusercontent.com/wildthinkslaboratory/ac98c0bb68ccf7528dc39fa1922d2bdb/raw/e0ca3e1a7f8393c9c62b56650bb4b1ad01749265/Woosh-Mark_DiAngelo-4778593.wav';
 
+const xSpacer = 10;  // how much space between the boxes
 
 
 ////
@@ -276,20 +277,22 @@ class DotArray {
 ///////////////////////////////////////////////////////////////////////////
 
 class Boxes {
-  constructor(base, numberBoxes, x, y, boxesWidth, boxHeight) {
+  constructor(base, numberBoxes, x, y, boxesWidth, boxHeight, textBoxSize) {
     this.base = base;
     this.numberBoxes = numberBoxes;
     this.x = x;
     this.y = y;
     this.height = boxHeight;
     this.width = boxesWidth/numberBoxes;
+    this.textBoxSize = textBoxSize;
   }
 
-  updateSize(boxesX, boxesY, boxesWidth, boxHeight) {
+  updateSize(boxesX, boxesY, boxesWidth, boxHeight, textBoxSize) {
     this.height = boxHeight;
     this.width = boxesWidth/this.numberBoxes;
     this.x = boxesX;
     this.y = boxesY;
+    this.textBoxSize = textBoxSize;
   }
 
   in(x, y) {
@@ -333,22 +336,20 @@ class Boxes {
 
   draw() {
     p5.push();
-    const x = boxesX;
-    const y = boxesY;
     p5.noStroke();
     p5.fill(boxFill);
     for (let i=0; i < this.numberBoxes; i++) {
-      p5.rect(x + i*this.width, y , this.width - xSpacer, this.height, 20);
+      p5.rect(this.x + i*this.width, this.y , this.width - xSpacer, this.height, 20);
     }
 
     p5.noStroke();
     p5.fill(boxStroke);
-    p5.textSize(boxTextSize);
+    p5.textSize(this.boxTextSize);
     for (let i=0; i < this.numberBoxes; i++) {
       const t = p5.pow(this.base, this.numberBoxes - i - 1).toString();
 
 
-      const [textX,textY] = centerTextInRect(x + i*this.width, y , this.width - xSpacer, this.height,t);
+      const [textX,textY] = centerTextInRect(this.x + i*this.width, this.y , this.width - xSpacer, this.height,t);
       p5.text(t, textX, textY);
     }
     p5.pop();
@@ -373,7 +374,6 @@ let boxesX;
 let boxesY;
 let endcapH;
 let dotD;     // dot diameter
-let xSpacer = 10;  // how much space between the boxes
 let marginX;
 let marginY;
 let boxTextSize;
@@ -1025,7 +1025,7 @@ function windowResized(width,height)
   ruleBoxX = boxesX + boxWidth;
 
 
-  boxes.updateSize(boxesX, boxesY, boxesW, boxesH);
+  boxes.updateSize(boxesX, boxesY, boxesW, boxesH, textBoxSize);
   rc.updateCanvasDimensions(boxesX,boxesY,boxesW/numBoxes,boxesH);
 };
 
@@ -1048,7 +1048,7 @@ function setup(playableP5, b, n) {
     console.log("turned on ruleButtonOn");
   }
 
-  boxes = new Boxes(base, numBoxes, boxesX, boxesY, boxesW, boxesH);
+  boxes = new Boxes(base, numBoxes, boxesX, boxesY, boxesW, boxesH, textBoxSize);
   dots = [];
   dots.push(new DotArray(numBoxes, dotFill, dotStroke));
   dots.push(new DotArray(numBoxes, antidotFill, antidotStroke));
