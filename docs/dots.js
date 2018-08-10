@@ -54,44 +54,44 @@ function copyInstance (original) {
 }
 
 
-
+const DotEnum = Object.freeze({UNDEF : -1, DOT : 0, ANTIDOT : 1});
 
 ////
 // Coordinate transforms between box-relative and canvas-relative
 // Convention: (x, y) are canvas coordinates. (rx, ry) are box coordinates
 //////////////////////////////////////////////////////////////////////////////
 
-let boxX = 0;        // these varaibles are local to these functions 
-let boxY = 0;        // and only updated through the updateCanvasDimensions function
-let boxWidth = 0;
-let boxHeight = 0;
+function RelativeCoordinates() {
 
-function updateCanvasDimensions(x,y,width,height) {
-  boxX = x;
-  boxY = y;
-  boxWidth = width;
-  boxHeight = height;
-}
+  let boxX = 0;        // these varaibles are local to these functions 
+  let boxY = 0;        // and only updated through the updateCanvasDimensions function
+  let boxWidth = 0;
+  let boxHeight = 0;
 
-function getCanvasRelativePos(rx, ry) {
-  const result = {
-    x: rx * boxWidth + boxX,
-    y: ry * boxHeight + boxY
+  this.updateCanvasDimensions = function(x,y,width,height) {
+    boxX = x;
+    boxY = y;
+    boxWidth = width;
+    boxHeight = height;
   }
-  return result;
+
+  this.getCanvasRelativePos = function(rx, ry) {
+    const result = {
+      x: rx * boxWidth + boxX,
+      y: ry * boxHeight + boxY
+    }
+    return result;
+  }
+
+  this.getBoxRelativePos = function(x, y) {
+    const result = {
+      rx: (x - boxX) / boxWidth,
+      ry: (y - boxY) / boxHeight
+    };
+
+    return result;
+  }
 }
-
-function getBoxRelativePos(x, y) {
-  const result = {
-    rx: (x - boxX) / boxWidth,
-    ry: (y - boxY) / boxHeight
-  };
-
-  return result;
-}
-
-
-
 
 
 ////
@@ -117,10 +117,6 @@ function randomJiggle(amount) {
 
 
 
-///
-// Dot class
-//////////////////////////////////////////////////////////////////////////////
-
 function nextId() {        // get the next dot ID
   let i = uniqueId;
   uniqueId += 1;
@@ -128,9 +124,16 @@ function nextId() {        // get the next dot ID
 }
 
 
+
+///
+// Dot class
+//////////////////////////////////////////////////////////////////////////////
+
+
+
 class Dot {
   constructor(x, y, box) {
-    const {rx, ry} = getBoxRelativePos(x, y, box);
+    const {rx, ry} = rc.getBoxRelativePos(x, y, box);
     this.rx = rx;                // a dot knows it's position
     this.ry = ry;
     this.oldx = rx;             // it remembers it's old position before being dragged
@@ -140,11 +143,11 @@ class Dot {
   }
 
   getPosition() {
-    return getCanvasRelativePos(this.rx, this.ry);
+    return rc.getCanvasRelativePos(this.rx, this.ry);
   }
 
   setPosition(x,y) {
-      const { rx, ry } = getBoxRelativePos(x,y);
+      const { rx, ry } = rc.getBoxRelativePos(x,y);
       this.rx = rx;  
       this.ry = ry;
   }
@@ -230,7 +233,7 @@ class DotArray {
 
     const {x, y} = dot.getPosition();
     const [snappedX, snappedY] = this.snapToBox(x,y, dot.box);
-    const {rx, ry} = getBoxRelativePos(snappedX, snappedY);
+    const {rx, ry} = rc.getBoxRelativePos(snappedX, snappedY);
 
     dot.rx = rx;
     dot.ry = ry;
@@ -242,7 +245,7 @@ class DotArray {
 
     const {x, y} = dot.getPosition();
     const [snappedX, snappedY] = this.snapToBox(x,y, dot.box);
-    const {rx, ry} = getBoxRelativePos(snappedX, snappedY);
+    const {rx, ry} = rc.getBoxRelativePos(snappedX, snappedY);
 
     dot.rx = rx;
     dot.ry = ry;
@@ -308,7 +311,7 @@ class Boxes {
         // It is in a box's zone, but might be in the spacer.
         const boxId = p5.floor((rightX - x) / this.width);
         const boxLeft = this.x + (this.numBoxes - boxId - 1) * this.width;
-        const boxRight = boxLeft + boxWidth - xSpacer;
+        const boxRight = boxLeft + this.width - xSpacer;
 
         if (x < boxLeft || x > boxRight) {
           p5.rect(boxLeft, y, (boxRight - boxLeft), 10);
@@ -423,7 +426,7 @@ function drawCodeBoxes() {
 
 
 
-function drawValueBoxes() {
+function drawValueBoxes(b) {
   const x = boxesX;
   const y = valueBoxesY;
   const width = boxesW / numBoxes;
@@ -443,8 +446,8 @@ function drawValueBoxes() {
 
   currentSum = 0;
   for (let i = 0; i < numBoxes; i++) {
-    let value = dots[0].dots[i].length * p5.pow(base, i);
-    value -= dots[1].dots[i].length * p5.pow(base, i);
+    let value = dots[0].dots[i].length * p5.pow(b, i);
+    value -= dots[1].dots[i].length * p5.pow(b, i);
     currentSum += value;
     const t = value.toString();
  
@@ -611,9 +614,38 @@ const annihilateSoundFile = 'https://gist.githubusercontent.com/wildthinkslabora
 // Game state
 ////////////////////////////////////////////////////////////////////////////
 
-const DotEnum = Object.freeze({UNDEF : -1, DOT : 0, ANTIDOT : 1});
 
 
+/*class DotBoxes {
+  constructor(playableP5, base, numberBoxes) {
+    this.base = base;
+    this.numBoxes = numberBoxes;
+    this.negaBinary = false;
+    this.ruleButtonOn = true;
+    this.dotButtonOn = true;
+    this.addDotsAllowed = true;
+    this.removeDotsAllowed = true;
+    this.addDots = true;              // Button State: true ? add dots : add antidots
+    this.standardRule = true;         // Button State: true ? standard rule :  | 1 | 1 | <- | 0 |-1 | rule
+
+    if (base === -2) {
+      this.negaBinary = true;
+      this.ruleButtonOn = true;
+    }
+    if (numberBoxes < 4) this.ruleButtonOn = false;
+
+    this.currentId = [DotEnum.UNDEF, 0, 0];  // the id of the current dot
+    this.uniqueId = 0;
+    this.currentSum = 0;
+
+
+    this.boxes = new Boxes(base, numberBoxes, boxesX, boxesY, boxesW, boxesH);
+    this.dots = [];
+    this.dots.push(new DotArray(numberBoxes, dotFill, dotStroke));
+    this.dots.push(new DotArray(numberBoxes, antidotFill, antidotStroke));
+  }
+}
+*/
 
 
 let base = 2;
@@ -623,6 +655,7 @@ let dots;
 let currentId = [DotEnum.UNDEF, 0, 0];  // the id of the current dot
 let uniqueId = 0;
 let currentSum = 0;
+let rc;
 
 //// 
 // App Restrictions
@@ -943,7 +976,7 @@ function draw()
   boxes.draw();
   dots[0].draw();
   dots[1].draw();
-  drawValueBoxes();
+  drawValueBoxes(base);
   drawCodeBoxes();
   drawSummaryBox();
   drawDotButton();
@@ -997,7 +1030,7 @@ function windowResized(width,height)
 
 
   boxes.updateSize(boxesX, boxesY, boxesW, boxesH);
-  updateCanvasDimensions(boxesX,boxesY,boxesW/numBoxes,boxesH);
+  rc.updateCanvasDimensions(boxesX,boxesY,boxesW/numBoxes,boxesH);
 };
 
 
@@ -1024,6 +1057,7 @@ function setup(playableP5, b, n) {
   dots.push(new DotArray(numBoxes, dotFill, dotStroke));
   dots.push(new DotArray(numBoxes, antidotFill, antidotStroke));
   if (numBoxes < 4) ruleButonOn = false;
+  rc = new RelativeCoordinates();
 }
 
 function turnOffAddDotButton() {  dotButtonOn = false; }
