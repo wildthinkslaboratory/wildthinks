@@ -20,9 +20,9 @@
 
 
 ```p5js/playable/autoplay
-/*//smartdown.import=http://127.0.0.1:5555/dots.js */
+//smartdown.import=http://127.0.0.1:5555/dots.js 
 
-//smartdown.import=https://wildthinkslaboratory.github.io/wildthinks/dots.js
+/*//smartdown.import=https://wildthinkslaboratory.github.io/wildthinks/dots.js */
 
 const bgURL = 'https://gist.githubusercontent.com/wildthinkslaboratory/ac98c0bb68ccf7528dc39fa1922d2bdb/raw/a813f0d1c5d0108a8b923ce73dd17ebddc692972/ExpDotsBackground.001.jpeg';
 
@@ -44,6 +44,10 @@ myDiv.style.border = '5px solid gray';
 
 const base = -2;
 const numberBoxes = 5;
+
+var dl = new dotlib.Dots();
+
+console.log("this.dotlib", dotlib);
 
 p5.setup = function() {
 
