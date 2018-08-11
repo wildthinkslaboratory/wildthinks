@@ -111,25 +111,27 @@ class Dot {
       this.ry = ry;
   }
 
+  overlap(d2) {
+    let result = false;
+
+    if (this.box === d2.box) {
+      const c1 = this.getPosition();
+      const c2 = d2.getPosition();
+      const dist = p5.dist(c1.x,c1.y,c2.x, c2.y);
+      if (dist < this.boxes.dotDiameter) {
+        result = true;
+      }
+    }
+
+    return result;
+  }
+
+
 }
 
 Dot.uniqueId = 0;
 
 
-function overlap(d1, d2) {
-  let result = false;
-
-  if (d1.box === d2.box) {
-    const c1 = d1.getPosition();
-    const c2 = d2.getPosition();
-    const dist = p5.dist(c1.x,c1.y,c2.x, c2.y);
-    if (dist < dotD) {
-      result = true;
-    }
-  }
-
-  return result;
-}
 
 
 
@@ -157,6 +159,7 @@ class DotArray {
         const dot = this.dots[i][j];
         const {x, y} = dot.getPosition();
         if (boxes.in(x, y)) { // this line shouldn't be here need to fix
+          const dotD = this.boxes.dotDiameter;
           p5.ellipse(x, y, dotD, dotD);
         }
       }
@@ -234,7 +237,7 @@ class DotArray {
 ///////////////////////////////////////////////////////////////////////////
 
 class Boxes {
-  constructor(base, numberBoxes, x, y, boxesWidth, boxHeight, boxTextSize, xSpacer) {
+  constructor(base, numberBoxes, x, y, boxesWidth, boxHeight, boxTextSize, xSpacer, dotDiameter) {
     this.base = base;
     this.numberBoxes = numberBoxes;
     this.x = x;
@@ -243,15 +246,17 @@ class Boxes {
     this.width = boxesWidth/numberBoxes;
     this.boxTextSize = boxTextSize;
     this.xSpacer = xSpacer;
+    this.dotDiameter = dotDiameter;
   }
 
-  updateSize(boxesX, boxesY, boxesWidth, boxHeight, boxTextSize, xSpacer) {
+  updateSize(boxesX, boxesY, boxesWidth, boxHeight, boxTextSize, xSpacer, dotDiameter) {
     this.height = boxHeight;
     this.width = boxesWidth/this.numberBoxes;
     this.x = boxesX;
     this.y = boxesY;
     this.boxTextSize = boxTextSize;
     this.xSpacer = xSpacer;
+    this.dotDiameter = dotDiameter;
   }
 
   in(x, y) {
@@ -648,7 +653,7 @@ function dotAnnihilation(id) {
 
   for (let i=0; i < opposingDots.length; i++) {
     const opposingDot = opposingDots[id[1]][i];
-    if (opposingDot && overlap(sourceDot, opposingDot)) {
+    if (opposingDot && sourceDot.overlap(opposingDot)) {
       deleteDot(id);
       deleteDot([opposing,id[1],i]);
       annihilateSound.play();
@@ -985,7 +990,7 @@ function windowResized(width,height)
   ruleBoxX = boxesX + boxWidth;
 
 
-  boxes.updateSize(boxesX, boxesY, boxesW, boxesH, boxTextSize, xSpacer);
+  boxes.updateSize(boxesX, boxesY, boxesW, boxesH, boxTextSize, xSpacer, dotD);
 };
 
 
@@ -1007,7 +1012,7 @@ function setup(playableP5, b, n) {
     console.log("turned on ruleButtonOn");
   }
 
-  boxes = new Boxes(base, numBoxes, boxesX, boxesY, boxesW, boxesH, boxTextSize, xSpacer);
+  boxes = new Boxes(base, numBoxes, boxesX, boxesY, boxesW, boxesH, boxTextSize, xSpacer,dotD);
   dots = [];
   dots.push(new DotArray(numBoxes, dotFill, dotStroke, boxes));
   dots.push(new DotArray(numBoxes, antidotFill, antidotStroke, boxes));
