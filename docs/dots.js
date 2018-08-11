@@ -56,40 +56,6 @@ function copyInstance (original) {
 
 
 
-////
-// Coordinate transforms between box-relative and canvas-relative
-// Convention: (x, y) are canvas coordinates. (rx, ry) are box coordinates
-//////////////////////////////////////////////////////////////////////////////
-
-let boxX = 0;        // these varaibles are local to these functions 
-let boxY = 0;        // and only updated through the updateCanvasDimensions function
-let boxWidth = 0;
-let boxHeight = 0;
-
-function updateCanvasDimensions(x,y,width,height) {
-  boxX = x;
-  boxY = y;
-  boxWidth = width;
-  boxHeight = height;
-}
-
-function getCanvasRelativePos(rx, ry) {
-  const result = {
-    x: rx * boxWidth + boxX,
-    y: ry * boxHeight + boxY
-  }
-  return result;
-}
-
-function getBoxRelativePos(x, y) {
-  const result = {
-    rx: (x - boxX) / boxWidth,
-    ry: (y - boxY) / boxHeight
-  };
-
-  return result;
-}
-
 
 
 
@@ -121,35 +87,33 @@ function randomJiggle(amount) {
 // Dot class
 //////////////////////////////////////////////////////////////////////////////
 
-function nextId() {        // get the next dot ID
-  let i = uniqueId;
-  uniqueId += 1;
-  return i;
-}
-
 
 class Dot {
-  constructor(x, y, box) {
-    const {rx, ry} = getBoxRelativePos(x, y, box);
+  constructor(x, y, box, boxes) {
+    const {rx, ry} = boxes.getBoxRelativePos(x, y, box);
     this.rx = rx;                // a dot knows it's position
     this.ry = ry;
     this.oldx = rx;             // it remembers it's old position before being dragged
     this.oldy = ry;
     this.box = box;            // it knows what box it's in
-    this.id = nextId();        // each dot has a unique id
+    this.id = Dot.uniqueId;        // each dot has a unique id
+    Dot.uniqueId += 1;
+    this.boxes = boxes;
   }
 
   getPosition() {
-    return getCanvasRelativePos(this.rx, this.ry);
+    return this.boxes.getCanvasRelativePos(this.rx, this.ry);
   }
 
   setPosition(x,y) {
-      const { rx, ry } = getBoxRelativePos(x,y);
+      const { rx, ry } = this.boxes.getBoxRelativePos(x,y);
       this.rx = rx;  
       this.ry = ry;
   }
 
 }
+
+Dot.uniqueId = 0;
 
 
 function overlap(d1, d2) {
@@ -174,13 +138,14 @@ function overlap(d1, d2) {
 //////////////////////////////////////////////////////////////////////////////
 
 class DotArray {
-  constructor(size, fillColor, strokeColor) {
+  constructor(size, fillColor, strokeColor, boxes) {
     this.dots = [];
     for (let i = 0; i < size; i++) {
       this.dots[i] = [];
     }
     this.f = fillColor;
     this.s = strokeColor;
+    this.boxes = boxes;
   }
 
   draw() {
@@ -221,7 +186,7 @@ class DotArray {
 
   addDot(x, y, box) {
     const [snappedX,snappedY] = this.snapToBox(x, y, box);
-    this.dots[box].push(new Dot(snappedX, snappedY, box));
+    this.dots[box].push(new Dot(snappedX, snappedY, box, boxes));
     if (!addDotSound === null) { addDotSound.play(); }
 
   }
@@ -230,7 +195,7 @@ class DotArray {
 
     const {x, y} = dot.getPosition();
     const [snappedX, snappedY] = this.snapToBox(x,y, dot.box);
-    const {rx, ry} = getBoxRelativePos(snappedX, snappedY);
+    const {rx, ry} = this.boxes.getBoxRelativePos(snappedX, snappedY);
 
     dot.rx = rx;
     dot.ry = ry;
@@ -242,7 +207,7 @@ class DotArray {
 
     const {x, y} = dot.getPosition();
     const [snappedX, snappedY] = this.snapToBox(x,y, dot.box);
-    const {rx, ry} = getBoxRelativePos(snappedX, snappedY);
+    const {rx, ry} = this.boxes.getBoxRelativePos(snappedX, snappedY);
 
     dot.rx = rx;
     dot.ry = ry;
@@ -269,20 +234,24 @@ class DotArray {
 ///////////////////////////////////////////////////////////////////////////
 
 class Boxes {
-  constructor(base, numberBoxes, x, y, boxesWidth, boxHeight) {
+  constructor(base, numberBoxes, x, y, boxesWidth, boxHeight, boxTextSize, xSpacer) {
     this.base = base;
     this.numberBoxes = numberBoxes;
     this.x = x;
     this.y = y;
     this.height = boxHeight;
     this.width = boxesWidth/numberBoxes;
+    this.boxTextSize = boxTextSize;
+    this.xSpacer = xSpacer;
   }
 
-  updateSize(boxesX, boxesY, boxesWidth, boxHeight) {
+  updateSize(boxesX, boxesY, boxesWidth, boxHeight, boxTextSize, xSpacer) {
     this.height = boxHeight;
     this.width = boxesWidth/this.numberBoxes;
     this.x = boxesX;
     this.y = boxesY;
+    this.boxTextSize = boxTextSize;
+    this.xSpacer = xSpacer;
   }
 
   in(x, y) {
@@ -307,8 +276,8 @@ class Boxes {
       else {
         // It is in a box's zone, but might be in the spacer.
         const boxId = p5.floor((rightX - x) / this.width);
-        const boxLeft = this.x + (this.numBoxes - boxId - 1) * this.width;
-        const boxRight = boxLeft + boxWidth - xSpacer;
+        const boxLeft = this.x + (this.numberBoxes - boxId - 1) * this.width;
+        const boxRight = boxLeft + this.width - this.xSpacer;
 
         if (x < boxLeft || x > boxRight) {
           p5.rect(boxLeft, y, (boxRight - boxLeft), 10);
@@ -326,25 +295,46 @@ class Boxes {
 
   draw() {
     p5.push();
-    const x = boxesX;
-    const y = boxesY;
     p5.noStroke();
     p5.fill(boxFill);
     for (let i=0; i < this.numberBoxes; i++) {
-      p5.rect(x + i*this.width, y , this.width - xSpacer, this.height, 20);
+      p5.rect(this.x + i*this.width, this.y , this.width - xSpacer, this.height, 20);
     }
 
     p5.noStroke();
     p5.fill(boxStroke);
-    p5.textSize(boxTextSize);
+    p5.textSize(this.boxTextSize);
     for (let i=0; i < this.numberBoxes; i++) {
       const t = p5.pow(this.base, this.numberBoxes - i - 1).toString();
 
 
-      const [textX,textY] = centerTextInRect(x + i*this.width, y , this.width - xSpacer, this.height,t);
+      const [textX,textY] = centerTextInRect(this.x + i*this.width, this.y , this.width - this.xSpacer, this.height,t);
       p5.text(t, textX, textY);
     }
     p5.pop();
+  }
+
+
+////
+// Coordinate transforms between box-relative and canvas-relative
+// Convention: (x, y) are canvas coordinates. (rx, ry) are box coordinates
+//////////////////////////////////////////////////////////////////////////////
+
+  getCanvasRelativePos(rx, ry) {
+    const result = {
+      x: rx * this.width + this.x,
+      y: ry * this.height + this.y
+    }
+    return result;
+  }
+
+  getBoxRelativePos(x, y) {
+    const result = {
+      rx: (x - this.x) / this.width,
+      ry: (y - this.y) / this.height
+    };
+
+    return result;
   }
 
 }
@@ -621,7 +611,6 @@ let numBoxes = 6;
 let boxes;
 let dots;
 let currentId = [DotEnum.UNDEF, 0, 0];  // the id of the current dot
-let uniqueId = 0;
 let currentSum = 0;
 
 //// 
@@ -996,8 +985,7 @@ function windowResized(width,height)
   ruleBoxX = boxesX + boxWidth;
 
 
-  boxes.updateSize(boxesX, boxesY, boxesW, boxesH);
-  updateCanvasDimensions(boxesX,boxesY,boxesW/numBoxes,boxesH);
+  boxes.updateSize(boxesX, boxesY, boxesW, boxesH, boxTextSize, xSpacer);
 };
 
 
@@ -1019,10 +1007,10 @@ function setup(playableP5, b, n) {
     console.log("turned on ruleButtonOn");
   }
 
-  boxes = new Boxes(base, numBoxes, boxesX, boxesY, boxesW, boxesH);
+  boxes = new Boxes(base, numBoxes, boxesX, boxesY, boxesW, boxesH, boxTextSize, xSpacer);
   dots = [];
-  dots.push(new DotArray(numBoxes, dotFill, dotStroke));
-  dots.push(new DotArray(numBoxes, antidotFill, antidotStroke));
+  dots.push(new DotArray(numBoxes, dotFill, dotStroke, boxes));
+  dots.push(new DotArray(numBoxes, antidotFill, antidotStroke, boxes));
   if (numBoxes < 4) ruleButonOn = false;
 }
 
