@@ -122,24 +122,27 @@ class Dot {
       this.ry = ry;
   }
 
+  overlap(d2) {
+    let result = false;
+
+    if (this.box === d2.box) {
+      const c1 = this.getPosition();
+      const c2 = d2.getPosition();
+      const dist = p5.dist(c1.x,c1.y,c2.x, c2.y);
+      if (dist < dotD) {
+        result = true;
+      }
+    }
+
+    return result;
+  }
 }
 
 Dot.uniqueId = 0;
 
-function overlap(d1, d2) {
-  let result = false;
 
-  if (d1.box === d2.box) {
-    const c1 = d1.getPosition();
-    const c2 = d2.getPosition();
-    const dist = p5.dist(c1.x,c1.y,c2.x, c2.y);
-    if (dist < dotD) {
-      result = true;
-    }
-  }
 
-  return result;
-}
+
 
 
 
@@ -676,7 +679,7 @@ function dotAnnihilation(id) {
 
   for (let i=0; i < opposingDots.length; i++) {
     const opposingDot = opposingDots[id[1]][i];
-    if (opposingDot && overlap(sourceDot, opposingDot)) {
+    if (opposingDot && sourceDot.overlap(opposingDot)) {
       deleteDot(id);
       deleteDot([opposing,id[1],i]);
       annihilateSound.play();
