@@ -66,42 +66,8 @@ const annihilateSoundFile = 'https://gist.githubusercontent.com/wildthinkslabora
 const xSpacer = 10;  // how much space between the boxes
 
 
-////
-// Coordinate transforms between box-relative and canvas-relative
-// Convention: (x, y) are canvas coordinates. (rx, ry) are box coordinates
-//////////////////////////////////////////////////////////////////////////////
 
-function RelativeCoordinates() {
 
-  let boxX = 0;        // these varaibles are local to these functions 
-  let boxY = 0;        // and only updated through the updateCanvasDimensions function
-  let boxWidth = 0;
-  let boxHeight = 0;
-
-  this.updateCanvasDimensions = function(x,y,width,height) {
-    boxX = x;
-    boxY = y;
-    boxWidth = width;
-    boxHeight = height;
-  }
-
-  this.getCanvasRelativePos = function(rx, ry) {
-    const result = {
-      x: rx * boxWidth + boxX,
-      y: ry * boxHeight + boxY
-    }
-    return result;
-  }
-
-  this.getBoxRelativePos = function(x, y) {
-    const result = {
-      rx: (x - boxX) / boxWidth,
-      ry: (y - boxY) / boxHeight
-    };
-
-    return result;
-  }
-}
 
 
 ////
@@ -134,8 +100,8 @@ function randomJiggle(amount) {
 
 
 class Dot {
-  constructor(x, y, box, relCoord) {
-    const {rx, ry} = relCoord.getBoxRelativePos(x, y, box);
+  constructor(x, y, box, boxes) {
+    const {rx, ry} = boxes.getBoxRelativePos(x, y, box);
     this.rx = rx;                // a dot knows it's position
     this.ry = ry;
     this.oldx = rx;             // it remembers it's old position before being dragged
@@ -143,15 +109,15 @@ class Dot {
     this.box = box;             // it knows what box it's in
     this.id = Dot.uniqueId;     // each dot has a unique id
     Dot.uniqueId += 1;
-    this.relativeCoordinates = relCoord;
+    this.boxes = boxes;
   }
 
   getPosition() {
-    return relativeCoordinates.getCanvasRelativePos(this.rx, this.ry);
+    return this.boxes.getCanvasRelativePos(this.rx, this.ry);
   }
 
   setPosition(x,y) {
-      const { rx, ry } = relativeCoordinates.getBoxRelativePos(x,y);
+      const { rx, ry } = this.boxes.getBoxRelativePos(x,y);
       this.rx = rx;  
       this.ry = ry;
   }
@@ -182,13 +148,14 @@ function overlap(d1, d2) {
 //////////////////////////////////////////////////////////////////////////////
 
 class DotArray {
-  constructor(size, fillColor, strokeColor) {
+  constructor(size, fillColor, strokeColor, boxes) {
     this.dots = [];
     for (let i = 0; i < size; i++) {
       this.dots[i] = [];
     }
     this.f = fillColor;
     this.s = strokeColor;
+    this.boxes = boxes;
   }
 
   draw() {
@@ -199,9 +166,7 @@ class DotArray {
       for (let j=0; j < this.dots[i].length; j++) {
         const dot = this.dots[i][j];
         const {x, y} = dot.getPosition();
-        if (boxes.in(x, y)) { // this line shouldn't be here need to fix
-          p5.ellipse(x, y, dotD, dotD);
-        }
+        p5.ellipse(x, y, dotD, dotD);
       }
     }
     p5.pop();
@@ -209,16 +174,18 @@ class DotArray {
 
   // this is all done with Canvas Relative positioning
   snapToBox(x,y,boxId) {
+
+    const b = this.boxes;
     let snappedY = y;
     let snappedX = x;
 
-    const boxUpper = boxesY + dotD/2;
-    const boxLower = boxesY + boxesH - dotD/2;
+    const boxUpper = b.y + dotD/2;
+    const boxLower = b.y + b.height - dotD/2;
     if (y < boxUpper) {  snappedY = boxUpper; }
     if (y > boxLower) {  snappedY = boxLower; }
 
-    const boxWidth = boxesW / numBoxes;
-    const boxLeft = boxesX + (numBoxes - boxId - 1) * boxWidth + dotD/2;
+    const boxWidth = b.width / b.numberBoxes;
+    const boxLeft = b.x + (b.numberBoxes - boxId - 1) * boxWidth + dotD/2;
     const boxRight = boxLeft + boxWidth - xSpacer - dotD;
 
     if (x < boxLeft) snappedX = boxLeft;
@@ -229,7 +196,7 @@ class DotArray {
 
   addDot(x, y, box) {
     const [snappedX,snappedY] = this.snapToBox(x, y, box);
-    this.dots[box].push(new Dot(snappedX, snappedY, box));
+    this.dots[box].push(new Dot(snappedX, snappedY, box, this.boxes));
     if (!addDotSound === null) { addDotSound.play(); }
 
   }
@@ -238,7 +205,7 @@ class DotArray {
 
     const {x, y} = dot.getPosition();
     const [snappedX, snappedY] = this.snapToBox(x,y, dot.box);
-    const {rx, ry} = rc.getBoxRelativePos(snappedX, snappedY);
+    const {rx, ry} = this.boxes.getBoxRelativePos(snappedX, snappedY);
 
     dot.rx = rx;
     dot.ry = ry;
@@ -250,7 +217,7 @@ class DotArray {
 
     const {x, y} = dot.getPosition();
     const [snappedX, snappedY] = this.snapToBox(x,y, dot.box);
-    const {rx, ry} = rc.getBoxRelativePos(snappedX, snappedY);
+    const {rx, ry} = this.boxes.getBoxRelativePos(snappedX, snappedY);
 
     dot.rx = rx;
     dot.ry = ry;
@@ -355,6 +322,28 @@ class Boxes {
     p5.pop();
   }
 
+  ////
+  // Coordinate transforms between box-relative and canvas-relative
+  // Convention: (x, y) are canvas coordinates. (rx, ry) are box coordinates
+  //////////////////////////////////////////////////////////////////////////////
+
+
+  getCanvasRelativePos(rx, ry) {
+    const result = {
+      x: rx * this.width/this.numberBoxes + this.x,
+      y: ry * this.height + this.y
+    }
+    return result;
+  }
+
+  getBoxRelativePos(x, y) {
+    const result = {
+      rx: (x - this.x) / (this.width/this.numberBoxes),
+      ry: (y - this.y) / this.height
+    };
+
+    return result;
+  }
 }
 
 
@@ -651,7 +640,6 @@ let boxes;
 let dots;
 let currentId = [DotEnum.UNDEF, 0, 0];  // the id of the current dot
 let currentSum = 0;
-let rc;
 
 //// 
 // App Restrictions
@@ -1026,7 +1014,6 @@ function windowResized(width,height)
 
 
   boxes.updateSize(boxesX, boxesY, boxesW, boxesH, textBoxSize);
-  rc.updateCanvasDimensions(boxesX,boxesY,boxesW/numBoxes,boxesH);
 };
 
 
@@ -1050,10 +1037,9 @@ function setup(playableP5, b, n) {
 
   boxes = new Boxes(base, numBoxes, boxesX, boxesY, boxesW, boxesH, textBoxSize);
   dots = [];
-  dots.push(new DotArray(numBoxes, dotFill, dotStroke));
-  dots.push(new DotArray(numBoxes, antidotFill, antidotStroke));
+  dots.push(new DotArray(numBoxes, dotFill, dotStroke, boxes));
+  dots.push(new DotArray(numBoxes, antidotFill, antidotStroke, boxes));
   if (numBoxes < 4) ruleButonOn = false;
-  rc = new RelativeCoordinates();
 }
 
 function turnOffAddDotButton() {  dotButtonOn = false; }
