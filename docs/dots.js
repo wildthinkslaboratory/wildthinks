@@ -247,7 +247,7 @@ class DotArray {
 ///////////////////////////////////////////////////////////////////////////
 
 class Boxes {
-  constructor(base, numberBoxes, x, y, boxesWidth, boxHeight, textBoxSize) {
+  constructor(base, numberBoxes, x, y, boxesWidth, boxHeight, textBoxSize, dotDiameter) {
     this.base = base;
     this.numberBoxes = numberBoxes;
     this.x = x;
@@ -255,14 +255,16 @@ class Boxes {
     this.height = boxHeight;
     this.width = boxesWidth/numberBoxes;
     this.textBoxSize = textBoxSize;
+    this.dotD = dotDiameter;
   }
 
-  updateSize(boxesX, boxesY, boxesWidth, boxHeight, textBoxSize) {
+  updateSize(boxesX, boxesY, boxesWidth, boxHeight, textBoxSize, dotDiameter) {
     this.height = boxHeight;
     this.width = boxesWidth/this.numberBoxes;
     this.x = boxesX;
     this.y = boxesY;
     this.textBoxSize = textBoxSize;
+    this.dotD = dotDiameter;
   }
 
   in(x, y) {
@@ -362,7 +364,7 @@ let canvasW;  // canvas width
 let canvasH;  // canvas height
 let boxesW;   // width of all the boxes together
 let boxesH;   // height of boxes
-let boxesX;
+let boxesX;   
 let boxesY;
 let endcapH;
 let dotD;     // dot diameter
@@ -375,11 +377,24 @@ let valueBoxesY;
 let codeBoxesY;
 let ySpacer;
 let ruleBoxX;
+let currentSum = 0;  // this is used in drawing the value boxes
 
 
-///
-// Additional Draw Functions
-/////////////////////////////////////////////////////////////////////////////////
+let base = 2;                  // Game State
+let numBoxes = 6;
+let boxes;
+let dots;
+let currentId = [DotEnum.UNDEF, 0, 0];  // the id of the current dot
+
+
+let negaBinary = false;        // App restrictions
+let dotButtonOn = true;
+let ruleButtonOn = negaBinary;
+let addDotsAllowed = true;
+let removeDotsAllowed = true;
+
+let addDots = true;           // Button States
+let standardRule = true;
 
 
 
@@ -599,74 +614,6 @@ function drawDotButton() {
 }
 
 
-////
-// Game state
-////////////////////////////////////////////////////////////////////////////
-
-
-
-/*class DotBoxes {
-  constructor(playableP5, base, numberBoxes) {
-    this.base = base;
-    this.numBoxes = numberBoxes;
-    this.negaBinary = false;
-    this.ruleButtonOn = true;
-    this.dotButtonOn = true;
-    this.addDotsAllowed = true;
-    this.removeDotsAllowed = true;
-    this.addDots = true;              // Button State: true ? add dots : add antidots
-    this.standardRule = true;         // Button State: true ? standard rule :  | 1 | 1 | <- | 0 |-1 | rule
-
-    if (base === -2) {
-      this.negaBinary = true;
-      this.ruleButtonOn = true;
-    }
-    if (numberBoxes < 4) this.ruleButtonOn = false;
-
-    this.currentId = [DotEnum.UNDEF, 0, 0];  // the id of the current dot
-    this.uniqueId = 0;
-    this.currentSum = 0;
-
-
-    this.boxes = new Boxes(base, numberBoxes, boxesX, boxesY, boxesW, boxesH);
-    this.dots = [];
-    this.dots.push(new DotArray(numberBoxes, dotFill, dotStroke));
-    this.dots.push(new DotArray(numberBoxes, antidotFill, antidotStroke));
-  }
-}
-*/
-
-
-let base = 2;
-let numBoxes = 6;
-let boxes;
-let dots;
-let currentId = [DotEnum.UNDEF, 0, 0];  // the id of the current dot
-let currentSum = 0;
-
-//// 
-// App Restrictions
-////////////////////////////////////////////////////////////////////////////
-
-let negaBinary = false;
-let dotButtonOn = true;
-let ruleButtonOn = negaBinary;
-let addDotsAllowed = true;
-let removeDotsAllowed = true;
-
-
-
-////
-// Button States
-/////////////////////////////////////////////////////////////////////////////
-
-let addDots = true;
-let standardRule = true;
-
-
-////
-// Main functions affecting model
-/////////////////////////////////////////////////////////////////////////////
 
 
 
@@ -1016,7 +963,7 @@ function windowResized(width,height)
   ruleBoxX = boxesX + boxWidth;
 
 
-  boxes.updateSize(boxesX, boxesY, boxesW, boxesH, textBoxSize);
+  boxes.updateSize(boxesX, boxesY, boxesW, boxesH, textBoxSize, dotD);
 };
 
 
@@ -1038,7 +985,7 @@ function setup(playableP5, b, n) {
     console.log("turned on ruleButtonOn");
   }
 
-  boxes = new Boxes(base, numBoxes, boxesX, boxesY, boxesW, boxesH, textBoxSize);
+  boxes = new Boxes(base, numBoxes, boxesX, boxesY, boxesW, boxesH, textBoxSize, dotD);
   dots = [];
   dots.push(new DotArray(numBoxes, dotFill, dotStroke, boxes));
   dots.push(new DotArray(numBoxes, antidotFill, antidotStroke, boxes));
