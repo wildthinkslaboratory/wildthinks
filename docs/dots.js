@@ -39,9 +39,6 @@ const dotButtonFill = white;
 
 
 
-
-
-
 // general function for shallow copying of object. Keeps the associated methods.
 function copyInstance (original) {
   let copied = Object.assign(
@@ -52,10 +49,6 @@ function copyInstance (original) {
   );
   return copied;
 }
-
-
-
-
 
 
 
@@ -355,16 +348,21 @@ class Boxes {
 
 let canvasW;  // canvas width
 let canvasH;  // canvas height
+
+
+// these variables are duplicated in class Boxes
 let boxesW;   // width of all the boxes together
 let boxesH;   // height of boxes
 let boxesX;
 let boxesY;
-let endcapH;
 let dotD;     // dot diameter
 let xSpacer = 10;  // how much space between the boxes
+let boxTextSize;
+
+// these variables are used in drawing the code boxes, value boxes and buttons
+let endcapH;
 let marginX;
 let marginY;
-let boxTextSize;
 let valueTextSize;
 let topBoxesY;
 let valueBoxesY;
