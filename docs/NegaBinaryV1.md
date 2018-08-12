@@ -102,7 +102,9 @@ p5.mouseReleased = function() {
 
 ---
 
-So the code for the number $2$ is $\space -1 \space 0 \space $.  But we promised that there wouldn't be any negative signs in our code.  Let's fix that.
+So the code for the number $2$ is `-1`  `0`.  We have one antidot in the $-2$ box.  That's $\left( -1 \right)\left( -2 \right) = 2$.
+
+But we promised that there wouldn't be any negative signs in our code.  Let's fix that.
 
 ---
 
@@ -112,7 +114,9 @@ So the code for the number $2$ is $\space -1 \space 0 \space $.  But we promised
 
 You can click on a box to add a dot.  If you drag the dot out of the boxes that will delete it.  Notice the `Add` button in the upper left.  Click on it.  Now you can add antidots too.  If you have a dot and an antidot in the same box, drag them together to annihilate them.  
 
-Notice the little `play` and `stop` buttons on the upper left of every playable.  You can always click the `stop` button and then the `play` button to reset the playable.  OK, now let's fix that antidot.  Try adding $0$ to the middle box by adding both a dot AND an antidot.  Now you can drag an antidot to the left.
+Notice the little `play` and `stop` buttons on the upper left of every playable.  You can always click the `stop` button and then the `play` button to reset the playable.  
+
+OK, now let's fix that antidot.  Try adding $0$ to the middle box by adding both a dot AND an antidot.  Now you can drag an antidot to the left.
 
 ---
 
@@ -192,9 +196,19 @@ p5.mouseReleased = function() {
 }
 ```
 
-So the code for the number $2$ is $110$.  
+---
+
+So the code for the number $2$ is `1` `1` `0`.  We have one $4$ and one $-2$ which gives us $4 + \left(-2 \right) = 2$.
+
+---
 
 ## Play!
+
+---
+
+Check out the new `rule` button.  
+
+---
 
 
 ```p5js/playable/autoplay
