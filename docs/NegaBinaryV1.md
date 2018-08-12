@@ -127,7 +127,7 @@ First, some helpful INSTRUCTIONS:
 - Notice the `Add` button in the upper left.  Click on it.  Now you can add **antidots** too.  
 - If you have a **dot** and an **antidot** in the same box, drag them together to annihilate them.  
 
-Notice the little `play` and `stop` buttons on the upper left of every playable.  You can always click the `stop` button and then the `play` button to reset the playable.  (Ooh, you can also see the code for this playable when you click the `stop` button. Cool.)
+Notice the little `play` and `stop` buttons on the upper left of every playable.  You can always click the `stop` button and then the `play` button to reset the playable.  (Ooh, you can also see the code for this playable when you click the `stop` button. Cool. We'll show you how to write your own playable on a different page soon.)
 
 OK, now let's fix that **antidot**.  Try adding $0$ to the middle box by adding both a **dot** AND an **antidot**.  Now you can drag an **antidot** to the left.
 
@@ -402,6 +402,8 @@ p5.mouseReleased = function() {                  // this function is called when
 ## More things to try.
 
 - How is the code for each positive number $x$ related to the code for it's negation $-x$?  Can you construct one from the other?
+- Can you make up divisibility rules?  How can you tell if a number is divisible by $2$? When is it divisible by $3$?
+- Is every number's $\lbrace 0, 1 \rbrace$ code unique?  If so, how would you prove it?
 
 
 ### Known Bugs
