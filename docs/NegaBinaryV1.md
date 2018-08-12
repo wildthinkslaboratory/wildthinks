@@ -110,7 +110,7 @@ p5.mouseReleased = function() {                  // this function is called when
 
 ---
 
-So the code for the number $2$ is `-1`  `0`.  We have one **antidot** in the $-2$ box.  That's $\left( -1 \right)\left( -2 \right) = 2$.
+So the code for the number $2$ is `-1`  `0`.  We have one **antidot** in the $-2$ box.  That's $\left( -1 \right)\left( -2 \right) + 0 \cdot 1 = 2$.
 
 But we promised that there wouldn't be any negative signs in our code.  Let's fix that.
 
@@ -129,7 +129,7 @@ First, some helpful INSTRUCTIONS:
 
 Notice the little `play` and `stop` buttons on the upper left of every playable.  You can always click the `stop` button and then the `play` button to reset the playable.  (Ooh, you can also see the code for this playable when you click the `stop` button. Cool. We'll show you how to write your own playable on a different page soon.)
 
-OK, now let's fix that **antidot**.  Try adding $0$ to the middle box by adding both a **dot** AND an **antidot**.  Now you can drag an **antidot** to the left.
+OK, now let's fix that **antidot**.  Try adding $0$ to the middle box by adding both a **dot** AND an **antidot**.  Now you can drag an **antidot** to the left.  No more **antidot**!
 
 ---
 
@@ -212,7 +212,7 @@ p5.mouseReleased = function() {                  // this function is called when
 
 ---
 
-So the code for the number $2$ is `1` `1` `0`.  We have one $4$ and one $-2$ which gives us $4 + \left(-2 \right) = 2$.  
+So the code for the number $2$ is `1` `1` `0`.  We have a **dot** in the $4$ box and a **dot** in the  $-2$ box.  That gives us $4 + \left(-2 \right) + 0 = 2$.  
 
 Also, we learned a new rule:   `1` `1` $\leftarrow$ `0` `-1` .  Now we can transform an **antidot** into **dots**.  (We can also use this trick to transform a **dot** into **antidots**.)
 
