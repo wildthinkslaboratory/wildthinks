@@ -1,9 +1,13 @@
+/* eslint no-unused-vars: 0 */
 
-let p5;  // need to pass in the p5 library from the playable and bind it to this local p5 variable
+let uniqueInstanceName = 0;
+
+let p5 = null;  // need to pass in the p5 library from the playable and bind it to this local p5 variable
 
 ////
 // Color Pallette
 //////////////////////////////////////////////////////////////////////////////
+
 
 const purple =        [200, 0,  255];
 const darkpurple =    [50,  0,   50];
@@ -18,17 +22,17 @@ const darkGray =      [100, 100, 100];
 
 
 ////
-// Color Formatting 
+// Color Formatting
 //////////////////////////////////////////////////////////////////////////////
 
 const boxStroke = lightLilac;                // boxes color formatting
-const boxFill = white; 
+const boxFill = white;
 
-const dotFill = purple;                      // dot color formatting 
-const dotStroke = darkpurple; 
-const antidotFill = cyan; 
-const antidotStroke = darkbluegreen; 
-                                           
+const dotFill = purple;                      // dot color formatting
+const dotStroke = darkpurple;
+const antidotFill = cyan;
+const antidotStroke = darkbluegreen;
+
 const writingFill = darkbluegreen;           // value boxes color formatting
 const valueFill = white;
 const valueStroke = lightLilac;
@@ -43,7 +47,7 @@ const dotButtonFill = white;
 ///  global sound file variables
 let addDotSound;
 let annihilateSound;
-const addDotSoundFile =     'https://gist.githubusercontent.com/wildthinkslaboratory/ac98c0bb68ccf7528dc39fa1922d2bdb/raw/520efde07887f00c55653c6c5e6cfbe36962cd57/Blop-Mark_DiAngelo-79054334.wav'
+const addDotSoundFile =     'https://gist.githubusercontent.com/wildthinkslaboratory/ac98c0bb68ccf7528dc39fa1922d2bdb/raw/520efde07887f00c55653c6c5e6cfbe36962cd57/Blop-Mark_DiAngelo-79054334.wav';
 const annihilateSoundFile = 'https://gist.githubusercontent.com/wildthinkslaboratory/ac98c0bb68ccf7528dc39fa1922d2bdb/raw/e0ca3e1a7f8393c9c62b56650bb4b1ad01749265/Woosh-Mark_DiAngelo-4778593.wav';
 
 
@@ -70,22 +74,15 @@ function copyInstance (original) {
 // Drawing helper functions
 //////////////////////////////////////////////////////////////////////////////
 
-function textHeight() {
-  return p5.textAscent() * 0.8; 
-}
 
-function centerTextInRect (x,y,width,height,text) {
+function centerTextInRect(p5, x,y,width,height,text) {
   const textW = p5.textWidth(text);
-  const textH = textHeight();
+  const textH = p5.textAscent() * 0.8;
   const xoffset = (width - textW) / 2;
   const yoffset = (height - textH) / 2;
   return [x + xoffset, y + height - yoffset];
 }
 
-
-function randomJiggle(amount) {
-  return p5.random(-2*amount, 2*amount);
-}
 
 
 
@@ -95,8 +92,9 @@ function randomJiggle(amount) {
 
 
 class Dot {
-  constructor(x, y, box, boxes) {
+  constructor(playableP5, x, y, box, boxes) {
     const {rx, ry} = boxes.getBoxRelativePos(x, y, box);
+    this.p5 = playableP5;
     this.rx = rx;                // a dot knows it's position
     this.ry = ry;
     this.oldx = rx;             // it remembers it's old position before being dragged
@@ -112,9 +110,9 @@ class Dot {
   }
 
   setPosition(x,y) {
-      const { rx, ry } = this.boxes.getBoxRelativePos(x,y);
-      this.rx = rx;  
-      this.ry = ry;
+    const { rx, ry } = this.boxes.getBoxRelativePos(x,y);
+    this.rx = rx;
+    this.ry = ry;
   }
 
   overlap(d2) {
@@ -123,7 +121,7 @@ class Dot {
     if (this.box === d2.box) {
       const c1 = this.getPosition();
       const c2 = d2.getPosition();
-      const dist = p5.dist(c1.x,c1.y,c2.x, c2.y);
+      const dist = this.p5.dist(c1.x,c1.y,c2.x, c2.y);
       if (dist < this.boxes.dotDiameter) {
         result = true;
       }
@@ -131,8 +129,6 @@ class Dot {
 
     return result;
   }
-
-
 }
 
 Dot.uniqueId = 0;
@@ -146,7 +142,8 @@ Dot.uniqueId = 0;
 //////////////////////////////////////////////////////////////////////////////
 
 class DotArray {
-  constructor(size, fillColor, strokeColor, boxes) {
+  constructor(playableP5, size, fillColor, strokeColor, boxes) {
+    this.p5 = playableP5;
     this.dots = [];
     for (let i = 0; i < size; i++) {
       this.dots[i] = [];
@@ -157,18 +154,18 @@ class DotArray {
   }
 
   draw() {
-    p5.push();
-    p5.stroke(this.s);
-    p5.fill(this.f);
+    this.p5.push();
+    this.p5.stroke(this.s);
+    this.p5.fill(this.f);
     for (let i=0; i < this.dots.length; i++) {
       for (let j=0; j < this.dots[i].length; j++) {
         const dot = this.dots[i][j];
         const {x, y} = dot.getPosition();
         const dotD = this.boxes.dotDiameter;
-        p5.ellipse(x, y, dotD, dotD);
+        this.p5.ellipse(x, y, dotD, dotD);
       }
     }
-    p5.pop();
+    this.p5.pop();
   }
 
   // this is all done with Canvas Relative positioning
@@ -193,7 +190,7 @@ class DotArray {
 
   addDot(x, y, box) {
     const [snappedX,snappedY] = this.snapToBox(x, y, box);
-    this.dots[box].push(new Dot(snappedX, snappedY, box, this.boxes));
+    this.dots[box].push(new Dot(this.p5, snappedX, snappedY, box, this.boxes));
     if (!addDotSound === null) { addDotSound.play(); }
 
   }
@@ -209,7 +206,7 @@ class DotArray {
     this.dots[boxID].push(dot);
   }
 
-  updateDotPosition(pos) { 
+  updateDotPosition(pos) {
     let dot = this.dots[pos[1]][pos[2]];
 
     const {x, y} = dot.getPosition();
@@ -240,10 +237,13 @@ class DotArray {
 // Box class and functions
 ///////////////////////////////////////////////////////////////////////////
 
+
 class Boxes {
-  constructor(base, numberBoxes, x, y, boxesWidth, boxHeight, boxTextSize, xSpacer, dotDiameter) {
+  constructor(playablep5, base, numberBoxes, x, y, boxesWidth, boxHeight, boxTextSize, xSpacer, dotDiameter) {
     this.base = base;
+    this.p5 = playablep5;
     this.numberBoxes = numberBoxes;
+    this.instanceName = uniqueInstanceName++;
     this.x = x;
     this.y = y;
     this.height = boxHeight;
@@ -284,12 +284,12 @@ class Boxes {
       }
       else {
         // It is in a box's zone, but might be in the spacer.
-        const boxId = p5.floor((rightX - x) / this.width);
+        const boxId = this.p5.floor((rightX - x) / this.width);
         const boxLeft = this.x + (this.numberBoxes - boxId - 1) * this.width;
         const boxRight = boxLeft + this.width - this.xSpacer;
 
         if (x < boxLeft || x > boxRight) {
-          p5.rect(boxLeft, y, (boxRight - boxLeft), 10);
+          this.p5.rect(boxLeft, y, (boxRight - boxLeft), 10);
         }
         else {
           // console.log('getBoxID', boxId, x, boxLeft, boxRight);
@@ -303,9 +303,12 @@ class Boxes {
 
 
   draw() {
+    const p5 = this.p5;
+    p5.frameRate(14);
     p5.push();
     p5.noStroke();
     p5.fill(boxFill);
+
     for (let i=0; i < this.numberBoxes; i++) {
       p5.rect(this.x + i*this.width, this.y , this.width - this.xSpacer, this.height, 20);
     }
@@ -316,8 +319,7 @@ class Boxes {
     for (let i=0; i < this.numberBoxes; i++) {
       const t = p5.pow(this.base, this.numberBoxes - i - 1).toString();
 
-
-      const [textX,textY] = centerTextInRect(this.x + i*this.width, this.y , this.width - this.xSpacer, this.height,t);
+      const [textX,textY] = centerTextInRect(this.p5, this.x + i*this.width, this.y , this.width - this.xSpacer, this.height,t);
       p5.text(t, textX, textY);
     }
     p5.pop();
@@ -332,7 +334,7 @@ class Boxes {
     const result = {
       x: rx * this.width + this.x,
       y: ry * this.height + this.y
-    }
+    };
     return result;
   }
 
@@ -357,10 +359,10 @@ function Dots() {
 
   let canvasW;  // canvas width
   let canvasH;  // canvas height
-
+  let p5 = 'NOTYETSETUP';
 
   // these variables are duplicated in the class Boxes
-  // would be good to consolidate and just use the Boxes version. 
+  // would be good to consolidate and just use the Boxes version.
   let boxesW;   // width of all the boxes together
   let boxesH;   // height of boxes
   let boxesX;
@@ -397,7 +399,7 @@ function Dots() {
   // Do I need it or can I get rid of it somehow?
   let currentSum = 0;
 
-  //// 
+  ////
   // App Restrictions
   ////////////////////////////////////////////////////////////////////////////
 
@@ -423,7 +425,7 @@ function Dots() {
   // Additional Draw Functions
   /////////////////////////////////////////////////////////////////////////////////
 
-  drawCodeBoxes = function() {
+  function drawCodeBoxes() {
     const x = boxesX;
     const y = codeBoxesY;
     const width = boxesW / numBoxes;
@@ -441,7 +443,7 @@ function Dots() {
     p5.textSize(valueTextSize);
     p5.fill(writingFill);
 
-  
+
 
     for (let i=0; i < numBoxes; i++) {
       let code = dots[0].dots[i].length;
@@ -451,7 +453,7 @@ function Dots() {
       if (code === 0) { p5.fill(valueStroke); }
       else { p5.fill(writingFill); }
 
-      const [textX,textY] = centerTextInRect(x + (numBoxes - i - 1)*width, y , width - xSpacer, height,t);
+      const [textX,textY] = centerTextInRect(p5, x + (numBoxes - i - 1)*width, y , width - xSpacer, height,t);
       p5.text(t, textX, textY);
     }
 
@@ -459,588 +461,582 @@ function Dots() {
   }
 
 
+  function drawValueBoxes() {
+    const x = boxesX;
+    const y = valueBoxesY;
+    const width = boxesW / numBoxes;
+    const height = endcapH;
 
+    p5.push();
+    p5.noStroke();
+    p5.fill(valueFill);
 
+    for (let i = 0; i < numBoxes; i++) {
+      p5.rect(x + i*width, y, width - xSpacer, height, 10);
+    }
 
-drawValueBoxes = function() {
-  const x = boxesX;
-  const y = valueBoxesY;
-  const width = boxesW / numBoxes;
-  const height = endcapH;
+    p5.noStroke();
+    p5.fill(writingFill);
+    p5.textSize(valueTextSize);
 
-  p5.push();
-  p5.noStroke();
-  p5.fill(valueFill);
+    currentSum = 0;
+    for (let i = 0; i < numBoxes; i++) {
+      let value = dots[0].dots[i].length * p5.pow(base, i);
+      value -= dots[1].dots[i].length * p5.pow(base, i);
+      currentSum += value;
+      const t = value.toString();
 
-  for (let i = 0; i < numBoxes; i++) {
-    p5.rect(x + i*width, y, width - xSpacer, height, 10);
+      if (value === 0) {
+        p5.fill(valueStroke);
+      }
+      else {
+        p5.fill(writingFill);
+      }
+
+      const [textX,textY] = centerTextInRect(p5, x + (numBoxes - i - 1)*width, y , width - xSpacer, height,t);
+      p5.text(t, textX, textY);
+    }
+
+    p5.pop();
   }
 
-  p5.noStroke();
-  p5.fill(writingFill);
-  p5.textSize(valueTextSize);
+  function drawSummaryBox() {
+    const y = topBoxesY;
+    const height = endcapH;
+    const x = boxesX + boxesW * (numBoxes - 1)/numBoxes;
+    const boxW = boxesW / numBoxes;
 
-  currentSum = 0;
-  for (let i = 0; i < numBoxes; i++) {
-    let value = dots[0].dots[i].length * p5.pow(base, i);
-    value -= dots[1].dots[i].length * p5.pow(base, i);
-    currentSum += value;
-    const t = value.toString();
- 
-    if (value === 0) {
-      p5.fill(valueStroke);
+    p5.push();
+
+    p5.stroke(writingFill);
+    p5.strokeWeight(2);
+    p5.fill(boxFill);
+    p5.rect(x, y, boxW - xSpacer, height, 10);
+
+    p5.textSize(valueTextSize);
+    p5.fill(writingFill);
+    p5.stroke(writingFill);
+    p5.strokeWeight(1);
+
+    const t = currentSum.toString();
+
+    const [textX,textY] = centerTextInRect(p5, x, y, boxW - xSpacer, height, t);
+    p5.text(t, textX, textY);
+
+    p5.pop();
+  }
+
+
+
+  function drawRuleButton() {
+    if (!ruleButtonOn) return;
+    const y = topBoxesY;
+    const height = endcapH;
+    const x = ruleBoxX;
+    const boxW = 2* boxesW / numBoxes;
+
+
+    const littleBoxH = height * 0.75;
+    const dotSize = littleBoxH * 0.25;
+
+    p5.push();
+
+    p5.stroke(dotButtonStroke);
+    p5.strokeWeight(1);
+    p5.fill(dotButtonFill);
+    p5.rect(x, y, boxW - xSpacer, height, 10);
+
+    const centerX = ruleBoxX + (boxW - xSpacer) / 2;
+    boxY = y + height * 0.125;
+    const shift = littleBoxH/2;
+
+    p5.line(centerX - shift, boxY + shift, centerX + shift, boxY + shift);
+    p5.line(centerX - shift, boxY + shift, centerX - 0.7 * shift, boxY + shift - 0.3 * shift );
+    p5.line(centerX - shift, boxY + shift, centerX - 0.7 * shift, boxY + shift + 0.3 * shift );
+
+    if (standardRule) {
+      const box1X = centerX + littleBoxH;
+      const box2X = centerX - 2*littleBoxH;
+
+      p5.rect(box1X, boxY,littleBoxH,littleBoxH,5);
+      p5.rect(box2X, boxY,littleBoxH,littleBoxH,5);
+      p5.stroke(dotStroke);
+      p5.fill(dotFill);
+
+      p5.ellipse(box1X + shift*0.7, boxY + shift*0.7, dotSize, dotSize);
+      p5.ellipse(box1X + shift*1.3, boxY + shift*1.3, dotSize, dotSize);
+
+      p5.stroke(antidotStroke);
+      p5.fill(antidotFill);
+      p5.ellipse(box2X + shift, boxY + shift, dotSize, dotSize);
     }
     else {
-      p5.fill(writingFill);
+      const boxes1X = centerX + littleBoxH;
+      const boxes2X = centerX - 3*littleBoxH;
+
+      p5.rect(boxes1X, boxY,littleBoxH,littleBoxH,5);
+      p5.rect(boxes1X + littleBoxH, boxY,littleBoxH,littleBoxH,5);
+      p5.rect(boxes2X, boxY,littleBoxH,littleBoxH,5);
+      p5.rect(boxes2X + littleBoxH, boxY,littleBoxH,littleBoxH,5);
+
+      p5.stroke(dotStroke);
+      p5.fill(dotFill);
+
+      p5.ellipse(boxes2X + shift, boxY + shift, dotSize, dotSize);
+      p5.ellipse(boxes2X + littleBoxH + shift, boxY + shift, dotSize, dotSize);
+
+      p5.stroke(antidotStroke);
+      p5.fill(antidotFill);
+      p5.ellipse(boxes1X + littleBoxH + shift, boxY + shift, dotSize, dotSize);
+
+
     }
 
-    const [textX,textY] = centerTextInRect(x + (numBoxes - i - 1)*width, y , width - xSpacer, height,t);
-    p5.text(t, textX, textY);
+    p5.pop();
   }
 
-  p5.pop();
-}
 
 
+  function drawDotButton() {
+    if (!dotButtonOn) return;
+    const y = topBoxesY;
+    const height = endcapH;
+    const x = boxesX;
+    const boxW = boxesW / numBoxes;
 
-drawSummaryBox = function() {
-  const y = topBoxesY;
-  const height = endcapH;
-  const x = boxesX + boxesW * (numBoxes - 1)/numBoxes;
-  const boxW = boxesW / numBoxes;
+    p5.push();
 
-  p5.push();
+    p5.stroke(dotButtonStroke);
+    p5.strokeWeight(1);
+    p5.fill(dotButtonFill);
+    p5.rect(x, y, boxW - xSpacer, height, 10);
 
-  p5.stroke(writingFill);
-  p5.strokeWeight(2);
-  p5.fill(boxFill);
-  p5.rect(x, y, boxW - xSpacer, height, 10);
+    p5.textSize(valueTextSize);
+    p5.fill(dotButtonStroke);
 
-  p5.textSize(valueTextSize);
-  p5.fill(writingFill);
-  p5.stroke(writingFill);
-  p5.strokeWeight(1);
+    if (addDots) {
+      p5.stroke(dotStroke);
+      p5.fill(dotFill);
+    }
+    else {
+      p5.stroke(antidotStroke);
+      p5.fill(antidotFill);
+    }
 
-  const t = currentSum.toString();
+    const dotSize = p5.min(dotD, endcapH * 0.75);
+    p5.ellipse(x + boxW * 2/3,y + endcapH/2,dotSize, dotSize);
 
-  const [textX,textY] = centerTextInRect(x, y, boxW - xSpacer, height, t);
-  p5.text(t, textX, textY);
+    p5.fill(darkGray);
 
-  p5.pop();
-}
+    const t = "Add Dot"
+    const [textX,textY] = centerTextInRect(p5, x, y, boxW - xSpacer, height, t);
+    p5.text("Add", textX, textY);
 
-
-
-drawRuleButton = function() {
-  if (!ruleButtonOn) return;
-  const y = topBoxesY;
-  const height = endcapH;
-  const x = ruleBoxX;
-  const boxW = 2* boxesW / numBoxes;
-
-  
-  const littleBoxH = height * 0.75;
-  const dotSize = littleBoxH * 0.25;
-
-  p5.push();
-
-  p5.stroke(dotButtonStroke);
-  p5.strokeWeight(1);
-  p5.fill(dotButtonFill);
-  p5.rect(x, y, boxW - xSpacer, height, 10);
-
-  const centerX = ruleBoxX + (boxW - xSpacer) / 2;
-  boxY = y + height * 0.125;
-  const shift = littleBoxH/2;
-
-  p5.line(centerX - shift, boxY + shift, centerX + shift, boxY + shift);
-  p5.line(centerX - shift, boxY + shift, centerX - 0.7 * shift, boxY + shift - 0.3 * shift );
-  p5.line(centerX - shift, boxY + shift, centerX - 0.7 * shift, boxY + shift + 0.3 * shift );
-
-  if (standardRule) {
-    const box1X = centerX + littleBoxH;
-    const box2X = centerX - 2*littleBoxH;
-
-    p5.rect(box1X, boxY,littleBoxH,littleBoxH,5);
-    p5.rect(box2X, boxY,littleBoxH,littleBoxH,5);
-    p5.stroke(dotStroke);
-    p5.fill(dotFill);
-
-    p5.ellipse(box1X + shift*0.7, boxY + shift*0.7, dotSize, dotSize);
-    p5.ellipse(box1X + shift*1.3, boxY + shift*1.3, dotSize, dotSize);
-
-    p5.stroke(antidotStroke);
-    p5.fill(antidotFill);   
-    p5.ellipse(box2X + shift, boxY + shift, dotSize, dotSize);
-  }
-  else {
-    const boxes1X = centerX + littleBoxH;
-    const boxes2X = centerX - 3*littleBoxH;
-    
-    p5.rect(boxes1X, boxY,littleBoxH,littleBoxH,5);  
-    p5.rect(boxes1X + littleBoxH, boxY,littleBoxH,littleBoxH,5); 
-    p5.rect(boxes2X, boxY,littleBoxH,littleBoxH,5); 
-    p5.rect(boxes2X + littleBoxH, boxY,littleBoxH,littleBoxH,5);   
-
-    p5.stroke(dotStroke);
-    p5.fill(dotFill);
-
-    p5.ellipse(boxes2X + shift, boxY + shift, dotSize, dotSize);
-    p5.ellipse(boxes2X + littleBoxH + shift, boxY + shift, dotSize, dotSize);
-
-    p5.stroke(antidotStroke);
-    p5.fill(antidotFill);   
-    p5.ellipse(boxes1X + littleBoxH + shift, boxY + shift, dotSize, dotSize);
-
-
-  }
- 
-  p5.pop();
-}
-
-
-
-drawDotButton = function() {
-  if (!dotButtonOn) return;
-  const y = topBoxesY;
-  const height = endcapH;
-  const x = boxesX;
-  const boxW = boxesW / numBoxes;
-
-  p5.push();
-
-  p5.stroke(dotButtonStroke);
-  p5.strokeWeight(1);
-  p5.fill(dotButtonFill);
-  p5.rect(x, y, boxW - xSpacer, height, 10);
-
-  p5.textSize(valueTextSize);
-  p5.fill(dotButtonStroke);
- 
-  if (addDots) {
-    p5.stroke(dotStroke);
-    p5.fill(dotFill);
-  }
-  else {
-    p5.stroke(antidotStroke);
-    p5.fill(antidotFill);
+    p5.pop();
   }
 
-  const dotSize = p5.min(dotD, endcapH * 0.75);
-  p5.ellipse(x + boxW * 2/3,y + endcapH/2,dotSize, dotSize);
 
-  p5.fill(darkGray);
 
-  const t = "Add Dot"
-  const [textX,textY] = centerTextInRect(x, y, boxW - xSpacer, height, t);
-  p5.text("Add", textX, textY);
-
-  p5.pop();
-}
+  ////
+  // Main functions affecting model
+  /////////////////////////////////////////////////////////////////////////////
 
 
 
-////
-// Main functions affecting model
-/////////////////////////////////////////////////////////////////////////////
+  // two opposing dots collide and annihilate
+  function dotAnnihilation(id) {
+    // look for overlap with an opposing dot in same box
+    const opposing = 1 - id[0];
+    const sourceDot = dots[id[0]].dots[id[1]][id[2]];
+    const opposingDots = dots[opposing].dots;
+
+    for (let i=0; i < opposingDots.length; i++) {
+      const opposingDot = opposingDots[id[1]][i];
+      if (opposingDot && sourceDot.overlap(opposingDot)) {
+        deleteDot(id);
+        deleteDot([opposing,id[1],i]);
+        annihilateSound.play();
+        return true;
+      }
+    }
+    return false;
+  }
 
 
 
-// two opposing dots collide and annihilate
-dotAnnihilation = function(id) {
-  // look for overlap with an opposing dot in same box
-  const opposing = 1 - id[0];
-  const sourceDot = dots[id[0]].dots[id[1]][id[2]];
-  const opposingDots = dots[opposing].dots;
+  // add an antidot to the model
+  function addAntidot() {
+    dots[1].addDot(p5.mouseX, p5.mouseY, boxes.getBoxID(p5.mouseX, p5.mouseY));
+  }
 
-  for (let i=0; i < opposingDots.length; i++) {
-    const opposingDot = opposingDots[id[1]][i];
-    if (opposingDot && sourceDot.overlap(opposingDot)) {
-      deleteDot(id);
-      deleteDot([opposing,id[1],i]);
-      annihilateSound.play();
-      return true;
+
+
+  // add a dot to the model
+  function addDot() {
+    const boxID = boxes.getBoxID(p5.mouseX, p5.mouseY);
+    if (boxID !== DotEnum.UNDEF) {
+      dots[0].addDot(p5.mouseX, p5.mouseY, boxID);
     }
   }
-  return false;
-}
 
 
 
-// add an antidot to the model
-addAntidot = function() {
-  dots[1].addDot(p5.mouseX, p5.mouseY, boxes.getBoxID(p5.mouseX, p5.mouseY));
-}
+  // dots explode as they are moved to the left
+  function explodeDot(sendingBox, recievingBox) {
+
+    const dotsNeeded = p5.pow(p5.abs(base), recievingBox - sendingBox);
+
+    if (dots[currentId[0]].dots[sendingBox].length < dotsNeeded) return false;
+
+    let newDot = copyInstance(dots[currentId[0]].dots[currentId[1]][currentId[2]]);
+    newDot.box = recievingBox;
 
 
+    let dotArrayID = currentId[0];
+    if (base < 0) {
+      dotArrayID = ((sendingBox - recievingBox) % 2 ? 1 - currentId[0] : currentId[0]);
+    }
 
-// add a dot to the model
-addDot = function() {
-  const boxID = boxes.getBoxID(p5.mouseX, p5.mouseY);
-  if (boxID !== DotEnum.UNDEF) {
-    dots[0].addDot(p5.mouseX, p5.mouseY, boxID);
-  }
-}
-
-
-
-// dots explode as they are moved to the left
-explodeDot = function(sendingBox, recievingBox) {
-  
-  const dotsNeeded = p5.pow(p5.abs(base), recievingBox - sendingBox);
-
-  if (dots[currentId[0]].dots[sendingBox].length < dotsNeeded) return false;
-
-  let newDot = copyInstance(dots[currentId[0]].dots[currentId[1]][currentId[2]]);
-  newDot.box = recievingBox;
-
-
-  let dotArrayID = currentId[0];
-  if (base < 0) {
-    dotArrayID = ((sendingBox - recievingBox) % 2 ? 1 - currentId[0] : currentId[0]);
-  }
-
-  dots[dotArrayID].pushDot(recievingBox,newDot);   // add this dot to new box
-  deleteDot(currentId);                            // remove this dot from it's old box
-  for (let i=0; i < dotsNeeded-1; i++) {           // remove other dots from old box
-    dots[currentId[0]].dots[sendingBox].pop();
-  }
-  return true;
-}
-
-
-// dots explode as they are moved to the left
-negaBinaryRule2 = function(sendingBox, recievingBox) {
-
-  if (recievingBox === sendingBox + 1) {
-    const arrayId = currentId[0];
-    const toggleArrayId = (arrayId === 0 ? 1 : 0);
-    dots[toggleArrayId].addDot(p5.mouseX, p5.mouseY, currentId[1] + 1);  // add a dot to the next box under the mouse
-    resetDotPosition(currentId);                                         // send current dot back to old position
-    toggleDot(currentId);                                                // and toggle it
+    dots[dotArrayID].pushDot(recievingBox,newDot);   // add this dot to new box
+    deleteDot(currentId);                            // remove this dot from it's old box
+    for (let i=0; i < dotsNeeded-1; i++) {           // remove other dots from old box
+      dots[currentId[0]].dots[sendingBox].pop();
+    }
     return true;
   }
-  return false;
-}
 
 
+  // dots explode as they are moved to the left
+  function negaBinaryRule2(sendingBox, recievingBox) {
 
-unexplode = function(sendingBox, recievingBox) {
-
-  const dotsToAdd = p5.pow(p5.abs(base), sendingBox - recievingBox);
-  let newDot = copyInstance(dots[currentId[0]].dots[currentId[1]][currentId[2]]);
-  newDot.box = recievingBox;
-  
-  let dotArrayID = currentId[0];
-  if (base < 0) {
-    dotArrayID = ((sendingBox - recievingBox) % 2 ? 1 - currentId[0] : currentId[0]);
+    if (recievingBox === sendingBox + 1) {
+      const arrayId = currentId[0];
+      const toggleArrayId = (arrayId === 0 ? 1 : 0);
+      dots[toggleArrayId].addDot(p5.mouseX, p5.mouseY, currentId[1] + 1);  // add a dot to the next box under the mouse
+      resetDotPosition(currentId);                                         // send current dot back to old position
+      toggleDot(currentId);                                                // and toggle it
+      return true;
+    }
+    return false;
   }
 
-  dots[dotArrayID].pushDot(recievingBox,newDot);   // add this dot to new box
-  deleteDot(currentId);                            // remove this dot from it's old box  
-  for (let i=0; i < dotsToAdd-1; i++) {           // remove other dots from old box
-    dots[dotArrayID].addDot(p5.mouseX + randomJiggle(dotD), p5.mouseY + randomJiggle(dotD), recievingBox);
+
+
+  function unexplode(sendingBox, recievingBox) {
+
+    const dotsToAdd = p5.pow(p5.abs(base), sendingBox - recievingBox);
+    let newDot = copyInstance(dots[currentId[0]].dots[currentId[1]][currentId[2]]);
+    newDot.box = recievingBox;
+
+    let dotArrayID = currentId[0];
+    if (base < 0) {
+      dotArrayID = ((sendingBox - recievingBox) % 2 ? 1 - currentId[0] : currentId[0]);
+    }
+
+    dots[dotArrayID].pushDot(recievingBox,newDot);   // add this dot to new box
+    deleteDot(currentId);                            // remove this dot from it's old box
+    for (let i=0; i < dotsToAdd-1; i++) {           // remove other dots from old box
+      dots[dotArrayID].addDot(p5.mouseX + p5.random(-2*dotD, 2*dotD), p5.mouseY + p5.random(-2*dotD, 2*dotD), recievingBox);
+    }
   }
-}
 
 
 
 
-// reset a dot to its previous position before being dragged
-resetDotPosition = function(dotID) {
-  if (dotID[0] !== DotEnum.UNDEF) {
-    dots[dotID[0]].resetOldPosition(dotID);
+  // reset a dot to its previous position before being dragged
+  function resetDotPosition(dotID) {
+    if (dotID[0] !== DotEnum.UNDEF) {
+      dots[dotID[0]].resetOldPosition(dotID);
+    }
   }
-}
 
 
 
-// update a dot to it's new position after drag
-updatePosition = function(dotID) {
-  if (dotID[0] !== DotEnum.UNDEF) {
-    dots[dotID[0]].updateDotPosition(dotID);
+  // update a dot to it's new position after drag
+  function updatePosition(dotID) {
+    if (dotID[0] !== DotEnum.UNDEF) {
+      dots[dotID[0]].updateDotPosition(dotID);
+    }
   }
-}
 
 
 
-deleteDot = function(dotID) {
-  if (dotID[0] !== DotEnum.UNDEF) {
-    dots[dotID[0]].deleteDot(dotID[1], dotID[2]);
+  function deleteDot(dotID) {
+    if (dotID[0] !== DotEnum.UNDEF) {
+      dots[dotID[0]].deleteDot(dotID[1], dotID[2]);
+    }
   }
-}
 
 
 
-// a dot has been dragged, find out if it's moved to a new box
-getSendingAndRecievingBox = function() {
-  if (currentId[0] !== DotEnum.UNDEF) {  
-    const current_dot = dots[currentId[0]].dots[currentId[1]][currentId[2]];
-    const {x, y} = current_dot.getPosition();
-    return [current_dot.box, boxes.getBoxID(x,y)];
+  // a dot has been dragged, find out if it's moved to a new box
+  function getSendingAndRecievingBox() {
+    if (currentId[0] !== DotEnum.UNDEF) {
+      const current_dot = dots[currentId[0]].dots[currentId[1]][currentId[2]];
+      const {x, y} = current_dot.getPosition();
+      return [current_dot.box, boxes.getBoxID(x,y)];
+    }
+    return [-1,-1];
   }
-  return [-1,-1];
-}
 
 
 
-toggleDot = function(dotID) {
-    const arrayId = dotID[0];
-    const toggleArrayId = (arrayId === 0 ? 1 : 0);
-    const current_dot = dots[arrayId].dots[dotID[1]][dotID[2]];
-    let newDot = copyInstance(current_dot);
+  function toggleDot(dotID) {
+      const arrayId = dotID[0];
+      const toggleArrayId = (arrayId === 0 ? 1 : 0);
+      const current_dot = dots[arrayId].dots[dotID[1]][dotID[2]];
+      let newDot = copyInstance(current_dot);
 
-    dots[toggleArrayId].pushDot(current_dot.box,newDot);
+      dots[toggleArrayId].pushDot(current_dot.box,newDot);
 
-    dots[arrayId].deleteDot(dotID[1], dotID[2]);          //remove this dot from its old box
+      dots[arrayId].deleteDot(dotID[1], dotID[2]);          //remove this dot from its old box
 
-    currentId = [toggleArrayId, dotID[1], dotID[2]];
-}
-
+      currentId = [toggleArrayId, dotID[1], dotID[2]];
+  }
 
 
 
 
-////
-// App mouse events
-////////////////////////////////////////////////////////////////////////////////////////////
 
-mouseOnDotButton = function() {
-  if (!dotButtonOn) return;
-  if (p5.mouseX < boxesX || p5.mouseX > boxesX + boxesW/numBoxes) return false;
-  if (p5.mouseY < topBoxesY || p5.mouseY > topBoxesY + endcapH) return false;
-  return true;
-}
+  ////
+  // App mouse events
+  ////////////////////////////////////////////////////////////////////////////////////////////
 
-mouseOnRuleButton = function() {
-  if (!ruleButtonOn) return;
-  if (p5.mouseX < ruleBoxX || p5.mouseX > ruleBoxX + 2 * boxesW/numBoxes) return false;
-  if (p5.mouseY < topBoxesY || p5.mouseY > topBoxesY + endcapH) return false;
-  return true;
-}
+  function mouseOnDotButton() {
+    if (!dotButtonOn) return;
+    if (p5.mouseX < boxesX || p5.mouseX > boxesX + boxesW/numBoxes) return false;
+    if (p5.mouseY < topBoxesY || p5.mouseY > topBoxesY + endcapH) return false;
+    return true;
+  }
 
-
-// Is the mouse in the spacers between the boxes
-// assumes the mouse isn't in a box
-mouseInSpacers = function() {
-  if (p5.mouseX < boxesX || p5.mouseX > boxesX + boxesW) return false;
-  if (p5.mouseY < boxesY || p5.mouseY > boxesY + boxesH) return false;
-  return true;
-}
+  function mouseOnRuleButton() {
+    if (!ruleButtonOn) return;
+    if (p5.mouseX < ruleBoxX || p5.mouseX > ruleBoxX + 2 * boxesW/numBoxes) return false;
+    if (p5.mouseY < topBoxesY || p5.mouseY > topBoxesY + endcapH) return false;
+    return true;
+  }
 
 
-
-mouseOnBoxes = function() {
-  return boxes.getBoxID(p5.mouseX, p5.mouseY) != DotEnum.UNDEF;
-}
+  // Is the mouse in the spacers between the boxes
+  // assumes the mouse isn't in a box
+  function mouseInSpacers() {
+    if (p5.mouseX < boxesX || p5.mouseX > boxesX + boxesW) return false;
+    if (p5.mouseY < boxesY || p5.mouseY > boxesY + boxesH) return false;
+    return true;
+  }
 
 
 
-mouseOnDot = function() {
-  // check the dots
-  for (let n=0; n < dots.length; n++) {
-    for (let i=0; i < dots[n].dots.length; i++) {
-      for (let j=0; j < dots[n].dots[i].length; j++) {
-        const dot = dots[n].dots[i][j];
-        const { x, y } = dot.getPosition();
-        const dist = p5.dist(p5.mouseX, p5.mouseY, x, y);
-        if (dist < dotD / 2) {
-          // console.log('mouseOnDot', p5.mouseX, p5.mouseY, x, y, dist, dotD);
+  function mouseOnBoxes() {
+    return boxes.getBoxID(p5.mouseX, p5.mouseY) != DotEnum.UNDEF;
+  }
 
-          currentId = [n, i, j];
-          return true;
+
+
+  function mouseOnDot() {
+    // check the dots
+    for (let n=0; n < dots.length; n++) {
+      for (let i=0; i < dots[n].dots.length; i++) {
+        for (let j=0; j < dots[n].dots[i].length; j++) {
+          const dot = dots[n].dots[i][j];
+          const { x, y } = dot.getPosition();
+          const dist = p5.dist(p5.mouseX, p5.mouseY, x, y);
+          if (dist < dotD / 2) {
+            // console.log('mouseOnDot', p5.mouseX, p5.mouseY, x, y, dist, dotD);
+
+            currentId = [n, i, j];
+            return true;
+          }
         }
       }
     }
+
+    currentId = [DotEnum.UNDEF, -1, -1];
+    return false;
   }
 
-  currentId = [DotEnum.UNDEF, -1, -1];
-  return false;
-}
+  /////////////////////////////////////////////////////////////////////////////////
+  this.mouseReleased = function() {
+    if (mouseOnBoxes() && currentId && currentId[0] !== DotEnum.UNDEF) {  // this is the end of a drag event
 
-/////////////////////////////////////////////////////////////////////////////////
-this.mouseReleased = function() {
-  if (mouseOnBoxes() && currentId && currentId[0] !== DotEnum.UNDEF) {  // this is the end of a drag event
+      [sendingBox, recievingBox] = getSendingAndRecievingBox();
 
-    [sendingBox, recievingBox] = getSendingAndRecievingBox();
-    
-    if (recievingBox === sendingBox) {            // drag within a box
-      if (!dotAnnihilation(currentId)) {
-        updatePosition(currentId);
+      if (recievingBox === sendingBox) {            // drag within a box
+        if (!dotAnnihilation(currentId)) {
+          updatePosition(currentId);
+        }
       }
-    }
-    else {                                            
-      if (recievingBox > sendingBox) {            // drag left
-        if (standardRule) {
-          if (!explodeDot(sendingBox, recievingBox)) {
-            resetDotPosition(currentId);            // weren't enough dots, send it back
+      else {
+        if (recievingBox > sendingBox) {            // drag left
+          if (standardRule) {
+              if (!explodeDot(sendingBox, recievingBox)) {
+                resetDotPosition(currentId);            // weren't enough dots, send it back
+              }
+            }
+            else {
+              if (!negaBinaryRule2(sendingBox, recievingBox)) {
+                resetDotPosition(currentId);
+              }
+            }
           }
+          else {                                      // drag right
+            unexplode(sendingBox,recievingBox);
+            //resetDotPosition(currentId);
+          }
+        }
+      }
+      else {                                          // we've dragged a dot out of box region
+        if (mouseInSpacers()) {                       // between the boxes
+          resetDotPosition(currentId);
+        }
+        else {                                        // out of the boxes
+          if(mouseOnDot()) {
+            if (removeDotsAllowed) {
+              deleteDot(currentId);
+              currentId = [DotEnum.UNDEF,-1,-1];
+            }
+            else { resetDotPosition(currentId); }
+          }
+        }
+      }
+    };
+
+
+
+    this.mousePressed = function()
+    {
+      if (mouseOnDotButton()) {  addDots = !addDots;  }
+      if (mouseOnRuleButton()) {  standardRule = !standardRule;  }
+
+      if (mouseOnBoxes() && !mouseOnDot() && addDotsAllowed) {
+        if (addDots) {
+          addDot();
         }
         else {
-          if (!negaBinaryRule2(sendingBox, recievingBox)) {
-            resetDotPosition(currentId);
-          }
+          addAntidot();
         }
       }
-      else {                                      // drag right
-        unexplode(sendingBox,recievingBox);
-        //resetDotPosition(currentId);
+    };
+
+
+
+    this.mouseDragged = function()
+    {
+      if (currentId[0] != DotEnum.UNDEF) {
+        const dot = dots[currentId[0]].dots[currentId[1]][currentId[2]];
+        dot.setPosition(p5.mouseX, p5.mouseY);
       }
-    }
-  }
-  else {                                          // we've dragged a dot out of box region
-    if (mouseInSpacers()) {                       // between the boxes
-      resetDotPosition(currentId);        
-    }
-    else {                                        // out of the boxes
-      if(mouseOnDot()) {
-        if (removeDotsAllowed) { 
-          deleteDot(currentId); 
-          currentId = [DotEnum.UNDEF,-1,-1];
-        }
-        else { resetDotPosition(currentId); }
+    };
+
+
+    this.draw = function()
+    {
+      p5.frameRate(15); // 15
+      p5.clear();
+      boxes.draw();
+      dots[0].draw();
+      dots[1].draw();
+      drawValueBoxes();
+      drawCodeBoxes();
+      drawSummaryBox();
+      drawDotButton();
+      drawRuleButton();
+    };
+
+    this.windowResized = function(width,height)
+    {
+
+      canvasW = width;
+      canvasH = height;
+
+
+      const minHeight = 200;
+      if (canvasH < minHeight) {
+        canvasH = minHeight;
       }
+
+      endcapH = canvasH * 0.1;
+      boxesW = canvasW * 0.9; // width of all the boxes together
+
+      const boxWidth = boxesW / numBoxes;
+
+      boxesH = canvasH * 0.5; // height of boxes
+      boxesX = (width - boxesW) / 2;
+      boxesY = (canvasH - boxesH) / 2 + endcapH/2;
+      dotD = p5.min(boxWidth * 0.2, boxesH * 0.2);
+      const dotMax = p5.min(boxWidth * 0.25, boxesH * 0.25);
+      marginX = 2 * dotMax;
+      marginY = dotD * 0.5;
+      xSpacer = dotD/2;
+      ySpacer = dotD/2;
+
+      boxTextSize = boxesH * 0.5;
+
+      const boxW = boxesW / numBoxes - ySpacer;
+      const t = '-' + p5.abs(p5.pow(base,numBoxes-1)).toString();
+      p5.push();
+      p5.textSize(boxTextSize);
+      while (p5.textWidth(t) > boxW) {
+        boxTextSize *= 0.75;
+        p5.textSize(boxTextSize);
+      }
+      p5.pop();
+
+      valueTextSize = endcapH * 0.5;
+      topBoxesY = boxesY - 2*ySpacer - 2*endcapH;
+      valueBoxesY = boxesY - ySpacer - endcapH;
+      codeBoxesY = boxesY + boxesH + ySpacer;
+      ruleBoxX = boxesX + boxWidth;
+
+
+      boxes.updateSize(boxesX, boxesY, boxesW, boxesH, boxTextSize, xSpacer, dotD);
+    };
+
+
+    this.loadSounds = function() {
+      addDotSound = p5.loadSound(addDotSoundFile);
+      annihilateSound = p5.loadSound(annihilateSoundFile);
     }
-  }
-};
+
+    this.setup = function(playableP5, b, n) {
 
 
+      p5 = playableP5;
+      base = b;
+      numBoxes = n;
 
-this.mousePressed = function()
-{
-  if (mouseOnDotButton()) {  addDots = !addDots;  }
-  if (mouseOnRuleButton()) {  standardRule = !standardRule;  }
+      if (base === -2) {
+        negaBinary = true;
+        ruleButtonOn = true;
+        console.log("turned on ruleButtonOn");
+      }
 
-  if (mouseOnBoxes() && !mouseOnDot() && addDotsAllowed) {
-    if (addDots) {
-      addDot();
+      boxes = new Boxes(playableP5, base, numBoxes, boxesX, boxesY, boxesW, boxesH, boxTextSize, xSpacer,dotD);
+      dots = [];
+      dots.push(new DotArray(playableP5, numBoxes, dotFill, dotStroke, boxes));
+      dots.push(new DotArray(playableP5, numBoxes, antidotFill, antidotStroke, boxes));
+      if (numBoxes < 4) ruleButonOn = false;
     }
-    else {
-      addAntidot();
+
+    this.turnOffAddDotButton = function() {  dotButtonOn = false; }
+
+    this.turnOffRuleButton = function() {  ruleButtonOn = false; }
+
+    this.allowAddDots = function(b) { addDotsAllowed = b; }
+
+    this.allowRemoveDots = function(b) { removeDotsAllowed = b; }
+
+    this.addDotsToBox = function(numberOfDots, dotType, box) {
+      const dotArrayID = dotType;
+      if (dotArrayID > 1) dotArrayID = 1;
+      for (let i=0; i < numberOfDots; i++) {
+        const boxW = boxesW/numBoxes;
+        const x = boxesX + (numBoxes - box - 1)* boxW + boxW/2;
+        const y = boxesY + (boxesH/2);
+        dots[1-dotArrayID].addDot(x + p5.random(-2*dotD, 2*dotD), y + p5.random(-2*dotD, 2*dotD), box);
+      }
+
     }
-  }
-};
-
-
-
-this.mouseDragged = function()
-{
-  if (currentId[0] != DotEnum.UNDEF) {
-    const dot = dots[currentId[0]].dots[currentId[1]][currentId[2]];
-    dot.setPosition(p5.mouseX, p5.mouseY);
-  }
-};
-
-
-this.draw = function()
-{
-  p5.frameRate(15);
-  p5.clear();
-  boxes.draw();
-  dots[0].draw();
-  dots[1].draw();
-  drawValueBoxes();
-  drawCodeBoxes();
-  drawSummaryBox();
-  drawDotButton();
-  drawRuleButton();
-};
-
-this.windowResized = function(width,height)
-{
-
-  canvasW = width;
-  canvasH = height;
-
-
-  const minHeight = 200;
-  if (canvasH < minHeight) {
-    canvasH = minHeight;
-  }
-
-  endcapH = canvasH * 0.1;
-  boxesW = canvasW * 0.9; // width of all the boxes together
-
-  const boxWidth = boxesW / numBoxes;
-
-  boxesH = canvasH * 0.5; // height of boxes
-  boxesX = (width - boxesW) / 2;
-  boxesY = (canvasH - boxesH) / 2 + endcapH/2;
-  dotD = p5.min(boxWidth * 0.2, boxesH * 0.2);
-  const dotMax = p5.min(boxWidth * 0.25, boxesH * 0.25);
-  marginX = 2 * dotMax;
-  marginY = dotD * 0.5;
-  xSpacer = dotD/2;
-  ySpacer = dotD/2;
-  
-  boxTextSize = boxesH * 0.5;
-  
-  const boxW = boxesW / numBoxes - ySpacer;
-  const t = '-' + p5.abs(p5.pow(base,numBoxes-1)).toString();
-  p5.push();
-  p5.textSize(boxTextSize);
-  while (p5.textWidth(t) > boxW) {
-    boxTextSize *= 0.75;
-    p5.textSize(boxTextSize);
-  }
-  p5.pop();
-
-  valueTextSize = endcapH * 0.5;
-  topBoxesY = boxesY - 2*ySpacer - 2*endcapH;
-  valueBoxesY = boxesY - ySpacer - endcapH;
-  codeBoxesY = boxesY + boxesH + ySpacer;
-  ruleBoxX = boxesX + boxWidth;
-
-
-  boxes.updateSize(boxesX, boxesY, boxesW, boxesH, boxTextSize, xSpacer, dotD);
-};
-
-
-this.loadSounds = function() {
-  addDotSound = p5.loadSound(addDotSoundFile);
-  annihilateSound = p5.loadSound(annihilateSoundFile);    
-}
-
-this.setup = function(playableP5, b, n) {
-
-
-  p5 = playableP5;
-  base = b;
-  numBoxes = n;
-
-  if (base === -2) {
-    negaBinary = true;
-    ruleButtonOn = true;
-    console.log("turned on ruleButtonOn");
-  }
-
-  boxes = new Boxes(base, numBoxes, boxesX, boxesY, boxesW, boxesH, boxTextSize, xSpacer,dotD);
-  dots = [];
-  dots.push(new DotArray(numBoxes, dotFill, dotStroke, boxes));
-  dots.push(new DotArray(numBoxes, antidotFill, antidotStroke, boxes));
-  if (numBoxes < 4) ruleButonOn = false;
-}
-
-this.turnOffAddDotButton = function() {  dotButtonOn = false; }
-
-this.turnOffRuleButton = function() {  ruleButtonOn = false; }
-
-this.allowAddDots = function(b) { addDotsAllowed = b; }
-
-this.allowRemoveDots = function(b) { removeDotsAllowed = b; }
-
-this.addDotsToBox = function(numberOfDots, dotType, box) {
-  const dotArrayID = dotType;
-  if (dotArrayID > 1) dotArrayID = 1;
-  for (let i=0; i < numberOfDots; i++) {   
-    const boxW = boxesW/numBoxes;        
-    const x = boxesX + (numBoxes - box - 1)* boxW + boxW/2;
-    const y = boxesY + (boxesH/2);
-    dots[1-dotArrayID].addDot(x + randomJiggle(dotD), y + randomJiggle(dotD), box);
-  }
-
-}
-
 
 }
 
