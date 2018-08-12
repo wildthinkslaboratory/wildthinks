@@ -43,7 +43,7 @@ const dotButtonFill = white;
 ///  global sound file variables
 let addDotSound;
 let annihilateSound;
-const addDotSoundFile = 'https://gist.githubusercontent.com/wildthinkslaboratory/ac98c0bb68ccf7528dc39fa1922d2bdb/raw/520efde07887f00c55653c6c5e6cfbe36962cd57/Blop-Mark_DiAngelo-79054334.wav'
+const addDotSoundFile =     'https://gist.githubusercontent.com/wildthinkslaboratory/ac98c0bb68ccf7528dc39fa1922d2bdb/raw/520efde07887f00c55653c6c5e6cfbe36962cd57/Blop-Mark_DiAngelo-79054334.wav'
 const annihilateSoundFile = 'https://gist.githubusercontent.com/wildthinkslaboratory/ac98c0bb68ccf7528dc39fa1922d2bdb/raw/e0ca3e1a7f8393c9c62b56650bb4b1ad01749265/Woosh-Mark_DiAngelo-4778593.wav';
 
 

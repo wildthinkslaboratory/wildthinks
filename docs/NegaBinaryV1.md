@@ -20,7 +20,7 @@
 
 
 ```p5js/playable/autoplay
-/* //smartdown.import=http://127.0.0.1:5555/dots.js */
+/*//smartdown.import=http://127.0.0.1:5555/dots.js */
 
 //smartdown.import=https://wildthinkslaboratory.github.io/wildthinks/dots.js 
 
