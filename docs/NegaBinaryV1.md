@@ -1,12 +1,18 @@
 ![](https://gist.githubusercontent.com/wildthinkslaboratory/ac98c0bb68ccf7528dc39fa1922d2bdb/raw/eb65f6202d8185468cea211757f0700fcef3aacd/negaBinaryBanner1.png)
 
 
+
+
+This page builds on James Tanton's **exploding dots** curriculum.  If you're new to exploding dots, checkout these amazing pages: [G'Day Math! **Exploding Dots**](http://gdaymath.com/courses/exploding-dots/) and [Global Math Week **Exploding Dots**](https://www.explodingdots.org).
+
+---
+
 ## Welcome to our Prototype Negative Binary Page
 
 ---
-Here's a cool way to write down numbers. We're going to write all of the integers.  So that's  
+Here's a cool way to write down numbers.  It's called negative binary and we can write all of the integers with it.  So that's  
 
-$$ \ldots , -4, -3, -2, -1, 0, 1, 2, 3, 4, \ldots $$
+$$ \ldots , -9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9,  \ldots, $$
 
 but we're only going to use the symbols $\lbrace 0,1\rbrace$.  Here's the catch.  You're not allowed to use the negative sign, $-$, in front of a number to say that it's negative.  
 
@@ -17,22 +23,24 @@ but we're only going to use the symbols $\lbrace 0,1\rbrace$.  Here's the catch.
 
 ---
 
-Let's write the number $2$ in Negative Binary.  Drag a dot to the left.  ( You can also drag it back to the right. )
+Let's write the number $2$ in negative binary.  Drag a **dot** to the left.  ( You can also drag it back to the right. )
 
 ---
 
 ```p5js/playable/autoplay
 //xsmartdown.import=http://127.0.0.1:5555/dots.js
 
+
+// import the dots library
 //smartdown.import=https://wildthinkslaboratory.github.io/wildthinks/dots.js
 
+// this is the url for the background picture
 const bgURL = 'https://gist.githubusercontent.com/wildthinkslaboratory/ac98c0bb68ccf7528dc39fa1922d2bdb/raw/a813f0d1c5d0108a8b923ce73dd17ebddc692972/ExpDotsBackground.001.jpeg';
 
 
 // Adjust the surrounding DIV(s) a little
-
-const myDiv = this.div;
-myDiv.style.position = 'relative';
+const myDiv = this.div;                                  // This chunk of code is some HTML/CSS stuff
+myDiv.style.position = 'relative';                       // to make the playable look pretty
 myDiv.style['background-image'] = `url(${bgURL})`;
 myDiv.style['background-repeat'] = 'no-repeat';
 myDiv.style['background-size'] = 'cover';
@@ -45,23 +53,23 @@ myDiv.style.border = '5px solid gray';
 this.div.style.margin = '10px auto'; // shorthand for '10px auto 10px auto'
 this.div.innerHTML = '';
 
-const base = -2;
-const numberBoxes = 2;
 
-var dots = new dotlib.Dots();
+const base = -2;               // set the base for the machine
+const numberBoxes = 2;         // set how many boxes you want
 
-console.log("this.dotlib", dotlib);
+var dots = new dotlib.Dots();  // create the dots and boxes machine
 
-p5.setup = function() {
 
-  dots.setup(p5, base, numberBoxes);
-  var canvasWidth = p5.windowWidth * 0.5;
+p5.setup = function() {                          // this function is called when you start the
+                                                 // playable. 
+  dots.setup(p5, base, numberBoxes);             // initialize the machine with the base and number of boxes. 
+  var canvasWidth = p5.windowWidth * 0.5;        // set the size of the playable
   var canvasHeight = p5.windowHeight * 0.8;
-  p5.createCanvas(canvasWidth,canvasHeight);
-  p5.windowResized();
+  p5.createCanvas(canvasWidth,canvasHeight);     // create the canvas we will draw on
+  p5.windowResized();                            
 
-  dots.loadSounds();
-  dots.turnOffRuleButton();
+  dots.loadSounds();                             // load the sounds for the app
+  dots.turnOffRuleButton();                      // configure the machine the way we want it.
   dots.turnOffAddDotButton();
   dots.allowAddDots(false);
   dots.allowRemoveDots(false);
@@ -71,72 +79,74 @@ p5.setup = function() {
 };
 
 
-p5.windowResized = function() {
-  const canvasWidth = p5.windowWidth * 0.5;
-  const canvasHeight = p5.windowHeight * 0.8;
+p5.windowResized = function() {                  // this function is called when the user changes
+  const canvasWidth = p5.windowWidth * 0.5;      // the size of the window.  It will rescale all the 
+  const canvasHeight = p5.windowHeight * 0.8;    // components to fit into the new window size.
   dots.windowResized(canvasWidth, canvasHeight);
   p5.resizeCanvas(canvasWidth, canvasHeight);
 }
 
 
-p5.draw = function() {
-  dots.draw();
+p5.draw = function() {                           // this function gets called repeatedly in a loop.
+  dots.draw();                                   // The machine is redrawn multiple times a second.
 }
 
 
-p5.mousePressed = function()
+p5.mousePressed = function()                     // this function is called everytime the user clicks the mouse
 {
   dots.mousePressed();
 }
 
 
-p5.mouseDragged = function() {
+p5.mouseDragged = function() {                   // this function is called everytime the user drags the mouse
   dots.mouseDragged();
 }
 
 
-p5.mouseReleased = function() {
-  dots.mouseReleased();
+p5.mouseReleased = function() {                  // this function is called when the user releases the mouse 
+  dots.mouseReleased();                          // button after a click.
 }
 ```
 
 ---
 
-So the code for the number $2$ is `-1`  `0`.  We have one antidot in the $-2$ box.  That's $\left( -1 \right)\left( -2 \right) = 2$.
+So the code for the number $2$ is `-1`  `0`.  We have one **antidot** in the $-2$ box.  That's $\left( -1 \right)\left( -2 \right) = 2$.
 
 But we promised that there wouldn't be any negative signs in our code.  Let's fix that.
 
 ---
 
-## Transform the Antidot
+## Transform the **Antidot**
 
 ---
 
 First, some helpful INSTRUCTIONS:
 
-- You can click on a box to add a dot.  
-- If you drag the dot out of the boxes that will delete it.  
-- Notice the `Add` button in the upper left.  Click on it.  Now you can add antidots too.  
-- If you have a dot and an antidot in the same box, drag them together to annihilate them.  
+- You can click on a box to add a **dot**.  
+- If you drag the **dot** out of the boxes that will delete it.  
+- Notice the `Add` button in the upper left.  Click on it.  Now you can add **antidots** too.  
+- If you have a **dot** and an **antidot** in the same box, drag them together to annihilate them.  
 
-Notice the little `play` and `stop` buttons on the upper left of every playable.  You can always click the `stop` button and then the `play` button to reset the playable.  
+Notice the little `play` and `stop` buttons on the upper left of every playable.  You can always click the `stop` button and then the `play` button to reset the playable.  (Ooh, you can also see the code for this playable when you click the `stop` button. Cool.)
 
-OK, now let's fix that antidot.  Try adding $0$ to the middle box by adding both a dot AND an antidot.  Now you can drag an antidot to the left.
+OK, now let's fix that **antidot**.  Try adding $0$ to the middle box by adding both a **dot** AND an **antidot**.  Now you can drag an **antidot** to the left.
 
 ---
 
 ```p5js/playable/autoplay
 //xsmartdown.import=http://127.0.0.1:5555/dots.js
 
+
+// import the dots library
 //smartdown.import=https://wildthinkslaboratory.github.io/wildthinks/dots.js
 
+// this is the url for the background picture
 const bgURL = 'https://gist.githubusercontent.com/wildthinkslaboratory/ac98c0bb68ccf7528dc39fa1922d2bdb/raw/a813f0d1c5d0108a8b923ce73dd17ebddc692972/ExpDotsBackground.001.jpeg';
 
 
 // Adjust the surrounding DIV(s) a little
-
-const myDiv = this.div;
-myDiv.style.position = 'relative';
+const myDiv = this.div;                                  // This chunk of code is some HTML/CSS stuff
+myDiv.style.position = 'relative';                       // to make the playable look pretty
 myDiv.style['background-image'] = `url(${bgURL})`;
 myDiv.style['background-repeat'] = 'no-repeat';
 myDiv.style['background-size'] = 'cover';
@@ -149,55 +159,54 @@ myDiv.style.border = '5px solid gray';
 this.div.style.margin = '10px auto'; // shorthand for '10px auto 10px auto'
 this.div.innerHTML = '';
 
-const base = -2;
-const numberBoxes = 3;
+const base = -2;               // set the base for the machine
+const numberBoxes = 3;         // set how many boxes you want
 
-var dots = new dotlib.Dots();
+var dots = new dotlib.Dots();  // create the dots and boxes machine
 
-console.log("this.dotlib", dotlib);
 
-p5.setup = function() {
-
-  dots.setup(p5, base, numberBoxes);
-  var canvasWidth = p5.windowWidth;
+p5.setup = function() {                          // this function is called when you start the
+                                                 // playable. 
+  dots.setup(p5, base, numberBoxes);             // initialize the machine with the base and number of boxes. 
+  var canvasWidth = p5.windowWidth;              // set the size of the playable
   var canvasHeight = p5.windowHeight * 0.8;
-  p5.createCanvas(canvasWidth,canvasHeight);
-  p5.windowResized();
+  p5.createCanvas(canvasWidth,canvasHeight);     // create the canvas we will draw on
+  p5.windowResized();                            
 
-  dots.loadSounds();
-  dots.turnOffRuleButton();
+  dots.loadSounds();                             // load the sounds for the app
+  dots.turnOffRuleButton();                      // configure the machine the way we want it.
   dots.addDotsToBox(1,0,1);
 
   p5.pixelDensity(1);   // this should be taken out as soon as they fix the clear() function in p5js
 };
 
 
-p5.windowResized = function() {
-  const canvasWidth = p5.windowWidth;
-  const canvasHeight = p5.windowHeight * 0.8;
+p5.windowResized = function() {                  // this function is called when the user changes
+  const canvasWidth = p5.windowWidth;            // the size of the window.  It will rescale all the 
+  const canvasHeight = p5.windowHeight * 0.8;    // components to fit into the new window size.
   dots.windowResized(canvasWidth, canvasHeight);
   p5.resizeCanvas(canvasWidth, canvasHeight);
 }
 
 
-p5.draw = function() {
-  dots.draw();
+p5.draw = function() {                           // this function gets called repeatedly in a loop.
+  dots.draw();                                   // The machine is redrawn multiple times a second.
 }
 
 
-p5.mousePressed = function()
+p5.mousePressed = function()                     // this function is called everytime the user clicks the mouse
 {
   dots.mousePressed();
 }
 
 
-p5.mouseDragged = function() {
+p5.mouseDragged = function() {                   // this function is called everytime the user drags the mouse
   dots.mouseDragged();
 }
 
 
-p5.mouseReleased = function() {
-  dots.mouseReleased();
+p5.mouseReleased = function() {                  // this function is called when the user releases the mouse 
+  dots.mouseReleased();                          // button after a click.
 }
 ```
 
@@ -205,7 +214,7 @@ p5.mouseReleased = function() {
 
 So the code for the number $2$ is `1` `1` `0`.  We have one $4$ and one $-2$ which gives us $4 + \left(-2 \right) = 2$.  
 
-Also, we learned a new rule:   `1` `1` $\leftarrow$ `0` `-1` .  Now we can transform antidots into dots.  (We can also use this trick to transform dots into antidots.)
+Also, we learned a new rule:   `1` `1` $\leftarrow$ `0` `-1` .  Now we can transform an **antidot** into **dots**.  (We can also use this trick to transform a **dot** into **antidots**.)
 
 ---
 
@@ -224,15 +233,17 @@ Check out the new `rule` button. It toggles between the standard  `-1`  $\leftar
 ```p5js/playable/autoplay
 //xsmartdown.import=http://127.0.0.1:5555/dots.js
 
+
+// import the dots library
 //smartdown.import=https://wildthinkslaboratory.github.io/wildthinks/dots.js
 
+// this is the url for the background picture
 const bgURL = 'https://gist.githubusercontent.com/wildthinkslaboratory/ac98c0bb68ccf7528dc39fa1922d2bdb/raw/a813f0d1c5d0108a8b923ce73dd17ebddc692972/ExpDotsBackground.001.jpeg';
 
 
 // Adjust the surrounding DIV(s) a little
-
-const myDiv = this.div;
-myDiv.style.position = 'relative';
+const myDiv = this.div;                                  // This chunk of code is some HTML/CSS stuff
+myDiv.style.position = 'relative';                       // to make the playable look pretty
 myDiv.style['background-image'] = `url(${bgURL})`;
 myDiv.style['background-repeat'] = 'no-repeat';
 myDiv.style['background-size'] = 'cover';
@@ -242,57 +253,62 @@ myDiv.style.padding = '0';
 myDiv.style.margin = '0';
 myDiv.style.overflow = 'hidden';
 myDiv.style.border = '5px solid gray';
+this.div.style.margin = '10px auto'; // shorthand for '10px auto 10px auto'
+this.div.innerHTML = '';
+
+const base = -2;               // set the base for the machine
+const numberBoxes = 4;         // set how many boxes you want
+
+var dots = new dotlib.Dots();  // create the dots and boxes machine
 
 
-const base = -2;
-const numberBoxes = 4;
-
-var dots = new dotlib.Dots();
-
-console.log("this.dotlib", dotlib);
-
-p5.setup = function() {
-
-  dots.setup(p5, base, numberBoxes);
-  dots.loadSounds();
-  var canvasWidth = p5.windowWidth;
+p5.setup = function() {                          // this function is called when you start the
+                                                 // playable. 
+  dots.setup(p5, base, numberBoxes);             // initialize the machine with the base and number of boxes. 
+  var canvasWidth = p5.windowWidth;              // set the size of the playable
   var canvasHeight = p5.windowHeight * 0.8;
-  p5.createCanvas(canvasWidth,canvasHeight);
-  p5.windowResized();
+  p5.createCanvas(canvasWidth,canvasHeight);     // create the canvas we will draw on
+  p5.windowResized();                            
 
+  dots.loadSounds();                             // load the sounds for the app
+                                                 // configure the machine the way we want it.
   dots.addDotsToBox(3,0,0);
+
   p5.pixelDensity(1);   // this should be taken out as soon as they fix the clear() function in p5js
 };
 
 
-p5.windowResized = function() {
-  const canvasWidth = p5.windowWidth;
-  const canvasHeight = p5.windowHeight * 0.8;
+p5.windowResized = function() {                  // this function is called when the user changes
+  const canvasWidth = p5.windowWidth;            // the size of the window.  It will rescale all the 
+  const canvasHeight = p5.windowHeight * 0.8;    // components to fit into the new window size.
   dots.windowResized(canvasWidth, canvasHeight);
   p5.resizeCanvas(canvasWidth, canvasHeight);
 }
 
 
-p5.draw = function() {
-  dots.draw();
+p5.draw = function() {                           // this function gets called repeatedly in a loop.
+  dots.draw();                                   // The machine is redrawn multiple times a second.
 }
 
 
-p5.mousePressed = function()
+p5.mousePressed = function()                     // this function is called everytime the user clicks the mouse
 {
   dots.mousePressed();
 }
 
 
-p5.mouseDragged = function() {
+p5.mouseDragged = function() {                   // this function is called everytime the user drags the mouse
   dots.mouseDragged();
 }
 
 
-p5.mouseReleased = function() {
-  dots.mouseReleased();
+p5.mouseReleased = function() {                  // this function is called when the user releases the mouse 
+  dots.mouseReleased();                          // button after a click.
 }
 ```
+---
+
+Did you get `1` `1` `0` `1` ?  That's $(-8) + 4 + 0 + 1 = -3$.
 
 ---
 
@@ -310,15 +326,17 @@ Here's some things to try.
 ```p5js/playable/autoplay
 //xsmartdown.import=http://127.0.0.1:5555/dots.js
 
+
+// import the dots library
 //smartdown.import=https://wildthinkslaboratory.github.io/wildthinks/dots.js
 
+// this is the url for the background picture
 const bgURL = 'https://gist.githubusercontent.com/wildthinkslaboratory/ac98c0bb68ccf7528dc39fa1922d2bdb/raw/a813f0d1c5d0108a8b923ce73dd17ebddc692972/ExpDotsBackground.001.jpeg';
 
 
 // Adjust the surrounding DIV(s) a little
-
-const myDiv = this.div;
-myDiv.style.position = 'relative';
+const myDiv = this.div;                                  // This chunk of code is some HTML/CSS stuff
+myDiv.style.position = 'relative';                       // to make the playable look pretty
 myDiv.style['background-image'] = `url(${bgURL})`;
 myDiv.style['background-repeat'] = 'no-repeat';
 myDiv.style['background-size'] = 'cover';
@@ -328,62 +346,69 @@ myDiv.style.padding = '0';
 myDiv.style.margin = '0';
 myDiv.style.overflow = 'hidden';
 myDiv.style.border = '5px solid gray';
+this.div.style.margin = '10px auto'; // shorthand for '10px auto 10px auto'
+this.div.innerHTML = '';
+
+const base = -2;               // set the base for the machine
+const numberBoxes = 6;         // set how many boxes you want
+
+var dots = new dotlib.Dots();  // create the dots and boxes machine
 
 
-const base = -2;
-const numberBoxes = 5;
-
-var dots = new dotlib.Dots();
-
-console.log("this.dotlib", dotlib);
-
-p5.setup = function() {
-
-  dots.setup(p5, base, numberBoxes);
-  dots.loadSounds();
-  var canvasWidth = p5.windowWidth;
+p5.setup = function() {                          // this function is called when you start the
+                                                 // playable. 
+  dots.setup(p5, base, numberBoxes);             // initialize the machine with the base and number of boxes. 
+  var canvasWidth = p5.windowWidth;              // set the size of the playable
   var canvasHeight = p5.windowHeight * 0.8;
-  p5.createCanvas(canvasWidth,canvasHeight);
-  p5.windowResized();
+  p5.createCanvas(canvasWidth,canvasHeight);     // create the canvas we will draw on
+  p5.windowResized();                            
+
+  dots.loadSounds();                             // load the sounds for the app
 
   p5.pixelDensity(1);   // this should be taken out as soon as they fix the clear() function in p5js
 };
 
 
-p5.windowResized = function() {
-  const canvasWidth = p5.windowWidth;
-  const canvasHeight = p5.windowHeight * 0.8;
+p5.windowResized = function() {                  // this function is called when the user changes
+  const canvasWidth = p5.windowWidth;            // the size of the window.  It will rescale all the 
+  const canvasHeight = p5.windowHeight * 0.8;    // components to fit into the new window size.
   dots.windowResized(canvasWidth, canvasHeight);
   p5.resizeCanvas(canvasWidth, canvasHeight);
 }
 
 
-p5.draw = function() {
-  dots.draw();
+p5.draw = function() {                           // this function gets called repeatedly in a loop.
+  dots.draw();                                   // The machine is redrawn multiple times a second.
 }
 
 
-p5.mousePressed = function()
+p5.mousePressed = function()                     // this function is called everytime the user clicks the mouse
 {
   dots.mousePressed();
 }
 
 
-p5.mouseDragged = function() {
+p5.mouseDragged = function() {                   // this function is called everytime the user drags the mouse
   dots.mouseDragged();
 }
 
 
-p5.mouseReleased = function() {
-  dots.mouseReleased();
+p5.mouseReleased = function() {                  // this function is called when the user releases the mouse 
+  dots.mouseReleased();                          // button after a click.
 }
 ```
+---
+
+## More things to try.
+
+- How is the code for each positive number $x$ related to the code for it's negation $-x$?  Can you construct one from the other?
 
 
 ### Known Bugs
 
 - If there's a lot of dots in a box the annihilation doesn't always work.  Need to figure out how to consistently reproduce it.
-- When I hit the rule button I get an undefined dot in dotsMouseDragged
+- I'm seeing dots disappear sometimes when I click the rule button.
+- snapToBox is sometimes snapping to the wrong box.
 
 
 
