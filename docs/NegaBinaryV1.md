@@ -1,7 +1,7 @@
 ```p5js/playable/autoplay
-//smartdown.import=https://127.0.0.1:5555/dots.js
+//xsmartdown.import=http://127.0.0.1:5555/dots.js
 
-//xsmartdown.import=https://wildthinkslaboratory.github.io/wildthinks/dots.js
+//smartdown.import=https://wildthinkslaboratory.github.io/wildthinks/dots.js
 
 const bgURL = 'https://gist.githubusercontent.com/wildthinkslaboratory/ac98c0bb68ccf7528dc39fa1922d2bdb/raw/a813f0d1c5d0108a8b923ce73dd17ebddc692972/ExpDotsBackground.001.jpeg';
 
@@ -73,9 +73,9 @@ p5.mouseReleased = function() {
 ### INSTANCE2
 
 ```p5js/playable/autoplay
-//smartdown.import=https://127.0.0.1:5555/dots.js
+//xsmartdown.import=http://127.0.0.1:5555/dots.js
 
-//xsmartdown.import=https://wildthinkslaboratory.github.io/wildthinks/dots.js
+//smartdown.import=https://wildthinkslaboratory.github.io/wildthinks/dots.js
 
 const bgURL = 'https://gist.githubusercontent.com/wildthinkslaboratory/ac98c0bb68ccf7528dc39fa1922d2bdb/raw/a813f0d1c5d0108a8b923ce73dd17ebddc692972/ExpDotsBackground.001.jpeg';
 
