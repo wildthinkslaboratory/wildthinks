@@ -411,6 +411,7 @@ p5.mouseReleased = function() {                  // this function is called when
 - If there's a lot of dots in a box the annihilation doesn't always work.  Need to figure out how to consistently reproduce it.
 - I'm seeing dots disappear sometimes when I click the rule button.
 - snapToBox is sometimes snapping to the wrong box.
+- A dot was missing from the initialized dots.
 
 
 
