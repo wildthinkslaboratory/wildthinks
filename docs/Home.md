@@ -19,15 +19,15 @@ In honor of Global Math Week 2018, our first interactive exploration we will be 
 
 ---
 
-#### Gödel's Incompleteness Theorem
+#### Exploding Dots meets Gödel's Incompleteness Theorem
 
 ---
 
-If you've been studying Exploding Dots, then you've got the background to understand the first piece of Kurt Gödel's famous Incompleteness theorem.  Check out the video below.
+If you've been studying Exploding Dots, then you've got the background to understand the first piece of Kurt Gödel's famous Incompleteness theorem.  Check out the Strings and Gödel page.  
 
 ---
 
-![fullwidth](https://youtu.be/oXyek2Q40AI)
+[Go to Strings and Gödel Page](:@Strings)
 
 ---
 
