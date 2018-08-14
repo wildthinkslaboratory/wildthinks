@@ -4,27 +4,32 @@ This page builds on James Tanton's **exploding dots** curriculum.  If you're new
 
 ---
 
----
-
 ## Exploding Dots Meets Kurt Gödel (Also Strings are Numbers)
 
 ---
 
-If you've been studying Exploding Dots, then you've got the background to understand the first piece of Kurt Gödel's famous Incompleteness theorem.  If you want to learn more check out this video. 
+One of the most interesting requirements for doing mathematics is having some strategy for writing numbers down.  Without one, how can we communicate?  I vaguely remember in grade school being taught that the *numbers* were different than the *numerals* we used to represent them, but I found it all very confusing at the time.  
 
----
+Exploding Dot's shows us that there are lots of different ways to write numbers down.  This makes the difference between  *numbers* and *numerals* easier to grasp.   You can also learn this by taking an introductory Number Theory class but unfortunately most people don't encounter one until they major in math in college.  That's way too late.
+ 
+If two people agree to use the same strategy for writing numbers down, then they can communicate ideas and agree on meaning.  The problem is that once a number is written down with a numeral, the meaning of that string of symbols is open to interpretation.  Someone else can pick a different strategy for interpreting your numeral and say it means something else.  Who's to say who is right?  This actually leads to some weird and unavoidable restrictions on mathematics.
+
+This topic is challenging to learn and also challenging to teach (my personal disclaimer).  If you're new to this stuff you should know that it never makes full sense the first time through.  So do not be disuaded and check out the video below.
+
 ---
 
 ![fullwidth](https://youtu.be/oXyek2Q40AI)
 
 ---
+
+
+## A Base 26 Machine with THE alphabet for an alphabet.
+
 ---
+
+This is a base $26$ machine.  Instead of using the standard number symbols to encode numbers, it uses the symbols `{a,b,c,d,e,f,g,h,i,j,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z}`.  It's probably not hugely illuminating, but I just wrote an exploding dots library.   I have a hammer and I'm looking for nails.  I've initilized it with the string `cab`, which has a value of $1353$, but you can try out any word you like.
+
 ---
-
-
-## A Base 26 Machine with THE alphabet for symbols
-
-Below you'll find a base 26 machine!  However, this machine doesn't use the standard number symbols to encode numbers, it uses the symbols `{a,b,c,d,e,f,g,h,i,j,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z}`.
 
 ```p5js/playable/autoplay
 
@@ -106,6 +111,14 @@ p5.mouseReleased = function() {                  // this function is called when
 
 
 ```
+---
+
+## What's Next?  Gödel's Incompleteness Part 2?
+
+___
+
+So the next thing we have to cover is Georg Cantor's proof that you can't map a set to it's powerset.  His proof uses something called *diagonalization* and I think it's a good candidate for an interactive web app/playable.  So that's what I'll build next. (When I have time.)  So stay tuned.
+
 
 [Back to Home](:@Home)
 
