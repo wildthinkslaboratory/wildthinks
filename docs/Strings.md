@@ -4,17 +4,13 @@ This page builds on James Tanton's **exploding dots** curriculum.  If you're new
 
 ---
 
-## Exploding Dots Meets Kurt Gödel (Also Strings are Numbers)
+## Exploding Dots Meets Kurt Gödel (Also, Strings are Numbers)
 
 ---
 
-One of the most interesting requirements for doing mathematics is having some strategy for writing numbers down.  Without one, how can we communicate?  I vaguely remember in grade school being taught that the *numbers* were different than the *numerals* we used to represent them, but I found it all very confusing at the time.  
+Mathematics requires that you have a strategy for writing numbers down. Without one, how can we communicate?  However, this requirement creates some unavoidable restrictions on mathematics.     There are lots of different strategies or systems for writing numbers.  You learned a bunch of them in Exploding Dots. If two people agree to use the same strategy, then they can communicate ideas and agree on meaning.  The problem is that once a number is written down with a bunch of symbols, the meaning of those symbols is open to interpretation.   For example, consider the symbols `100`.  Maybe that means one-hundred, maybe it means four, or perhaps something else entirely.  Someone else can always come along and pick a different strategy for interpreting our string of symbols and say it means something else.  Who's to say who is right?  Kurt Gödel and Alan Turing were both the kind of mathematicians who went around re-interpreting peoples strings of symbols to mean something different then what was intended.  Then they blew up Hilbert's program to prove the consistency of all mathematics.    
 
-Exploding Dot's shows us that there are lots of different ways to write numbers down.  This makes the difference between  *numbers* and *numerals* easier to grasp.   You can also learn this by taking an introductory Number Theory class but unfortunately most people don't encounter one until they major in math in college.  That's way too late.
- 
-If two people agree to use the same strategy for writing numbers down, then they can communicate ideas and agree on meaning.  The problem is that once a number is written down with a numeral, the meaning of that string of symbols is open to interpretation.  Someone else can pick a different strategy for interpreting your numeral and say it means something else.  Who's to say who is right?  This actually leads to some weird and unavoidable restrictions on mathematics.
-
-This topic is challenging to learn and also challenging to teach (my personal disclaimer).  If you're new to this stuff you should know that it never makes full sense the first time through.  So do not be disuaded and check out the video below.
+SIDE NOTE: This topic is challenging to learn and also challenging to teach (my personal disclaimer).  If you're new to this stuff you should know that it never makes full sense the first time through.  So do not be disuaded and check out the video below.
 
 ---
 
@@ -23,11 +19,11 @@ This topic is challenging to learn and also challenging to teach (my personal di
 ---
 
 
-## A Base 26 Machine with THE alphabet for an alphabet.
+## A Base 26 Machine with THE alphabet for an alphabet. (Also, words are numbers)
 
 ---
 
-This is a base $26$ machine.  Instead of using the standard number symbols to encode numbers, it uses the symbols `{a,b,c,d,e,f,g,h,i,j,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z}`.  It's probably not hugely illuminating, but I just wrote an exploding dots library.   I have a hammer and I'm looking for nails.  I've initilized it with the string `cab`, which has a value of $1353$, but you can try out any word you like.
+This is a base $26$ machine.  Instead of using the standard number symbols to encode numbers, it uses the symbols `{a,b,c,d,e,f,g,h,i,j,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z}`.  I've initilized it with the string `cab`, which has a base 10 value of $1353$, but you can try out any word you like.  What's the base 10 value of your favorite three letter word?
 
 ---
 
@@ -117,10 +113,12 @@ p5.mouseReleased = function() {                  // this function is called when
 
 ___
 
-So the next thing we have to cover is Georg Cantor's proof that you can't map a set to it's powerset.  His proof uses something called *diagonalization* and I think it's a good candidate for an interactive web app/playable.  So that's what I'll build next. (When I have time.)  So stay tuned.
+So the next thing we have to master is Georg Cantor's proof that you can't map a set to it's powerset.  His proof uses something called *diagonalization* and I think it's a good candidate for an interactive web app/playable.  So that's what I'll build next.  Stay tuned.
 
 
 [Back to Home](:@Home)
+
+---
 
 #### Composed in Smartdown using Scape
 
