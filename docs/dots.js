@@ -15,6 +15,7 @@ const lightLilac =    [220, 220, 255];
 const white =         [255, 255, 255];
 const paleLime =      [200, 255, 200];
 const darkGray =      [100, 100, 100];
+const bottleGreen =   [33,  190, 176];
 
 
 
@@ -54,22 +55,12 @@ const DotEnum = Object.freeze({UNDEF : -1, DOT : 0, ANTIDOT : 1});
 
 
 
-// general function for shallow copying of object. Keeps the associated methods.
-function copyInstance (original) {
-  let copied = Object.assign(
-    Object.create(
-      Object.getPrototypeOf(original)
-    ),
-    original
-  );
-  return copied;
-}
 
 
 
 
 ////
-// Drawing helper functions
+// helper functions
 //////////////////////////////////////////////////////////////////////////////
 
 
@@ -82,7 +73,31 @@ function centerTextInRect(p5, x,y,width,height,text) {
 }
 
 
+// general function for shallow copying of object. Keeps the associated methods.
+function copyInstance (original) {
+  let copied = Object.assign(
+    Object.create(
+      Object.getPrototypeOf(original)
+    ),
+    original
+  );
+  return copied;
+}
 
+
+function getNumberString(n, symbols) {
+
+  const base = symbols.length;
+  let A = [];
+  let quotient = n;
+  do {
+    A.unshift(symbols[quotient % base]);
+    quotient = Math.floor(quotient/base);
+  }
+  while (quotient > 0);
+
+  return A.join('');
+}
 
 ///
 // Dot class
@@ -391,6 +406,7 @@ function Dots() {
   let boxes;
   let dots;
   let currentId = [DotEnum.UNDEF, 0, 0];  // the id of the current dot
+  let alphabet = [];  // we can change the alphabet of symbols we use to write numbers
 
 
   // currentSum is just used to calculate the text size in some of the draw functions
@@ -446,7 +462,12 @@ function Dots() {
     for (let i=0; i < numBoxes; i++) {
       let code = dots[0].dots[i].length;
       code -= dots[1].dots[i].length;
-      const t = code.toString();
+
+      let t = code.toString();
+
+      if (alphabet.length > 2) {
+        t = getNumberString(code,alphabet);
+      }
 
       if (code === 0) { p5.fill(valueStroke); }
       else { p5.fill(writingFill); }
@@ -1006,7 +1027,6 @@ function Dots() {
     if (base === -2) {
       negaBinary = true;
       ruleButtonOn = true;
-      console.log('turned on ruleButtonOn');
     }
 
     boxes = new Boxes(playableP5, base, numBoxes, boxesX, boxesY, boxesW, boxesH, boxTextSize, xSpacer,dotD);
@@ -1034,6 +1054,16 @@ function Dots() {
       dots[1-dotArrayID].addDot(x + p5.random(-2*dotD, 2*dotD), y + p5.random(-2*dotD, 2*dotD), box);
     }
 
+  };
+
+  this.setAlphabetSymbols = function(a) {
+    if (a.length > 1) {
+      alphabet = a;
+      base = alphabet.length;
+      negaBinary = false;
+      ruleButtonOn = false;
+    }
+    console.log('stringNumber 1364', getNumberString(1364,alphabet));
   };
 
 }
