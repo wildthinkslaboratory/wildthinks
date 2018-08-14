@@ -2,12 +2,19 @@
 
 ---
 
-### Welcome to WildThinks
-Our goal is to build interactive explorations of our favorite topics in discrete mathematics, logic, proof writing, and theoretical computer science.  
+## Welcome to WildThinks
 
 ---
 
-#### Negative Binary Exploding Dots
+Our goal is to build interactive explorations of our favorite topics in discrete mathematics, logic, proof writing, and theoretical computer science.  Want to to know more about us? Click the button below.
+
+---
+
+[More About Us](:@About)
+
+---
+
+## Negative Binary Exploding Dots
 
 ---
 
@@ -19,7 +26,7 @@ In honor of Global Math Week 2018, our first interactive exploration we will be 
 
 ---
 
-#### Exploding Dots meets Gödel's Incompleteness Theorem
+## Exploding Dots meets Gödel's Incompleteness Theorem
 
 ---
 
