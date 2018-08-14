@@ -28,11 +28,11 @@ Below you'll find a base 26 machine!  However, this machine doesn't use the stan
 
 ```p5js/playable/autoplay
 
-//smartdown.import=http://127.0.0.1:5555/dots.js
+//xsmartdown.import=http://127.0.0.1:5555/dots.js
 
 
 // import the dots library
-//xsmartdown.import=https://wildthinkslaboratory.github.io/wildthinks/dots.js
+//smartdown.import=https://wildthinkslaboratory.github.io/wildthinks/dots.js
 
 // this is the url for the background picture
 const bgURL = 'https://gist.githubusercontent.com/wildthinkslaboratory/ac98c0bb68ccf7528dc39fa1922d2bdb/raw/0fe1c494e0a94243f3b6d10dd38ef2a341d92f95/bgRedCream-20.jpg';
@@ -108,3 +108,11 @@ p5.mouseReleased = function() {                  // this function is called when
 ```
 
 [Back to Home](:@Home)
+
+#### Composed in Smartdown using Scape
+
+---
+
+The pages on this site are written in Smartdown, the markup language for [Scape: STEM Collaboration and Programming Environment](http://www.infoclay.com/scape/index.html).  Scape and Smartdown make it easy to share technical and interactive content such as charts, graphs, and featherweight programs called playables.  
+
+

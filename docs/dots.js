@@ -1,7 +1,6 @@
 
 let uniqueInstanceName = 0;
 
-
 ////
 // Color Pallette
 //////////////////////////////////////////////////////////////////////////////
@@ -1060,10 +1059,10 @@ function Dots() {
     if (a.length > 1) {
       alphabet = a;
       base = alphabet.length;
+      boxes.base = alphabet.length;
       negaBinary = false;
       ruleButtonOn = false;
     }
-    console.log('stringNumber 1364', getNumberString(1364,alphabet));
   };
 
 }
