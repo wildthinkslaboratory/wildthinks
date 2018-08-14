@@ -980,13 +980,13 @@ function Dots() {
 
     boxesH = canvasH * 0.5; // height of boxes
     boxesX = (width - boxesW) / 2;
-    boxesY = (canvasH - boxesH + endcapH + ySpacer) / 2;
+
     dotD = p5.min(boxWidth * 0.2, boxesH * 0.2);
-    // const dotMax = p5.min(boxWidth * 0.25, boxesH * 0.25);
-    // marginX = 2 * dotMax;
-    // marginY = dotD * 0.5;
     xSpacer = dotD/2;
     ySpacer = dotD/2;
+
+    boxesY = (canvasH - boxesH + endcapH + ySpacer) / 2;
+    
 
     boxTextSize = boxesH * 0.5;
 
