@@ -23,7 +23,7 @@ but we're only going to use the symbols $\lbrace 0,1\rbrace$.  Here's the catch.
 
 ---
 
-Let's write the number $2$ in negative binary.  Drag a **dot** to the left.  ( You can also drag it back to the right. )
+Let's write the number $2$ in negative binary. Notice there are two purple **dots** in the right most box, the ones box.  Drag a **dot** to the left.  ( You can also drag it back to the right when you're done. )  The two purple purple **dots** turn into one blue **antidot** in the negative two box.  Can you figure out why an **antidot** appears when you drag these two dots?
 
 ---
 
@@ -122,12 +122,12 @@ But we promised that there wouldn't be any negative signs in our code.  Let's fi
 
 First, some helpful INSTRUCTIONS:
 
-- You can click on a box to add a **dot**.  
-- If you drag the **dot** out of the boxes that will delete it.  
+- Click on a box to add a **dot**.  
+- Drag a **dot** out of the boxes to delete it.  
 - Notice the `Add` button in the upper left.  Click on it.  Now you can add **antidots** too.  
 - If you have a **dot** and an **antidot** in the same box, drag them together to annihilate them.  
 
-Notice the little `play` and `stop` buttons on the upper left of every playable.  You can always click the `stop` button and then the `play` button to reset the playable.  (Ooh, you can also see the code for this playable when you click the `stop` button. Cool. We'll show you how to write your own playable on a different page soon.)
+Notice the gray band above every playable?  You can always reset a playable by clicking this gray band.  Once to  `stop` the playable and  then again to `play` the playable.  (Ooh, you can also see the code for this playable when you click the `stop` button. Cool. We'll show you how to write your own playable on a different page soon.)
 
 OK, now let's fix that **antidot**.  Try adding $0$ to the middle box by adding both a **dot** AND an **antidot**.  Now you can drag an **antidot** to the left.  No more **antidot**!
 
