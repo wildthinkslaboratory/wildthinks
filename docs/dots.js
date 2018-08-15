@@ -86,16 +86,17 @@ function copyInstance (original) {
 
 function getNumberString(n, symbols) {
 
+  const sign = (n < 0 ? false : true);
   const base = symbols.length;
   let A = [];
-  let quotient = n;
+  let quotient = Math.abs(n);
   do {
     A.unshift(symbols[quotient % base]);
     quotient = Math.floor(quotient/base);
   }
   while (quotient > 0);
 
-  return A.join('');
+  return (sign ? '' : '-') + A.join('');
 }
 
 ///
