@@ -206,22 +206,22 @@ p5.mouseReleased = function() {                  // this function is called when
 
 
 
-var A;   // holds the alphabet string
+var A;    // this holds the alphabet string
 
 this.dependOn = ['Alphabet'];
-this.depend = function() {        // Called when Alphabet changes to a new value
+this.depend = function() {                       // this function is called when the alphabet changes to a new value
   A = env.Alphabet;
-  if (A[A.length - 1] === '\n') {
-    const cleanA = cleanUpAlphabet(A);
-    env.Alphabet = cleanA.join('');
-    dots.setAlphabetSymbols(cleanA);
+  if (A[A.length - 1] === '\n') {                // we only enter a new alphabet when the user hits enter  i.e. '\n'
+    const cleanA = cleanUpAlphabet(A);           // the user may not have entered a valid alphabet to we clean it up
+    env.Alphabet = cleanA.join('');              // convert the alphabet from a string to an array of characters
+    dots.setAlphabetSymbols(cleanA);             // add the alphabet to the machine
   }
 };
 
 
-function cleanUpAlphabet(a) {
-  aNoWhiteSpace = a.replace(/\s/g, '');
-  let newA = Array.from(new Set(aNoWhiteSpace.split(''))); // remove duplicates
+function cleanUpAlphabet(a) {                                    // here's where we clean up the alphabet
+  aNoWhiteSpace = a.replace(/\s/g, '');                          // remove any spaces, tabs or enter characters
+  let newA = Array.from(new Set(aNoWhiteSpace.split('')));       // remove duplicate characters
   return newA;
 }
 
