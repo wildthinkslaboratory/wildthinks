@@ -8,9 +8,9 @@ This page builds on James Tanton's **exploding dots** curriculum.  If you're new
 
 ---
 
-Mathematics requires that you have a strategy for writing numbers down. Without one, how can we communicate?  However, this requirement creates some unavoidable restrictions on mathematics.     There are lots of different strategies or systems for writing numbers.  You learned a bunch of them in Exploding Dots. If two people agree to use the same strategy, then they can communicate ideas and agree on meaning.  The problem is that once a number is written down with a bunch of symbols, the meaning of those symbols is open to interpretation.   For example, consider the symbols `100`.  Maybe that means one-hundred, maybe it means four, or perhaps something else entirely.  Someone else can always come along and pick a different strategy for interpreting our string of symbols and say it means something else.  Who's to say who is right?  Kurt Gödel and Alan Turing were both the kind of mathematicians who went around re-interpreting peoples strings of symbols to mean something different then what was intended.  Then they blew up Hilbert's program to prove the consistency of all mathematics.    
+Mathematics requires that you have a strategy for writing numbers down. Without one, how can we communicate?  There are actually lots of different strategies or systems for writing numbers.  You learned a bunch of them in Exploding Dots. If two people agree to use the same strategy, then they can communicate ideas and agree on meaning.  The problem is that once a number is written down with a bunch of symbols, the meaning of those symbols is open to interpretation.   For example, consider the symbols `100`.  Maybe that means one-hundred, maybe it means four, or perhaps something else entirely.  Someone else can always come along and pick a different strategy for interpreting our string of symbols and say it means something else.  Who's to say who is right?  Kurt Gödel and Alan Turing were both the kind of mathematicians who went around re-interpreting other peoples' strings of symbols to mean something different then what was intended.  Then they blew up David Hilbert's program to prove the consistency of all mathematics. It's all in the video below. 
 
-SIDE NOTE: This topic is challenging to learn and also challenging to teach (my personal disclaimer).  If you're new to this stuff you should know that it never makes full sense the first time through.  So do not be disuaded and check out the video below.
+SIDE NOTE: This topic is challenging to learn and also challenging to explain (my personal disclaimer).  If you're new to this stuff you should know that it never makes full sense the first time through.  So do not be dissuaded and check out the video below.
 
 ---
 
@@ -23,7 +23,7 @@ SIDE NOTE: This topic is challenging to learn and also challenging to teach (my 
 
 ---
 
-This is a base $26$ machine.  Instead of using the standard number symbols to encode numbers, it uses the symbols `{a,b,c,d,e,f,g,h,i,j,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z}`.  I've initilized it with the string `cab`, which has a base 10 value of $1353$, but you can try out any word you like.  What's the base 10 value of your favorite three letter word?
+This is a base $26$ machine with the rule $1 \leftarrow 26$.  Instead of using the standard number symbols to encode numbers, it uses the alphabet `{a,b,c,d,e,f,g,h,i,j,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z}`.  I've initilized it with the string `cab`, which has a base 10 value of $1353$.  Said another way, the number $1353$ has the code `cab` in this base 26 machine.  What base 10 number has the code `hi`? What's the base 10 value of your favorite three letter word?
 
 ---
 
@@ -108,6 +108,7 @@ p5.mouseReleased = function() {                  // this function is called when
 
 ```
 ---
+
 
 ## What's Next?  Gödel's Incompleteness Part 2?
 
