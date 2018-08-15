@@ -81,8 +81,6 @@ p5.setup = function() {                          // this function is called when
   dots.setAlphabetSymbols(['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z']);      
   dots.addDotsToBox(2,1,2);
   dots.addDotsToBox(1,1,0);             
-
-  p5.pixelDensity(1);   // this should be taken out as soon as they fix the clear() function in p5js
 };
 
 
@@ -175,8 +173,6 @@ p5.setup = function() {                          // this function is called when
   p5.windowResized();                            
 
   dots.loadSounds();                             // load the sounds for the app 
-
-  p5.pixelDensity(1);   // this should be taken out as soon as they fix the clear() function in p5js
 };
 
 

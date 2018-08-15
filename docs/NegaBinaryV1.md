@@ -74,8 +74,6 @@ p5.setup = function() {                          // this function is called when
   dots.allowAddDots(false);
   dots.allowRemoveDots(false);
   dots.addDotsToBox(2,1,0);
-
-  p5.pixelDensity(1);   // this should be taken out as soon as they fix the clear() function in p5js
 };
 
 
@@ -176,8 +174,6 @@ p5.setup = function() {                          // this function is called when
   dots.loadSounds();                             // load the sounds for the app
   dots.turnOffRuleButton();                      // configure the machine the way we want it.
   dots.addDotsToBox(1,0,1);
-
-  p5.pixelDensity(1);   // this should be taken out as soon as they fix the clear() function in p5js
 };
 
 
@@ -273,8 +269,6 @@ p5.setup = function() {                          // this function is called when
   dots.loadSounds();                             // load the sounds for the app
                                                  // configure the machine the way we want it.
   dots.addDotsToBox(3,0,0);
-
-  p5.pixelDensity(1);   // this should be taken out as soon as they fix the clear() function in p5js
 };
 
 
@@ -364,8 +358,6 @@ p5.setup = function() {                          // this function is called when
   p5.windowResized();                            
 
   dots.loadSounds();                             // load the sounds for the app
-
-  p5.pixelDensity(1);   // this should be taken out as soon as they fix the clear() function in p5js
 };
 
 
