@@ -465,7 +465,7 @@ function Dots() {
 
       let t = code.toString();
 
-      if (alphabet.length > 2) {
+      if (alphabet.length > 1) {
         t = getNumberString(code,alphabet);
       }
 
