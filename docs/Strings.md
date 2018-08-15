@@ -122,12 +122,13 @@ p5.mouseReleased = function() {                  // this function is called when
 
 ---
 
-In this app you can type in an alphabet from your keyboard.  The number of symbols in your alphabet will become the base of the machine. 
+In this app you can type in an alphabet from your keyboard.  The number of symbols in your alphabet will become the base of the machine and the symbols of your alphabet will be used to write the codes.  
 
 
 ### Things to try
 - The machine is initialized with the standard base 2 alphabet `01`.  Set the machine to encode the number four.  It should show the code `100`.  Now change the alphabet to `0123456789`.  The code `100` will stay the same, but what is the new value for this code?  
 - What happens if you choose the alphbet `10`?  What does the code `100` mean in this machine?
+- I'm fond of the binary alphabet `_l`.  I just like the way it makes the numbers look.
 - Make up your own number system with an alphabet of your own choosing.
 
 ---
@@ -235,6 +236,8 @@ function cleanUpAlphabet(a) {
 
 [Enter an alphabet](:?Alphabet)
 [Current alphabet](:!Alphabet)
+
+---
 
 ## What's Next?  Gödel's Incompleteness Part 2?
 
