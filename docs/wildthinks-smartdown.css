@@ -14,12 +14,12 @@
 .wildthinks-theme.smartdown-container {
   padding: 4px 8px;   /* Padding from the edge of the page */
   line-height: 1.35;  /* Override default of 1.35 */
-  border:1px solid green; /* for debugging */
+  /* border:1px solid green; */ /* for debugging */
   font-size: 20px;        /* Override font size of 18px */
 }
 
 .wildthinks-theme.smartdown-container p.smartdown_p {
-  padding: 20px 5px;      /* Padding within a paragraph */
+  padding: 15px 0px;      /* Padding within a paragraph */
   /*border:1px solid red; */  /* for debugging */  
 }
 
