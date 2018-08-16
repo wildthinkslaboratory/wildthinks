@@ -21,7 +21,7 @@ SIDE NOTE: Some of the ideas in this video are challenging to learn and also cha
 ## Words are Numbers!  A Base 26 Machine
 
 
-This is a base $26$ machine with the rule $1 \leftarrow 26$.  Instead of using the standard number symbols to encode numbers, it uses the alphabet `{a,b,c,d,e,f,g,h,i,j,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z}`.  I've initilized it with the string `cab`, which has a base 10 value of $1353$.  Said another way, the number $1353$ has the code `cab` in this base 26 machine.  
+This is a base $26$ machine with the rule $1 \leftarrow 26$.  Instead of using the standard number symbols to encode numbers, it uses the alphabet `{a,b,c,d,e,f,g,h,i,j,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z}`.  I've initilized it with the string `cab`, which has a base 10 value of $1353$.  Said another way, the number $1353$ has the code `cab` in this base 26 machine.  The **dots** have changed color.  **Dots** are orange and **antidots** are green now.
 
 ### Things to try
 
@@ -117,7 +117,7 @@ In this app you can type in an alphabet from your keyboard.  The number of symbo
 
 ### Things to try
 - The machine is initialized with the standard base 2 alphabet `01`.  Set the machine to encode the number four.  It should show the code `100`.  Now change the alphabet to `0123456789`.  The code `100` will stay the same, but what is the new value for this code?  
-- What happens if you choose the alphbet `10`?  What does the code `100` mean in this machine?
+- What happens if you choose the alphbet `10`?  What does the code `100` mean in this machine?  Note that usually we ignore any `0` symbols that are placed in front of a number.  In this case we ignore any  leading `1` symbols.
 - I'm fond of the binary alphabet `_l`.  I just like the way it makes the numbers look.
 - Make up your own number system with an alphabet of your own choosing.
 

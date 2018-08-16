@@ -12,33 +12,36 @@ const cyan =          [0,   200, 255];
 const darkbluegreen = [0,   100, 100];
 const lightLilac =    [220, 220, 255];
 const white =         [255, 255, 255];
-const paleLime =      [200, 255, 200];
+const lime =          [130, 255, 160];
 const darkGray =      [100, 100, 100];
-const bottleGreen =   [33,  190, 176];
+const bottleGreen =   [30,  160, 120];
+const wine =          [100,   0, 100];
+const paleWine =      [230, 200, 200];
+const tomato =        [255,  90,  90]
 
 
+const colorSchemes = {
+  green : [lightLilac, white, purple, darkpurple, cyan, darkbluegreen, darkbluegreen, white, lightLilac, darkGray, white],
+  red : [paleWine, white, tomato, wine, lime, darkbluegreen, wine, white, paleWine, darkGray, white]
+};
 
+class AppColors {
+  constructor(boxStroke, boxFill, dotFill, dotStroke, antidotFill, antidotStroke, 
+      writingFill, valueFill, valueStroke, dotButtonStroke, dotButtonFill) {
+    this.boxStroke = boxStroke;
+    this.boxFill = boxFill;
+    this.dotFill = dotFill;
+    this.dotStroke = dotStroke;
+    this.antidotFill = antidotFill;
+    this.antidotStroke = antidotStroke;
+    this.writingFill = writingFill;
+    this.valueFill = valueFill;
+    this.valueStroke = valueStroke;
+    this.dotButtonStroke = dotButtonStroke;
+    this.dotButtonFill = dotButtonFill;
+  }
 
-////
-// Color Formatting
-//////////////////////////////////////////////////////////////////////////////
-
-const boxStroke = lightLilac;                // boxes color formatting
-const boxFill = white;
-
-const dotFill = purple;                      // dot color formatting
-const dotStroke = darkpurple;
-const antidotFill = cyan;
-const antidotStroke = darkbluegreen;
-
-const writingFill = darkbluegreen;           // value boxes color formatting
-const valueFill = white;
-const valueStroke = lightLilac;
-
-const dotButtonStroke = darkGray;            // button color formatting
-const dotButtonFill = white;
-
-
+}
 
 
 
@@ -252,7 +255,7 @@ class DotArray {
 
 
 class Boxes {
-  constructor(playablep5, base, numberBoxes, x, y, boxesWidth, boxHeight, boxTextSize, xSpacer, dotDiameter) {
+  constructor(playablep5, base, numberBoxes, x, y, boxesWidth, boxHeight, boxTextSize, xSpacer, dotDiameter, fill, stroke) {
     this.base = base;
     this.p5 = playablep5;
     this.numberBoxes = numberBoxes;
@@ -264,6 +267,8 @@ class Boxes {
     this.boxTextSize = boxTextSize;
     this.xSpacer = xSpacer;
     this.dotDiameter = dotDiameter;
+    this.fill = fill;
+    this.stroke = stroke;
   }
 
   updateSize(boxesX, boxesY, boxesWidth, boxHeight, boxTextSize, xSpacer, dotDiameter) {
@@ -320,14 +325,14 @@ class Boxes {
     p5.frameRate(14);
     p5.push();
     p5.noStroke();
-    p5.fill(boxFill);
+    p5.fill(this.fill);
 
     for (let i=0; i < this.numberBoxes; i++) {
       p5.rect(this.x + i*this.width, this.y , this.width - this.xSpacer, this.height, 20);
     }
 
     p5.noStroke();
-    p5.fill(boxStroke);
+    p5.fill(this.stroke);
     p5.textSize(this.boxTextSize);
     for (let i=0; i < this.numberBoxes; i++) {
       const t = p5.pow(this.base, this.numberBoxes - i - 1).toString();
@@ -395,6 +400,7 @@ function Dots() {
   let ySpacer;
   let ruleBoxX;
 
+  let colors;
 
   ////
   // Game state
@@ -447,7 +453,7 @@ function Dots() {
 
     p5.push();
     p5.noStroke();
-    p5.fill(valueFill);
+    p5.fill(...colors.valueFill);
 
     for (let i=0; i < numBoxes; i++) {
       p5.rect(x + i*width, y , width - xSpacer, height, 10);
@@ -455,7 +461,7 @@ function Dots() {
 
     p5.noStroke();
     p5.textSize(valueTextSize);
-    p5.fill(writingFill);
+    p5.fill(...colors.writingFill);
 
 
 
@@ -469,8 +475,8 @@ function Dots() {
         t = getNumberString(code,alphabet);
       }
 
-      if (code === 0) { p5.fill(valueStroke); }
-      else { p5.fill(writingFill); }
+      if (code === 0) { p5.fill(...colors.valueStroke); }
+      else { p5.fill(...colors.writingFill); }
 
       const [textX,textY] = centerTextInRect(p5, x + (numBoxes - i - 1)*width, y , width - xSpacer, height,t);
       p5.text(t, textX, textY);
@@ -488,14 +494,14 @@ function Dots() {
 
     p5.push();
     p5.noStroke();
-    p5.fill(valueFill);
+    p5.fill(...colors.valueFill);
 
     for (let i = 0; i < numBoxes; i++) {
       p5.rect(x + i*width, y, width - xSpacer, height, 10);
     }
 
     p5.noStroke();
-    p5.fill(writingFill);
+    p5.fill(...colors.writingFill);
     p5.textSize(valueTextSize);
 
     currentSum = 0;
@@ -506,10 +512,10 @@ function Dots() {
       const t = value.toString();
 
       if (value === 0) {
-        p5.fill(valueStroke);
+        p5.fill(...colors.valueStroke);
       }
       else {
-        p5.fill(writingFill);
+        p5.fill(...colors.writingFill);
       }
 
       const [textX,textY] = centerTextInRect(p5, x + (numBoxes - i - 1)*width, y , width - xSpacer, height,t);
@@ -527,14 +533,14 @@ function Dots() {
 
     p5.push();
 
-    p5.stroke(writingFill);
+    p5.stroke(...colors.writingFill);
     p5.strokeWeight(2);
-    p5.fill(boxFill);
+    p5.fill(...colors.boxFill);
     p5.rect(x, y, boxW - xSpacer, height, 10);
 
     p5.textSize(valueTextSize);
-    p5.fill(writingFill);
-    p5.stroke(writingFill);
+    p5.fill(...colors.writingFill);
+    p5.stroke(...colors.writingFill);
     p5.strokeWeight(1);
 
     const t = currentSum.toString();
@@ -560,9 +566,9 @@ function Dots() {
 
     p5.push();
 
-    p5.stroke(dotButtonStroke);
+    p5.stroke(...colors.dotButtonStroke);
     p5.strokeWeight(1);
-    p5.fill(dotButtonFill);
+    p5.fill(...colors.dotButtonFill);
     p5.rect(x, y, boxW - xSpacer, height, 10);
 
     const centerX = ruleBoxX + (boxW - xSpacer) / 2;
@@ -579,14 +585,14 @@ function Dots() {
 
       p5.rect(box1X, boxY,littleBoxH,littleBoxH,5);
       p5.rect(box2X, boxY,littleBoxH,littleBoxH,5);
-      p5.stroke(dotStroke);
-      p5.fill(dotFill);
+      p5.stroke(...colors.dotStroke);
+      p5.fill(...colors.dotFill);
 
       p5.ellipse(box1X + shift*0.7, boxY + shift*0.7, dotSize, dotSize);
       p5.ellipse(box1X + shift*1.3, boxY + shift*1.3, dotSize, dotSize);
 
-      p5.stroke(antidotStroke);
-      p5.fill(antidotFill);
+      p5.stroke(...colors.antidotStroke);
+      p5.fill(...colors.antidotFill);
       p5.ellipse(box2X + shift, boxY + shift, dotSize, dotSize);
     }
     else {
@@ -598,14 +604,14 @@ function Dots() {
       p5.rect(boxes2X, boxY,littleBoxH,littleBoxH,5);
       p5.rect(boxes2X + littleBoxH, boxY,littleBoxH,littleBoxH,5);
 
-      p5.stroke(dotStroke);
-      p5.fill(dotFill);
+      p5.stroke(...colors.dotStroke);
+      p5.fill(...colors.dotFill);
 
       p5.ellipse(boxes2X + shift, boxY + shift, dotSize, dotSize);
       p5.ellipse(boxes2X + littleBoxH + shift, boxY + shift, dotSize, dotSize);
 
-      p5.stroke(antidotStroke);
-      p5.fill(antidotFill);
+      p5.stroke(...colors.antidotStroke);
+      p5.fill(...colors.antidotFill);
       p5.ellipse(boxes1X + littleBoxH + shift, boxY + shift, dotSize, dotSize);
 
 
@@ -625,21 +631,21 @@ function Dots() {
 
     p5.push();
 
-    p5.stroke(dotButtonStroke);
+    p5.stroke(...colors.dotButtonStroke);
     p5.strokeWeight(1);
-    p5.fill(dotButtonFill);
+    p5.fill(...colors.dotButtonFill);
     p5.rect(x, y, boxW - xSpacer, height, 10);
 
     p5.textSize(valueTextSize);
-    p5.fill(dotButtonStroke);
+    p5.fill(...colors.dotButtonStroke);
 
     if (addDots) {
-      p5.stroke(dotStroke);
-      p5.fill(dotFill);
+      p5.stroke(...colors.dotStroke);
+      p5.fill(...colors.dotFill);
     }
     else {
-      p5.stroke(antidotStroke);
-      p5.fill(antidotFill);
+      p5.stroke(...colors.antidotStroke);
+      p5.fill(...colors.antidotFill);
     }
 
     const dotSize = p5.min(dotD, endcapH * 0.75);
@@ -1017,8 +1023,15 @@ function Dots() {
     annihilateSound = p5.loadSound(annihilateSoundFile);
   };
 
-  this.setup = function(playableP5, b, n) {
+  this.setup = function(playableP5, b, n, color = 'red') {
 
+    if (color in colorSchemes) { 
+      colors = new AppColors(...colorSchemes[color]);
+    }
+    else {
+      console.log('unknown color scheme');
+      colors = new AppColors(...colorSchemes['green']);
+    }
 
     p5 = playableP5;
     base = b;
@@ -1029,10 +1042,10 @@ function Dots() {
       ruleButtonOn = true;
     }
 
-    boxes = new Boxes(playableP5, base, numBoxes, boxesX, boxesY, boxesW, boxesH, boxTextSize, xSpacer,dotD);
+    boxes = new Boxes(playableP5, base, numBoxes, boxesX, boxesY, boxesW, boxesH, boxTextSize, xSpacer,dotD, colors.boxFill, colors.boxStroke);
     dots = [];
-    dots.push(new DotArray(playableP5, numBoxes, dotFill, dotStroke, boxes));
-    dots.push(new DotArray(playableP5, numBoxes, antidotFill, antidotStroke, boxes));
+    dots.push(new DotArray(playableP5, numBoxes, colors.dotFill, colors.dotStroke, boxes));
+    dots.push(new DotArray(playableP5, numBoxes, colors.antidotFill, colors.antidotStroke, boxes));
     if (numBoxes < 4) ruleButtonOn = false;
   };
 
