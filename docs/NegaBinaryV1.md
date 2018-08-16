@@ -118,7 +118,6 @@ But we promised that there wouldn't be any negative signs in our code.  Let's fi
 
 
 First, some helpful INSTRUCTIONS:
-
 - Click on a box to add a **dot**.  
 - Drag a **dot** out of the boxes to delete it.  
 - Notice the `Add` button in the upper left.  Click on it.  Now you can add **antidots** too.  
