@@ -12,7 +12,7 @@ const cyan =          [0,   200, 255];
 const darkbluegreen = [0,   100, 100];
 const lightLilac =    [220, 220, 255];
 const white =         [255, 255, 255];
-const lime =          [130, 255, 160];
+const lime =          [110, 235, 150];
 const darkGray =      [100, 100, 100];
 const bottleGreen =   [30,  160, 120];
 const wine =          [100,   0, 100];
@@ -1023,7 +1023,7 @@ function Dots() {
     annihilateSound = p5.loadSound(annihilateSoundFile);
   };
 
-  this.setup = function(playableP5, b, n, color = 'red') {
+  this.setup = function(playableP5, b, n, color = 'green') {
 
     if (color in colorSchemes) { 
       colors = new AppColors(...colorSchemes[color]);
