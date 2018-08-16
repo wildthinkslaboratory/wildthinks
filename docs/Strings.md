@@ -3,10 +3,7 @@
 This page builds on James Tanton's **exploding dots** curriculum.  If you're new to exploding dots, checkout these amazing pages: [G'Day Math! **Exploding Dots**](http://gdaymath.com/courses/exploding-dots/) and [Global Math Week **Exploding Dots**](https://www.explodingdots.org).
 
 
-## Exploding Dots Meets Kurt Gödel (Also, Strings are Numbers)
-
-
-Mathematics requires that you have a strategy for writing numbers down. Without one, how can we communicate?  There are actually lots of different strategies or systems for writing numbers.  You learned a bunch of them in Exploding Dots. If two people agree to use the same strategy, then they can communicate ideas and agree on meaning.  The problem is that once a number is written down with a bunch of symbols, the meaning of those symbols is open to interpretation.   For example, consider the symbols `100`.  Maybe that means one-hundred, maybe it means four, or perhaps something else entirely.  Someone else can always come along and pick a different strategy for interpreting our string of symbols and say it means something else.  Who's to say who is right?  Kurt Gödel and Alan Turing were both the kind of mathematicians who went around re-interpreting other peoples' strings of symbols to mean something different then what was intended.  Then they blew up David Hilbert's program to prove the consistency of all mathematics.  
+## Exploding Dots Meets Kurt Gödel (Also, Strings are Numbers) 
 
 In this exploration we'll learn what **strings** are and how to interpret strings as numbers.  Then we'll see how Kurt Gödel used this idea in his famous Incompleteness Theorem.
 
@@ -17,11 +14,22 @@ SIDE NOTE: Some of the ideas in this video are challenging to learn and also cha
 ![fullwidth](https://youtu.be/oXyek2Q40AI)
 
 
-
 ## Words are Numbers!  A Base 26 Machine
 
 
-This is a base $26$ machine with the rule $1 \leftarrow 26$.  Instead of using the standard number symbols to encode numbers, it uses the alphabet `{a,b,c,d,e,f,g,h,i,j,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z}`.  I've initilized it with the string `cab`, which has a base 10 value of $1353$.  Said another way, the number $1353$ has the code `cab` in this base 26 machine.  The **dots** have changed color.  **Dots** are orange and **antidots** are green now.
+This is a base $26$ machine with the rule $1 \leftarrow 26$.  The **dots** are orange and **antidots** are green.  Instead of using the standard number symbols to encode numbers, it uses the alphabet `abcdefghijlmnopqrstuvwxyz`.  
+
+
+INSTRUCTIONS:
+- Click on a box to add a **dot**.  
+- Drag a **dot** out of the boxes to delete it.  
+- Notice the `Add` button in the upper left.  Click on it.  Now you can add **antidots** too.  
+- If you have a **dot** and an **antidot** in the same box, drag them together to annihilate them.  
+
+Notice the gray band above every playable?  You can always reset a playable by clicking this gray band.  Once to  `stop` the playable and  then again to `play` the playable.  (Ooh, you can also see the code for this playable when you click the `stop` button. Cool. We'll show you how to write your own playable on a different page soon.)
+
+I've initilized it with the string `cab`, which has a base 10 value of $1353$.  Said another way, the number $1353$ has the code `cab` in this base 26 machine.  
+
 
 ### Things to try
 
@@ -65,7 +73,7 @@ var dots = new dotlib.Dots();  // create the dots and boxes machine
 
 p5.setup = function() {                          // this function is called when you start the
                                                  // playable. 
-  dots.setup(p5, base, numberBoxes);             // initialize the machine with the base and number of boxes. 
+  dots.setup(p5, base, numberBoxes, 'red');             // initialize the machine with the base and number of boxes. 
   var canvasWidth = p5.windowWidth;              // set the size of the playable
   var canvasHeight = p5.windowHeight * 0.8;
   p5.createCanvas(canvasWidth,canvasHeight);     // create the canvas we will draw on
@@ -118,7 +126,6 @@ In this app you can type in an alphabet from your keyboard.  The number of symbo
 ### Things to try
 - The machine is initialized with the standard base 2 alphabet `01`.  Set the machine to encode the number four.  It should show the code `100`.  Now change the alphabet to `0123456789`.  The code `100` will stay the same, but what is the new value for this code?  
 - What happens if you choose the alphbet `10`?  What does the code `100` mean in this machine?  Note that usually we ignore any `0` symbols that are placed in front of a number.  In this case we ignore any  leading `1` symbols.
-- I'm fond of the binary alphabet `_l`.  I just like the way it makes the numbers look.
 - Make up your own number system with an alphabet of your own choosing.
 
 
@@ -157,7 +164,7 @@ var dots = new dotlib.Dots();  // create the dots and boxes machine
 
 p5.setup = function() {                          // this function is called when you start the
                                                  // playable. 
-  dots.setup(p5, base, numberBoxes);             // initialize the machine with the base and number of boxes. 
+  dots.setup(p5, base, numberBoxes, 'red');             // initialize the machine with the base and number of boxes. 
   var canvasWidth = p5.windowWidth;              // set the size of the playable
   var canvasHeight = p5.windowHeight * 0.8;
   p5.createCanvas(canvasWidth,canvasHeight);     // create the canvas we will draw on
