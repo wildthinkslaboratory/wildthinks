@@ -17,7 +17,8 @@ SIDE NOTE: Some of the ideas in this video are challenging to learn and also cha
 ## Words are Numbers!  A Base 26 Machine
 
 
-This is a base $26$ machine with the rule $1 \leftarrow 26$.  The **dots** are orange and **antidots** are green.  Instead of using the standard number symbols to encode numbers, it uses the alphabet `abcdefghijlmnopqrstuvwxyz`.  
+Here is the base $26$ machine from the video.  It uses the rule $1 \leftarrow 26$.  The **dots** are orange and **antidots** are green.  Instead of using the standard number symbols to encode numbers, it uses the alphabet `abcdefghijlmnopqrstuvwxyz`.  
+
 
 
 INSTRUCTIONS:
@@ -28,23 +29,23 @@ INSTRUCTIONS:
 
 Notice the gray band above every playable?  You can always reset a playable by clicking this gray band.  Once to  `stop` the playable and  then again to `play` the playable.  (Ooh, you can also see the code for this playable when you click the `stop` button. Cool. We'll show you how to write your own playable on a different page soon.)
 
-I've initilized it with the string `cab`, which has a base 10 value of $1353$.  Said another way, the number $1353$ has the code `cab` in this base 26 machine.  
+I've initilized it with the string `cab`, which has a base 10 value of $1353$.  Said another way, the base 10 number $1353$ has the code `cab` in this base 26 machine.  
 
 
 ### Things to try
 
-- What base 10 number has the code `hi`? 
+- Which base 10 number has the code `hi`? 
 - What's the base 10 value of your favorite three letter word?
 
 
 
 ```p5js/playable/autoplay
 
-//xsmartdown.import=http://127.0.0.1:5555/dots.js
+//smartdown.import=http://127.0.0.1:5555/dots.js
 
 
 // import the dots library
-//smartdown.import=https://wildthinkslaboratory.github.io/wildthinks/dots.js
+//xsmartdown.import=https://wildthinkslaboratory.github.io/wildthinks/dots.js
 
 // this is the url for the background picture
 const bgURL = 'https://gist.githubusercontent.com/wildthinkslaboratory/ac98c0bb68ccf7528dc39fa1922d2bdb/raw/0fe1c494e0a94243f3b6d10dd38ef2a341d92f95/bgRedCream-20.jpg';
@@ -120,22 +121,23 @@ p5.mouseReleased = function() {                  // this function is called when
 ## Choose your own alphabet
 
 
-In this app you can type in an alphabet from your keyboard.  The number of symbols in your alphabet will become the base of the machine and the symbols of your alphabet will be used to write the codes.  
+In this playable you can type in an alphabet from your keyboard.  The number of symbols in your alphabet will become the base of the machine and the symbols of your alphabet will be used to write the codes.  
 
 
 ### Things to try
 - The machine is initialized with the standard base 2 alphabet `01`.  Set the machine to encode the number four.  It should show the code `100`.  Now change the alphabet to `0123456789`.  The code `100` will stay the same, but what is the new value for this code?  
 - What happens if you choose the alphbet `10`?  What does the code `100` mean in this machine?  Note that usually we ignore any `0` symbols that are placed in front of a number.  In this case we ignore any  leading `1` symbols.
+- I like the alphabet `_o`.  The underscore `_` for zero reminds me of an empty box and the 'o' for one is like a little **dot**.  It reminds me of exploding dots.
 - Make up your own number system with an alphabet of your own choosing.
 
 
 ```p5js/playable/autoplay
 
-//xsmartdown.import=http://127.0.0.1:5555/dots.js
+//smartdown.import=http://127.0.0.1:5555/dots.js
 
 
 // import the dots library
-//smartdown.import=https://wildthinkslaboratory.github.io/wildthinks/dots.js
+//xsmartdown.import=https://wildthinkslaboratory.github.io/wildthinks/dots.js
 
 // this is the url for the background picture
 const bgURL = 'https://gist.githubusercontent.com/wildthinkslaboratory/ac98c0bb68ccf7528dc39fa1922d2bdb/raw/0fe1c494e0a94243f3b6d10dd38ef2a341d92f95/bgRedCream-20.jpg';
@@ -168,7 +170,9 @@ p5.setup = function() {                          // this function is called when
   var canvasWidth = p5.windowWidth;              // set the size of the playable
   var canvasHeight = p5.windowHeight * 0.8;
   p5.createCanvas(canvasWidth,canvasHeight);     // create the canvas we will draw on
-  p5.windowResized();                            
+  p5.windowResized();    
+
+  smartdown.setVariable('Alphabet', '');                        
 
   dots.loadSounds();                             // load the sounds for the app 
 };
@@ -211,7 +215,7 @@ this.depend = function() {                       // this function is called when
   A = env.Alphabet;
   if (A[A.length - 1] === '\n') {                // we only enter a new alphabet when the user hits enter  i.e. '\n'
     const cleanA = cleanUpAlphabet(A);           // the user may not have entered a valid alphabet to we clean it up
-    env.Alphabet = cleanA.join('');              // convert the alphabet from a string to an array of characters
+    smartdown.setVariable('Alphabet', cleanA.join(''));              // convert the alphabet from a string to an array of characters
     dots.setAlphabetSymbols(cleanA);             // add the alphabet to the machine
   }
 };
@@ -230,7 +234,7 @@ function cleanUpAlphabet(a) {                                    // here's where
 [Current alphabet](:!Alphabet)
 
 
-## What's Next?  Gödel's Incompleteness Part 2?
+## What's Next?  Gödel's Incompleteness Theorem Part 2?
 
 
 If we want to understand the next part of Gödel's proof we have to study Georg Cantor's proof that you can't map a set to it's powerset.  His proof uses something called *diagonalization* and I think it's a good candidate for an interactive web exploration.  So that's what I'll build next.  Stay tuned.
