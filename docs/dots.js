@@ -17,7 +17,7 @@ const darkGray =      [100, 100, 100];
 const bottleGreen =   [30,  160, 120];
 const wine =          [100,   0, 100];
 const paleWine =      [230, 200, 200];
-const tomato =        [255,  90,  90]
+const tomato =        [255,  90,  90];
 
 
 const colorSchemes = {
@@ -27,7 +27,7 @@ const colorSchemes = {
 
 class AppColors {
   constructor(boxStroke, boxFill, dotFill, dotStroke, antidotFill, antidotStroke, 
-      writingFill, valueFill, valueStroke, dotButtonStroke, dotButtonFill) {
+    writingFill, valueFill, valueStroke, dotButtonStroke, dotButtonFill) {
     this.boxStroke = boxStroke;
     this.boxFill = boxFill;
     this.dotFill = dotFill;
@@ -46,12 +46,10 @@ class AppColors {
 
 
 ///  global sound file variables
-let addDotSound;
-let annihilateSound;
+let addDotSound = null;
+let annihilateSound = null;
 const addDotSoundFile =     'https://gist.githubusercontent.com/wildthinkslaboratory/ac98c0bb68ccf7528dc39fa1922d2bdb/raw/520efde07887f00c55653c6c5e6cfbe36962cd57/Blop-Mark_DiAngelo-79054334.wav';
 const annihilateSoundFile = 'https://gist.githubusercontent.com/wildthinkslaboratory/ac98c0bb68ccf7528dc39fa1922d2bdb/raw/e0ca3e1a7f8393c9c62b56650bb4b1ad01749265/Woosh-Mark_DiAngelo-4778593.wav';
-
-
 
 const DotEnum = Object.freeze({UNDEF : -1, DOT : 0, ANTIDOT : 1});
 
@@ -207,7 +205,9 @@ class DotArray {
   addDot(x, y, box) {
     const [snappedX,snappedY] = this.snapToBox(x, y, box);
     this.dots[box].push(new Dot(this.p5, snappedX, snappedY, box, this.boxes));
-    if (!addDotSound === null) { addDotSound.play(); }
+    if (addDotSound.isLoaded()) {
+      addDotSound.play(); 
+    }
 
   }
 

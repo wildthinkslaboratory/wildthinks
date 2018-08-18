@@ -41,11 +41,11 @@ I've initilized it with the string `cab`, which has a base 10 value of $1353$.  
 
 ```p5js/playable/autoplay
 
-//xsmartdown.import=http://127.0.0.1:5555/dots.js
+//smartdown.import=http://127.0.0.1:5555/dots.js
 
 
 // import the dots library
-//smartdown.import=https://wildthinkslaboratory.github.io/wildthinks/dots.js
+//xsmartdown.import=https://wildthinkslaboratory.github.io/wildthinks/dots.js
 
 // this is the url for the background picture
 const bgURL = 'https://gist.githubusercontent.com/wildthinkslaboratory/ac98c0bb68ccf7528dc39fa1922d2bdb/raw/0fe1c494e0a94243f3b6d10dd38ef2a341d92f95/bgRedCream-20.jpg';
@@ -127,17 +127,16 @@ In this playable you can type in an alphabet from your keyboard.  The number of 
 ### Things to try
 - The machine is initialized with the standard base 2 alphabet `01`.  Set the machine to encode the number four.  It should show the code `100`.  Now change the alphabet to `0123456789`.  The code `100` will stay the same, but what is the new value for this code?  
 - What happens if you choose the alphbet `10`?  What does the code `100` mean in this machine?  Note that usually we ignore any `0` symbols that are placed in front of a number.  In this case we ignore any  leading `1` symbols.
-- I like the alphabet `_o`.  The underscore `_` for zero reminds me of an empty box and the 'o' for one is like a little **dot**.  It reminds me of exploding dots.
-- Make up your own number system with an alphabet of your own choosing.
+- I like the alphabet `_o`.  The underscore `_` for zero reminds me of an empty box and the 'o' for one is like a little **dot**.  It reminds me of exploding dots.  
 
 
 ```p5js/playable/autoplay
 
-//xsmartdown.import=http://127.0.0.1:5555/dots.js
+//smartdown.import=http://127.0.0.1:5555/dots.js
 
 
 // import the dots library
-//smartdown.import=https://wildthinkslaboratory.github.io/wildthinks/dots.js
+//xsmartdown.import=https://wildthinkslaboratory.github.io/wildthinks/dots.js
 
 // this is the url for the background picture
 const bgURL = 'https://gist.githubusercontent.com/wildthinkslaboratory/ac98c0bb68ccf7528dc39fa1922d2bdb/raw/0fe1c494e0a94243f3b6d10dd38ef2a341d92f95/bgRedCream-20.jpg';
