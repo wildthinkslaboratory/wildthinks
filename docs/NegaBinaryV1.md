@@ -13,7 +13,7 @@ Here's a cool way to write down numbers.  It's called negative binary and we can
 
 $$ \ldots , -9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9,  \ldots, $$
 
-but we're only going to use the symbols $\lbrace 0,1\rbrace$.  Here's the catch.  You're not allowed to use the negative sign, $-$, in front of a number to say that it's negative.  
+but we're only going to use the symbols `01`.  Here's the catch.  You're not allowed to use the negative sign, $-$, in front of a number to say that it's negative.  
 
 
 
@@ -206,7 +206,7 @@ p5.mouseReleased = function() {                  // this function is called when
 
 
 
-So the code for the number $2$ is `1` `1` `0`.  We have a **dot** in the $4$ box and a **dot** in the  $-2$ box.  That gives us $4 + \left(-2 \right) + 0 = 2$.  
+So the code for the number $2$ is `1` `1` `0`.  We have a **dot** in the $4$ box, a **dot** in the  $-2$ box and nothing in the $1$ box.  That gives us $4 + \left(-2 \right) + 0 = 2$.  
 
 Also, we learned a new rule:   `1` `1` $\leftarrow$ `0` `-1` .  Now we can transform an **antidot** into **dots**.  (We can also use this trick to transform a **dot** into **antidots**.)
 
