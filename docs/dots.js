@@ -680,7 +680,9 @@ function Dots() {
       if (opposingDot && sourceDot.overlap(opposingDot)) {
         deleteDot(id);
         deleteDot([opposing,id[1],i]);
-        annihilateSound.play();
+        if (annihilateSound.isLoaded()) {
+          annihilateSound.play();
+        }
         return true;
       }
     }
