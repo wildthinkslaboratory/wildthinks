@@ -41,11 +41,11 @@ I've initilized it with the string `cab`, which has a base 10 value of $1353$.  
 
 ```p5js/playable/autoplay
 
-//smartdown.import=http://127.0.0.1:5555/dots.js
+//xsmartdown.import=http://127.0.0.1:5555/dots.js
 
 
 // import the dots library
-//xsmartdown.import=https://wildthinkslaboratory.github.io/wildthinks/dots.js
+//smartdown.import=https://wildthinkslaboratory.github.io/wildthinks/dots.js
 
 // this is the url for the background picture
 const bgURL = 'https://gist.githubusercontent.com/wildthinkslaboratory/ac98c0bb68ccf7528dc39fa1922d2bdb/raw/0fe1c494e0a94243f3b6d10dd38ef2a341d92f95/bgRedCream-20.jpg';
@@ -132,11 +132,11 @@ In this playable you can type in an alphabet from your keyboard.  The number of 
 
 ```p5js/playable/autoplay
 
-//smartdown.import=http://127.0.0.1:5555/dots.js
+//xsmartdown.import=http://127.0.0.1:5555/dots.js
 
 
 // import the dots library
-//xsmartdown.import=https://wildthinkslaboratory.github.io/wildthinks/dots.js
+//smartdown.import=https://wildthinkslaboratory.github.io/wildthinks/dots.js
 
 // this is the url for the background picture
 const bgURL = 'https://gist.githubusercontent.com/wildthinkslaboratory/ac98c0bb68ccf7528dc39fa1922d2bdb/raw/0fe1c494e0a94243f3b6d10dd38ef2a341d92f95/bgRedCream-20.jpg';
