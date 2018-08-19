@@ -17,8 +17,9 @@ SIDE NOTE: Some of the ideas in this video are challenging to learn and also cha
 ## Words are Numbers!  A Base 26 Machine
 
 
-Here is the base $26$ machine from the video.  It uses the rule $1 \leftarrow 26$.  The **dots** are orange and **antidots** are green.  Instead of using the standard number symbols to encode numbers, it uses the alphabet `abcdefghijlmnopqrstuvwxyz`.  
+Here is the base $26$ machine from the video.  It uses the rule $1 \leftarrow 26$.  The **dots** are orange and **antidots** are green.  Instead of using the standard number symbols `0123456789` to encode numbers, it uses the alphabet `abcdefghijlmnopqrstuvwxyz`.  
 
+First, some helpful instructions.  Notice the gray band above every playable?  You can always reset a playable by clicking this gray band.  Once to  `stop` the playable and  then again to `play` the playable.  (Ooh, you can also see the code for this playable when you click the `stop` button. Cool. We'll show you how to write your own playable on a different page soon.)
 
 
 INSTRUCTIONS:
@@ -27,9 +28,8 @@ INSTRUCTIONS:
 - Notice the `Add` button in the upper left.  Click on it.  Now you can add **antidots** too.  
 - If you have a **dot** and an **antidot** in the same box, drag them together to annihilate them.  
 
-Notice the gray band above every playable?  You can always reset a playable by clicking this gray band.  Once to  `stop` the playable and  then again to `play` the playable.  (Ooh, you can also see the code for this playable when you click the `stop` button. Cool. We'll show you how to write your own playable on a different page soon.)
 
-I've initilized it with the string `cab`, which has a base 10 value of $1353$.  Said another way, the base 10 number $1353$ has the code `cab` in this base 26 machine.  
+I've initilized the machine with the string `cab`, which has a base 10 value of $1353$.  Said another way, the base 10 number $1353$ has the code `cab` in this base 26 machine.  
 
 
 ### Things to try
@@ -121,13 +121,14 @@ p5.mouseReleased = function() {                  // this function is called when
 ## Choose your own alphabet
 
 
-In this playable you can type in an alphabet from your keyboard.  The number of symbols in your alphabet will become the base of the machine and the symbols of your alphabet will be used to write the codes.  
+In this playable you can type in an alphabet from your keyboard.  The number of symbols in your alphabet will become the base of the machine and the symbols of your alphabet will be used to write the codes. Currently this machine doesn't allow you to use white space as part of your alphabet so you can't interpret sentences as numbers like we did in the video.  You could substitute the underscore `_` for a space if you wanted.  Unfortunately, this machine only has three boxes so you can't make a very long string like you would need for a book. Hopefully after playing around with it for a while you will be able to *imagine* how you could interpret an email, a book, a program or a proof as a number.
 
 
 ### Things to try
 - The machine is initialized with the standard base 2 alphabet `01`.  Set the machine to encode the number four.  It should show the code `100`.  Now change the alphabet to `0123456789`.  The code `100` will stay the same, but what is the new value for this code?  
-- What happens if you choose the alphbet `10`?  What does the code `100` mean in this machine?  Note that usually we ignore any `0` symbols that are placed in front of a number.  In this case we ignore any  leading `1` symbols.
-- I like the alphabet `_o`.  The underscore `_` for zero reminds me of an empty box and the 'o' for one is like a little **dot**.  It reminds me of exploding dots.  
+- What happens if you choose the alphabet `10` (subtly different from the alphabet `01`)?  What does the code `100` mean in this machine?  Note that usually we ignore any `0` symbols that are placed in front of a number.  In this case we ignore any  leading `1` symbols.  What other numbers could the code `100` stand for?
+- I like the alphabet `_o`.  The underscore `_` for zero reminds me of an empty box and the `o` for one is like a little **dot**. 
+- Experiment and come up with your very own number system.  Using all your exploding dots knowledge you can work out how to do addition, subtraction, multiplication  and division with it. 
 
 
 ```p5js/playable/autoplay
@@ -235,8 +236,7 @@ function cleanUpAlphabet(a) {                                    // here's where
 
 ## What's Next?  Gödel's Incompleteness Theorem Part 2?
 
-
-If we want to understand the next part of Gödel's proof we have to study Georg Cantor's proof that you can't map a set to it's powerset.  His proof uses something called *diagonalization* and I think it's a good candidate for an interactive web exploration.  So that's what I'll build next.  Stay tuned.
+The next part of Gödel's proof is a variation of Georg Cantor's proof that you can't map a set to it's powerset.  The background concepts for Cantor's proof are amazingly few and simple for a proof that has such far reaching consequences.  We just need to understand a little bit about functions and functional mappings and we need to know what a power set is.  His proof uses something called *diagonalization* and I think it's a good candidate for an interactive web exploration.  I'll put that on my list of things I want to build.  Stay tuned.
 
 
 [Back to Home](:@Home)

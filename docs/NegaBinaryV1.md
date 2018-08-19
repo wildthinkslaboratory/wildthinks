@@ -308,9 +308,9 @@ Here's a fully working machine and here are some things for you to try.
 - Work out the codes for $0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10$.
 - Work out the codes for $-1, -2, -3, -4, -5, -6, -7, -8, -9, -10$.
 - How is the code for each positive number $x$ related to the code for it's negation $-x$?  Can you construct one from the other?
+- When we are working with a positive base, we often use one algorithm to do addition and then use a different algorithm to do subtraction.  Can you figure out a method for doing addition in negative binary?  Next, how would you use that same method for subraction without needing to use any negative signs anywhere?  
 - Can you make up divisibility rules?  How can you tell if a number is divisible by $2$? When is it divisible by $3$?
 - Is every number's $\lbrace 0, 1 \rbrace$ code unique?  If so, how would you prove it?
-
 
 
 ```p5js/playable/autoplay
