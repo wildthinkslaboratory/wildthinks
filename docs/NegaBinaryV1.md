@@ -3,17 +3,13 @@
 
 
 
-This page builds on James Tanton's **exploding dots** curriculum.  If you're new to exploding dots, checkout these amazing pages: [G'Day Math! **Exploding Dots**](http://gdaymath.com/courses/exploding-dots/) and [Global Math Week **Exploding Dots**](https://www.explodingdots.org).
+This page builds on James Tanton's Exploding Dots curriculum.  If you're new to exploding dots, checkout these amazing pages: [G'Day Math! Exploding Dots](http://gdaymath.com/courses/exploding-dots/) and [Global Math Week Exploding Dots](https://www.explodingdots.org).
 
 
 
-## Welcome to our Prototype Negative Binary Page
+## Welcome to our Negative Binary page
 
-Here's a cool way to write down numbers.  It's called negative binary and we can write all of the integers with it.  So that's  
-
-$$ \ldots , -9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9,  \ldots, $$
-
-but we're only going to use the symbols `01`.  Here's the catch.  You're not allowed to use the negative sign, $-$, in front of a number to say that it's negative.  
+Here's a cool way to write down numbers.  It's called negative binary and we can write all of the integers with it, both negative and positive, using only the symbols `0` and `1`.  Here's the catch.  We aren't going to use any negative signs, $-$, in front of a number to say that it's negative.  
 
 
 
@@ -22,7 +18,7 @@ but we're only going to use the symbols `01`.  Here's the catch.  You're not all
 
 
 
-Let's write the number $2$ in negative binary. Notice there are two purple **dots** in the right most box, the ones box.  Drag a **dot** to the left.  ( You can also drag it back to the right when you're done. )  The two purple purple **dots** turn into one blue **antidot** in the negative two box.  Can you figure out why an **antidot** appears when you drag these two dots?
+In negative binary we use the rule $-1 \leftarrow 2$.  Two **dots** on the right change into one negative **dot** or **antidot** on the left. Let's write the number $2$. Notice there are two purple **dots** in the right most box below.  That's the ones box.  Drag a **dot** to the left.  ( You can also drag it back to the right when you're done. )  The two purple purple **dots** turn into one blue **antidot** in the negative two box.  Can you figure out why an **antidot** appears when you drag these two dots?
 
 
 
@@ -63,7 +59,7 @@ p5.setup = function() {                          // this function is called when
                                                  // playable. 
   dots.setup(p5, base, numberBoxes);             // initialize the machine with the base and number of boxes. 
   var canvasWidth = p5.windowWidth * 0.5;        // set the size of the playable
-  var canvasHeight = p5.windowHeight * 0.8;
+  var canvasHeight = p5.windowHeight * 0.7;
   p5.createCanvas(canvasWidth,canvasHeight);     // create the canvas we will draw on
   p5.windowResized();                            
 
@@ -78,7 +74,7 @@ p5.setup = function() {                          // this function is called when
 
 p5.windowResized = function() {                  // this function is called when the user changes
   const canvasWidth = p5.windowWidth * 0.5;      // the size of the window.  It will rescale all the 
-  const canvasHeight = p5.windowHeight * 0.8;    // components to fit into the new window size.
+  const canvasHeight = p5.windowHeight * 0.7;    // components to fit into the new window size.
   dots.windowResized(canvasWidth, canvasHeight);
   p5.resizeCanvas(canvasWidth, canvasHeight);
 }
@@ -115,15 +111,15 @@ But we promised that there wouldn't be any negative signs in our code.  Let's fi
 
 ## Transform the **Antidot**
 
+First, some helpful instructions. Notice the gray band above every playable?  You can always reset a playable by clicking this gray band.  Once to  `stop` the playable and  then again to `play` the playable.  (Ooh, you can also see the code for this playable when you click the `stop` button. It's a scrollable box. Cool. We'll show you how to write your own playable on a different page soon.)
 
-
-First, some helpful INSTRUCTIONS:
+INSTRUCTIONS:
 - Click on a box to add a **dot**.  
 - Drag a **dot** out of the boxes to delete it.  
 - Notice the `Add` button in the upper left.  Click on it.  Now you can add **antidots** too.  
 - If you have a **dot** and an **antidot** in the same box, drag them together to annihilate them.  
 
-Notice the gray band above every playable?  You can always reset a playable by clicking this gray band.  Once to  `stop` the playable and  then again to `play` the playable.  (Ooh, you can also see the code for this playable when you click the `stop` button. Cool. We'll show you how to write your own playable on a different page soon.)
+
 
 OK, now let's fix that **antidot**.  Try adding $0$ to the middle box by adding both a **dot** AND an **antidot**.  Now you can drag an **antidot** to the left.  No more **antidot**!
 
@@ -165,7 +161,7 @@ p5.setup = function() {                          // this function is called when
                                                  // playable. 
   dots.setup(p5, base, numberBoxes);             // initialize the machine with the base and number of boxes. 
   var canvasWidth = p5.windowWidth;              // set the size of the playable
-  var canvasHeight = p5.windowHeight * 0.8;
+  var canvasHeight = p5.windowHeight * 0.7;
   p5.createCanvas(canvasWidth,canvasHeight);     // create the canvas we will draw on
   p5.windowResized();                            
 
@@ -177,7 +173,7 @@ p5.setup = function() {                          // this function is called when
 
 p5.windowResized = function() {                  // this function is called when the user changes
   const canvasWidth = p5.windowWidth;            // the size of the window.  It will rescale all the 
-  const canvasHeight = p5.windowHeight * 0.8;    // components to fit into the new window size.
+  const canvasHeight = p5.windowHeight * 0.7;    // components to fit into the new window size.
   dots.windowResized(canvasWidth, canvasHeight);
   p5.resizeCanvas(canvasWidth, canvasHeight);
 }
@@ -307,11 +303,13 @@ Did you get `1` `1` `0` `1` ?  That's $(-8) + 4 + 0 + 1 = -3$.
 ## Play
 
 
-
-Here's some things to try.
+Here's a fully working machine and here are some things for you to try.
 
 - Work out the codes for $0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10$.
 - Work out the codes for $-1, -2, -3, -4, -5, -6, -7, -8, -9, -10$.
+- How is the code for each positive number $x$ related to the code for it's negation $-x$?  Can you construct one from the other?
+- Can you make up divisibility rules?  How can you tell if a number is divisible by $2$? When is it divisible by $3$?
+- Is every number's $\lbrace 0, 1 \rbrace$ code unique?  If so, how would you prove it?
 
 
 
@@ -387,26 +385,6 @@ p5.mouseReleased = function() {                  // this function is called when
   dots.mouseReleased();                          // button after a click.
 }
 ```
-
-
-## More things to try.
-
-- How is the code for each positive number $x$ related to the code for it's negation $-x$?  Can you construct one from the other?
-- Can you make up divisibility rules?  How can you tell if a number is divisible by $2$? When is it divisible by $3$?
-- Is every number's $\lbrace 0, 1 \rbrace$ code unique?  If so, how would you prove it?
-
-
-### Known Bugs
-
-- If there's a lot of dots in a box the annihilation doesn't always work.  Need to figure out how to consistently reproduce it.
-- I'm seeing dots disappear sometimes when I click the rule button.
-- snapToBox is sometimes snapping to the wrong box.
-- A dot was missing from the initialized dots.
-
-
-
-
-
 
 [Back to Home](:@Home)
 

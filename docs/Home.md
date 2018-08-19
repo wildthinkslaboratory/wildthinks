@@ -14,7 +14,8 @@ Our goal is to build interactive explorations of our favorite topics in discrete
 
 
 
-In honor of Global Math Week 2018, our first interactive exploration we will be diving into Negative Binary [ExplodingDots](https://www.explodingdots.org).  If you haven't seen James Tanton's Exlpoding Dots, check out his fabulous website [G'Day Math!](http://gdaymath.com/courses/exploding-dots/) or the [Global Math Week Exploding Dots Page](https://www.explodingdots.org).  Then come back here for an exploration of a base negative two number system. To begin, just click the button below. 
+In honor of [Global Math Week 2018](https://www.globalmathproject.org), our first interactive exploration we will be diving into Negative Binary [ExplodingDots](https://www.explodingdots.org).  If you haven't seen James Tanton's Exlpoding Dots, check out his fabulous website [G'Day Math!](http://gdaymath.com/courses/exploding-dots/) or the [Global Math Week Exploding Dots Page](https://www.explodingdots.org).  Then come back here for an exploration of a base negative two number system. To begin, just click the button below. 
+
 
 
 
@@ -32,6 +33,12 @@ If you've been studying Exploding Dots, then you've got the background to unders
 
 [Go to Strings and Gödel Page](:@Strings)
 
+
+## Kids Explain Math for Other Kids
+
+At Wildthinks we sponsor and mentor a fabulous group of kid YouTube creators who are trying to make the world a better place by sharing their knowledge with others and encouraging more kids to join the conversation.  
+
+[Go to Kids Explain Math](:@KidVideos)
 
 
 #### Composed in Smartdown using Scape
