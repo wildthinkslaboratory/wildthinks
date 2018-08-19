@@ -680,6 +680,7 @@ function Dots() {
       if (opposingDot && sourceDot.overlap(opposingDot)) {
         deleteDot(id);
         deleteDot([opposing,id[1],i]);
+        currentId = [DotEnum.UNDEF, -1, -1];  // this is confusing, but the incoming dot is always the currentId.  should rewrite to reflect this.
         if (annihilateSound.isLoaded()) {
           annihilateSound.play();
         }
@@ -729,6 +730,8 @@ function Dots() {
     for (let i=0; i < dotsNeeded-1; i++) {           // remove other dots from old box
       dots[currentId[0]].dots[sendingBox].pop();
     }
+
+    currentId = [DotEnum.UNDEF, -1, -1];             
     return true;
   }
 
@@ -762,6 +765,7 @@ function Dots() {
 
     dots[dotArrayID].pushDot(recievingBox,newDot);   // add this dot to new box
     deleteDot(currentId);                            // remove this dot from it's old box
+    currentId = [DotEnum.UNDEF, -1, -1];
     for (let i=0; i < dotsToAdd-1; i++) {           // remove other dots from old box
       dots[dotArrayID].addDot(p5.mouseX + p5.random(-2*dotD, 2*dotD), p5.mouseY + p5.random(-2*dotD, 2*dotD), recievingBox);
     }
@@ -818,7 +822,7 @@ function Dots() {
 
     dots[arrayId].deleteDot(dotID[1], dotID[2]);          //remove this dot from its old box
 
-    currentId = [toggleArrayId, dotID[1], dotID[2]];
+    currentId = [DotEnum.UNDEF, -1, -1];
   }
 
 
