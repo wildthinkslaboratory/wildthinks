@@ -176,6 +176,7 @@ let input = '';
 
 let p5;
 let dfa;
+let stateTrace = [];
 
 win = new WindowSizeVars();
 
@@ -249,6 +250,7 @@ class DFA  {
         rejectSound.play();
       }
     }
+    stateTrace.push(this.state);
     if (drawTrace) { this.drawStateTrace(); }
   }
 
@@ -349,6 +351,12 @@ function drawInput() {
 
   drawInputBox();
 
+  // p5.push();        // draw highlight boxes   
+  // p5.fill(...colors.highlight);  // this needs to go in with draw input
+  // p5.rect(win.inputX + presses * win.inputXspacer, win.inputY, win.inputW - 4, win.inputH,5);
+  // p5.pop();
+
+
   p5.push();
   p5.fill(...colors.textColor);
   p5.textSize(win.inputTextSize);
@@ -395,11 +403,6 @@ function preload(p5playable) {
 function mousePressed() {
   let validS = !!input;
   if (validS && presses < input.length) {
-    p5.push();           
-    p5.fill(...colors.highlight);
-    p5.rect(win.inputX + presses * win.inputXspacer, win.inputY, win.inputW - 4, win.inputH,5);
-    p5.pop();
-        
     dfa.startTransition(input[presses]);
     p5.redraw();
     if (presses < input.length+1) {  // stop drawing boxes when we get to end
@@ -417,6 +420,7 @@ function draw() {
 
 function newInput(i) {
   input = i;
+  stateTrace = [0];
   presses = 0;
   dfa.restart();
   dfa.drawStateTrace();
