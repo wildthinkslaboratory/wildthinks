@@ -21,6 +21,7 @@ const darkpurple =  [120, 90,  160];
 const darkblue =    [130, 130, 160];
 const brown =       [160, 120, 120];
 const black =       [0,   0,     0];
+const white =       [255, 255, 255];
 
 const activeNodeFill = [yellow, blue, magenta];
 const activeNodeStroke = [gold, deepblue, deepmagenta];
@@ -39,6 +40,7 @@ class AppColors {
     this.arrow = ac;
     this.textColor = tc;
     this.highlight = shl;
+    this.inputBox = white;
   }
 }
 
@@ -143,13 +145,18 @@ class WindowSizeVars {
     this.boxY = 0;
     this.boxW = 0;
     this.boxH = 0;
-    this.inputX = 50;
-    this.inputY = 100;
+    this.inputX = 0;
+    this.inputY = 0;
     this.inputW = 0;
-    this.inputH = 40;
+    this.inputH = 0;
     this.canvasW = 0;
-    this.canvasH = 0
+    this.canvasH = 0;
     this.inputXspacer = 30;
+    this.inputTextSize = 0;
+    this.inputIndent = 40;
+    this.traceDiameter = 0;
+    this.inputTextY = 0;
+    this.traceY = 0;
   }
 }
 
@@ -167,6 +174,10 @@ let drawTrace = true;
 let win;
 let input = '';
 
+let p5;
+let dfa;
+
+win = new WindowSizeVars();
 
 
 // A DFA just has a state and some nodes
@@ -317,40 +328,45 @@ class DFA  {
     this.p5.stroke(...colors.activeStroke[this.state]);
     this.p5.fill(...colors.activeFill[this.state]); 
     
-    this.p5.ellipse(win.inputX + presses * win.inputXspacer,win.inputY - 20,20,20); 
+    const x = win.inputX + win.inputIndent + win.inputXspacer * presses ;
+    this.p5.ellipse(x,win.traceY,win.traceDiameter,win.traceDiameter); 
     this.p5.pop();
   }
 
 }
 
 
+function drawInputBox() {
+  p5.push();
+  p5.fill(...colors.inputBox);
+  p5.noStroke();
+  p5.rect(win.inputX,win.inputY,win.inputW,win.inputH);
+  p5.pop();
+}
 
 // draw the string from the input box on the screen
-function drawInput(s) {
+function drawInput() {
+
+  drawInputBox();
+
   p5.push();
-  p5.strokeWeight(3);
-  p5.stroke(200);
-  p5.rect(0,win.inputY-win.inputH,win.canvasW,win.inputH*2+8);
-  p5.noStroke();
-  p5.fill(255);
   p5.fill(...colors.textColor);
-  p5.textSize(20);
-  var i = 0;
-  for (; i < s.length; i++) {
-    p5.text(s[i], win.inputX + win.inputH/4 + win.inputXspacer*i, win.inputY + win.inputH*3/4);
+  p5.textSize(win.inputTextSize);
+
+  const x = win.inputX + win.inputIndent;
+  for (let i=0; i < input.length; i++) {
+    p5.text(input[i], x + win.inputXspacer*i, win.inputTextY);
   }
   p5.pop();
+
 }
 
 
 
-let p5;
-let dfa;
-win = new WindowSizeVars();
 
 function setup() {
 
-// make the DFA, two nodes each with two transitions
+  // make the DFA, two nodes each with two transitions
   dfa = new DFA(p5);
   dfa.addNode(150,win.boxY+125,true);
   dfa.nodes[0].addEdge(150,win.boxY+85,40,50,dfa.p5.PI*3/4,dfa.p5.PI*9/4,'0',true);
@@ -381,7 +397,6 @@ function mousePressed() {
   if (validS && presses < input.length) {
     p5.push();           
     p5.fill(...colors.highlight);
-    console.log('inputXspacer', win.inputXspacer);
     p5.rect(win.inputX + presses * win.inputXspacer, win.inputY, win.inputW - 4, win.inputH,5);
     p5.pop();
         
@@ -397,13 +412,13 @@ function mousePressed() {
 
 function draw() {
   dfa.draw();
+  drawInput();
 }
 
 function newInput(i) {
   input = i;
   presses = 0;
   dfa.restart();
-  drawInput(input);
   dfa.drawStateTrace();
 }
 
@@ -418,9 +433,24 @@ function windowResized(width, height) {
 
   win.boxW = win.canvasW * 0.6;
   win.boxH = win.canvasH * 0.5;
+  win.inputW = win.canvasW;
+  win.inputH = win.canvasH * 0.2;
+
+  win.inputX = 0;
   win.boxX = (width - win.boxW) / 2;
-  win.boxY = (height - win.boxH) / 2;
+
+  win.inputY = win.canvasH * 0.1;
+  win.boxY = win.canvasH * 0.4;
+
+  win.inputDiameter = win.inputH * 0.3;
+  win.inputTextSize = win.inputH * 0.3;
+  win.inputXspacer = win.inputDiameter + 10;
+
+  win.inputTextY = win.inputY + win.inputH * 0.85;
+  win.traceY = win.inputY + win.inputH * 0.15 + win.traceDiameter/2;
+
 }
+
 
 
 (function (global, factory) {
