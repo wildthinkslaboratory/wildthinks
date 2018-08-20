@@ -29,7 +29,7 @@ const inactiveNodeFill = [tan, grayblue, graymagenta];
 const inactiveNodeStroke = [brown, darkblue, darkpurple];
 const arrowColor = black;
 const textColor = black;
-const stringHighlight = [200,200,200,100];
+const stringHighlight = [100,100,100,100];
 
 class AppColors {
   constructor(anf, ans, inf, ins, ac, tc, shl) {
@@ -170,7 +170,6 @@ let rejectSound;
 let presses = 0;    // keep track of the number of mouse presses
 const animationSpeed = 0.1;  // bigger is faster
 let endOfInput = false;
-let drawTrace = true;
 let win;
 let input = '';
 
@@ -251,7 +250,6 @@ class DFA  {
       }
     }
     stateTrace.push(this.state);
-    if (drawTrace) { this.drawStateTrace(); }
   }
 
 
@@ -323,17 +321,17 @@ class DFA  {
 
 
 
-  drawStateTrace() {
-    this.p5.push();
-    this.p5.strokeWeight(1);
+  // drawStateTrace() {
+  //   this.p5.push();
+  //   this.p5.strokeWeight(1);
       
-    this.p5.stroke(...colors.activeStroke[this.state]);
-    this.p5.fill(...colors.activeFill[this.state]); 
+  //   this.p5.stroke(...colors.activeStroke[this.state]);
+  //   this.p5.fill(...colors.activeFill[this.state]); 
     
-    const x = win.inputX + win.inputIndent + win.inputXspacer * presses ;
-    this.p5.ellipse(x,win.traceY,win.traceDiameter,win.traceDiameter); 
-    this.p5.pop();
-  }
+  //   const x = win.inputX + win.inputIndent + win.inputXspacer * presses ;
+  //   this.p5.ellipse(x,win.traceY,win.traceDiameter,win.traceDiameter); 
+  //   this.p5.pop();
+  // }
 
 }
 
@@ -349,24 +347,33 @@ function drawInputBox() {
 // draw the string from the input box on the screen
 function drawInput() {
 
-  drawInputBox();
+  drawInputBox();                                       // first we draw the input box
 
-  // p5.push();        // draw highlight boxes   
-  // p5.fill(...colors.highlight);  // this needs to go in with draw input
-  // p5.rect(win.inputX + presses * win.inputXspacer, win.inputY, win.inputW - 4, win.inputH,5);
-  // p5.pop();
-
-
-  p5.push();
-  p5.fill(...colors.textColor);
+  p5.push();                                            // draw the trace
+  p5.strokeWeight(1);
+  for (let i=0; i < stateTrace.length; i++) {
+    p5.stroke(...colors.activeStroke[stateTrace[i]]);
+    p5.fill(...colors.activeFill[stateTrace[i]]); 
+    const x = win.inputX + win.inputIndent - win.inputXspacer/3 + win.inputXspacer * i ;
+    p5.ellipse(x,win.traceY,win.traceDiameter, win.traceDiameter); 
+  }
+                        
+  p5.fill(...colors.textColor);           // draw the input string
   p5.textSize(win.inputTextSize);
 
-  const x = win.inputX + win.inputIndent;
+  let x = win.inputX + win.inputIndent;
   for (let i=0; i < input.length; i++) {
     p5.text(input[i], x + win.inputXspacer*i, win.inputTextY);
   }
-  p5.pop();
 
+  p5.fill(...colors.highlight); 
+  p5.noStroke();
+  const y = win.inputTextY - win.inputTextSize;
+  for (let i = 0; i < stateTrace.length - 1; i++) {
+    x = win.inputX + win.inputIndent - win.inputXspacer/4;
+    p5.rect(x + i * win.inputXspacer, y, win.inputXspacer - 4, win.inputTextSize + 8,5);
+  }
+  p5.pop();
 }
 
 
@@ -387,8 +394,6 @@ function setup() {
   dfa.nodes[2].addEdge(350,win.boxY+85,40,50,dfa.p5.PI*3/4,dfa.p5.PI*9/4,'1',true);
 
   dfa.p5.createCanvas(win.canvasW,win.canvasH);
-  dfa.p5.fill(255);                // draw a background rect
-  dfa.p5.rect(win.boxX,win.boxY,win.boxW,win.boxH,10);
 }
 
 
@@ -423,7 +428,6 @@ function newInput(i) {
   stateTrace = [0];
   presses = 0;
   dfa.restart();
-  dfa.drawStateTrace();
 }
 
 function windowResized(width, height) {
@@ -446,9 +450,9 @@ function windowResized(width, height) {
   win.inputY = win.canvasH * 0.1;
   win.boxY = win.canvasH * 0.4;
 
-  win.inputDiameter = win.inputH * 0.3;
+  win.traceDiameter = win.inputH * 0.3;
   win.inputTextSize = win.inputH * 0.3;
-  win.inputXspacer = win.inputDiameter + 10;
+  win.inputXspacer = win.traceDiameter + 10;
 
   win.inputTextY = win.inputY + win.inputH * 0.85;
   win.traceY = win.inputY + win.inputH * 0.15 + win.traceDiameter/2;
