@@ -6,7 +6,7 @@ added state trace above string and better state color changes
 
 
 // this is the url for the background picture
-const bgURL = 'https://gist.githubusercontent.com/wildthinkslaboratory/ac98c0bb68ccf7528dc39fa1922d2bdb/raw/71e56b6dabdb46605e9d0d411eca1b4391ec9313/dfaBackground.001.jpeg';
+const bgURL = 'https://gist.githubusercontent.com/wildthinkslaboratory/ac98c0bb68ccf7528dc39fa1922d2bdb/raw/0fe1c494e0a94243f3b6d10dd38ef2a341d92f95/bgRedCream-20.jpg';
 
 
 const myDiv = this.div;                                  // This chunk of code is some HTML/CSS stuff
