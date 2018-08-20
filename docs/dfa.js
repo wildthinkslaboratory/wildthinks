@@ -1,9 +1,14 @@
 /*
 
-  3. package up remaining data and functions
   4. can we rewrite arc constructor to use nodes for input?
-  2. write window resize.
+  2. store transition function in the dfa
+
   5. code review and documentation for each function
+  3. package up remaining data and functions
+
+  6. clean up sound load
+  7. feed in the machine from outside
+
 
 */
 
@@ -46,6 +51,23 @@ class AppColors {
 
 const colors = new AppColors(activeNodeFill, activeNodeStroke, inactiveNodeFill, inactiveNodeStroke, arrowColor, textColor, stringHighlight);
 
+
+function getCanvasRelativePos(rx, ry) {
+  const result = {
+    x: rx * win.boxW + win.boxX,
+    y: ry * win.boxH + win.boxY
+  };
+  return result;
+}
+
+function getBoxRelativePos(x, y) {
+  const result = {
+    rx: (x - win.boxX) / win.boxW,
+    ry: (y - win.boxY) / win.boxH
+  };
+
+  return result;
+}
 
 
 // AnimatedArc is an arrow with an animation along the direction of 
@@ -101,8 +123,10 @@ class AnimatedArc  {
 class Node {
   constructor(p5playable, x, y, state, accept=false) {
     this.p5 = p5playable;
-    this.x = x;
-    this.y = y;
+    const {rx, ry} = getBoxRelativePos(x,y);
+    console.log('rx', rx, 'ry', ry);
+    this.rx = rx;
+    this.ry = ry;
     this.state = state;
     this.accept = accept;
     this.active = false;      // it can be active if we are visiting this node
@@ -120,16 +144,17 @@ class Node {
       this.p5.stroke(...colors.inactiveStroke[this.state]);
       this.p5.fill(...colors.inactiveFill[this.state]); 
     }
-    this.p5.ellipse(this.x,this.y,50,50); 
+    const {x,y} = getCanvasRelativePos(this.rx, this.ry);
+    this.p5.ellipse(x,y,win.nodeDiameter,win.nodeDiameter); 
     if ( this.accept === true ) {                 // if it is an accept node
-      this.p5.ellipse(this.x,this.y,30,30);          // draw a smiley in it
-      this.p5.ellipse(this.x-5,this.y-3,5,5);
-      this.p5.ellipse(this.x+5,this.y-3,5,5);  
-      this.p5.arc(this.x,this.y,20,20,0,this.p5.PI);    
+      this.p5.ellipse(x,y,30,30);          // draw a smiley in it
+      this.p5.ellipse(x-5,y-3,5,5);
+      this.p5.ellipse(x+5,y-3,5,5);  
+      this.p5.arc(x,y,20,20,0,this.p5.PI);    
     }
     else {
       this.p5.textSize(32);
-      this.p5.text(this.state.toString(),this.x-10,this.y+10);
+      this.p5.text(this.state.toString(),x-10,y+10);
     }
     this.p5.pop();
   } 
@@ -157,6 +182,8 @@ class WindowSizeVars {
     this.traceDiameter = 0;
     this.inputTextY = 0;
     this.traceY = 0;
+    this.boxXmargin = 0;
+    this.nodeDiameter = 0;
   }
 }
 
@@ -181,7 +208,9 @@ win = new WindowSizeVars();
 
 const machine = {
   nodes : 3,
-  edges : [ [0,1], [2,0], [1,2]]
+  edges : [ [0,1], [2,0], [1,2] ],
+  accept : [0],
+  alphabet : null
 };
 
 
@@ -193,11 +222,14 @@ class DFA  {
     this.nodes = [];
   }
 
-  addNode(x,y,accept) {
-    this.nodes.push(new Node(p5, x,y,this.nodes.length,accept)); 
-    if (this.nodes.length === 1) { this.nodes[0].active = true; }
+  addNodes(n) {
+    const distBetweenNodes = (win.boxW - 2 * win.boxXmargin)/n;
+    const x = win.boxX + win.boxXmargin + distBetweenNodes/2;
+    const y = win.boxY + win.boxH/2;
+    for (let i=0; i < n; i++) {
+      this.nodes.push(new Node(p5, x + distBetweenNodes * i, y, i, false));
+    }
   }
-
 
   draw() {
     this.p5.push();
@@ -234,17 +266,6 @@ class DFA  {
     edge.active = false;  
     this.nodes[n].active = false; 
     this.state = machine.edges[n][e];
-    // switch (n) {
-    // case 0: 
-    //   this.state = (e ? 1 : 0);
-    //   break;
-    // case 1: 
-    //   this.state = (e ? 0 : 2);
-    //   break;
-    // case 2: 
-    //   this.state = (e ? 2 : 1);
-    //   break;    
-    // } 
     this.nodes[this.state].active = true;
     
     if (presses === input.length) {
@@ -323,21 +344,6 @@ class DFA  {
     this.state = 0;                          // set state
     endOfInput = false;
   }
- 
-
-
-
-  // drawStateTrace() {
-  //   this.p5.push();
-  //   this.p5.strokeWeight(1);
-      
-  //   this.p5.stroke(...colors.activeStroke[this.state]);
-  //   this.p5.fill(...colors.activeFill[this.state]); 
-    
-  //   const x = win.inputX + win.inputIndent + win.inputXspacer * presses ;
-  //   this.p5.ellipse(x,win.traceY,win.traceDiameter,win.traceDiameter); 
-  //   this.p5.pop();
-  // }
 
 }
 
@@ -389,13 +395,17 @@ function setup() {
 
   // make the DFA, two nodes each with two transitions
   dfa = new DFA(p5);
-  dfa.addNode(150,win.boxY+125,true);
+
+  dfa.addNodes(3);
+  dfa.nodes[0].active = true;
+  dfa.nodes[0].accept = true;
+  //dfa.addNode(150,win.boxY+125,true);
   dfa.nodes[0].addEdge(150,win.boxY+85,40,50,dfa.p5.PI*3/4,dfa.p5.PI*9/4,'0',true);
   dfa.nodes[0].addEdge(200,win.boxY+115,70,60,dfa.p5.PI*9/8,dfa.p5.PI*15/8,'1',true);
-  dfa.addNode(250,win.boxY+125);
+  //dfa.addNode(250,win.boxY+125);
   dfa.nodes[1].addEdge(300,win.boxY+115,70,60,dfa.p5.PI*9/8,dfa.p5.PI*15/8,'0',true);
   dfa.nodes[1].addEdge(200,win.boxY+130,70,60,dfa.p5.PI*1/8,dfa.p5.PI*7/8,'1',true,true);
-  dfa.addNode(350,win.boxY+125);
+  //dfa.addNode(350,win.boxY+125);
   dfa.nodes[2].addEdge(300,win.boxY+130,70,60,dfa.p5.PI*1/8,dfa.p5.PI*7/8,'0',true,true);
   dfa.nodes[2].addEdge(350,win.boxY+85,40,50,dfa.p5.PI*3/4,dfa.p5.PI*9/4,'1',true);
 
@@ -462,7 +472,9 @@ function windowResized(width, height) {
 
   win.inputTextY = win.inputY + win.inputH * 0.85;
   win.traceY = win.inputY + win.inputH * 0.15 + win.traceDiameter/2;
+  win.boxXmargin = win.boxW * 0.1;
 
+  win.nodeDiameter = win.boxH * 0.3;
 }
 
 
