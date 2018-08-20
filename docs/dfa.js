@@ -179,6 +179,11 @@ let stateTrace = [];
 
 win = new WindowSizeVars();
 
+const machine = {
+  nodes : 3,
+  edges : [ [0,1], [2,0], [1,2]]
+};
+
 
 // A DFA just has a state and some nodes
 class DFA  {
@@ -228,17 +233,18 @@ class DFA  {
     else { edge.angle = edge.start;}
     edge.active = false;  
     this.nodes[n].active = false; 
-    switch (n) {
-    case 0: 
-      this.state = (e ? 1 : 0);
-      break;
-    case 1: 
-      this.state = (e ? 0 : 2);
-      break;
-    case 2: 
-      this.state = (e ? 2 : 1);
-      break;    
-    } 
+    this.state = machine.edges[n][e];
+    // switch (n) {
+    // case 0: 
+    //   this.state = (e ? 1 : 0);
+    //   break;
+    // case 1: 
+    //   this.state = (e ? 0 : 2);
+    //   break;
+    // case 2: 
+    //   this.state = (e ? 2 : 1);
+    //   break;    
+    // } 
     this.nodes[this.state].active = true;
     
     if (presses === input.length) {
@@ -368,7 +374,7 @@ function drawInput() {
 
   p5.fill(...colors.highlight); 
   p5.noStroke();
-  const y = win.inputTextY - win.inputTextSize;
+  const y = win.inputTextY - win.inputTextSizeq;
   for (let i = 0; i < stateTrace.length - 1; i++) {
     x = win.inputX + win.inputIndent - win.inputXspacer/4;
     p5.rect(x + i * win.inputXspacer, y, win.inputXspacer - 4, win.inputTextSize + 8,5);
