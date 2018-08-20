@@ -1,6 +1,5 @@
 /*
 
-  1. bundle the window resize variables
   3. package up remaining data and functions
   4. can we rewrite arc constructor to use nodes for input?
   2. write window resize.
@@ -140,16 +139,17 @@ class Node {
 
 class WindowSizeVars {
   constructor() {
-    this.boxX = 50;
-    this.boxY = 175;
-    this.boxW = 400;
-    this.boxH = 225;
+    this.boxX = 0;
+    this.boxY = 0;
+    this.boxW = 0;
+    this.boxH = 0;
     this.inputX = 50;
     this.inputY = 100;
-    this.inputW = 30;
+    this.inputW = 0;
     this.inputH = 40;
-    this.canvasW = 800;
-    this.canvasH = 500;
+    this.canvasW = 0;
+    this.canvasH = 0
+    this.inputXspacer = 30;
   }
 }
 
@@ -164,25 +164,10 @@ let presses = 0;    // keep track of the number of mouse presses
 const animationSpeed = 0.1;  // bigger is faster
 let endOfInput = false;
 let drawTrace = true;
-
-
-let win = new WindowSizeVars();
-
-/*
-let canvasWidth = 800;
-let canvasHeight = 500;
-let sX = 50;  /// positioning variables for the input string
-let sY = 100;
-let sWidth = 30;
-let sHeight = 40;
-let DFABOXX = 50;
-let DFABOXY = 175;
-let DFAWIDTH = 400;
-let DFAHEIGHT = 225;
-*/
-
-
+let win;
 let input = '';
+
+
 
 // A DFA just has a state and some nodes
 class DFA  {
@@ -325,13 +310,14 @@ class DFA  {
 
 
 
-  drawStateTrace() {this.p5.push();
+  drawStateTrace() {
+    this.p5.push();
     this.p5.strokeWeight(1);
       
     this.p5.stroke(...colors.activeStroke[this.state]);
     this.p5.fill(...colors.activeFill[this.state]); 
     
-    this.p5.ellipse(win.inputX + presses * win.inputW,win.inputY - 20,20,20); 
+    this.p5.ellipse(win.inputX + presses * win.inputXspacer,win.inputY - 20,20,20); 
     this.p5.pop();
   }
 
@@ -339,13 +325,31 @@ class DFA  {
 
 
 
+// draw the string from the input box on the screen
+function drawInput(s) {
+  p5.push();
+  p5.strokeWeight(3);
+  p5.stroke(200);
+  p5.rect(0,win.inputY-win.inputH,win.canvasW,win.inputH*2+8);
+  p5.noStroke();
+  p5.fill(255);
+  p5.fill(...colors.textColor);
+  p5.textSize(20);
+  var i = 0;
+  for (; i < s.length; i++) {
+    p5.text(s[i], win.inputX + win.inputH/4 + win.inputXspacer*i, win.inputY + win.inputH*3/4);
+  }
+  p5.pop();
+}
 
 
 
 let p5;
 let dfa;
+win = new WindowSizeVars();
 
 function setup() {
+
 // make the DFA, two nodes each with two transitions
   dfa = new DFA(p5);
   dfa.addNode(150,win.boxY+125,true);
@@ -364,23 +368,6 @@ function setup() {
 }
 
 
-// draw the string from the input box on the screen
-function drawInput(s) {
-  p5.push();
-  p5.strokeWeight(3);
-  p5.stroke(200);
-  p5.rect(0,win.inputY-win.inputH,win.canvasW-10,win.inputH*2+8);
-  p5.noStroke();
-  p5.fill(255);
-  p5.fill(...colors.textColor);
-  p5.textSize(20);
-  var i = 0;
-  for (; i < s.length; i++) {
-    p5.text(s[i], win.inputX + win.inputH/4 + win.inputW*i, win.inputY + win.inputH*3/4);
-  }
-  p5.pop();
-}
-
 
 function preload(p5playable) {
   p5 = p5playable;
@@ -394,7 +381,8 @@ function mousePressed() {
   if (validS && presses < input.length) {
     p5.push();           
     p5.fill(...colors.highlight);
-    p5.rect(win.inputX + presses * win.inputW, win.inputY, win.inputW - 4, win.inputH,5);
+    console.log('inputXspacer', win.inputXspacer);
+    p5.rect(win.inputX + presses * win.inputXspacer, win.inputY, win.inputW - 4, win.inputH,5);
     p5.pop();
         
     dfa.startTransition(input[presses]);
@@ -419,6 +407,21 @@ function newInput(i) {
   dfa.drawStateTrace();
 }
 
+function windowResized(width, height) {
+  win.canvasW = width;
+  win.canvasH = height;
+
+  const minHeight = 200;
+  if (win.canvasH < minHeight) {
+    win.canvasH = minHeight;
+  }
+
+  win.boxW = win.canvasW * 0.6;
+  win.boxH = win.canvasH * 0.5;
+  win.boxX = (width - win.boxW) / 2;
+  win.boxY = (height - win.boxH) / 2;
+}
+
 
 (function (global, factory) {
   if (typeof define === 'function' && define.amd) {
@@ -440,6 +443,7 @@ function newInput(i) {
   exports.mousePressed = mousePressed;
   exports.preload = preload;
   exports.draw = draw;
+  exports.windowResized = windowResized;
 
 });
 

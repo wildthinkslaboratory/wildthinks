@@ -4,16 +4,26 @@ added state trace above string and better state color changes
 
 //smartdown.import=http://127.0.0.1:5555/dfa.js
 
-this.div.style.position = 'relative';
-this.div.style['background-image'] = 'url("https://gist.githubusercontent.com/wildthinkslaboratory/ac98c0bb68ccf7528dc39fa1922d2bdb/raw/71e56b6dabdb46605e9d0d411eca1b4391ec9313/dfaBackground.001.jpeg")';
-	
 
-this.div.style['background-repeat'] = 'no-repeat';
-this.div.style['background-size'] = 'cover';
-//this.div.style.background = 'gray';
-this.div.style.height = '500px';
-this.div.style.width = '800px';
-this.div.style.border = '5px solid gray';
+// this is the url for the background picture
+const bgURL = 'https://gist.githubusercontent.com/wildthinkslaboratory/ac98c0bb68ccf7528dc39fa1922d2bdb/raw/71e56b6dabdb46605e9d0d411eca1b4391ec9313/dfaBackground.001.jpeg';
+
+
+const myDiv = this.div;                                  // This chunk of code is some HTML/CSS stuff
+myDiv.style.position = 'relative';                       // to make the playable look pretty
+myDiv.style['background-image'] = `url(${bgURL})`;
+myDiv.style['background-repeat'] = 'no-repeat';
+myDiv.style['background-size'] = 'cover';
+myDiv.style.height = '100%';
+myDiv.style.width = '100%';
+myDiv.style.padding = '0';
+myDiv.style.margin = '0';
+myDiv.style.overflow = 'hidden';
+myDiv.style.border = '5px solid gray';
+this.div.style.margin = '10px auto'; // shorthand for '10px auto 10px auto'
+this.div.innerHTML = '';
+
+
 
 console.log('dfalib', dfalib);
 
@@ -23,6 +33,7 @@ p5.preload = function() {
 
 p5.setup = function() {
 	dfalib.setup();
+	p5.windowResized();
 }
 
 
@@ -34,6 +45,12 @@ this.depend = function() {        // Called when BitString changes to a new valu
   dfalib.newInput(S);
 };
 
+p5.windowResized = function() {                  // this function is called when the user changes
+  const canvasWidth = p5.windowWidth;            // the size of the window.  It will rescale all the 
+  const canvasHeight = p5.windowHeight * 0.8;    // components to fit into the new window size.
+  dfalib.windowResized(canvasWidth, canvasHeight);
+  p5.resizeCanvas(canvasWidth, canvasHeight);
+}
 
 // The statements in draw() are executed until the
 // program is stopped. Each statement is executed in
