@@ -1107,20 +1107,7 @@ function Dots() {
   'use strict';
 
   exports.Dots = Dots;
-/*
-  exports.setup = setup;
-  exports.loadSounds = loadSounds;
-  exports.windowResized = windowResized;
-  exports.draw = draw;
-  exports.mouseDragged = mouseDragged;
-  exports.mousePressed = mousePressed;
-  exports.mouseReleased = mouseReleased;
-  exports.turnOffAddDotButton = turnOffAddDotButton;
-  exports.turnOffRuleButton = turnOffRuleButton;
-  exports.allowAddDots = allowAddDots;
-  exports.allowRemoveDots = allowRemoveDots;
-  exports.addDotsToBox = addDotsToBox;
-  */
+
 });
 
 
