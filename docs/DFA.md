@@ -25,25 +25,17 @@ this.div.innerHTML = '';
 
 
 
-console.log('dfalib', dfalib);
-
 p5.preload = function() {
 	dfalib.preload(p5);
 }
 
-p5.setup = function() {
-	dfalib.setup();
+p5.setup = function() {                          // this function is called when you start the
+                                                 // playable. 
+	dfalib.setup();        
 	p5.windowResized();
+	smartdown.setVariable('Input', '');          // set the input string to empty string
 }
 
-
-var S;   // holsd the input string
-
-this.dependOn = ['BitString'];
-this.depend = function() {        // Called when BitString changes to a new value
-  S = env.BitString;
-  dfalib.newInput(S);
-};
 
 p5.windowResized = function() {                  // this function is called when the user changes
   const canvasWidth = p5.windowWidth;            // the size of the window.  It will rescale all the 
@@ -52,25 +44,42 @@ p5.windowResized = function() {                  // this function is called when
   p5.resizeCanvas(canvasWidth, canvasHeight);
 }
 
-// The statements in draw() are executed until the
-// program is stopped. Each statement is executed in
-// sequence and after the last line is read, the first
-// line is executed again.
-p5.draw = function() {
-	dfalib.draw();
+
+p5.draw = function() {                           // this function gets called repeatedly in a loop.
+  dfalib.draw();                                 // The machine is redrawn multiple times a second.
 }
 
 
-// the logic of this code is hard to follow.
-// will try to clean it up and simplify the control flow
-p5.mousePressed = function() {
+p5.mousePressed = function() {                   // this function is called everytime the user clicks the mouse
 	dfalib.mousePressed();
 }
 
+
+
+var I;    // this holds the input string
+
+this.dependOn = ['Input'];
+this.depend = function() {                       // this function is called when the input changes to a new value
+  I = env.Input;
+  if (I[I.length - 1] === '\n') {                // we only enter a new input when the user hits enter  i.e. '\n'
+    const cleanI = cleanInput(I);                // the user may not have entered a valid string so we clean it up
+    smartdown.setVariable('Input', cleanI);      // convert the alphabet from a string to an array of characters
+    dfalib.newInput(I);                          // add the input to the machine
+  }
+};
+
+
+function cleanInput(i) {                                // here's where we clean up the input
+  return i.replace(/\s/g, '');                          // remove any spaces, tabs or enter characters
+}
+
+
 ```
 
+[Enter a string](:?Input)
+[Current string](:!Input)
 
-`Enter a string with 0's and 1's` [](:?BitString)  And then click on the drawing to watch your string get eaten up by the machine.  Did the machine like your string or not?
+And then click on the drawing to watch your string get eaten up by the machine.  Did the machine like your string or not?
 
 
 
