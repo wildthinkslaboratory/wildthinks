@@ -45,7 +45,6 @@ I've initilized the machine with the string `cab`, which has a base 10 value of 
 
 
 // import the dots library
-//xsmartdown.import=https://wildthinkslaboratory.github.io/wildthinks/dots.js
 //smartdown.import=/dots.js
 
 
@@ -139,7 +138,6 @@ In this playable you can type in an alphabet from your keyboard.  The number of 
 
 
 // import the dots library
-//xsmartdown.import=https://wildthinkslaboratory.github.io/wildthinks/dots.js
 //smartdown.import=/dots.js
 
 // this is the url for the background picture

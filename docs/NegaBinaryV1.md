@@ -27,7 +27,7 @@ In negative binary we use the rule $-1 \leftarrow 2$.  Two **dots** on the right
 
 
 // import the dots library
-//smartdown.import=https://wildthinkslaboratory.github.io/wildthinks/dots.js
+//smartdown.import=/dots.js
 
 // this is the url for the background picture
 const bgURL = 'https://gist.githubusercontent.com/wildthinkslaboratory/ac98c0bb68ccf7528dc39fa1922d2bdb/raw/a813f0d1c5d0108a8b923ce73dd17ebddc692972/ExpDotsBackground.001.jpeg';
@@ -130,7 +130,8 @@ OK, now let's fix that **antidot**.  Try adding $0$ to the middle box by adding 
 
 
 // import the dots library
-//smartdown.import=https://wildthinkslaboratory.github.io/wildthinks/dots.js
+//smartdown.import=/dots.js
+
 
 // this is the url for the background picture
 const bgURL = 'https://gist.githubusercontent.com/wildthinkslaboratory/ac98c0bb68ccf7528dc39fa1922d2bdb/raw/a813f0d1c5d0108a8b923ce73dd17ebddc692972/ExpDotsBackground.001.jpeg';
@@ -225,7 +226,8 @@ Check out the new `rule` button. It toggles between the standard  `-1`  $\leftar
 
 
 // import the dots library
-//smartdown.import=https://wildthinkslaboratory.github.io/wildthinks/dots.js
+//smartdown.import=/dots.js
+
 
 // this is the url for the background picture
 const bgURL = 'https://gist.githubusercontent.com/wildthinkslaboratory/ac98c0bb68ccf7528dc39fa1922d2bdb/raw/a813f0d1c5d0108a8b923ce73dd17ebddc692972/ExpDotsBackground.001.jpeg';
@@ -318,7 +320,7 @@ Here's a fully working machine and here are some things for you to try.
 
 
 // import the dots library
-//smartdown.import=https://wildthinkslaboratory.github.io/wildthinks/dots.js
+//smartdown.import=/dots.js
 
 // this is the url for the background picture
 const bgURL = 'https://gist.githubusercontent.com/wildthinkslaboratory/ac98c0bb68ccf7528dc39fa1922d2bdb/raw/a813f0d1c5d0108a8b923ce73dd17ebddc692972/ExpDotsBackground.001.jpeg';
