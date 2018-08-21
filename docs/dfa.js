@@ -77,21 +77,19 @@ function getBoxRelativePos(x, y) {
 // for the arc and a direction (clockwise or counterclockwise) for the
 
 class AnimatedArc  { 
-  constructor(p5playable, x,y,width,height,start,stop,label,clockwise,labelBelow=false) {
+  constructor(p5playable,label,to) {
     this.p5 = p5playable;
-    this.x = x;              
-    this.y = y;
-    this.a = width/2;  
-    this.b = height/2;
+    this.x = 0;              
+    this.y = 0;
+    this.a = 0;  
+    this.b = 0;
     this.label = label;  
-    this.start = start;  
-    this.stop = stop;
-    this.cclockwise = !clockwise;
-    this.labelBelow = labelBelow;
-    this.angle = start;               // angle varies to create animation
-    if (this.cclockwise) { 
-      this.angle = stop; 
-    }
+    this.to = to;  // state this edge takes you to
+    this.start = 0;  
+    this.stop = 0;
+    this.cclockwise = 0;
+    this.labelBelow = 0;
+    this.angle = 0;               // angle varies to create animation
     this.active = false;              // this bool turns animation on and off
   }
 
@@ -102,10 +100,12 @@ class AnimatedArc  {
     this.p5.fill(...colors.arrow);
     const angle1 = this.cclockwise ? this.start : this.stop;
     const angle2 = angle1 + (this.cclockwise ? 0.2 : -0.2);
-    let pt1X = this.x + this.a * Math.cos(angle1);  // point at tip of arrow
-    let pt1Y = this.y + this.b * Math.sin(angle1);  
-    let ptX = this.x + this.a * Math.cos(angle2);   // a guide point to help   
-    let ptY = this.y + this.b * Math.sin(angle2); // us get the last two points
+    const A = this.a/2;
+    const B = this.b/2;
+    let pt1X = this.x + A * Math.cos(angle1);  // point at tip of arrow
+    let pt1Y = this.y + B * Math.sin(angle1);  
+    let ptX = this.x + A * Math.cos(angle2);   // a guide point to help   
+    let ptY = this.y + B * Math.sin(angle2); // us get the last two points
     const slope = (pt1Y - ptY)/(pt1X - ptX);
     const a = 3;
     const b = a / slope;
@@ -160,20 +160,6 @@ class Node {
 
   getPosition() {
     return getCanvasRelativePos(this.rx, this.ry);
-  }
-
-  // addEdge(x,y,width,height,label,start,stop,clockwise,labelBelow=false) {
-  //   this.edges.push(new AnimatedArc(p5,x,y,width,height,label,start,stop,clockwise,labelBelow));
-  // }
-
-  addEdge(from, to, label) {
-    const {fromX, fromY} = this.getPosition();
-    const {toX, toY} = dfa.nodes[to].getPosition();
-    const width = p5.abs(fromX - toX);
-    const height = 2 * win.nodeDiameter;
-    const x = p5.min(fromX,toX) + width/2;
-    const y = fromY;                                          // start stop clockwise labelBelow
-    this.edges.push(new AnimatedArc(p5,x,y,width,height,label,0,0,0,0));
   }
 }
 
@@ -249,32 +235,55 @@ class DFA  {
   }
 
   addEdge(from, to, label) {
-    const {fromX, fromY} = this.nodes[from].getPosition();
-    const {toX, toY} = this.nodes[to].getPosition();
-    const width = p5.abs(fromX - toX);
-    const height = 2 * win.nodeDiameter;
-    const x = p5.min(fromX,toX) + width/2;
-    const y = fromY;                                          // start stop clockwise labelBelow
-    this.nodes[from].edges.push(new AnimatedArc(p5,x,y,width,height,label,0,0,0,0));
+    this.nodes[from].edges.push(new AnimatedArc(p5,label,to));
+  }
+
+  positionEdges() {
+    for (let n=0; n < this.nodes.length; n++) {          // walk each node
+      for (let s=0; s < this.nodes[n].edges.length; s++) {     // walk each transition (indexed by symbol)
+        let node = this.nodes[n];
+        const from = node.getPosition();
+        const to = this.nodes[node.edges[s].to].getPosition();
+
+        if (from.x === to.x) { 
+          node.edges[s].x = from.x; 
+          node.edges[s].a = win.nodeDiameter/2. ;
+          node.edges[s].y = from.y - win.nodeDiameter/2;
+          node.edges[s].b = win.nodeDiameter;
+        }
+        else {
+          const width = p5.abs(from.x - to.x);
+          node.edges[s].x = p5.min(from.x, to.x) + width/2;   
+          node.edges[s].a = width;
+          node.edges[s].y = from.y;
+          node.edges[s].b = 2 * win.nodeDiameter;
+        }
+         
+        
+        node.edges[s].cclockwise = (n > node.edges[s].to);  
+        node.edges[s].start = (node.edges[s].cclockwise ? 0 : this.p5.PI);
+        node.edges[s].stop =  (node.edges[s].cclockwise ? this.p5.PI : 0); 
+        //node.edges[s].angle = ;                              
+      } 
+    }
   }
 
   draw() {
     this.p5.push();
     this.p5.fill(255,10);                // draw a background rect
-    this.p5.strokeWeight(4);
-    this.p5.stroke(200);
+    this.p5.noStroke();
     this.p5.rect(win.boxX, win.boxY, win.boxW, win.boxH, 10);
     this.p5.pop();
     
-    this.p5.push();
-    this.p5.fill(...colors.arrow);                     // draw the start arrow
-    this.p5.textSize(16);
-    let x = this.nodes[0].x;
-    let y = this.nodes[0].y;
-    this.p5.text('start',x-70,y-3);
-    this.p5.line(x-70,y,x-30,y);
-    this.p5.triangle(x-30,y,x-35,y-5,x-35,y+5);
-    this.p5.pop();
+    // this.p5.push();
+    // this.p5.fill(...colors.arrow);                     // draw the start arrow
+    // this.p5.textSize(16);
+    // let x = this.nodes[0].x;
+    // let y = this.nodes[0].y;
+    // this.p5.text('start',x-70,y-3);
+    // this.p5.line(x-70,y,x-30,y);
+    // this.p5.triangle(x-30,y,x-35,y-5,x-35,y+5);
+    // this.p5.pop();
 
     for (let i=0; i < this.nodes.length; i++) {   // draw the nodes
       this.nodes[i].draw();
@@ -317,22 +326,27 @@ class DFA  {
   // DFA state change is triggered by the animation ending.
   drawArc(n,e) {
     this.p5.push();
-    this.p5.noFill();                               // draw the edge
+    this.p5.noFill();    
+    //this.p5.stroke(0);                           // draw the edge
     let edge = this.nodes[n].edges[e];
-    this.p5.arc(edge.x,edge.y,2*edge.a,2*edge.b,edge.start,edge.stop);
+    //console.log('arc', )
+    
+    this.p5.arc(edge.x, edge.y, edge.a, edge.b, edge.start, edge.stop);
     
     edge.drawArrowTip();                       // draw the arrow tip
     
-    this.p5.textSize(24);                           // draw the label
-    this.p5.fill(...colors.arrow);
-    let y = edge.y + (edge.labelBelow ? edge.b + 30: -edge.b - 10);
-    this.p5.text(edge.label,edge.x-8,y);
+    // this.p5.textSize(24);                           // draw the label
+    // this.p5.fill(...colors.arrow);
+    // let y = edge.y + (edge.labelBelow ? edge.b + 30: -edge.b - 10);
+    // this.p5.text(edge.label,edge.x-8,y);
 
     if (edge.active) {                    // if edge is active draw the animation
       this.p5.noStroke();
       this.p5.fill(220,20,220);
-      const x = edge.x + edge.a * Math.cos(edge.angle);
-      const y = edge.y + edge.b * Math.sin(edge.angle);
+      const A = edge.a/2;
+      const B = edge.b/2;
+      const x = edge.x + A * Math.cos(edge.angle);
+      const y = edge.y + B * Math.sin(edge.angle);
       this.p5.ellipse(x,y,10,10);           // draw a dot on the arc
 
       if (!edge.cclockwise) {          // increment position of the dot
@@ -425,20 +439,20 @@ function construct(p5playable, m) {
   for (let i=0; i < machine.accept.length; i++) {
     dfa.nodes[machine.accept[i]].accept = true;
   }
+
+  for (let from=0; from < machine.edges.length; from++) {  // for each node
+    for (let sym=0; sym < machine.edges[from].length; sym++) { // for each input symbol
+      const to = machine.edges[from][sym];
+      dfa.addEdge(from, to, sym);
+    }
+  }
 }
 
 
 function setup() {
 
-  
-
-  for (let i=0; i < machine.edges.length; i++) {  // for each node
-    for (let j=0; j < machine.edges[i].length; j++) { // for each input symbol
-      dfa.addEdge(i, machine.edges[i][j], j);
-    }
-  }
-
   dfa.positionNodes();
+  dfa.positionEdges();
 
   // dfa.nodes[0].addEdge(150,win.boxY+85,40,50,dfa.p5.PI*3/4,dfa.p5.PI*9/4,'0',true);
   // dfa.nodes[0].addEdge(200,win.boxY+115,70,60,dfa.p5.PI*9/8,dfa.p5.PI*15/8,'1',true);
@@ -512,6 +526,7 @@ function windowResized(width, height) {
   win.boxXmargin = win.boxW * 0.1;
 
   win.nodeDiameter = win.boxH * 0.3;
+  dfa.positionEdges();
 }
 
 
