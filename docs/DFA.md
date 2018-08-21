@@ -23,16 +23,24 @@ myDiv.style.border = '5px solid gray';
 this.div.style.margin = '10px auto'; // shorthand for '10px auto 10px auto'
 this.div.innerHTML = '';
 
+const machine = {
+  nodes : 3,
+  edges : [ [0,1], [2,0], [1,2] ],
+  accept : [0],
+  alphabet : null
+};
 
+
+dfalib.construct(p5, machine);
 
 p5.preload = function() {
-	dfalib.preload(p5);
+	dfalib.loadSounds();
 }
 
 p5.setup = function() {                          // this function is called when you start the
-                                                 // playable. 
-	dfalib.setup();        
+                                                 // playable.  
 	p5.windowResized();
+	dfalib.setup();      
 	smartdown.setVariable('Input', '');          // set the input string to empty string
 }
 

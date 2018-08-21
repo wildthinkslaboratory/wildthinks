@@ -1,5 +1,6 @@
 /*
 
+  1. do an initial resize before you add nodes,edges
   4. can we rewrite arc constructor to use nodes for input?
   2. store transition function in the dfa
 
@@ -121,12 +122,10 @@ class AnimatedArc  {
 
 // A DFA node has a position an can be an accept node.
 class Node {
-  constructor(p5playable, x, y, state, accept=false) {
+  constructor(p5playable, state, accept=false) {
     this.p5 = p5playable;
-    const {rx, ry} = getBoxRelativePos(x,y);
-    console.log('rx', rx, 'ry', ry);
-    this.rx = rx;
-    this.ry = ry;
+    this.rx = 0;
+    this.ry = 0;
     this.state = state;
     this.accept = accept;
     this.active = false;      // it can be active if we are visiting this node
@@ -159,8 +158,22 @@ class Node {
     this.p5.pop();
   } 
 
-  addEdge(x,y,width,height,label,start,stop,clockwise,labelBelow=false) {
-    this.edges.push(new AnimatedArc(p5,x,y,width,height,label,start,stop,clockwise,labelBelow));
+  getPosition() {
+    return getCanvasRelativePos(this.rx, this.ry);
+  }
+
+  // addEdge(x,y,width,height,label,start,stop,clockwise,labelBelow=false) {
+  //   this.edges.push(new AnimatedArc(p5,x,y,width,height,label,start,stop,clockwise,labelBelow));
+  // }
+
+  addEdge(from, to, label) {
+    const {fromX, fromY} = this.getPosition();
+    const {toX, toY} = dfa.nodes[to].getPosition();
+    const width = p5.abs(fromX - toX);
+    const height = 2 * win.nodeDiameter;
+    const x = p5.min(fromX,toX) + width/2;
+    const y = fromY;                                          // start stop clockwise labelBelow
+    this.edges.push(new AnimatedArc(p5,x,y,width,height,label,0,0,0,0));
   }
 }
 
@@ -206,12 +219,7 @@ let stateTrace = [];
 
 win = new WindowSizeVars();
 
-const machine = {
-  nodes : 3,
-  edges : [ [0,1], [2,0], [1,2] ],
-  accept : [0],
-  alphabet : null
-};
+let machine;
 
 
 // A DFA just has a state and some nodes
@@ -223,12 +231,31 @@ class DFA  {
   }
 
   addNodes(n) {
+    for (let i=0; i < n; i++) {
+      this.nodes.push(new Node(p5, i, false));
+    }
+  }
+
+  positionNodes() {
+    const n = dfa.nodes.length;
     const distBetweenNodes = (win.boxW - 2 * win.boxXmargin)/n;
     const x = win.boxX + win.boxXmargin + distBetweenNodes/2;
     const y = win.boxY + win.boxH/2;
     for (let i=0; i < n; i++) {
-      this.nodes.push(new Node(p5, x + distBetweenNodes * i, y, i, false));
+      const {rx, ry} = getBoxRelativePos(x + distBetweenNodes * i, y);
+      this.nodes[i].rx = rx;
+      this.nodes[i].ry = ry;
     }
+  }
+
+  addEdge(from, to, label) {
+    const {fromX, fromY} = this.nodes[from].getPosition();
+    const {toX, toY} = this.nodes[to].getPosition();
+    const width = p5.abs(fromX - toX);
+    const height = 2 * win.nodeDiameter;
+    const x = p5.min(fromX,toX) + width/2;
+    const y = fromY;                                          // start stop clockwise labelBelow
+    this.nodes[from].edges.push(new AnimatedArc(p5,x,y,width,height,label,0,0,0,0));
   }
 
   draw() {
@@ -388,34 +415,44 @@ function drawInput() {
   p5.pop();
 }
 
+function construct(p5playable, m) { 
+  p5 = p5playable;
+  machine = m;
+  dfa = new DFA(p5);
+  dfa.addNodes(machine.nodes);
 
+  dfa.nodes[0].active = true;
+  for (let i=0; i < machine.accept.length; i++) {
+    dfa.nodes[machine.accept[i]].accept = true;
+  }
+}
 
 
 function setup() {
 
-  // make the DFA, two nodes each with two transitions
-  dfa = new DFA(p5);
+  
 
-  dfa.addNodes(3);
-  dfa.nodes[0].active = true;
-  dfa.nodes[0].accept = true;
-  //dfa.addNode(150,win.boxY+125,true);
-  dfa.nodes[0].addEdge(150,win.boxY+85,40,50,dfa.p5.PI*3/4,dfa.p5.PI*9/4,'0',true);
-  dfa.nodes[0].addEdge(200,win.boxY+115,70,60,dfa.p5.PI*9/8,dfa.p5.PI*15/8,'1',true);
-  //dfa.addNode(250,win.boxY+125);
-  dfa.nodes[1].addEdge(300,win.boxY+115,70,60,dfa.p5.PI*9/8,dfa.p5.PI*15/8,'0',true);
-  dfa.nodes[1].addEdge(200,win.boxY+130,70,60,dfa.p5.PI*1/8,dfa.p5.PI*7/8,'1',true,true);
-  //dfa.addNode(350,win.boxY+125);
-  dfa.nodes[2].addEdge(300,win.boxY+130,70,60,dfa.p5.PI*1/8,dfa.p5.PI*7/8,'0',true,true);
-  dfa.nodes[2].addEdge(350,win.boxY+85,40,50,dfa.p5.PI*3/4,dfa.p5.PI*9/4,'1',true);
+  for (let i=0; i < machine.edges.length; i++) {  // for each node
+    for (let j=0; j < machine.edges[i].length; j++) { // for each input symbol
+      dfa.addEdge(i, machine.edges[i][j], j);
+    }
+  }
+
+  dfa.positionNodes();
+
+  // dfa.nodes[0].addEdge(150,win.boxY+85,40,50,dfa.p5.PI*3/4,dfa.p5.PI*9/4,'0',true);
+  // dfa.nodes[0].addEdge(200,win.boxY+115,70,60,dfa.p5.PI*9/8,dfa.p5.PI*15/8,'1',true);
+  // dfa.nodes[1].addEdge(300,win.boxY+115,70,60,dfa.p5.PI*9/8,dfa.p5.PI*15/8,'0',true);
+  // dfa.nodes[1].addEdge(200,win.boxY+130,70,60,dfa.p5.PI*1/8,dfa.p5.PI*7/8,'1',true,true);
+  // dfa.nodes[2].addEdge(300,win.boxY+130,70,60,dfa.p5.PI*1/8,dfa.p5.PI*7/8,'0',true,true);
+  // dfa.nodes[2].addEdge(350,win.boxY+85,40,50,dfa.p5.PI*3/4,dfa.p5.PI*9/4,'1',true);
 
   dfa.p5.createCanvas(win.canvasW,win.canvasH);
 }
 
 
 
-function preload(p5playable) {
-  p5 = p5playable;
+function loadSounds() {
   acceptSound = p5.loadSound('https://gist.githubusercontent.com/wildthinkslaboratory/ac98c0bb68ccf7528dc39fa1922d2bdb/raw/f68a0fa7a0cfcf6b72c42986db991bde94bbc90d/SmallGlockA.wav');
 
   rejectSound = p5.loadSound('https://gist.githubusercontent.com/wildthinkslaboratory/ac98c0bb68ccf7528dc39fa1922d2bdb/raw/26bde39ba9f27eecdf5ea85533b411a8e378f1a1/cartoon004.wav');   
@@ -494,10 +531,11 @@ function windowResized(width, height) {
 })(this, function (exports) {
   'use strict';
 
+  exports.construct = construct;
   exports.newInput = newInput;
   exports.setup = setup;
   exports.mousePressed = mousePressed;
-  exports.preload = preload;
+  exports.loadSounds = loadSounds;
   exports.draw = draw;
   exports.windowResized = windowResized;
 
