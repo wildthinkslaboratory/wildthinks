@@ -14,7 +14,7 @@ Our goal is to build interactive explorations of our favorite topics in discrete
 
 
 
-In honor of [Global Math Week 2018](https://www.globalmathproject.org), our first interactive exploration we will be diving into Negative Binary [ExplodingDots](https://www.explodingdots.org).  If you haven't seen James Tanton's Exlpoding Dots, check out his fabulous website [G'Day Math!](http://gdaymath.com/courses/exploding-dots/) or the [Global Math Week Exploding Dots Page](https://www.explodingdots.org).  Then come back here for an exploration of a base negative two number system. To begin, just click the button below. 
+In honor of [Global Math Week 2018](https://www.globalmathproject.org), our first interactive exploration we will be diving into Negative Binary [Exploding Dots](https://www.explodingdots.org).  If you haven't seen James Tanton's Exploding Dots, check out his fabulous website [G'Day Math!](http://gdaymath.com/courses/exploding-dots/) or the [Global Math Week Exploding Dots Page](https://www.explodingdots.org).  Then come back here for an exploration of a base negative two number system. To begin, just click the button below. 
 
 
 
