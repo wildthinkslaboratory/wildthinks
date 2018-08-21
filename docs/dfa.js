@@ -260,10 +260,18 @@ class DFA  {
         }
          
         
-        node.edges[s].cclockwise = (n > node.edges[s].to);  
-        node.edges[s].start = (node.edges[s].cclockwise ? 0 : this.p5.PI);
-        node.edges[s].stop =  (node.edges[s].cclockwise ? this.p5.PI : 0); 
-        //node.edges[s].angle = ;                              
+        node.edges[s].cclockwise = false;  
+        if (n > node.edges[s].to) {
+          node.edges[s].start =  0;
+          node.edges[s].stop =   this.p5.PI; 
+          node.edges[s].angle = 0; 
+        }
+        else {
+          node.edges[s].start =  this.p5.PI;
+          node.edges[s].stop =   2* this.p5.PI; 
+          node.edges[s].angle = this.p5.PI; 
+        }
+                             
       } 
     }
   }
