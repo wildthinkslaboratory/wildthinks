@@ -45,7 +45,9 @@ I've initilized the machine with the string `cab`, which has a base 10 value of 
 
 
 // import the dots library
-//smartdown.import=https://wildthinkslaboratory.github.io/wildthinks/dots.js
+//xsmartdown.import=https://wildthinkslaboratory.github.io/wildthinks/dots.js
+//smartdown.import=/dots.js
+
 
 // this is the url for the background picture
 const bgURL = 'https://gist.githubusercontent.com/wildthinkslaboratory/ac98c0bb68ccf7528dc39fa1922d2bdb/raw/0fe1c494e0a94243f3b6d10dd38ef2a341d92f95/bgRedCream-20.jpg';
@@ -121,7 +123,7 @@ p5.mouseReleased = function() {                  // this function is called when
 ## Choose your own alphabet
 
 
-In this playable you can type in an alphabet from your keyboard.  The number of symbols in your alphabet will become the base of the machine and the symbols of your alphabet will be used to write the codes. Currently this machine doesn't allow you to use white space as part of your alphabet so you can't interpret sentences as numbers like we did in the video.  You could substitute the underscore `_` for a space if you wanted.  Also, this machine only has three boxes so you can't make a very long string like you would need for a book. Hopefully after playing around with it for a while you will be able to *imagine* how you could interpret an email, a book, a program or a proof as a number.
+In this playable you can type in an alphabet from your keyboard.  The number of symbols in your alphabet will become the base of the machine and the symbols of your alphabet will be used to write the codes. Currently this machine doesn't allow you to use white space as part of your alphabet so you can't interpret sentences as numbers like we did in the video.  You could substitute the underscore `_` for a space if you wanted.  This machine is only three boxes long, but imagine what it would be like to have one with a hundred boxes, or a million boxes.  You can begin to see how we could interpret an email, a book, a program or a proof as a number.
 
 
 ### Things to try
@@ -137,7 +139,8 @@ In this playable you can type in an alphabet from your keyboard.  The number of 
 
 
 // import the dots library
-//smartdown.import=https://wildthinkslaboratory.github.io/wildthinks/dots.js
+//xsmartdown.import=https://wildthinkslaboratory.github.io/wildthinks/dots.js
+//smartdown.import=/dots.js
 
 // this is the url for the background picture
 const bgURL = 'https://gist.githubusercontent.com/wildthinkslaboratory/ac98c0bb68ccf7528dc39fa1922d2bdb/raw/0fe1c494e0a94243f3b6d10dd38ef2a341d92f95/bgRedCream-20.jpg';
@@ -232,6 +235,10 @@ function cleanUpAlphabet(a) {                                    // here's where
 
 [Enter an alphabet](:?Alphabet)
 [Current alphabet](:!Alphabet)
+
+## Make a Better Number System
+
+Our current system for writing numbers in base $10$ with the alphabet `0123456789`, evolved over a long period of time.  It's been used for so long by so many people.  That doesn't mean it's the best system.  I personally think we could devise a better one.  Base $12$ is an intriguing possibility.  It has four divisors: $2,3,4$ and $6$.  The number $10$ only has two: $2$ and $5$.  Think back to when you learned the multiplication tables.  How might that process be different if the base had more divisors?  What if we had an alphabet where the symbols actually looked like the quantities they described?  What are the advantages and disadvantages to having a small base versus a larger base?  I hope you'll experiment.  If you come up with any great new system please let me know and I will add it to my page.
 
 
 ## What's Next?  Gödel's Incompleteness Theorem Part 2?
