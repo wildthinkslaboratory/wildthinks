@@ -8,8 +8,7 @@ INSTRUCTIONS:
 - Each time you click the mouse the machine will consume another letter.
 - If the machine ends on the *yellow* state, the machine will accept the string and play a **ding**.
 
-How would you describe the strings that the machine likes?  How could you interpret the strings that the machine likes as numbers.  Do they have any interesting mathematical properties?  
-
+How would you describe the strings that the machine likes?  How could you interpret these strings as numbers.  Do they have any interesting mathematical properties?  
 
 ```p5js/playable/autoplay
 
@@ -99,11 +98,12 @@ function cleanInput(i) {                                // here's where we clean
 
 
 ```
-
 [Enter a string](:?Input)
 [Current string](:!Input)
 
- 
+ Have you figured out what property these strings all share?  Notice that this machine is actually symmetrical.  That means if the machine likes a string `aabb` then it will also like the reverse of that string `bbaa`.  So reversing a string preserves the property.  How can you explain that?
+
+
 
 
 

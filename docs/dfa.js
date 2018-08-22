@@ -209,27 +209,7 @@ class Node {
 
 
 
-////
-// Coordinate transforms between box-relative and canvas-relative
-// Convention: (x, y) are canvas coordinates. (rx, ry) are box coordinates
-//////////////////////////////////////////////////////////////////////////////
 
-function getCanvasRelativePos(rx, ry) {
-  const result = {
-    x: rx * win.boxW + win.boxX,
-    y: ry * win.boxH + win.boxY
-  };
-  return result;
-}
-
-function getBoxRelativePos(x, y) {
-  const result = {
-    rx: (x - win.boxX) / win.boxW,
-    ry: (y - win.boxY) / win.boxH
-  };
-
-  return result;
-}
 
 
 // pull all the lower functions into inside functions
@@ -267,6 +247,27 @@ win = new WindowSizeVars();
 let machine;
 
 
+////
+// Coordinate transforms between box-relative and canvas-relative
+// Convention: (x, y) are canvas coordinates. (rx, ry) are box coordinates
+//////////////////////////////////////////////////////////////////////////////
+
+function getCanvasRelativePos(rx, ry) {
+  const result = {
+    x: rx * win.boxW + win.boxX,
+    y: ry * win.boxH + win.boxY
+  };
+  return result;
+}
+
+function getBoxRelativePos(x, y) {
+  const result = {
+    rx: (x - win.boxX) / win.boxW,
+    ry: (y - win.boxY) / win.boxH
+  };
+
+  return result;
+}
 // A DFA just has a state and some nodes
 class DFA  {
   constructor(p5playable) {
