@@ -97,7 +97,27 @@ function centerTextInCircle(p5, x,y,diameter,text) {
 }
 
 
+////
+// Coordinate transforms between box-relative and canvas-relative
+// Convention: (x, y) are canvas coordinates. (rx, ry) are box coordinates
+//////////////////////////////////////////////////////////////////////////////
 
+function getCanvasRelativePos(rx, ry, win) {
+  const result = {
+    x: rx * win.boxW + win.boxX,
+    y: ry * win.boxH + win.boxY
+  };
+  return result;
+}
+
+function getBoxRelativePos(x, y, win) {
+  const result = {
+    rx: (x - win.boxX) / win.boxW,
+    ry: (y - win.boxY) / win.boxH
+  };
+
+  return result;
+}
 
 // AnimatedArc is an arrow with an animation along the direction of 
 // the arrow.  The first four values it's initialized are the same 
@@ -175,7 +195,7 @@ class Node {
       this.p5.stroke(...this.colors.inactiveStroke[this.state]);
       this.p5.fill(...this.colors.inactiveFill[this.state]); 
     }
-    const {x,y} = getCanvasRelativePos(this.rx, this.ry);
+    const {x,y} = getCanvasRelativePos(this.rx, this.ry, this.win);
     this.p5.ellipse(x,y,this.win.nodeDiameter,this.win.nodeDiameter); 
     if ( this.accept === true ) {                 // if it is an accept node
       const faceD = this.win.nodeDiameter * 0.8;
@@ -203,7 +223,7 @@ class Node {
   } 
 
   getPosition() {
-    return getCanvasRelativePos(this.rx, this.ry);
+    return getCanvasRelativePos(this.rx, this.ry, this.win);
   }
 }
 
@@ -247,27 +267,7 @@ win = new WindowSizeVars();
 let machine;
 
 
-////
-// Coordinate transforms between box-relative and canvas-relative
-// Convention: (x, y) are canvas coordinates. (rx, ry) are box coordinates
-//////////////////////////////////////////////////////////////////////////////
 
-function getCanvasRelativePos(rx, ry) {
-  const result = {
-    x: rx * win.boxW + win.boxX,
-    y: ry * win.boxH + win.boxY
-  };
-  return result;
-}
-
-function getBoxRelativePos(x, y) {
-  const result = {
-    rx: (x - win.boxX) / win.boxW,
-    ry: (y - win.boxY) / win.boxH
-  };
-
-  return result;
-}
 // A DFA just has a state and some nodes
 class DFA  {
   constructor(p5playable) {
@@ -288,7 +288,7 @@ class DFA  {
     const x = win.boxX + win.boxXmargin + distBetweenNodes/2;
     const y = win.boxY + win.boxH/2;
     for (let i=0; i < n; i++) {
-      const {rx, ry} = getBoxRelativePos(x + distBetweenNodes * i, y);
+      const {rx, ry} = getBoxRelativePos(x + distBetweenNodes * i, y, win);
       this.nodes[i].rx = rx;
       this.nodes[i].ry = ry;
     }
