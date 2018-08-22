@@ -270,20 +270,18 @@ let machine;
 
 
 // A DFA just has a state and some nodes
-class DFA  {
-  constructor(p5playable) {
-    this.p5 = p5playable;
-    this.state = 0;
-    this.nodes = [];
-  }
+function DFA(p5playable)  {
+  this.p5 = p5playable;
+  this.state = 0;
+  this.nodes = [];
 
-  addNodes(n) {
+  this.addNodes = function(n) {
     for (let i=0; i < n; i++) {
       this.nodes.push(new Node(p5, i, colors, win));
     }
-  }
+  };
 
-  positionNodes() {
+  this.positionNodes = function() {
     const n = dfa.nodes.length;
     const distBetweenNodes = (win.boxW - 2 * win.boxXmargin)/n;
     const x = win.boxX + win.boxXmargin + distBetweenNodes/2;
@@ -293,13 +291,13 @@ class DFA  {
       this.nodes[i].rx = rx;
       this.nodes[i].ry = ry;
     }
-  }
+  };
 
-  addEdge(from, to, label) {
+  this.addEdge = function(from, to, label) {
     this.nodes[from].edges.push(new AnimatedArc(p5,label,to, colors.arrow));
-  }
+  };
 
-  positionEdges() {
+  this.positionEdges = function() {
     for (let n=0; n < this.nodes.length; n++) {          // walk each node
       for (let s=0; s < this.nodes[n].edges.length; s++) {     // walk each transition (indexed by symbol)
         let node = this.nodes[n];
@@ -343,9 +341,9 @@ class DFA  {
                              
       } 
     }
-  }
+  };
 
-  draw() {
+  this.draw = function() {
     this.p5.push();
     this.p5.fill(255,10);                // draw a background rect
     this.p5.noStroke();
@@ -371,13 +369,11 @@ class DFA  {
     for (let i=0; i < this.nodes.length; i++) {   // draw the nodes
       this.nodes[i].draw();
     }
-
-
-  }
+  };
 
   // this is called when the edge/arc animation is finished
   // We change the DFA state and reset the animation
-  endTransition(n,e) {
+  this.endTransition = function(n,e) {
     let edge = this.nodes[n].edges[e];
     if (edge.cclockwise) { edge.angle = edge.stop; }  // reset edge animation
     else { edge.angle = edge.start;}
@@ -395,7 +391,7 @@ class DFA  {
       }
     }
     stateTrace.push(this.state);
-  }
+  };
 
 
 
@@ -406,7 +402,7 @@ class DFA  {
   // this edge is active so we can change the state.
   // it's weird to do this in a draw function but the actual 
   // DFA state change is triggered by the animation ending.
-  drawArc(n,e) {
+  this.drawArc = function(n,e) {
     this.p5.push();
     this.p5.noFill();    
     //this.p5.stroke(0);                           // draw the edge
@@ -442,35 +438,34 @@ class DFA  {
       }
     }
     this.p5.pop();
-  } 
+  };
 
 
 
   // start a transition between states
   // identify the current state and activate the appropriate
   // transition arrow
-  startTransition(c) {
+  this.startTransition = function(c) {
     // convert c into a number
     const i = machine.alphabet.indexOf(c);
     if (i === -1) {
       console.log('bad error in startTransition')   // we have an error
     }
     this.nodes[this.state].edges[i].active = true;
-  }
+  };
 
 
 
 
   // return machine to a starting state
-  restart() {
+  this.restart = function() {
     for (let i=1; i < this.nodes.length; i++) {  // deactivate nodes
       this.nodes[i].active = false;
     }
     this.nodes[0].active = true;             // activate start node
     this.state = 0;                          // set state
     endOfInput = false;
-  }
-
+  };
 }
 
 
