@@ -125,7 +125,7 @@ function getBoxRelativePos(x, y, win) {
 // for the arc and a direction (clockwise or counterclockwise) for the
 
 class AnimatedArc  { 
-  constructor(p5playable,label,to) {
+  constructor(p5playable,label,to, color) {
     this.x = 0;                  // arc is centered at this x,y           
     this.y = 0;
     this.a = 0;                  // width
@@ -139,13 +139,14 @@ class AnimatedArc  {
     this.angle = 0;              // angle varies to create animation
     this.active = false;         // this bool turns animation on and off
     this.labelBelow = false;     // place the label below the arc or above the arc
+    this.color = color;
   }
 
   // draw the arrow tips.  This is a lot of work
   // for some stupid arrow heads, but gotta have em.
   drawArrowTip() {
     this.p5.push();
-    this.p5.fill(...this.colors.arrow);
+    this.p5.fill(...this.color);
     const angle1 = this.cclockwise ? this.start : this.stop;
     const angle2 = angle1 + (this.cclockwise ? 0.2 : -0.2);
     const A = this.a/2;
@@ -295,7 +296,7 @@ class DFA  {
   }
 
   addEdge(from, to, label) {
-    this.nodes[from].edges.push(new AnimatedArc(p5,label,to));
+    this.nodes[from].edges.push(new AnimatedArc(p5,label,to, colors.arrow));
   }
 
   positionEdges() {
