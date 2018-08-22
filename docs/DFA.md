@@ -41,16 +41,16 @@ const machine = {
 };
 
 
-dfalib.construct(p5, machine);
+let dfa = new dfalib.DFA(p5, machine);
 
 p5.preload = function() {
-	dfalib.loadSounds();
+	dfa.loadSounds();
 }
 
 p5.setup = function() {                          // this function is called when you start the
                                                  // playable.  
 	p5.windowResized();
-	dfalib.setup();      
+	dfa.setup();      
 	smartdown.setVariable('Input', '');          // set the input string to empty string
 }
 
@@ -58,18 +58,18 @@ p5.setup = function() {                          // this function is called when
 p5.windowResized = function() {                  // this function is called when the user changes
   const canvasWidth = p5.windowWidth;            // the size of the window.  It will rescale all the 
   const canvasHeight = p5.windowHeight * 0.8;    // components to fit into the new window size.
-  dfalib.windowResized(canvasWidth, canvasHeight);
+  dfa.windowResized(canvasWidth, canvasHeight);
   p5.resizeCanvas(canvasWidth, canvasHeight);
 }
 
 
 p5.draw = function() {                           // this function gets called repeatedly in a loop.
-  dfalib.draw();                                 // The machine is redrawn multiple times a second.
+  dfa.draw();                                 // The machine is redrawn multiple times a second.
 }
 
 
 p5.mousePressed = function() {                   // this function is called everytime the user clicks the mouse
-	dfalib.mousePressed();
+	dfa.mousePressed();
 }
 
 
@@ -82,7 +82,7 @@ this.depend = function() {                       // this function is called when
   if (I[I.length - 1] === '\n') {                // we only enter a new input when the user hits enter  i.e. '\n'
     const cleanI = cleanInput(I);                // the user may not have entered a valid string so we clean it up
     smartdown.setVariable('Input', cleanI);      // convert the alphabet from a string to an array of characters
-    dfalib.newInput(I);                          // add the input to the machine
+    dfa.newInput(I);                          // add the input to the machine
   }
 };
 
