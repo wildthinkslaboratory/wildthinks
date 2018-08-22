@@ -125,7 +125,7 @@ class AnimatedArc  {
   // for some stupid arrow heads, but gotta have em.
   drawArrowTip() {
     this.p5.push();
-    this.p5.fill(...colors.arrow);
+    this.p5.fill(...this.colors.arrow);
     const angle1 = this.cclockwise ? this.start : this.stop;
     const angle2 = angle1 + (this.cclockwise ? 0.2 : -0.2);
     const A = this.a/2;
@@ -176,11 +176,11 @@ class Node {
       this.p5.fill(...this.colors.inactiveFill[this.state]); 
     }
     const {x,y} = getCanvasRelativePos(this.rx, this.ry);
-    this.p5.ellipse(x,y,win.nodeDiameter,win.nodeDiameter); 
+    this.p5.ellipse(x,y,this.win.nodeDiameter,this.win.nodeDiameter); 
     if ( this.accept === true ) {                 // if it is an accept node
-      const faceD = win.nodeDiameter * 0.8;
-      const smileD = win.nodeDiameter * 0.5;
-      const eyeD = win.nodeDiameter * 0.1;
+      const faceD = this.win.nodeDiameter * 0.8;
+      const smileD = this.win.nodeDiameter * 0.5;
+      const eyeD = this.win.nodeDiameter * 0.1;
       const eyeOff = eyeD;
       this.p5.ellipse(x,y,faceD, faceD);          // draw a smiley in it
       this.p5.ellipse(x-eyeOff,y-eyeOff,eyeD,eyeD);
@@ -195,8 +195,8 @@ class Node {
         this.p5.fill(...this.colors.inactiveStroke[this.state]);
       }
 
-      this.p5.textSize(win.nodeDiameter/2);
-      const [cx, cy] = centerTextInCircle(this.p5,x,y,win.nodeDiameter,this.state.toString());
+      this.p5.textSize(this.win.nodeDiameter/2);
+      const [cx, cy] = centerTextInCircle(this.p5,x,y,this.win.nodeDiameter,this.state.toString());
       this.p5.text(this.state.toString(),cx,cy);
     }
     this.p5.pop();
