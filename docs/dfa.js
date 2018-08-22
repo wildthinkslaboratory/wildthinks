@@ -1,44 +1,56 @@
 /*
 
-  1. do an initial resize before you add nodes,edges
-  4. can we rewrite arc constructor to use nodes for input?
   2. store transition function in the dfa
-
   5. code review and documentation for each function
   3. package up remaining data and functions
-
   6. clean up sound load
-  7. feed in the machine from outside
+  7. clean the string
+  8. error handling
 
 
 */
 
 
-const magenta =     [220, 70,  250];
-const deepmagenta = [120, 20,  180];
-const blue =        [50,  200, 255];
-const deepblue =    [10,  130, 180];
-const yellow =      [250, 250,  20];
-const gold =        [180, 120,  20];
-const graymagenta = [150, 140, 180];
-const grayblue =    [130, 180, 180];
-const tan =         [150, 150,  20];
-const darkpurple =  [120, 90,  160];
-const darkblue =    [130, 130, 160];
-const brown =       [160, 120, 120];
-const black =       [0,   0,     0];
-const white =       [255, 255, 255];
+/////////////////////////////////////////////// COLOR SCHEME /////////////////////////////////////////////////
 
-const activeNodeFill = [yellow, blue, magenta];
-const activeNodeStroke = [gold, deepblue, deepmagenta];
-const inactiveNodeFill = [tan, grayblue, graymagenta];
-const inactiveNodeStroke = [brown, darkblue, darkpurple];
-const arrowColor = black;
-const textColor = black;
-const stringHighlight = [100,100,100,100];
+class Colors {
+  constructor() {
+    this.magenta =       [220, 70,  250];
+    this.deepmagenta =   [120, 20,  180];
+    this.blue =          [50,  200, 255];
+    this.deepblue =      [10,  130, 180];
+    this.yellow =        [250, 250,  20];
+    this.gold =          [180, 120,  20];
+    this.graymagenta =   [150, 140, 180];
+    this.grayblue =      [130, 180, 180];
+    this.tan =           [150, 150,  20];
+    this.darkpurple =    [120, 90,  160];
+    this.darkblue =      [130, 130, 160];
+    this.brown =         [160, 120, 120];
+    this.black =         [0,   0,     0];
+    this.white =         [255, 255, 255];
+    this.purple =        [200, 0,   255];
+    this.cyan =          [0,   200, 255];
+    this.darkbluegreen = [0,   100, 100];
+    this.lightLilac =    [220, 220, 255];
+    this.lime =          [90, 235,  130];
+    this.darkGray =      [100, 100, 100];
+    this.bottleGreen =   [30,  160, 120];
+    this.wine =          [100,   0, 100];
+    this.paleWine =      [230, 200, 200];
+    this.tomato =        [255, 110, 100];
+    this.deepred =       [200,  70,  70];
+    this.graygreen =     [110, 150, 100];
+    this.graytomato =    [180,  90,  90];
+    this.darkgraygreen = [70, 130,   60];
+    this.darkgrayred =   [160,  70,  70];
+  }
+}
+
+
 
 class AppColors {
-  constructor(anf, ans, inf, ins, ac, tc, shl) {
+  constructor(anf, ans, inf, ins, ac, tc, shl, adf) {
     this.activeFill = anf;
     this.activeStroke = ans;
     this.inactiveFill = inf;
@@ -46,29 +58,45 @@ class AppColors {
     this.arrow = ac;
     this.textColor = tc;
     this.highlight = shl;
-    this.inputBox = white;
+    this.inputBox = c.white;
+    this.arcDotFill = adf;
   }
 }
 
-const colors = new AppColors(activeNodeFill, activeNodeStroke, inactiveNodeFill, inactiveNodeStroke, arrowColor, textColor, stringHighlight);
 
 
-function getCanvasRelativePos(rx, ry) {
-  const result = {
-    x: rx * win.boxW + win.boxX,
-    y: ry * win.boxH + win.boxY
-  };
-  return result;
+class WindowSizeVars {
+  constructor() {
+    this.boxX = 0;
+    this.boxY = 0;
+    this.boxW = 0;
+    this.boxH = 0;
+    this.inputX = 0;
+    this.inputY = 0;
+    this.inputW = 0;
+    this.inputH = 0;
+    this.canvasW = 0;
+    this.canvasH = 0;
+    this.inputXspacer = 30;
+    this.inputTextSize = 0;
+    this.inputIndent = 0;
+    this.traceDiameter = 0;
+    this.inputTextY = 0;
+    this.traceY = 0;
+    this.boxXmargin = 0;
+    this.nodeDiameter = 0;
+  }
 }
 
-function getBoxRelativePos(x, y) {
-  const result = {
-    rx: (x - win.boxX) / win.boxW,
-    ry: (y - win.boxY) / win.boxH
-  };
-
-  return result;
+function centerTextInCircle(p5, x,y,diameter,text) {
+  const textW = p5.textWidth(text);
+  const textH = p5.textAscent() * 0.8;
+  const xoffset = (diameter - textW) / 2;
+  const yoffset = (diameter - textH) / 2;
+  return [x  - diameter/2 + xoffset, y + diameter/2 - yoffset];
 }
+
+
 
 
 // AnimatedArc is an arrow with an animation along the direction of 
@@ -78,19 +106,19 @@ function getBoxRelativePos(x, y) {
 
 class AnimatedArc  { 
   constructor(p5playable,label,to) {
-    this.p5 = p5playable;
-    this.x = 0;              
+    this.x = 0;                  // arc is centered at this x,y           
     this.y = 0;
-    this.a = 0;  
-    this.b = 0;
-    this.label = label;  
-    this.to = to;  // state this edge takes you to
-    this.start = 0;  
-    this.stop = 0;
-    this.cclockwise = 0;
-    this.labelBelow = 0;
-    this.angle = 0;               // angle varies to create animation
-    this.active = false;              // this bool turns animation on and off
+    this.a = 0;                  // width
+    this.b = 0;                  // height
+    this.p5 = p5playable;        // need to pass in p5
+    this.label = label;          // transition function symbol 
+    this.to = to;                // state this edge takes you to
+    this.start = 0;              // angle at which we start traversal
+    this.stop = 0;               // angle at which we stop traversal
+    this.cclockwise = 0;         // the arc is traversed cclockwise or clockwise
+    this.angle = 0;              // angle varies to create animation
+    this.active = false;         // this bool turns animation on and off
+    this.labelBelow = false;     // place the label below the arc or above the arc
   }
 
   // draw the arrow tips.  This is a lot of work
@@ -120,14 +148,18 @@ class AnimatedArc  {
 
 
 
+
+
 // A DFA node has a position an can be an accept node.
 class Node {
-  constructor(p5playable, state, accept=false) {
+  constructor(p5playable, state, colors, win) {
+    this.win = win;
+    this.colors = colors;
     this.p5 = p5playable;
     this.rx = 0;
     this.ry = 0;
     this.state = state;
-    this.accept = accept;
+    this.accept = false;
     this.active = false;      // it can be active if we are visiting this node
     this.edges = [];          // it has outgoing transitions.
   }
@@ -136,24 +168,36 @@ class Node {
     this.p5.push();
     this.p5.strokeWeight(2);
     if (this.active) {
-      this.p5.stroke(...colors.activeStroke[this.state]);
-      this.p5.fill(...colors.activeFill[this.state]); 
+      this.p5.stroke(...this.colors.activeStroke[this.state]);
+      this.p5.fill(...this.colors.activeFill[this.state]); 
     }
     else {
-      this.p5.stroke(...colors.inactiveStroke[this.state]);
-      this.p5.fill(...colors.inactiveFill[this.state]); 
+      this.p5.stroke(...this.colors.inactiveStroke[this.state]);
+      this.p5.fill(...this.colors.inactiveFill[this.state]); 
     }
     const {x,y} = getCanvasRelativePos(this.rx, this.ry);
     this.p5.ellipse(x,y,win.nodeDiameter,win.nodeDiameter); 
     if ( this.accept === true ) {                 // if it is an accept node
-      this.p5.ellipse(x,y,30,30);          // draw a smiley in it
-      this.p5.ellipse(x-5,y-3,5,5);
-      this.p5.ellipse(x+5,y-3,5,5);  
-      this.p5.arc(x,y,20,20,0,this.p5.PI);    
+      const faceD = win.nodeDiameter * 0.8;
+      const smileD = win.nodeDiameter * 0.5;
+      const eyeD = win.nodeDiameter * 0.1;
+      const eyeOff = eyeD;
+      this.p5.ellipse(x,y,faceD, faceD);          // draw a smiley in it
+      this.p5.ellipse(x-eyeOff,y-eyeOff,eyeD,eyeD);
+      this.p5.ellipse(x+eyeOff,y-eyeOff,eyeD,eyeD);  
+      this.p5.arc(x,y,smileD,smileD,0,this.p5.PI);    
     }
     else {
-      this.p5.textSize(32);
-      this.p5.text(this.state.toString(),x-10,y+10);
+      if (this.active) {
+        this.p5.fill(...this.colors.activeStroke[this.state]);
+      }
+      else {
+        this.p5.fill(...this.colors.inactiveStroke[this.state]);
+      }
+
+      this.p5.textSize(win.nodeDiameter/2);
+      const [cx, cy] = centerTextInCircle(this.p5,x,y,win.nodeDiameter,this.state.toString());
+      this.p5.text(this.state.toString(),cx,cy);
     }
     this.p5.pop();
   } 
@@ -163,32 +207,47 @@ class Node {
   }
 }
 
-class WindowSizeVars {
-  constructor() {
-    this.boxX = 0;
-    this.boxY = 0;
-    this.boxW = 0;
-    this.boxH = 0;
-    this.inputX = 0;
-    this.inputY = 0;
-    this.inputW = 0;
-    this.inputH = 0;
-    this.canvasW = 0;
-    this.canvasH = 0;
-    this.inputXspacer = 30;
-    this.inputTextSize = 0;
-    this.inputIndent = 40;
-    this.traceDiameter = 0;
-    this.inputTextY = 0;
-    this.traceY = 0;
-    this.boxXmargin = 0;
-    this.nodeDiameter = 0;
-  }
+
+
+////
+// Coordinate transforms between box-relative and canvas-relative
+// Convention: (x, y) are canvas coordinates. (rx, ry) are box coordinates
+//////////////////////////////////////////////////////////////////////////////
+
+function getCanvasRelativePos(rx, ry) {
+  const result = {
+    x: rx * win.boxW + win.boxX,
+    y: ry * win.boxH + win.boxY
+  };
+  return result;
 }
+
+function getBoxRelativePos(x, y) {
+  const result = {
+    rx: (x - win.boxX) / win.boxW,
+    ry: (y - win.boxY) / win.boxH
+  };
+
+  return result;
+}
+
 
 // pull all the lower functions into inside functions
 // collect all the data that needs resizing into class
 
+
+const c = new Colors();
+
+const activeNodeFill = [c.yellow, c.lime, c.tomato];
+const activeNodeStroke = [c.gold, c.bottleGreen, c.deepred];
+const inactiveNodeFill = [c.tan, c.graygreen, c.graytomato];
+const inactiveNodeStroke = [c.brown, c.darkgraygreen, c.darkgrayred];
+const arrowColor = c.black;
+const textColor = c.black;
+const stringHighlight = [100,100,100,100];
+const arcDotFill = c.tomato;
+
+const colors = new AppColors(activeNodeFill, activeNodeStroke, inactiveNodeFill, inactiveNodeStroke, arrowColor, textColor, stringHighlight, arcDotFill);
 
 
 let acceptSound;
@@ -218,7 +277,7 @@ class DFA  {
 
   addNodes(n) {
     for (let i=0; i < n; i++) {
-      this.nodes.push(new Node(p5, i, false));
+      this.nodes.push(new Node(p5, i, colors, win));
     }
   }
 
@@ -245,11 +304,14 @@ class DFA  {
         const from = node.getPosition();
         const to = this.nodes[node.edges[s].to].getPosition();
 
-        if (from.x === to.x) { 
+        if (from.x === to.x) {         // from and to are same node
           node.edges[s].x = from.x; 
           node.edges[s].a = win.nodeDiameter/2. ;
           node.edges[s].y = from.y - win.nodeDiameter/2;
           node.edges[s].b = win.nodeDiameter;
+          node.edges[s].start =  this.p5.PI;
+          node.edges[s].stop =   2* this.p5.PI; 
+          node.edges[s].angle = this.p5.PI; 
         }
         else {
           const width = p5.abs(from.x - to.x);
@@ -257,20 +319,25 @@ class DFA  {
           node.edges[s].a = width;
           node.edges[s].y = from.y;
           node.edges[s].b = 2 * win.nodeDiameter;
+          const vert_comp = win.nodeDiameter/node.edges[s].b;
+          const theta = Math.asin(-vert_comp);
+          if (n > node.edges[s].to) {
+            node.edges[s].start =  0;
+            node.edges[s].stop =   this.p5.PI + theta; 
+            node.edges[s].angle = 0; 
+            node.edges[s].labelBelow = true;
+          }
+          else {
+            node.edges[s].start =  this.p5.PI;
+            node.edges[s].stop =   2* this.p5.PI + theta; 
+            node.edges[s].angle = this.p5.PI - theta; 
+          }
         }
-         
+
+        
         
         node.edges[s].cclockwise = false;  
-        if (n > node.edges[s].to) {
-          node.edges[s].start =  0;
-          node.edges[s].stop =   this.p5.PI; 
-          node.edges[s].angle = 0; 
-        }
-        else {
-          node.edges[s].start =  this.p5.PI;
-          node.edges[s].stop =   2* this.p5.PI; 
-          node.edges[s].angle = this.p5.PI; 
-        }
+        
                              
       } 
     }
@@ -283,22 +350,27 @@ class DFA  {
     this.p5.rect(win.boxX, win.boxY, win.boxW, win.boxH, 10);
     this.p5.pop();
     
-    // this.p5.push();
-    // this.p5.fill(...colors.arrow);                     // draw the start arrow
-    // this.p5.textSize(16);
-    // let x = this.nodes[0].x;
-    // let y = this.nodes[0].y;
-    // this.p5.text('start',x-70,y-3);
-    // this.p5.line(x-70,y,x-30,y);
-    // this.p5.triangle(x-30,y,x-35,y-5,x-35,y+5);
-    // this.p5.pop();
+    this.p5.push();
+    this.p5.fill(...colors.arrow);                     // draw the start arrow
+    this.p5.textSize(16);
+    let {x, y} = this.nodes[0].getPosition();
+    const xoffset = win.nodeDiameter/2;
+    this.p5.text('start',x-xoffset -70,y-3);
+    this.p5.line(x-xoffset - 70,y, x-xoffset,y);
+    this.p5.triangle(x-xoffset, y, x-xoffset - 5, y-5, x - xoffset-5, y+5);
+    this.p5.pop();
 
-    for (let i=0; i < this.nodes.length; i++) {   // draw the nodes
-      this.nodes[i].draw();
+    for (let i=0; i < this.nodes.length; i++) {   // draw the transitions first
       for (let j=0; j < this.nodes[i].edges.length; j++) {  // draw each node's 
         this.drawArc(i,j);                            // transitions
       }
     }
+
+    for (let i=0; i < this.nodes.length; i++) {   // draw the nodes
+      this.nodes[i].draw();
+    }
+
+
   }
 
   // this is called when the edge/arc animation is finished
@@ -337,20 +409,19 @@ class DFA  {
     this.p5.noFill();    
     //this.p5.stroke(0);                           // draw the edge
     let edge = this.nodes[n].edges[e];
-    //console.log('arc', )
     
     this.p5.arc(edge.x, edge.y, edge.a, edge.b, edge.start, edge.stop);
     
     edge.drawArrowTip();                       // draw the arrow tip
     
-    // this.p5.textSize(24);                           // draw the label
-    // this.p5.fill(...colors.arrow);
-    // let y = edge.y + (edge.labelBelow ? edge.b + 30: -edge.b - 10);
-    // this.p5.text(edge.label,edge.x-8,y);
+    this.p5.textSize(24);                           // draw the label
+    this.p5.fill(...colors.arrow);
+    let y = edge.y + (edge.labelBelow ? edge.b/2 + 29: -edge.b/2 - 5);
+    this.p5.text(edge.label,edge.x-8,y);
 
     if (edge.active) {                    // if edge is active draw the animation
       this.p5.noStroke();
-      this.p5.fill(220,20,220);
+      this.p5.fill(...colors.arcDotFill);
       const A = edge.a/2;
       const B = edge.b/2;
       const x = edge.x + A * Math.cos(edge.angle);
@@ -377,8 +448,12 @@ class DFA  {
   // identify the current state and activate the appropriate
   // transition arrow
   startTransition(c) {
-    if (c === '0') { this.nodes[this.state].edges[0].active = true; }
-    else { this.nodes[this.state].edges[1].active = true; }
+    // convert c into a number
+    const i = machine.alphabet.indexOf(c);
+    if (i === -1) {
+      console.log('bad error in startTransition')   // we have an error
+    }
+    this.nodes[this.state].edges[i].active = true;
   }
 
 
@@ -429,9 +504,9 @@ function drawInput() {
 
   p5.fill(...colors.highlight); 
   p5.noStroke();
-  const y = win.inputTextY - win.inputTextSizeq;
+  const y = win.inputTextY - win.inputTextSize;
   for (let i = 0; i < stateTrace.length - 1; i++) {
-    x = win.inputX + win.inputIndent - win.inputXspacer/4;
+    const x = win.inputX + win.inputIndent - win.inputXspacer/4;
     p5.rect(x + i * win.inputXspacer, y, win.inputXspacer - 4, win.inputTextSize + 8,5);
   }
   p5.pop();
@@ -450,8 +525,9 @@ function construct(p5playable, m) {
 
   for (let from=0; from < machine.edges.length; from++) {  // for each node
     for (let sym=0; sym < machine.edges[from].length; sym++) { // for each input symbol
+      const symbol = machine.alphabet[sym];
       const to = machine.edges[from][sym];
-      dfa.addEdge(from, to, sym);
+      dfa.addEdge(from, to, symbol);
     }
   }
 }
@@ -461,14 +537,6 @@ function setup() {
 
   dfa.positionNodes();
   dfa.positionEdges();
-
-  // dfa.nodes[0].addEdge(150,win.boxY+85,40,50,dfa.p5.PI*3/4,dfa.p5.PI*9/4,'0',true);
-  // dfa.nodes[0].addEdge(200,win.boxY+115,70,60,dfa.p5.PI*9/8,dfa.p5.PI*15/8,'1',true);
-  // dfa.nodes[1].addEdge(300,win.boxY+115,70,60,dfa.p5.PI*9/8,dfa.p5.PI*15/8,'0',true);
-  // dfa.nodes[1].addEdge(200,win.boxY+130,70,60,dfa.p5.PI*1/8,dfa.p5.PI*7/8,'1',true,true);
-  // dfa.nodes[2].addEdge(300,win.boxY+130,70,60,dfa.p5.PI*1/8,dfa.p5.PI*7/8,'0',true,true);
-  // dfa.nodes[2].addEdge(350,win.boxY+85,40,50,dfa.p5.PI*3/4,dfa.p5.PI*9/4,'1',true);
-
   dfa.p5.createCanvas(win.canvasW,win.canvasH);
 }
 
@@ -514,6 +582,7 @@ function windowResized(width, height) {
     win.canvasH = minHeight;
   }
 
+  win.inputIndent = win.canvasW * 0.05;
   win.boxW = win.canvasW * 0.6;
   win.boxH = win.canvasH * 0.5;
   win.inputW = win.canvasW;
