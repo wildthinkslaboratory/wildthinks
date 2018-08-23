@@ -17,7 +17,7 @@ SIDE NOTE: Some of the ideas in this video are challenging to learn and also cha
 ## Words are Numbers!  A Base 26 Machine
 
 
-Here is the base $26$ machine from the video.  It uses the rule $1 \leftarrow 26$.  The **dots** are orange and **antidots** are light blue.  Instead of using the standard number symbols `0123456789` to encode numbers, it uses the alphabet `abcdefghijlmnopqrstuvwxyz`.  
+Here is the base $26$ machine from the video.  It uses the rule $1 \leftarrow 26$.  The **dots** are red and **antidots** are light blue.  Instead of using the standard number symbols `0123456789` to encode numbers, it uses the alphabet `abcdefghijlmnopqrstuvwxyz`.  
 
 First, some helpful instructions.  Notice the gray band above every playable?  You can always reset a playable by clicking this gray band.  Once to  `stop` the playable and  then again to `play` the playable.  (Ooh, you can also see the code for this playable when you click the `stop` button. Cool. We'll show you how to write your own playable on a different page soon.)
 
@@ -66,6 +66,7 @@ myDiv.style.overflow = 'hidden';
 myDiv.style.border = '5px solid gray';
 this.div.style.margin = '10px auto'; // shorthand for '10px auto 10px auto'
 this.div.innerHTML = '';
+myDiv.style.overflow = 'auto';
 
 const base = 26;               // set the base for the machine
 const numberBoxes = 3;         // set how many boxes you want
