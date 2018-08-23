@@ -1,7 +1,6 @@
 /*
 
-  5. code review and documentation for each function
-  6. clean up sound load
+  5. scale strokeWidth with window
   8. error handling
 
 
@@ -57,7 +56,7 @@ class DFAAppColors {
     this.highlight = shl;
     this.inputBox = [255,255,255];
     this.arcDotFill = adf;
-    this.boxes = [255,255,255,10];
+    this.dfaBox = [255,255,255,10];
   }
 }
 
@@ -105,6 +104,7 @@ function centerTextInCircle(p5, x,y,diameter,text) {
   const yoffset = (diameter - textH) / 2;
   return [x  - diameter/2 + xoffset, y + diameter/2 - yoffset];
 }
+
 
 
 ////
@@ -308,6 +308,17 @@ function DFA(p5playable, m)  {
   //////////////////////////////////////////////////////////////////////////////////
 
 
+  function cleanInput(i) {                                // here's where we clean up the input
+    i = i.replace(/\s/g, '');                             // remove any spaces, tabs or enter characters
+    i = i.replace(/[^ab]/g, '');
+    if (!/^[ab]*$/.test(i)) {
+      alert('String can only contain letters a and b.');
+      return '';
+    }
+    return i;
+  }
+
+
 
   function positionNodes() {                            // position the nodes in the box
     const n = nodes.length;
@@ -369,7 +380,7 @@ function DFA(p5playable, m)  {
 
   function drawMachine() {
     p5.push();
-    p5.fill(...colors.boxes);                      // draw a background rect
+    p5.fill(...colors.dfaBox);                      // draw a background rect
     p5.noStroke();
     p5.rect(win.boxX, win.boxY, win.boxW, win.boxH, 10);
     
@@ -409,7 +420,7 @@ function DFA(p5playable, m)  {
     nodes[state].active = true;      // make the new state/node active
     
     if (presses === input.length) {  // check if we've processed the whole input
-      if (nodes[state].accept) {.    // and play the appropriate sound if we have
+      if (nodes[state].accept) {     // and play the appropriate sound if we have
         acceptSound.play();
       }
       else {
@@ -424,21 +435,20 @@ function DFA(p5playable, m)  {
 
 
   // This is the edge animation.  We pass in the node and edge
-  // This info is passed on to the endTransition function is 
+  // This info is passed on to the endTransition function if 
   // this edge is active so we can change the state.
   // it's weird to do this in a draw function but the actual 
   // DFA state change is triggered by the animation ending.
   function drawArc(n,e) {
     p5.push();
-    p5.noFill();    
-    //p5.stroke(0);                           // draw the edge
+    p5.noFill();                              // draw the edge
     let edge = nodes[n].edges[e];
     
     p5.arc(edge.x, edge.y, edge.a, edge.b, edge.start, edge.stop);
     
     edge.drawArrowTip();                       // draw the arrow tip
     
-    p5.textSize(24);                           // draw the label
+    p5.textSize(win.labelTextSize);            // draw the label
     p5.fill(...colors.arrow);
     let y = edge.y + (edge.labelBelow ? edge.b/2 + 29: -edge.b/2 - 5);
     p5.text(edge.label,edge.x-8,y);
@@ -467,44 +477,16 @@ function DFA(p5playable, m)  {
   }
 
 
-
   // start a transition between states
   // identify the current state and activate the appropriate
   // transition arrow
   function startTransition(c) {
-    // convert c into a number
-    const i = machine.alphabet.indexOf(c);
-    if (i === -1) {
-      console.log('bad error in startTransition')   // we have an error
+    const i = machine.alphabet.indexOf(c);    // convert c into a number
+    if (i != -1) {
+      nodes[state].edges[i].active = true;      // should be some error handling here
     }
-    nodes[state].edges[i].active = true;
   }
 
-
-
-
-  // return machine to a starting state
-  function restart() {
-    for (let i=1; i < nodes.length; i++) {  // deactivate nodes
-      nodes[i].active = false;
-    }
-    nodes[0].active = true;             // activate start node
-    state = 0;                          // set state
-    endOfInput = false;
-  }
-
-
-  this.draw = function() {
-    drawMachine();
-    drawInput();
-  };
-
-  this.newInput = function(i) {
-    input = i;
-    stateTrace = [0];
-    presses = 0;
-    restart();
-  };
 
   function drawInputBox() {
     p5.push();
@@ -515,24 +497,46 @@ function DFA(p5playable, m)  {
   }
 
 
-  this.setup = function() {
+  this.draw = function() {  // self explanatory
+    drawMachine();
+    drawInput();
+  };
 
+
+  this.restart = function(i) {  // this is called when user enters a new input string
+    input = cleanInput(i);      // reset all the data structures
+    stateTrace = [0];
+    presses = 0;
+    
+    for (let i=1; i < nodes.length; i++) {  // deactivate nodes
+      nodes[i].active = false;
+    }
+    nodes[0].active = true;             // activate start node
+    state = 0;                          // set state
+    endOfInput = false;
+  };
+
+
+  this.setup = function() {  
     positionNodes();
     positionEdges();
     p5.createCanvas(win.canvasW,win.canvasH);
   };
+
 
   this.loadSounds = function() {
     acceptSound = p5.loadSound(acceptSoundFile);
     rejectSound = p5.loadSound(rejectSoundFile);
   };
 
+
+
   // draw the string from the input box on the screen
   function drawInput() {
 
     drawInputBox();                                       // first we draw the input box
 
-    p5.push();                                            // draw the trace
+    p5.push();                                            // draw the state trace/ configuration path
     p5.strokeWeight(1);
     for (let i=0; i < stateTrace.length; i++) {
       p5.stroke(...colors.activeStroke[stateTrace[i]]);
@@ -541,15 +545,14 @@ function DFA(p5playable, m)  {
       p5.ellipse(x,win.traceY,win.traceDiameter, win.traceDiameter); 
     }
                           
-    p5.fill(...colors.textColor);           // draw the input string
+    p5.fill(...colors.textColor);                          // draw the input string
     p5.textSize(win.inputTextSize);
-
     let x = win.inputX + win.inputIndent;
     for (let i=0; i < input.length; i++) {
       p5.text(input[i], x + win.inputXspacer*i, win.inputTextY);
     }
 
-    p5.fill(...colors.highlight); 
+    p5.fill(...colors.highlight);                          // draw the progress boxes over input
     p5.noStroke();
     const y = win.inputTextY - win.inputTextSize;
     for (let i = 0; i < stateTrace.length - 1; i++) {
@@ -560,7 +563,7 @@ function DFA(p5playable, m)  {
   }
 
 
-  this.windowResized = function(width, height) {
+  this.windowResized = function(width, height) {   // adjust measurements when window is resized
     win.canvasW = width;
     win.canvasH = height;
 
@@ -595,14 +598,13 @@ function DFA(p5playable, m)  {
   };
 
 
-
-  this.mousePressed = function() {
+  this.mousePressed = function() {      // each time the mouse is pressed we consume another character in the input string
     let validS = !!input;
-    if (validS && presses < input.length) {
+    if (validS && presses < input.length) {  
       startTransition(input[presses]);
       p5.redraw();
       if (presses < input.length+1) {  // stop drawing boxes when we get to end
-        presses += 1;              // of the string
+        presses += 1;                  // of the string
       }
     } 
   };

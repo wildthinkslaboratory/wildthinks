@@ -240,7 +240,7 @@ Our current system for writing numbers in base $10$ with the alphabet `012345678
 
 
 ## Mystery String Challenge
-So Kurt Gödel took a bunch of strings that were originally intended as proofs and he interpreted them as numbers and then he studied their mathematical properties.  This led to him writing a mathematical definition of proof numbers.  I thought it might be fun to give you an interesting set of strings to interpret as numbers.  The following playable is a Deterministic Finite Automata (DFA).  I'll probably make a whole page on these soon.  But for right now, all you need to know is that it eats up strings.  If it likes a string it will **ding**.  If it doesn't like a string it will **honk**.  It will only eat strings made with the alphabet `ab`.  If you were to collect all the strings it likes (or accepts) into a set, how would you describe those strings?  If you followed Gödel's example and you interpreted the strings as numbers, what base would you use and what alphabet?  Do your string numbers have any interesting mathematical properties?
+So Kurt Gödel took a bunch of strings that were originally intended as proofs and he interpreted them as numbers and then he studied their mathematical properties.  This led to him writing a mathematical definition of proof numbers.  I thought it might be fun to give you an interesting set of strings to interpret as numbers.  The following playable is a Deterministic Finite Automata (DFA).  I'll probably make a whole page on these soon.  It's fun to try and figure out how this machine works.  How does it decide which arrow to follow when it eats a letter?  But for right now, all you need to know is that it eats up strings.  If it likes a string it will **ding**.  If it doesn't like a string it will **honk**.  It will only eat strings made with the alphabet `ab`.  If you were to collect all the strings it likes (or accepts) into a set, how would you describe those strings?  If you followed Gödel's example and you interpreted the strings as numbers, what base would you use and what alphabet?  Do your string numbers have any interesting mathematical properties?
 
 INSTRUCTIONS:
 - Enter a string in the box below and type enter to load the string.  
@@ -322,7 +322,7 @@ this.depend = function() {                       // this function is called when
   if (I[I.length - 1] === '\n') {                // we only enter a new input when the user hits enter  i.e. '\n'
     const cleanI = cleanInput(I);                // the user may not have entered a valid string so we clean it up
     smartdown.setVariable('Input', cleanI);      // convert the alphabet from a string to an array of characters
-    dfa.newInput(I);                          // add the input to the machine
+    dfa.restart(I);                              // add the input to the machine
   }
 };
 
