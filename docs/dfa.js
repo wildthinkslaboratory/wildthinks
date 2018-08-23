@@ -29,9 +29,9 @@ class Colors {
     this.cyan =          [0,   200, 255];
     this.darkbluegreen = [0,   100, 100];
     this.lightLilac =    [220, 220, 255];
-    this.lime =          [90, 235,  130];
+    this.lime =          [90, 235,   90];
     this.darkGray =      [100, 100, 100];
-    this.bottleGreen =   [30,  160, 120];
+    this.bottleGreen =   [30,  160,  90];
     this.wine =          [100,   0, 100];
     this.paleWine =      [230, 200, 200];
     this.tomato =        [255, 110, 100];
