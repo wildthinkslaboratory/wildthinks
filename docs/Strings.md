@@ -41,11 +41,11 @@ I've initilized the machine with the string `cab`, which has a base 10 value of 
 
 ```p5js/playable/autoplay
 
-//smartdown.import=http://127.0.0.1:5555/dots.js
+//xsmartdown.import=http://127.0.0.1:5555/dots.js
 
 
 // import the dots library
-//xsmartdown.import=/dots.js
+//smartdown.import=/dots.js
 
 
 // this is the url for the background picture
