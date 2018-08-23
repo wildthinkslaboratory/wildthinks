@@ -17,13 +17,13 @@ class Colors {
     this.blue =          [50,  200, 255];
     this.deepblue =      [10,  130, 180];
     this.yellow =        [250, 250,  20];
-    this.gold =          [180, 120,  20];
+    this.gold =          [200, 160,  20];
     this.graymagenta =   [150, 140, 180];
     this.grayblue =      [130, 180, 180];
     this.tan =           [150, 150,  20];
     this.darkpurple =    [120, 90,  160];
     this.darkblue =      [130, 130, 160];
-    this.brown =         [160, 120, 120];
+    this.brown =         [160, 120,  80];
     this.black =         [0,   0,     0];
     this.white =         [255, 255, 255];
     this.purple =        [200, 0,   255];
@@ -57,6 +57,7 @@ class DFAAppColors {
     this.highlight = shl;
     this.inputBox = [255,255,255];
     this.arcDotFill = adf;
+    this.boxes = [255,255,255,10];
   }
 }
 
@@ -93,6 +94,7 @@ class WindowSizeVars {
     this.traceY = 0;
     this.boxXmargin = 0;
     this.nodeDiameter = 0;
+    this.labelTextSize = 0;
   }
 }
 
@@ -200,7 +202,7 @@ class Node {
 
   draw() {
     this.p5.push();
-    this.p5.strokeWeight(2);
+    this.p5.strokeWeight(4);
 
     if (this.active) {
       this.p5.stroke(...this.colors.activeStroke[this.state]);    // active nodes have a brighter color than inactive nodes
@@ -263,14 +265,13 @@ function DFA(p5playable, m)  {
   let nodes = [];               // list of nodes
 
 
-  let presses = 0;    // keep track of the number of mouse presses
-  const animationSpeed = 0.1;  // bigger is faster
-  let endOfInput = false;
-  let win;
-  let input = '';
-  let stateTrace = [];
+  let presses = 0;              // keep track of the number of mouse presses
+  const animationSpeed = 0.1;   // bigger is faster
+  let endOfInput = false;       // have we reached the end of input string?
+  let input = '';               // the input string
+  let stateTrace = [];          // the state trace or configuration path of the computation
 
-  win = new WindowSizeVars();
+  let win = new WindowSizeVars();  // this holds all the variables that are resized then the window size changes
 
 
   const c = new Colors();                                        // app coloring this needs to be organized into color schemes 
@@ -283,18 +284,32 @@ function DFA(p5playable, m)  {
   const stringHighlight = [100,100,100,100];
   const arcDotFill = c.tomato;
   const colors = new DFAAppColors(activeNodeFill, activeNodeStroke, inactiveNodeFill, inactiveNodeStroke, arrowColor, textColor, stringHighlight, arcDotFill);
+ 
 
+  //////////////////// BUILD THE MAIN DATA STRUCTURES  //////////////////////////
+                           
+  const n = machine.nodes;
+  for (let i=0; i < n; i++) {                            // create the nodes
+    nodes.push(new Node(p5, i, colors, win));
+  }
+  nodes[0].active = true;
+  for (let i=0; i < machine.accept.length; i++) {        // set the accept nodes
+    nodes[machine.accept[i]].accept = true;
+  }
 
-
-  construct();
-
-  function addNodes(n) {
-    for (let i=0; i < n; i++) {
-      nodes.push(new Node(p5, i, colors, win));
+  for (let from=0; from < machine.edges.length; from++) {  // for each node
+    for (let sym=0; sym < machine.edges[from].length; sym++) { // for each input symbol
+      const symbol = machine.alphabet[sym];              
+      const to = machine.edges[from][sym];
+      nodes[from].edges.push(new AnimatedArc(p5,symbol,to, colors.arrow));  // add the edge
     }
   }
 
-  function positionNodes() {
+  //////////////////////////////////////////////////////////////////////////////////
+
+
+
+  function positionNodes() {                            // position the nodes in the box
     const n = nodes.length;
     const distBetweenNodes = (win.boxW - 2 * win.boxXmargin)/n;
     const x = win.boxX + win.boxXmargin + distBetweenNodes/2;
@@ -306,11 +321,8 @@ function DFA(p5playable, m)  {
     }
   }
 
-  function addEdge (from, to, label) {
-    nodes[from].edges.push(new AnimatedArc(p5,label,to, colors.arrow));
-  }
 
-  function positionEdges() {
+  function positionEdges() {         // this is a bitch and needs refining.  will document later when I clean it up.
 
     for (let n=0; n < nodes.length; n++) {          // walk each node
       for (let s=0; s < nodes[n].edges.length; s++) {     // walk each transition (indexed by symbol)
@@ -347,26 +359,23 @@ function DFA(p5playable, m)  {
             node.edges[s].angle = p5.PI - theta; 
           }
         }
-
-        
-        
         node.edges[s].cclockwise = false;  
-        
-                             
       } 
     }
   }
 
+
+
+
   function drawMachine() {
     p5.push();
-    p5.fill(255,10);                // draw a background rect
+    p5.fill(...colors.boxes);                      // draw a background rect
     p5.noStroke();
     p5.rect(win.boxX, win.boxY, win.boxW, win.boxH, 10);
-    p5.pop();
     
-    p5.push();
     p5.fill(...colors.arrow);                     // draw the start arrow
-    p5.textSize(16);
+    p5.stroke(...colors.arrow);
+    p5.textSize(win.labelTextSize);
     let {x, y} = nodes[0].getPosition();
     const xoffset = win.nodeDiameter/2;
     p5.text('start',x-xoffset -70,y-3);
@@ -385,26 +394,29 @@ function DFA(p5playable, m)  {
     }
   }
 
+
   // this is called when the edge/arc animation is finished
   // We change the DFA state and reset the animation
   function endTransition(n,e) {
     let edge = nodes[n].edges[e];
     if (edge.cclockwise) { edge.angle = edge.stop; }  // reset edge animation
     else { edge.angle = edge.start;}
-    edge.active = false;  
+
+    edge.active = false;             // deactivate the edge and the node
     nodes[n].active = false; 
-    state = machine.edges[n][e];
-    nodes[state].active = true;
+
+    state = machine.edges[n][e];     // update the state to the new state
+    nodes[state].active = true;      // make the new state/node active
     
-    if (presses === input.length) {
-      if (nodes[state].accept) {
+    if (presses === input.length) {  // check if we've processed the whole input
+      if (nodes[state].accept) {.    // and play the appropriate sound if we have
         acceptSound.play();
       }
       else {
         rejectSound.play();
       }
     }
-    stateTrace.push(state);
+    stateTrace.push(state);          // add a new state to the state trace/configuration path
   }
 
 
@@ -578,8 +590,11 @@ function DFA(p5playable, m)  {
     win.boxXmargin = win.boxW * 0.1;
 
     win.nodeDiameter = win.boxH * 0.3;
+    win.labelTextSize = win.nodeDiameter * 0.2;
     positionEdges();
   };
+
+
 
   this.mousePressed = function() {
     let validS = !!input;
@@ -591,24 +606,6 @@ function DFA(p5playable, m)  {
       }
     } 
   };
-
-  function construct() { 
-    console.log('running constructor');
-    addNodes(machine.nodes);
-
-    nodes[0].active = true;
-    for (let i=0; i < machine.accept.length; i++) {
-      nodes[machine.accept[i]].accept = true;
-    }
-
-    for (let from=0; from < machine.edges.length; from++) {  // for each node
-      for (let sym=0; sym < machine.edges[from].length; sym++) { // for each input symbol
-        const symbol = machine.alphabet[sym];
-        const to = machine.edges[from][sym];
-        addEdge(from, to, symbol);
-      }
-    }
-  }
 
 }
 
