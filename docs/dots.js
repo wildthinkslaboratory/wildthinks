@@ -18,11 +18,12 @@ const bottleGreen =   [30,  160, 120];
 const wine =          [100,   0, 100];
 const paleWine =      [230, 200, 200];
 const tomato =        [255,  90,  90];
+const ltbluegreen =   [110, 220, 230];
 
 
 const colorSchemes = {
   green : [lightLilac, white, purple, darkpurple, cyan, darkbluegreen, darkbluegreen, white, lightLilac, darkGray, white],
-  red : [paleWine, white, tomato, wine, lime, darkbluegreen, wine, white, paleWine, darkGray, white]
+  red : [paleWine, white, tomato, wine, ltbluegreen, darkbluegreen, wine, white, paleWine, darkGray, white]
 };
 
 class AppColors {

@@ -17,7 +17,7 @@ SIDE NOTE: Some of the ideas in this video are challenging to learn and also cha
 ## Words are Numbers!  A Base 26 Machine
 
 
-Here is the base $26$ machine from the video.  It uses the rule $1 \leftarrow 26$.  The **dots** are orange and **antidots** are green.  Instead of using the standard number symbols `0123456789` to encode numbers, it uses the alphabet `abcdefghijlmnopqrstuvwxyz`.  
+Here is the base $26$ machine from the video.  It uses the rule $1 \leftarrow 26$.  The **dots** are orange and **antidots** are light blue.  Instead of using the standard number symbols `0123456789` to encode numbers, it uses the alphabet `abcdefghijlmnopqrstuvwxyz`.  
 
 First, some helpful instructions.  Notice the gray band above every playable?  You can always reset a playable by clicking this gray band.  Once to  `stop` the playable and  then again to `play` the playable.  (Ooh, you can also see the code for this playable when you click the `stop` button. Cool. We'll show you how to write your own playable on a different page soon.)
 
@@ -41,11 +41,11 @@ I've initilized the machine with the string `cab`, which has a base 10 value of 
 
 ```p5js/playable/autoplay
 
-//xsmartdown.import=http://127.0.0.1:5555/dots.js
+//smartdown.import=http://127.0.0.1:5555/dots.js
 
 
 // import the dots library
-//smartdown.import=/dots.js
+//xsmartdown.import=/dots.js
 
 
 // this is the url for the background picture
