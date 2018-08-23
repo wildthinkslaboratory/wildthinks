@@ -61,6 +61,17 @@ class DFAAppColors {
 }
 
 
+/////////////////////////////////////////////// SOUND FILES /////////////////////////////////////////////////
+
+let acceptSound = null;
+let rejectSound = null;
+const acceptSoundFile =  'https://gist.githubusercontent.com/wildthinkslaboratory/ac98c0bb68ccf7528dc39fa1922d2bdb/raw/f68a0fa7a0cfcf6b72c42986db991bde94bbc90d/SmallGlockA.wav';
+const rejectSoundFile = 'https://gist.githubusercontent.com/wildthinkslaboratory/ac98c0bb68ccf7528dc39fa1922d2bdb/raw/26bde39ba9f27eecdf5ea85533b411a8e378f1a1/cartoon004.wav';
+
+
+
+/////////////////////////////////////////////// WINDOW RESIZING /////////////////////////////////////////////////
+
 
 class WindowSizeVars {
   constructor() {
@@ -116,6 +127,10 @@ function getBoxRelativePos(x, y, win) {
   return result;
 }
 
+
+
+///////////////////////////////  ANIMATED ARC CLASS  //////////////////////////////////
+
 // AnimatedArc is an arrow with an animation along the direction of 
 // the arrow.  The first four values it's initialized are the same 
 // initialization values you'd use in a p5.arc.  Then we add a label 
@@ -167,6 +182,7 @@ class AnimatedArc  {
 
 
 
+///////////////////////////////  NODE CLASS  //////////////////////////////////
 
 // A DFA node has a position an can be an accept node.
 class Node {
@@ -185,27 +201,30 @@ class Node {
   draw() {
     this.p5.push();
     this.p5.strokeWeight(2);
+
     if (this.active) {
-      this.p5.stroke(...this.colors.activeStroke[this.state]);
+      this.p5.stroke(...this.colors.activeStroke[this.state]);    // active nodes have a brighter color than inactive nodes
       this.p5.fill(...this.colors.activeFill[this.state]); 
     }
     else {
       this.p5.stroke(...this.colors.inactiveStroke[this.state]);
       this.p5.fill(...this.colors.inactiveFill[this.state]); 
     }
-    const {x,y} = getCanvasRelativePos(this.rx, this.ry, this.win);
-    this.p5.ellipse(x,y,this.win.nodeDiameter,this.win.nodeDiameter); 
-    if ( this.accept === true ) {                 // if it is an accept node
+
+    const {x,y} = getCanvasRelativePos(this.rx, this.ry, this.win);   
+    this.p5.ellipse(x,y,this.win.nodeDiameter,this.win.nodeDiameter);  // draw the node
+
+    if ( this.accept === true ) {                 // if it is an accept node draw the smiley face
       const faceD = this.win.nodeDiameter * 0.8;
       const smileD = this.win.nodeDiameter * 0.5;
       const eyeD = this.win.nodeDiameter * 0.1;
       const eyeOff = eyeD;
-      this.p5.ellipse(x,y,faceD, faceD);          // draw a smiley in it
+      this.p5.ellipse(x,y,faceD, faceD);          
       this.p5.ellipse(x-eyeOff,y-eyeOff,eyeD,eyeD);
       this.p5.ellipse(x+eyeOff,y-eyeOff,eyeD,eyeD);  
       this.p5.arc(x,y,smileD,smileD,0,this.p5.PI);    
     }
-    else {
+    else {                                        // now we put the text in the node if it's not an accept
       if (this.active) {
         this.p5.fill(...this.colors.activeStroke[this.state]);
       }
@@ -220,6 +239,8 @@ class Node {
     this.p5.pop();
   } 
 
+
+  // return the (x,y) coordinates of the node
   getPosition() {
     return getCanvasRelativePos(this.rx, this.ry, this.win);
   }
@@ -230,27 +251,18 @@ class Node {
 
 
 
+///////////////////////////////  DFA WRAPPER  //////////////////////////////////
+
 
 
 // A DFA just has a state and some nodes
 function DFA(p5playable, m)  {
-  let p5 = p5playable;
-  let machine = m;
-  let state = 0;
-  let nodes = [];
+  let p5 = p5playable;          // we pass in the p5 library to give dfa library access to it
+  let machine = m;              // machine holds the dfa description/transition function
+  let state = 0;                // keeps track of current state
+  let nodes = [];               // list of nodes
 
-  const c = new Colors();
-  const activeNodeFill = [c.yellow, c.lime, c.tomato];
-  const activeNodeStroke = [c.gold, c.bottleGreen, c.deepred];
-  const inactiveNodeFill = [c.tan, c.graygreen, c.graytomato];
-  const inactiveNodeStroke = [c.brown, c.darkgraygreen, c.darkgrayred];
-  const arrowColor = c.black;
-  const textColor = c.black;
-  const stringHighlight = [100,100,100,100];
-  const arcDotFill = c.tomato;
-  const colors = new DFAAppColors(activeNodeFill, activeNodeStroke, inactiveNodeFill, inactiveNodeStroke, arrowColor, textColor, stringHighlight, arcDotFill);
-  let acceptSound;
-  let rejectSound;
+
   let presses = 0;    // keep track of the number of mouse presses
   const animationSpeed = 0.1;  // bigger is faster
   let endOfInput = false;
@@ -259,6 +271,20 @@ function DFA(p5playable, m)  {
   let stateTrace = [];
 
   win = new WindowSizeVars();
+
+
+  const c = new Colors();                                        // app coloring this needs to be organized into color schemes 
+  const activeNodeFill = [c.yellow, c.lime, c.tomato];           // so a user can choose a scheme.
+  const activeNodeStroke = [c.gold, c.bottleGreen, c.deepred];
+  const inactiveNodeFill = [c.tan, c.graygreen, c.graytomato];
+  const inactiveNodeStroke = [c.brown, c.darkgraygreen, c.darkgrayred];
+  const arrowColor = c.black;
+  const textColor = c.black;
+  const stringHighlight = [100,100,100,100];
+  const arcDotFill = c.tomato;
+  const colors = new DFAAppColors(activeNodeFill, activeNodeStroke, inactiveNodeFill, inactiveNodeStroke, arrowColor, textColor, stringHighlight, arcDotFill);
+
+
 
   construct();
 
@@ -485,9 +511,8 @@ function DFA(p5playable, m)  {
   };
 
   this.loadSounds = function() {
-    acceptSound = p5.loadSound('https://gist.githubusercontent.com/wildthinkslaboratory/ac98c0bb68ccf7528dc39fa1922d2bdb/raw/f68a0fa7a0cfcf6b72c42986db991bde94bbc90d/SmallGlockA.wav');
-
-    rejectSound = p5.loadSound('https://gist.githubusercontent.com/wildthinkslaboratory/ac98c0bb68ccf7528dc39fa1922d2bdb/raw/26bde39ba9f27eecdf5ea85533b411a8e378f1a1/cartoon004.wav');   
+    acceptSound = p5.loadSound(acceptSoundFile);
+    rejectSound = p5.loadSound(rejectSoundFile);
   };
 
   // draw the string from the input box on the screen
@@ -586,22 +611,6 @@ function DFA(p5playable, m)  {
   }
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
