@@ -50,3 +50,9 @@ Local robotics teams share their knowledge.
 
 
 [Back to Home](:@Home)
+
+#### Composed in Smartdown 
+
+The pages on this site are written in [Smartdown](https://smartdown.site). Smartdown make it easy to share technical and interactive content such as charts, graphs, and featherweight programs called playables.  
+
+

@@ -41,10 +41,8 @@ At Wildthinks we sponsor and mentor a fabulous group of kid YouTube creators who
 [Go to Kids Explain Math](:@KidVideos)
 
 
-#### Composed in Smartdown using Scape
+#### Composed in Smartdown 
 
-
-
-The pages on this site are written in Smartdown, the markup language for [Scape: STEM Collaboration and Programming Environment](http://www.infoclay.com/scape/index.html).  Scape and Smartdown make it easy to share technical and interactive content such as charts, graphs, and featherweight programs called playables.  
+The pages on this site are written in [Smartdown](https://smartdown.site). Smartdown make it easy to share technical and interactive content such as charts, graphs, and featherweight programs called playables.  
 
 
