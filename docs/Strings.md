@@ -17,7 +17,7 @@ SIDE NOTE: Some of the ideas in this video are challenging to learn and also cha
 ## Words are Numbers!  A Base 26 Machine
 
 
-Here is the base $26$ machine from the video.  It uses the rule $1 \leftarrow 26$.  The **dots** are red and **antidots** are light blue.  Instead of using the standard number symbols `0123456789` to encode numbers, it uses the alphabet `abcdefghijlmnopqrstuvwxyz`.  
+Here is the base $26$ machine from the video.  It uses the rule $1 \leftarrow 26$.  The **dots** are red and **antidots** are light blue.  Instead of using the standard number symbols `{0123456789}` to encode numbers, it uses the alphabet `{abcdefghijlmnopqrstuvwxyz}`.  
 
 First, some helpful instructions.  Notice the gray band above every playable?  You can always reset a playable by clicking this gray band.  Once to  `stop` the playable and  then again to `play` the playable.  (Ooh, you can also see the code for this playable when you click the `stop` button. Cool. We'll show you how to write your own playable on a different page soon.)
 
@@ -29,13 +29,13 @@ INSTRUCTIONS:
 - If you have a **dot** and an **antidot** in the same box, drag them together to annihilate them.  
 
 
-I've initilized the machine with the string `cab`, which has a base 10 value of $1353$.  Said another way, the base 10 number $1353$ has the code `cab` in this base 26 machine.  
+I've initilized the machine with the string `cab`, which has a base $10$ value of $1353$.  Said another way, the base $10$ number $1353$ has the code `cab` in this base $26$ machine.  
 
 
 ### Things to try
 
-- Which base 10 number has the code `hi`? 
-- What's the base 10 value of your favorite three letter word?
+- Which base $10$ number has the code `hi`? 
+- What's the base $10$ value of your favorite three letter word?
 
 
 
@@ -127,9 +127,9 @@ In this playable you can type in an alphabet from your keyboard.  The number of 
 
 
 ### Things to try
-- The machine is initialized with the standard base 2 alphabet `01`.  Set the machine to encode the number four.  It should show the code `100`.  Now change the alphabet to `0123456789`.  The code `100` will stay the same, but what is the new value for this code?  
-- What happens if you choose the alphabet `10` (subtly different from the alphabet `01`)?  This will change the value AND the code.  You'll need to adjust the position of **dots** to get the code `100` back. What does the code `100` mean in this machine?  Note that usually we ignore any `0` symbols that are placed in front of a number.  In this case we ignore any  leading `1` symbols.  What other numbers could the code `100` stand for?
-- I like the alphabet `_o`.  The underscore `_` for zero reminds me of an empty box and the `o` for one is like a little **dot**. 
+- The machine is initialized with the standard base $2$ alphabet `{01}`.  Set the machine to encode the number four.  It should show the code `100`.  Now change the alphabet to `{0123456789}`.  The code `100` will stay the same, but what is the new value for this code?  
+- What happens if you choose the alphabet `{10}` (subtly different from the alphabet `{01}`)?  This will change the value AND the code.  You'll need to adjust the position of **dots** to get the code `100` back. What does the code `100` mean in this machine?  Note that usually we ignore any `0` symbols that are placed in front of a number.  In this case we ignore any  leading `1` symbols.  What other numbers could the code `100` stand for?
+- I like the alphabet `{_o}`.  The underscore `_` for zero reminds me of an empty box and the `o` for one is like a little **dot**. 
 - Experiment and come up with your very own number system.  Using all your exploding dots knowledge you can work out how to do addition, subtraction, multiplication  and division with it. 
 
 
@@ -237,11 +237,11 @@ function cleanUpAlphabet(a) {                                    // here's where
 
 ## Make a Better Number System
 
-Our current system for writing numbers in base $10$ with the alphabet `0123456789`, evolved over a long period of time.  It's been used for so long in so many cultures that most people don't know any other way to count and do mathematics.  That doesn't mean it's the best system.  I personally think we could devise a better one.  Base $12$ is an intriguing possibility.  It has four divisors: $2,3,4$ and $6$.  The number $10$ only has two: $2$ and $5$.  Think back to when you learned the multiplication tables.  How might that process be different if the base had more divisors?  What if we had an alphabet where the symbols actually looked like the quantities they described?  What are the advantages and disadvantages to having a small base versus a larger base?  I hope you'll experiment.  If you come up with any great new system please let me know and I will add it to my page.
+Our current system for writing numbers in base $10$ with the alphabet `{0123456789}`, evolved over a long period of time.  It's been used for so long in so many cultures that most people don't know any other way to count and do mathematics.  That doesn't mean it's the best system.  I personally think we could devise a better one.  Base $12$ is an intriguing possibility.  It has four divisors: $2,3,4$ and $6$.  The number $10$ only has two: $2$ and $5$.  Think back to when you learned the multiplication tables.  How might that process be different if the base had more divisors?  What if we had an alphabet where the symbols actually looked like the quantities they described?  What are the advantages and disadvantages to having a small base versus a larger base?  I hope you'll experiment.  If you come up with any great new system please let me know and I will add it to my page.
 
 
 ## Mystery String Challenge
-So Kurt Gödel took a bunch of strings that were originally intended as proofs and he interpreted them as numbers and then he studied their mathematical properties.  This led to him writing a mathematical definition of proof numbers.  I thought it might be fun to give you an interesting set of strings to interpret as numbers.  The following playable is a Deterministic Finite Automata (DFA).  I'll probably make a whole page on these soon.  It's fun to try and figure out how this machine works.  How does it decide which arrow to follow when it eats a letter?  But for right now, all you need to know is that it eats up strings.  If it likes a string it will **ding**.  If it doesn't like a string it will **honk**.  It will only eat strings made with the alphabet `ab`.  If you were to collect all the strings it likes (or accepts) into a set, how would you describe those strings?  If you followed Gödel's example and you interpreted the strings as numbers, what base would you use and what alphabet?  Do your string numbers have any interesting mathematical properties?
+So Kurt Gödel took a bunch of strings that were originally intended as proofs and he interpreted them as numbers and then he studied their mathematical properties.  This led to him writing a mathematical definition of proof numbers.  I thought it might be fun to give you an interesting set of strings to interpret as numbers.  The following playable is a Deterministic Finite Automata (DFA).  I'll probably make a whole page on these soon.  It's fun to try and figure out how this machine works.  How does it decide which arrow to follow when it eats a letter?  But for right now, all you need to know is that it eats up strings.  If it likes a string it will **ding**.  If it doesn't like a string it will **honk**.  It will only eat strings made with the alphabet `{ab}`.  If you were to collect all the strings it likes (or accepts) into a set, how would you describe those strings?  If you followed Gödel's example and you interpreted the strings as numbers, what base would you use and what alphabet?  Do your string numbers have any interesting mathematical properties?
 
 INSTRUCTIONS:
 - Enter a string in the box below and type enter to load the string.  
