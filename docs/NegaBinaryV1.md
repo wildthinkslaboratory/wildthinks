@@ -205,7 +205,7 @@ p5.mouseReleased = function() {                  // this function is called when
 
 So the code for the number $2$ is `110`.  We have a **dot** in the $4$ box, a **dot** in the  $-2$ box and nothing in the $1$ box.  That gives us $4 + \left(-2 \right) + 0 = 2$.  
 
-Also, we learned a new rule:   $\fbox{1} \fbox{1} \leftarrow \fbox{0} \fbox{-1}$ .  Now we can transform an **antidot** into **dots**.  (We can also use this trick to transform a **dot** into **antidots**.)
+Also, we learned a new rule:   $\fbox{$\bullet$} \fbox{$\bullet$} \leftarrow \fbox{$\phantom{\circ}$} \fbox{$\circ$}$ .  Now we can transform an **antidot** into **dots**.  (We can also use this trick to transform a **dot** into **antidots**.)
 
 
 
@@ -216,7 +216,7 @@ Also, we learned a new rule:   $\fbox{1} \fbox{1} \leftarrow \fbox{0} \fbox{-1}$
 See if you can figure out the code for $-3$.
 
 
-Check out the new `rule` button. It toggles between the standard  `-1`  $\leftarrow$ `2` rule and the $\fbox{1} \fbox{1} \leftarrow \fbox{0} \fbox{-1}$ rule.  
+Check out the new `rule` button. It toggles between the standard  `-1`  $\leftarrow$ `2` rule and the  $\fbox{$\bullet$} \fbox{$\bullet$} \leftarrow \fbox{$\phantom{\circ}$} \fbox{$\circ$}$ rule.  
 
 
 
