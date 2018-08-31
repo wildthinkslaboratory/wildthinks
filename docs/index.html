@@ -2,7 +2,9 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1">
+  <meta name="viewport" content="minimum-scale=1.0, width=device-width, maximum-scale=1.0, user-scalable=no, initial-scale=1">
+
+
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
 
@@ -24,6 +26,44 @@
   <link
     rel=stylesheet
     href="wildthinks-smartdown.css">
+
+
+  <style type="text/css">
+    html,
+    * {
+        -webkit-touch-callout: none;
+        -webkit-user-select: none; /* Disable selection/copy in UIWebView */
+    }
+
+/*
+    html, body {
+      position: fixed;
+    }
+
+    html, body {
+      position: relative;
+      overflow: hidden;
+    }
+
+    body {
+      position: fixed;
+      overflow: hidden;
+    }
+
+    body {
+      position: fixed;
+      height: 95%;
+      overflow: hidden;
+      width: 95%;
+      margin:10px 2% 0 2%;
+      padding:0;
+      background:royalblue;
+    }
+*/
+  </style>
+
+
+
 </head>
 
 <body
@@ -44,5 +84,16 @@
     window.smartdownDefaultHome = 'Home';
     window.smartdownStarter();
   </script>
+
+  <script>
+    document.body.addEventListener('touchmove', function(event) {
+      // console.log('event', event, event.srcElement, event.srcElement.classList);
+      if (event.srcElement.tagName === 'CANVAS') {
+        // console.log('INHIBIT', event.srcElement);
+        event.preventDefault();
+      }
+    });
+  </script>
+
 </body>
 </html>

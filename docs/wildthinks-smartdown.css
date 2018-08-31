@@ -12,6 +12,7 @@
 /* Text-spacing stuff */
 
 .wildthinks-theme.smartdown-container {
+  padding: 0;
   /*padding: 4px 8px; */  /* Padding from the edge of the page */
   /*line-height: 1.35; */ /* Override default of 1.35 */
   /* border:1px solid green; */ /* for debugging */
@@ -19,6 +20,7 @@
 }
 
 .wildthinks-theme.smartdown-container p.smartdown_p {
+  padding: 0;
   /*padding: 15px 0px;     */ /* Padding within a paragraph */
   /*border:1px solid red; */  /* for debugging */  
 }
