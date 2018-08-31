@@ -1,11 +1,15 @@
 {
-  "name": "docs",
+  "name": "wildthinks",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
+    "serve": "node_modules/.bin/http-server -c-1 docs/",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "Daniel Keith <dan@quantumclay.com> (http://doctorbud.github.io)",
-  "license": "ISC"
+  "author": "Heidi Dixon <goldfishandrobin@gmail.com> (http://wildthinks.org)",
+  "license": "ISC",
+  "devDependencies": {
+    "http-server": "^0.11.1"
+  }
 }
