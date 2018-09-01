@@ -263,6 +263,7 @@ function DFA(p5playable, m)  {
   let machine = m;              // machine holds the dfa description/transition function
   let state = 0;                // keeps track of current state
   let nodes = [];               // list of nodes
+  let inTransition = false;     // a transition takes time.  Wait till it's done to update datastructures
 
 
   let presses = 0;              // keep track of the number of mouse presses
@@ -428,6 +429,7 @@ function DFA(p5playable, m)  {
       }
     }
     stateTrace.push(state);          // add a new state to the state trace/configuration path
+    inTransition = false;
   }
 
 
@@ -481,6 +483,7 @@ function DFA(p5playable, m)  {
   // identify the current state and activate the appropriate
   // transition arrow
   function startTransition(c) {
+    inTransition = true;
     const i = machine.alphabet.indexOf(c);    // convert c into a number
     if (i != -1) {
       nodes[state].edges[i].active = true;      // should be some error handling here
@@ -599,14 +602,16 @@ function DFA(p5playable, m)  {
 
 
   this.mousePressed = function() {      // each time the mouse is pressed we consume another character in the input string
-    let validS = !!input;
-    if (validS && presses < input.length) {  
-      startTransition(input[presses]);
-      p5.redraw();
-      if (presses < input.length+1) {  // stop drawing boxes when we get to end
-        presses += 1;                  // of the string
-      }
-    } 
+    if (!inTransition) {
+      let validS = !!input;
+      if (validS && presses < input.length) {  
+        startTransition(input[presses]);
+        p5.redraw();
+        if (presses < input.length+1) {  // stop drawing boxes when we get to end
+          presses += 1;                  // of the string
+        }
+      } 
+    }
   };
 
 }
