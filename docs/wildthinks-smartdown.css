@@ -12,8 +12,8 @@
 /* Text-spacing stuff */
 
 .wildthinks-theme.smartdown-container {
-  padding: 0;
-  /*padding: 4px 8px; */  /* Padding from the edge of the page */
+  /*padding: 0;*/
+  padding: 10px 12px;   /* Padding from the edge of the page */
   /*line-height: 1.35; */ /* Override default of 1.35 */
   /* border:1px solid green; */ /* for debugging */
   /* font-size: 20px;    */    /* Override font size of 18px */
