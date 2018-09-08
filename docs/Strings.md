@@ -25,6 +25,7 @@ First, some helpful instructions.  Notice the gray band above every playable?  Y
 INSTRUCTIONS:
 - Click on a box to add a **dot**.  
 - Drag a **dot** out of the boxes to delete it.  
+- Drag a **dot** to the left to *explode* it.
 - Notice the `Add` button in the upper left.  Click on it.  Now you can add **antidots** too.  
 - If you have a **dot** and an **antidot** in the same box, drag them together to annihilate them.  
 
