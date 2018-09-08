@@ -26,6 +26,7 @@ INSTRUCTIONS:
 - Click on a box to add a **dot**.  
 - Drag a **dot** out of the boxes to delete it.  
 - Drag a **dot** to the left to *explode* it.
+- Drag a **dot** to the right to *unexplode* it.
 - Notice the `Add` button in the upper left.  Click on it.  Now you can add **antidots** too.  
 - If you have a **dot** and an **antidot** in the same box, drag them together to annihilate them.  
 
