@@ -715,7 +715,10 @@ function Dots() {
 
     const dotsNeeded = p5.pow(p5.abs(base), recievingBox - sendingBox);
 
-    if (dots[currentId[0]].dots[sendingBox].length < dotsNeeded) return false;
+    if (dots[currentId[0]].dots[sendingBox].length < dotsNeeded) {
+      alert('Not enough dots in box for an explosion.');
+      return false;
+    }
 
     let newDot = copyInstance(dots[currentId[0]].dots[currentId[1]][currentId[2]]);
     newDot.box = recievingBox;
