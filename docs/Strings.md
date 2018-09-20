@@ -43,7 +43,7 @@ I've initilized the machine with the string `cab`, which has a base $10$ value o
 
 ```p5js/playable/autoplay
 
-//xsmartdown.import=http://127.0.0.1:5555/dots.js
+//xsmartdown.import=http://127.0.0.1:8080/dots.js
 
 
 // import the dots library
@@ -73,12 +73,12 @@ myDiv.style.overflow = 'auto';
 const base = 26;               // set the base for the machine
 const numberBoxes = 3;         // set how many boxes you want
 
-var dots = new dotlib.Dots();  // create the dots and boxes machine
+var dots = new dotlib.Dots(p5);  // create the dots and boxes machine
 
 
 p5.setup = function() {                          // this function is called when you start the
                                                  // playable. 
-  dots.setup(p5, base, numberBoxes, 'red');             // initialize the machine with the base and number of boxes. 
+  dots.setup(base, numberBoxes, 'red');             // initialize the machine with the base and number of boxes. 
   var canvasWidth = p5.windowWidth;              // set the size of the playable
   var canvasHeight = p5.windowHeight * 0.8;
   p5.createCanvas(canvasWidth,canvasHeight);     // create the canvas we will draw on
@@ -137,7 +137,7 @@ In this playable you can type in an alphabet from your keyboard.  The number of 
 
 ```p5js/playable/autoplay
 
-//xsmartdown.import=http://127.0.0.1:5555/dots.js
+//xsmartdown.import=http://127.0.0.1:8080/dots.js
 
 
 // import the dots library
@@ -165,12 +165,12 @@ this.div.innerHTML = '';
 const base = 2;               // set the base for the machine
 const numberBoxes = 3;         // set how many boxes you want
 
-var dots = new dotlib.Dots();  // create the dots and boxes machine
+var dots = new dotlib.Dots(p5);  // create the dots and boxes machine
 
 
 p5.setup = function() {                          // this function is called when you start the
                                                  // playable. 
-  dots.setup(p5, base, numberBoxes, 'red');             // initialize the machine with the base and number of boxes. 
+  dots.setup(base, numberBoxes, 'red');             // initialize the machine with the base and number of boxes. 
   var canvasWidth = p5.windowWidth;              // set the size of the playable
   var canvasHeight = p5.windowHeight * 0.8;
   p5.createCanvas(canvasWidth,canvasHeight);     // create the canvas we will draw on
@@ -254,7 +254,7 @@ INSTRUCTIONS:
 
 ```p5js/playable/autoplay
 
-//xsmartdown.import=http://127.0.0.1:5555/dfa.js
+//xsmartdown.import=http://127.0.0.1:8080/dfa.js
 
 //smartdown.import=/dfa.js
 

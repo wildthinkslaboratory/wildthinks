@@ -514,15 +514,14 @@ class Boxes {
 
 
 // Wrapper class for the main functions and data structures
-function Dots() {
-
+function Dots(p5playable) {
   ////
   // Values that change on window-resize
   //////////////////////////////////////////////////////////////////////////////
 
   let canvasW;  // canvas width
   let canvasH;  // canvas height
-  let p5 = 'NOTYETSETUP';
+  let p5 = p5playable;
 
   // these variables are duplicated in the class Boxes
   // would be good to consolidate and just use the Boxes version.
@@ -1177,7 +1176,7 @@ function Dots() {
     annihilateSound = p5.loadSound(annihilateSoundFile);
   };
 
-  this.setup = function(playableP5, b, n, color = 'green') {
+  this.setup = function(b, n, color = 'green') {
 
     if (color in colorSchemes) { 
       colors = new AppColors(...colorSchemes[color]);
@@ -1187,7 +1186,6 @@ function Dots() {
       colors = new AppColors(...colorSchemes['green']);
     }
 
-    p5 = playableP5;
     base = b;
     numBoxes = n;
 
@@ -1196,10 +1194,10 @@ function Dots() {
       ruleButtonOn = true;
     }
 
-    boxes = new Boxes(playableP5, base, numBoxes, boxesX, boxesY, boxesW, boxesH, boxTextSize, xSpacer,dotD, colors.boxFill, colors.boxStroke);
+    boxes = new Boxes(p5, base, numBoxes, boxesX, boxesY, boxesW, boxesH, boxTextSize, xSpacer,dotD, colors.boxFill, colors.boxStroke);
     dots = [];
-    dots.push(new DotArray(playableP5, numBoxes, colors.dotFill, colors.dotStroke, boxes));
-    dots.push(new DotArray(playableP5, numBoxes, colors.antidotFill, colors.antidotStroke, boxes));
+    dots.push(new DotArray(p5, numBoxes, colors.dotFill, colors.dotStroke, boxes));
+    dots.push(new DotArray(p5, numBoxes, colors.antidotFill, colors.antidotStroke, boxes));
     if (numBoxes < 4) ruleButtonOn = false;
   };
 

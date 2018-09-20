@@ -24,7 +24,7 @@ In negative binary we use the rule $-1 \leftarrow 2$.  Two **dots** on the right
 
 
 ```p5js/playable/autoplay
-//xsmartdown.import=http://127.0.0.1:5555/dots.js
+//xsmartdown.import=http://127.0.0.1:8080/dots.js
 
 
 // import the dots library
@@ -53,12 +53,12 @@ this.div.innerHTML = '';
 const base = -2;               // set the base for the machine
 const numberBoxes = 2;         // set how many boxes you want
 
-var dots = new dotlib.Dots();  // create the dots and boxes machine
+var dots = new dotlib.Dots(p5);  // create the dots and boxes machine
 
 
 p5.setup = function() {                          // this function is called when you start the
                                                  // playable. 
-  dots.setup(p5, base, numberBoxes);             // initialize the machine with the base and number of boxes. 
+  dots.setup(base, numberBoxes);             // initialize the machine with the base and number of boxes. 
   var canvasWidth = p5.windowWidth ;             // set the size of the playable
   var canvasHeight = p5.windowHeight * 0.7;
   p5.createCanvas(canvasWidth,canvasHeight);     // create the canvas we will draw on
@@ -127,7 +127,7 @@ OK, now let's fix that **antidot**.  Try adding $0$ to the middle box by adding 
 
 
 ```p5js/playable/autoplay
-//xsmartdown.import=http://127.0.0.1:5555/dots.js
+//xsmartdown.import=http://127.0.0.1:8080/dots.js
 
 
 // import the dots library
@@ -156,12 +156,12 @@ this.div.innerHTML = '';
 const base = -2;               // set the base for the machine
 const numberBoxes = 3;         // set how many boxes you want
 
-var dots = new dotlib.Dots();  // create the dots and boxes machine
+var dots = new dotlib.Dots(p5);  // create the dots and boxes machine
 
 
 p5.setup = function() {                          // this function is called when you start the
                                                  // playable. 
-  dots.setup(p5, base, numberBoxes);             // initialize the machine with the base and number of boxes. 
+  dots.setup(base, numberBoxes);             // initialize the machine with the base and number of boxes. 
   var canvasWidth = p5.windowWidth;              // set the size of the playable
   var canvasHeight = p5.windowHeight * 0.7;
   p5.createCanvas(canvasWidth,canvasHeight);     // create the canvas we will draw on
@@ -223,7 +223,7 @@ Check out the new `rule` button. It toggles between the standard  `-1`  $\leftar
 
 
 ```p5js/playable/autoplay
-//xsmartdown.import=http://127.0.0.1:5555/dots.js
+//xsmartdown.import=http://127.0.0.1:8080/dots.js
 
 
 // import the dots library
@@ -252,12 +252,12 @@ this.div.innerHTML = '';
 const base = -2;               // set the base for the machine
 const numberBoxes = 4;         // set how many boxes you want
 
-var dots = new dotlib.Dots();  // create the dots and boxes machine
+var dots = new dotlib.Dots(p5);  // create the dots and boxes machine
 
 
 p5.setup = function() {                          // this function is called when you start the
                                                  // playable. 
-  dots.setup(p5, base, numberBoxes);             // initialize the machine with the base and number of boxes. 
+  dots.setup(base, numberBoxes);             // initialize the machine with the base and number of boxes. 
   var canvasWidth = p5.windowWidth;              // set the size of the playable
   var canvasHeight = p5.windowHeight * 0.8;
   p5.createCanvas(canvasWidth,canvasHeight);     // create the canvas we will draw on
@@ -317,7 +317,7 @@ Here's a fully working machine and here are some things for you to try.
 
 
 ```p5js/playable/autoplay
-//xsmartdown.import=http://127.0.0.1:5555/dots.js
+//xsmartdown.import=http://127.0.0.1:8080/dots.js
 
 
 // import the dots library
@@ -345,12 +345,12 @@ this.div.innerHTML = '';
 const base = -2;               // set the base for the machine
 const numberBoxes = 6;         // set how many boxes you want
 
-var dots = new dotlib.Dots();  // create the dots and boxes machine
+var dots = new dotlib.Dots(p5);  // create the dots and boxes machine
 
 
 p5.setup = function() {                          // this function is called when you start the
                                                  // playable. 
-  dots.setup(p5, base, numberBoxes);             // initialize the machine with the base and number of boxes. 
+  dots.setup(base, numberBoxes);             // initialize the machine with the base and number of boxes. 
   var canvasWidth = p5.windowWidth;              // set the size of the playable
   var canvasHeight = p5.windowHeight * 0.8;
   p5.createCanvas(canvasWidth,canvasHeight);     // create the canvas we will draw on
