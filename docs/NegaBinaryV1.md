@@ -41,7 +41,7 @@ myDiv.style['background-image'] = `url(${bgURL})`;
 myDiv.style['background-repeat'] = 'no-repeat';
 myDiv.style['background-size'] = 'cover';
 myDiv.style.height = '100%';
-myDiv.style.width = '50%';
+myDiv.style.width = '100%';
 myDiv.style.padding = '0';
 myDiv.style.margin = '0';
 myDiv.style.overflow = 'hidden';
@@ -59,7 +59,7 @@ var dots = new dotlib.Dots();  // create the dots and boxes machine
 p5.setup = function() {                          // this function is called when you start the
                                                  // playable. 
   dots.setup(p5, base, numberBoxes);             // initialize the machine with the base and number of boxes. 
-  var canvasWidth = p5.windowWidth * 0.5;        // set the size of the playable
+  var canvasWidth = p5.windowWidth ;             // set the size of the playable
   var canvasHeight = p5.windowHeight * 0.7;
   p5.createCanvas(canvasWidth,canvasHeight);     // create the canvas we will draw on
   p5.windowResized();                            
@@ -74,7 +74,7 @@ p5.setup = function() {                          // this function is called when
 
 
 p5.windowResized = function() {                  // this function is called when the user changes
-  const canvasWidth = p5.windowWidth * 0.5;      // the size of the window.  It will rescale all the 
+  const canvasWidth = p5.windowWidth;            // the size of the window.  It will rescale all the 
   const canvasHeight = p5.windowHeight * 0.7;    // components to fit into the new window size.
   dots.windowResized(canvasWidth, canvasHeight);
   p5.resizeCanvas(canvasWidth, canvasHeight);
