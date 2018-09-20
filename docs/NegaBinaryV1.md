@@ -72,11 +72,12 @@ p5.setup = function() {                          // this function is called when
   dots.addDotsToBox(2,1,0);
 };
 
-
+let firstcall = true;
 p5.windowResized = function() {                  // this function is called when the user changes
   const canvasWidth = p5.windowWidth;            // the size of the window.  It will rescale all the 
   const canvasHeight = p5.windowHeight * 0.7;    // components to fit into the new window size.
-  dots.windowResized(canvasWidth, canvasHeight);
+  if (firstcall) { firstcall = false; }
+  else { dots.windowResized(canvasWidth, canvasHeight); }
   p5.resizeCanvas(canvasWidth, canvasHeight);
 }
 
@@ -172,11 +173,12 @@ p5.setup = function() {                          // this function is called when
   dots.addDotsToBox(1,0,1);
 };
 
-
+let firstcall = true;
 p5.windowResized = function() {                  // this function is called when the user changes
   const canvasWidth = p5.windowWidth;            // the size of the window.  It will rescale all the 
   const canvasHeight = p5.windowHeight * 0.7;    // components to fit into the new window size.
-  dots.windowResized(canvasWidth, canvasHeight);
+  if (firstcall) { firstcall = false; }
+  else { dots.windowResized(canvasWidth, canvasHeight); }
   p5.resizeCanvas(canvasWidth, canvasHeight);
 }
 
@@ -269,10 +271,12 @@ p5.setup = function() {                          // this function is called when
 };
 
 
+let firstcall = true;
 p5.windowResized = function() {                  // this function is called when the user changes
   const canvasWidth = p5.windowWidth;            // the size of the window.  It will rescale all the 
   const canvasHeight = p5.windowHeight * 0.8;    // components to fit into the new window size.
-  dots.windowResized(canvasWidth, canvasHeight);
+  if (firstcall) { firstcall = false; }
+  else { dots.windowResized(canvasWidth, canvasHeight); }
   p5.resizeCanvas(canvasWidth, canvasHeight);
 }
 
@@ -360,10 +364,12 @@ p5.setup = function() {                          // this function is called when
 };
 
 
+let firstcall = true;
 p5.windowResized = function() {                  // this function is called when the user changes
   const canvasWidth = p5.windowWidth;            // the size of the window.  It will rescale all the 
   const canvasHeight = p5.windowHeight * 0.8;    // components to fit into the new window size.
-  dots.windowResized(canvasWidth, canvasHeight);
+  if (firstcall) { firstcall = false; }
+  else { dots.windowResized(canvasWidth, canvasHeight); }
   p5.resizeCanvas(canvasWidth, canvasHeight);
 }
 
