@@ -101,6 +101,150 @@ function getNumberString(n, symbols) {
   return (sign ? '' : '-') + A.join('');
 }
 
+
+
+
+/*
+ - read about custom event handling 
+ - need a better interface.  Make your tip and then activate and deactivate them with hooks.
+ - need fade out?
+ - need customization of which tips to use
+ - add popups from outside lib
+ - scale textSize with resize
+ - improve flow of tutorial
+ - attach items to object?
+ - make first app full width with narrower boxes
+
+*/
+
+///
+// Popup class
+//////////////////////////////////////////////////////////////////////////////
+const PopupStatusEnum = Object.freeze({INACTIVE : -1, OFF : 0 , ON : 1 });
+
+class Popup {
+  constructor(playableP5, rx, ry, rw, m) {
+    this.p5 = playableP5;
+    this.rx = rx;                 // all the positioning is relative to the canvas size
+    this.ry = ry;
+    this.rw = rw;                 // width is specified and height depends on the amount of text to display
+    this.xmargin = rw * 0.1;      // popup margins
+    this.ymargin = rw * 0.1;
+    this.message = m;
+    this.fill = [255,255,200,0];  // currently all popups are yellowish with black writing
+    this.stroke = [0,0,0,0];
+    this.state = PopupStatusEnum.INACTIVE;  
+    this.textSize = 25;
+    this.canvasW = 0;
+    this.canvasH = 0;
+    this.arrowx = 0;              // a popup can have an arrow (stored as a point)
+    this.arrowy = 0;
+  }
+
+
+  // called when the canvas is resized
+  resize(cw, ch) {                
+    this.canvasW = cw;
+    this.canvasH = ch;
+    this.textSize = ch / 50;
+  }
+
+
+  // this really calculates the number of lines of text for a given width and font
+  wrapText() {
+    const words = this.message.split(' ');
+    const width = (this.rw - this.xmargin) * this.canvasW;
+    let line = '';
+    let numberLines = (words.length > 0 ? 1 : 0);
+    for (let i = 0; i < words.length; i++) {
+      line = line +  words[i] + ' ';
+      if (this.p5.textWidth(line) >= width) {  // found the end of a line
+        i--;
+        line = '';
+        numberLines++;
+      } 
+    }
+    
+    return numberLines;
+  }
+
+
+  // by default popups don't have arrows.  You have to call this
+  // to add one
+  setArrow(ax, ay) {
+    this.arrowx = ax;
+    this.arrowy = ay;
+  }
+
+
+
+  draw() {
+    if (this.on === PopupStatusEnum.ON) {  // we only draw popups when they are on
+
+      if (this.fill[3] < 255) {            // this makes the popups fade in
+        this.fill[3] += 15;
+        this.stroke[3] += 15;
+      }
+
+      this.p5.push();
+      this.p5.fill(this.fill);
+      this.p5.stroke(this.stroke);
+      this.p5.strokeWeight(3);
+      this.p5.textSize(this.textSize);
+
+      let x = this.rx * this.canvasW;      // calculate the non relative popup coordinants
+      let y = this.ry * this.canvasH;
+      let w = this.rw * this.canvasW;
+
+      const numLines = this.wrapText();              // get the number of lines it will take
+      const h = (numLines) * this.p5.textLeading();    // now we can calculate the height.
+      const h2 = h + this.ymargin * this.canvasH;
+      const arrowx = this.arrowx * this.canvasW;
+      const arrowy = this.arrowy * this.canvasH;
+      const delta = this.p5.textLeading()/2;
+      const hasArrow = (this.arrowx != 0);
+
+      this.p5.beginShape();
+      this.p5.vertex(x, y);  // top of box
+      if (hasArrow && arrowy < y) {
+        this.p5.vertex(x + w/2 - delta,  y);
+        this.p5.vertex(arrowx, arrowy);
+        this.p5.vertex(x + w/2 + delta, y);
+      }
+      this.p5.vertex(x+w, y);   // right side
+      if (hasArrow && arrowx > x+w) {
+        this.p5.vertex(x + w, y + h2/2 - delta);
+        this.p5.vertex(arrowx, arrowy);
+        this.p5.vertex(x + w, y + h2/2 + delta);
+      }
+      this.p5.vertex(x+w, y+h2); // bottom side
+      if (hasArrow && arrowy > y + h2) {
+        this.p5.vertex(x + w/2 + delta, y + h2);
+        this.p5.vertex(arrowx, arrowy);
+        this.p5.vertex(x + w/2 - delta, y + h2);
+      }
+      this.p5.vertex(x, y+h2);   // left side
+      if (hasArrow && arrowx < x) {
+        this.p5.vertex(x, y + h2/2 + delta);
+        this.p5.vertex(arrowx, arrowy);
+        this.p5.vertex(x, y + h2/2 - delta);
+        
+      }
+      this.p5.endShape(this.p5.CLOSE);
+
+      this.p5.fill(this.stroke);
+      this.p5.noStroke();
+      x += this.xmargin * this.canvasW / 2;
+      y += this.ymargin * this.canvasH / 2;
+      w = (this.rw - this.xmargin) * this.canvasW;
+      
+      this.p5.text(this.message, x, y, w, h);
+      this.p5.pop();
+    }
+  }
+
+}
+
 ///
 // Dot class
 //////////////////////////////////////////////////////////////////////////////
