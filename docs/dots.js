@@ -583,7 +583,7 @@ function Dots(p5playable) {
   let standardRule = true;
 
 
-
+  let firstTimeResized = true;  // hack to keep windowResized from running p5 commands until p5 is properly loaded
 
   ///
   // Additional Draw Functions
@@ -1140,34 +1140,45 @@ function Dots(p5playable) {
 
     boxesH = canvasH * 0.5; // height of boxes
     boxesX = (width - boxesW) / 2;
+    
+    boxTextSize = boxesH * 0.5;  // text size
+    valueTextSize = endcapH * 0.5;
 
-    dotD = p5.min(boxWidth * 0.2, boxesH * 0.2);
+    dotD = 50;  // default value in case p5 isn't defined yet
+
+    if (p5 != null) {
+      dotD = p5.min(boxWidth * 0.2, boxesH * 0.2);
+    }
+    
     xSpacer = dotD/2;
     ySpacer = dotD/2;
 
-    boxesY = (canvasH - boxesH + endcapH + ySpacer) / 2;
     
-
-    boxTextSize = boxesH * 0.5;
-
+    boxesY = (canvasH - boxesH + endcapH + ySpacer) / 2;  // these are dependant on ySpacer
     const boxW = boxesW / numBoxes - ySpacer;
-    const t = '-' + p5.abs(p5.pow(base,numBoxes-1)).toString();
-    p5.push();
-    p5.textSize(boxTextSize);
-    while (p5.textWidth(t) > boxW) {
-      boxTextSize *= 0.75;
-      p5.textSize(boxTextSize);
-    }
-    p5.pop();
 
-    valueTextSize = endcapH * 0.5;
+
+    if (firstTimeResized) { firstTimeResized = false;}
+    else {
+      const t = '-' + p5.abs(p5.pow(base,numBoxes-1)).toString();  // calculate the font size
+      p5.push();
+      p5.textSize(boxTextSize);
+      while (p5.textWidth(t) > boxW) {
+        boxTextSize *= 0.75;
+        p5.textSize(boxTextSize);
+      }
+      p5.pop();
+    }
+  
+    
     topBoxesY = boxesY - 2*ySpacer - 2*endcapH;
     valueBoxesY = boxesY - ySpacer - endcapH;
     codeBoxesY = boxesY + boxesH + ySpacer;
     ruleBoxX = boxesX + boxWidth;
 
-
-    boxes.updateSize(boxesX, boxesY, boxesW, boxesH, boxTextSize, xSpacer, dotD);
+    if (boxes != null) {
+      boxes.updateSize(boxesX, boxesY, boxesW, boxesH, boxTextSize, xSpacer, dotD);
+    }
   };
 
 
@@ -1231,7 +1242,7 @@ function Dots(p5playable) {
     }
   };
 
-  this.addInstruction = function(popup) {
+  this.addInstruction = function(popup, onEvent, offEvent) {
 
   };
 
