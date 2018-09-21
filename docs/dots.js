@@ -121,6 +121,7 @@ function getNumberString(n, symbols) {
 // Popup class
 //////////////////////////////////////////////////////////////////////////////
 const PopupStatusEnum = Object.freeze({INACTIVE : -1, OFF : 0 , ON : 1 });
+const LocalEvents = Object.freeze({ADD_DOT : 0, CLICK_ADD : 1 , DRAG_DOT_OUT : 2, DRAG_LEFT : 3, END_TUTORIAL : 4 });
 
 class Popup {
   constructor(playableP5, rx, ry, rw, m) {
@@ -514,7 +515,7 @@ class Boxes {
 
 
 // Wrapper class for the main functions and data structures
-function Dots(p5playable) {
+function Dots(p5playable, outsideDiv) {
   ////
   // Values that change on window-resize
   //////////////////////////////////////////////////////////////////////////////
@@ -522,6 +523,7 @@ function Dots(p5playable) {
   let canvasW;  // canvas width
   let canvasH;  // canvas height
   let p5 = p5playable;
+  let div = outsideDiv;
 
   // these variables are duplicated in the class Boxes
   // would be good to consolidate and just use the Boxes version.
@@ -582,6 +584,15 @@ function Dots(p5playable) {
   let addDots = true;
   let standardRule = true;
 
+
+  ////
+  // Popups
+  /////////////////////////////////////////////////////////////////////////////
+  let popups = [];
+
+  function respondToLocalEvent(e) {
+
+  }
 
   let firstTimeResized = true;  // hack to keep windowResized from running p5 commands until p5 is properly loaded
 
@@ -1242,8 +1253,8 @@ function Dots(p5playable) {
     }
   };
 
-  this.addInstruction = function(popup, onEvent, offEvent) {
-
+  this.addInstruction = function(popup) {
+    popups.push(popup);
   };
 
 }

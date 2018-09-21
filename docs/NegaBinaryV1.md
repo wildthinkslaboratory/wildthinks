@@ -24,11 +24,11 @@ In negative binary we use the rule $-1 \leftarrow 2$.  Two **dots** on the right
 
 
 ```p5js/playable/autoplay
-//xsmartdown.import=http://127.0.0.1:8080/dots.js
+//smartdown.import=http://127.0.0.1:8080/dots.js
 
 
 // import the dots library
-//smartdown.import=/dots.js
+//xsmartdown.import=/dots.js
 
 // this is the url for the background picture
 const bgURL = 'https://gist.githubusercontent.com/wildthinkslaboratory/ac98c0bb68ccf7528dc39fa1922d2bdb/raw/a813f0d1c5d0108a8b923ce73dd17ebddc692972/ExpDotsBackground.001.jpeg';
@@ -53,7 +53,9 @@ this.div.innerHTML = '';
 const base = -2;               // set the base for the machine
 const numberBoxes = 2;         // set how many boxes you want
 
-var dots = new dotlib.Dots(p5);  // create the dots and boxes machine
+const instructions = 'Drag a DOT to the left. Two DOTS on the right change into one negative DOT or ANTIDOT on the left.';
+
+var dots = new dotlib.Dots(p5, this.div);  // create the dots and boxes machine
 
 p5.setup = function() {                          // this function is called when you start the
                                                  // playable. 
@@ -69,8 +71,8 @@ p5.setup = function() {                          // this function is called when
   dots.allowAddDots(false);
   dots.allowRemoveDots(false);
   dots.addDotsToBox(2,1,0);
-  //let instructions = new dotlib.Popup(p5, 0.03, 0.3,  0.25, 'Drag a DOT to the left.  (You can also drag it back to the right when you're done.) Two DOTS on the right change into one negative DOT or ANTIDOT on the left.'));
-  //dots.addInstruction(instructions);
+  let popup = new dotlib.Popup(p5, 0.03, 0.3,  0.25, instructions);
+  dots.addInstruction(popup);
 };
 
 
@@ -128,11 +130,11 @@ OK, now let's fix that **antidot**.  Try adding $0$ to the middle box by adding 
 
 
 ```p5js/playable/autoplay
-//xsmartdown.import=http://127.0.0.1:8080/dots.js
+//smartdown.import=http://127.0.0.1:8080/dots.js
 
 
 // import the dots library
-//smartdown.import=/dots.js
+//xsmartdown.import=/dots.js
 
 
 // this is the url for the background picture
@@ -157,7 +159,7 @@ this.div.innerHTML = '';
 const base = -2;               // set the base for the machine
 const numberBoxes = 3;         // set how many boxes you want
 
-var dots = new dotlib.Dots(p5);  // create the dots and boxes machine
+var dots = new dotlib.Dots(p5, this.div);  // create the dots and boxes machine
 
 
 p5.setup = function() {                          // this function is called when you start the
@@ -224,11 +226,11 @@ Check out the new `rule` button. It toggles between the standard  `-1`  $\leftar
 
 
 ```p5js/playable/autoplay
-//xsmartdown.import=http://127.0.0.1:8080/dots.js
+//smartdown.import=http://127.0.0.1:8080/dots.js
 
 
 // import the dots library
-//smartdown.import=/dots.js
+//xsmartdown.import=/dots.js
 
 
 // this is the url for the background picture
@@ -253,7 +255,7 @@ this.div.innerHTML = '';
 const base = -2;               // set the base for the machine
 const numberBoxes = 4;         // set how many boxes you want
 
-var dots = new dotlib.Dots(p5);  // create the dots and boxes machine
+var dots = new dotlib.Dots(p5, this.div);  // create the dots and boxes machine
 
 
 p5.setup = function() {                          // this function is called when you start the
@@ -318,11 +320,11 @@ Here's a fully working machine and here are some things for you to try.
 
 
 ```p5js/playable/autoplay
-//xsmartdown.import=http://127.0.0.1:8080/dots.js
+//smartdown.import=http://127.0.0.1:8080/dots.js
 
 
 // import the dots library
-//smartdown.import=/dots.js
+//xsmartdown.import=/dots.js
 
 // this is the url for the background picture
 const bgURL = 'https://gist.githubusercontent.com/wildthinkslaboratory/ac98c0bb68ccf7528dc39fa1922d2bdb/raw/a813f0d1c5d0108a8b923ce73dd17ebddc692972/ExpDotsBackground.001.jpeg';
@@ -346,7 +348,7 @@ this.div.innerHTML = '';
 const base = -2;               // set the base for the machine
 const numberBoxes = 6;         // set how many boxes you want
 
-var dots = new dotlib.Dots(p5);  // create the dots and boxes machine
+var dots = new dotlib.Dots(p5, this.div);  // create the dots and boxes machine
 
 
 p5.setup = function() {                          // this function is called when you start the
