@@ -55,10 +55,9 @@ const numberBoxes = 2;         // set how many boxes you want
 
 var dots = new dotlib.Dots(p5);  // create the dots and boxes machine
 
-
 p5.setup = function() {                          // this function is called when you start the
                                                  // playable. 
-  dots.setup(base, numberBoxes);             // initialize the machine with the base and number of boxes. 
+  dots.setup(base, numberBoxes);                 // initialize the machine with the base and number of boxes. 
   var canvasWidth = p5.windowWidth ;             // set the size of the playable
   var canvasHeight = p5.windowHeight * 0.7;
   p5.createCanvas(canvasWidth,canvasHeight);     // create the canvas we will draw on
@@ -70,14 +69,15 @@ p5.setup = function() {                          // this function is called when
   dots.allowAddDots(false);
   dots.allowRemoveDots(false);
   dots.addDotsToBox(2,1,0);
+  //let instructions = new dotlib.Popup(p5, 0.03, 0.3,  0.25, 'Drag a DOT to the left.  (You can also drag it back to the right when you're done.) Two DOTS on the right change into one negative DOT or ANTIDOT on the left.'));
+  //dots.addInstruction(instructions);
 };
 
-let firstcall = true;
+
 p5.windowResized = function() {                  // this function is called when the user changes
   const canvasWidth = p5.windowWidth;            // the size of the window.  It will rescale all the 
   const canvasHeight = p5.windowHeight * 0.7;    // components to fit into the new window size.
-  if (firstcall) { firstcall = false; }
-  else { dots.windowResized(canvasWidth, canvasHeight); }
+  dots.windowResized(canvasWidth, canvasHeight);
   p5.resizeCanvas(canvasWidth, canvasHeight);
 }
 
@@ -173,12 +173,11 @@ p5.setup = function() {                          // this function is called when
   dots.addDotsToBox(1,0,1);
 };
 
-let firstcall = true;
+
 p5.windowResized = function() {                  // this function is called when the user changes
   const canvasWidth = p5.windowWidth;            // the size of the window.  It will rescale all the 
   const canvasHeight = p5.windowHeight * 0.7;    // components to fit into the new window size.
-  if (firstcall) { firstcall = false; }
-  else { dots.windowResized(canvasWidth, canvasHeight); }
+  dots.windowResized(canvasWidth, canvasHeight);
   p5.resizeCanvas(canvasWidth, canvasHeight);
 }
 
@@ -271,12 +270,10 @@ p5.setup = function() {                          // this function is called when
 };
 
 
-let firstcall = true;
 p5.windowResized = function() {                  // this function is called when the user changes
   const canvasWidth = p5.windowWidth;            // the size of the window.  It will rescale all the 
   const canvasHeight = p5.windowHeight * 0.8;    // components to fit into the new window size.
-  if (firstcall) { firstcall = false; }
-  else { dots.windowResized(canvasWidth, canvasHeight); }
+  dots.windowResized(canvasWidth, canvasHeight);
   p5.resizeCanvas(canvasWidth, canvasHeight);
 }
 
@@ -364,12 +361,10 @@ p5.setup = function() {                          // this function is called when
 };
 
 
-let firstcall = true;
 p5.windowResized = function() {                  // this function is called when the user changes
   const canvasWidth = p5.windowWidth;            // the size of the window.  It will rescale all the 
   const canvasHeight = p5.windowHeight * 0.8;    // components to fit into the new window size.
-  if (firstcall) { firstcall = false; }
-  else { dots.windowResized(canvasWidth, canvasHeight); }
+  dots.windowResized(canvasWidth, canvasHeight);
   p5.resizeCanvas(canvasWidth, canvasHeight);
 }
 
