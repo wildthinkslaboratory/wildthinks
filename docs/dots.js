@@ -1231,6 +1231,10 @@ function Dots(p5playable) {
     }
   };
 
+  this.addInstruction = function(popup) {
+
+  };
+
 }
 
 
@@ -1253,6 +1257,7 @@ function Dots(p5playable) {
   'use strict';
 
   exports.Dots = Dots;
+  exports.Popup = Popup;
 
 });
 
