@@ -315,6 +315,12 @@ class DotArray {
     this.boxes = boxes;
   }
 
+  clear() {
+    for (let i=0; i < this.dots.length; i++) {
+      this.dots[i].length = 0;
+    }
+  }
+
   draw() {
     this.p5.push();
     this.p5.stroke(this.s);
@@ -605,7 +611,7 @@ function Dots(p5playable, outsideDiv) {
       }
     }
     if (e.detail === 'DOT_ANNIHILATE') {
-      //setUpBoxes(dotsetup[0], dotsetup[1], dotsetup[2]);
+      for (let i=0; i < dots.length; i++) { dots[i].clear(); }  // clear all the dots
       setUpBoxes(...dotsetup);
     }
   }
@@ -617,6 +623,7 @@ function Dots(p5playable, outsideDiv) {
     div.addEventListener('DRAG_LEFT', respondToLocalEvent);
     div.addEventListener('BEGIN', respondToLocalEvent);
     div.addEventListener('DOT_ANNIHILATE', respondToLocalEvent);
+    div.addEventListener('CLICK_RULE', respondToLocalEvent);
 
   }
 
@@ -1147,7 +1154,11 @@ function Dots(p5playable, outsideDiv) {
       let event = new CustomEvent('CLICK_ADD', { detail : 'CLICK_ADD'});  // trigger add dot event
       div.dispatchEvent(event); 
     }
-    if (mouseOnRuleButton()) {  standardRule = !standardRule;  }
+    if (mouseOnRuleButton()) {  
+      standardRule = !standardRule;  
+      let event = new CustomEvent('CLICK_RULE', { detail : 'CLICK_RULE'});  // trigger add dot event
+      div.dispatchEvent(event);
+    }
 
     if (mouseOnBoxes() && !mouseOnDot() && addDotsAllowed) {
       if (addDots) {

@@ -214,11 +214,6 @@ Also, we learned a new rule:   $\fbox{$\bullet$} \fbox{$\bullet$} \leftarrow \fb
 See if you can figure out the code for $-3$.
 
 
-Check out the new `rule` button. It toggles between the standard  `-1`  $\leftarrow$ `2` rule and the  $\fbox{$\bullet$} \fbox{$\bullet$} \leftarrow \fbox{$\phantom{\circ}$} \fbox{$\circ$}$ rule.  
-
-
-
-
 ```p5js/playable/autoplay
 //smartdown.import=http://127.0.0.1:8080/dots.js
 
@@ -250,10 +245,13 @@ const base = -2;               // set the base for the machine
 const numberBoxes = 4;         // set how many boxes you want
 
 var dots = new dotlib.Dots(p5, this.div);  // create the dots and boxes machine
-
+const instructions = 'Checkout the new rule button';
+const popup = new Popup(p5, 0.35, 0.15,  0.3, 'BEGIN', 'CLICK_RULE', instructions);
+popup.setArrow(0.5, 0.1);
 
 p5.setup = function() {                          // this function is called when you start the
                                                  // playable. 
+  dots.addInstructions(popup);
   dots.setup(base, numberBoxes);             // initialize the machine with the base and number of boxes. 
   var canvasWidth = p5.windowWidth;              // set the size of the playable
   var canvasHeight = p5.windowHeight * 0.8;
