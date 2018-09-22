@@ -150,9 +150,9 @@ var dots = new dotlib.Dots(p5, this.div);  // create the dots and boxes machine
 
 const instructions1 = "Now let's fix that ANTIDOT.  Try adding 0 to the middle box by adding both a DOT and an ANTIDOT.  Now you can drag an ANTIDOT to the left.";
 
-let popup1 = new Popup(p5, 0.03, 0.2,  0.25, 'DOT_ANNIHILATE', 'DRAG_LEFT', 'CLICK_ADD', instructions1);
+let popup1 = new Popup(p5, 0.03, 0.2,  0.25, 'DRAG_DOT_OUT', 'DRAG_LEFT', 'DOT_ANNIHILATE', instructions1);
 const instructions2 = 'No more ANTIDOT!';
-let popup2 = new Popup(p5, 0.03, 0.45,  0.2, 'DRAG_LEFT', '', 'DOT_ANNIHILATE', instructions2);
+let popup2 = new Popup(p5, 0.03, 0.45,  0.2, 'DRAG_LEFT', '', 'DRAG_DOT_OUT', instructions2);
 
 p5.setup = function() {                          // this function is called when you start the
                                                  // playable. 

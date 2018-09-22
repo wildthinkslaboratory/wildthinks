@@ -622,7 +622,7 @@ function Dots(p5playable, outsideDiv) {
         }
       }  
     }
-    if (eventState === 'DOT_ANNIHILATE' && e.detail === 'DOT_ANNIHILATE') {
+    if (eventState === 'DRAG_DOT_OUT' && e.detail === 'DRAG_DOT_OUT') {
       for (let i=0; i < dots.length; i++) { dots[i].clear(); }  // clear all the dots
       setUpBoxes(...dotsetup);
     }
@@ -1342,10 +1342,10 @@ function Dots(p5playable, outsideDiv) {
 
   this.turnOnTutorial = function() {
     popups.push(new Popup(p5, 0.03, 0.3,  0.25, 'BEGIN', 'ADD_DOT', 'BEGIN', '1. Click on a box to add a dot.'));
-    popups.push(new Popup(p5, 0.03, 0.45,  0.25, 'ADD_DOT', 'DRAG_DOT_OUT', 'BEGIN', '2. Drag a dot out of the boxes to delete it.'));
-    popups.push(new Popup(p5, 0.4, 0.05, 0.2, 'DRAG_DOT_OUT', 'CLICK_ADD', 'ADD_DOT', '3. Toggle the Add button to switch to adding antidots.'));
+    popups.push(new Popup(p5, 0.4, 0.05, 0.2, 'ADD_DOT', 'CLICK_ADD', 'BEGIN', '2. Toggle the Add button to switch to adding antidots.'));
     popups[popups.length - 1].setArrow(0.32, 0.08);
-    popups.push(new Popup(p5, 0.03, 0.6,  0.25, 'CLICK_ADD', 'DOT_ANNIHILATE', 'DRAG_DOT_OUT', '4. If you have a dot and an antidot in the same box, drag them together to annihilate them.'));
+    popups.push(new Popup(p5, 0.03, 0.6,  0.25, 'CLICK_ADD', 'DOT_ANNIHILATE', 'ADD_DOT', '3. If you have a dot and an antidot in the same box, drag them together to annihilate them.'));
+    popups.push(new Popup(p5, 0.03, 0.45,  0.25, 'DOT_ANNIHILATE', 'DRAG_DOT_OUT', 'CLICK_ADD', '4. Drag a dot out of the boxes to delete it.'));
   };
 
 }
