@@ -19,9 +19,22 @@
   /* font-size: 20px;    */    /* Override font size of 18px */
 }
 
+.wildthinks-theme.smartdown-container ul,
+.wildthinks-theme.smartdown-container h1,
+.wildthinks-theme.smartdown-container h2,
+.wildthinks-theme.smartdown-container h3,
+.wildthinks-theme.smartdown-container h4,
+.wildthinks-theme.smartdown-container h5,
+.wildthinks-theme.smartdown-container h6,
+.wildthinks-theme.smartdown-container .h1,
+.wildthinks-theme.smartdown-container .h2,
+.wildthinks-theme.smartdown-container .h3,
+.wildthinks-theme.smartdown-container .h4,
+.wildthinks-theme.smartdown-container .h5,
+.wildthinks-theme.smartdown-container .h6,
 .wildthinks-theme.smartdown-container p.smartdown_p {
-  padding: 0;
-  /*padding: 15px 0px;     */ /* Padding within a paragraph */
+  /*padding: 0; */
+  padding: 15px 100px;      /* Padding within a paragraph */
   /*border:1px solid red; */  /* for debugging */  
 }
 
