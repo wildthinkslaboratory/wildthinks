@@ -23,11 +23,11 @@ In negative binary we use the rule $-1 \leftarrow 2$.  Two purple **dots** on th
 
 
 ```p5js/playable/autoplay
-//smartdown.import=http://127.0.0.1:8080/dots.js
+//xsmartdown.import=http://127.0.0.1:8080/dots.js
 
 
 // import the dots library
-//xsmartdown.import=/dots.js
+//smartdown.import=/dots.js
 
 // this is the url for the background picture
 const bgURL = 'https://gist.githubusercontent.com/wildthinkslaboratory/ac98c0bb68ccf7528dc39fa1922d2bdb/raw/a813f0d1c5d0108a8b923ce73dd17ebddc692972/ExpDotsBackground.001.jpeg';
@@ -53,7 +53,7 @@ const base = -2;               // set the base for the machine
 const numberBoxes = 2;         // set how many boxes you want
 
 const instructions = 'Drag a DOT to the left. (You can also drag it back to the right.)';
-let popup = new Popup(p5, 0.03, 0.3,  0.25, 'BEGIN', '', instructions);
+let popup = new Popup(p5, 0.03, 0.3,  0.25, 'BEGIN', '', 'BEGIN', instructions);
 
 var dots = new dotlib.Dots(p5, this.div);  // create the dots and boxes machine
 
@@ -117,11 +117,11 @@ First, some helpful instructions. Notice the gray band above every playable?  Yo
 
 
 ```p5js/playable/autoplay
-//smartdown.import=http://127.0.0.1:8080/dots.js
+//xsmartdown.import=http://127.0.0.1:8080/dots.js
 
 
 // import the dots library
-//xsmartdown.import=/dots.js
+//smartdown.import=/dots.js
 
 
 // this is the url for the background picture
@@ -150,9 +150,9 @@ var dots = new dotlib.Dots(p5, this.div);  // create the dots and boxes machine
 
 const instructions1 = "Now let's fix that ANTIDOT.  Try adding 0 to the middle box by adding both a DOT and an ANTIDOT.  Now you can drag an ANTIDOT to the left.";
 
-let popup1 = new Popup(p5, 0.03, 0.2,  0.25, 'DOT_ANNIHILATE', 'DRAG_LEFT', instructions1);
+let popup1 = new Popup(p5, 0.03, 0.2,  0.25, 'DOT_ANNIHILATE', 'DRAG_LEFT', 'CLICK_ADD', instructions1);
 const instructions2 = 'No more ANTIDOT!';
-let popup2 = new Popup(p5, 0.03, 0.45,  0.2, 'DRAG_LEFT', '', instructions2);
+let popup2 = new Popup(p5, 0.03, 0.45,  0.2, 'DRAG_LEFT', '', 'DOT_ANNIHILATE', instructions2);
 
 p5.setup = function() {                          // this function is called when you start the
                                                  // playable. 
@@ -215,11 +215,11 @@ See if you can figure out the code for $-3$.
 
 
 ```p5js/playable/autoplay
-//smartdown.import=http://127.0.0.1:8080/dots.js
+//xsmartdown.import=http://127.0.0.1:8080/dots.js
 
 
 // import the dots library
-//xsmartdown.import=/dots.js
+//smartdown.import=/dots.js
 
 
 // this is the url for the background picture
@@ -246,7 +246,7 @@ const numberBoxes = 4;         // set how many boxes you want
 
 var dots = new dotlib.Dots(p5, this.div);  // create the dots and boxes machine
 const instructions = 'Checkout the new rule button';
-const popup = new Popup(p5, 0.35, 0.15,  0.3, 'BEGIN', 'CLICK_RULE', instructions);
+const popup = new Popup(p5, 0.35, 0.15,  0.3, 'BEGIN', 'CLICK_RULE', 'BEGIN', instructions);
 popup.setArrow(0.5, 0.1);
 
 p5.setup = function() {                          // this function is called when you start the
@@ -312,11 +312,11 @@ Here's a fully working machine and here are some things for you to try.
 
 
 ```p5js/playable/autoplay
-//smartdown.import=http://127.0.0.1:8080/dots.js
+//xsmartdown.import=http://127.0.0.1:8080/dots.js
 
 
 // import the dots library
-//xsmartdown.import=/dots.js
+//smartdown.import=/dots.js
 
 // this is the url for the background picture
 const bgURL = 'https://gist.githubusercontent.com/wildthinkslaboratory/ac98c0bb68ccf7528dc39fa1922d2bdb/raw/a813f0d1c5d0108a8b923ce73dd17ebddc692972/ExpDotsBackground.001.jpeg';
