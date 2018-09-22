@@ -149,7 +149,7 @@ class Popup {
   resize(cw, ch) {                
     this.canvasW = cw;
     this.canvasH = ch;
-    //this.textSize = ch / 20;
+    this.textSize = cw / 50;
   }
 
 
