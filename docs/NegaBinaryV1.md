@@ -71,8 +71,6 @@ p5.setup = function() {                          // this function is called when
   dots.allowAddDots(false);
   dots.allowRemoveDots(false);
   dots.addDotsToBox(2,1,0);
-  let popup = new dotlib.Popup(p5, 0.03, 0.3,  0.25, instructions);
-  dots.addInstruction(popup);
 };
 
 

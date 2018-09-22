@@ -121,10 +121,10 @@ function getNumberString(n, symbols) {
 // Popup class
 //////////////////////////////////////////////////////////////////////////////
 const PopupStatusEnum = Object.freeze({INACTIVE : -1, OFF : 0 , ON : 1 });
-const LocalEvents = Object.freeze({ADD_DOT : 0, CLICK_ADD : 1 , DRAG_DOT_OUT : 2, DRAG_LEFT : 3, END_TUTORIAL : 4 });
+const LocalEvents = Object.freeze({ADD_DOT : 0, CLICK_ADD : 1 , DRAG_DOT_OUT : 2, DRAG_LEFT : 3, END_TUTORIAL : 4, BEGIN : 5});
 
 class Popup {
-  constructor(playableP5, rx, ry, rw, m) {
+  constructor(playableP5, rx, ry, rw, on, off, m) {
     this.p5 = playableP5;
     this.rx = rx;                 // all the positioning is relative to the canvas size
     this.ry = ry;
@@ -140,6 +140,8 @@ class Popup {
     this.canvasH = 0;
     this.arrowx = 0;              // a popup can have an arrow (stored as a point)
     this.arrowy = 0;
+    this.triggerOn = on;
+    this.triggerOff = off;
   }
 
 
@@ -147,7 +149,7 @@ class Popup {
   resize(cw, ch) {                
     this.canvasW = cw;
     this.canvasH = ch;
-    this.textSize = ch / 50;
+    //this.textSize = ch / 20;
   }
 
 
@@ -180,7 +182,8 @@ class Popup {
 
 
   draw() {
-    if (this.on === PopupStatusEnum.ON) {  // we only draw popups when they are on
+    if (this.state === PopupStatusEnum.ON) {  // we only draw popups when they are on
+
 
       if (this.fill[3] < 255) {            // this makes the popups fade in
         this.fill[3] += 15;
@@ -591,6 +594,24 @@ function Dots(p5playable, outsideDiv) {
   let popups = [];
 
   function respondToLocalEvent(e) {
+    for (let i=0; i < popups.length; i++) {
+      if (popups[i].triggerOn === e.detail) {
+        popups[i].state = PopupStatusEnum.ON;
+        console.log(popups[i]);
+      }
+      if (popups[i].triggerOff === e.detail) {
+        popups[i].state = PopupStatusEnum.INACTIVE;
+      }
+    }
+  }
+  //ADD_DOT : 0, CLICK_ADD : 1 , DRAG_DOT_OUT : 2, DRAG_LEFT : 3, END_TUTORIAL
+  function addEventListeners() {
+    div.addEventListener('ADD_DOT', respondToLocalEvent);
+    div.addEventListener('CLICK_ADD', respondToLocalEvent);
+    div.addEventListener('DRAG_DOT_OUT', respondToLocalEvent);
+    div.addEventListener('DRAG_LEFT', respondToLocalEvent);
+    div.addEventListener('END_TUTORIAL', respondToLocalEvent);
+    div.addEventListener('BEGIN', respondToLocalEvent);
 
   }
 
@@ -859,6 +880,9 @@ function Dots(p5playable, outsideDiv) {
     const boxID = boxes.getBoxID(p5.mouseX, p5.mouseY);
     if (boxID !== DotEnum.UNDEF) {
       dots[0].addDot(p5.mouseX, p5.mouseY, boxID);
+
+      let event = new CustomEvent('ADD_DOT', { detail : 'ADD_DOT'});  // trigger add dot event
+      div.dispatchEvent(event);
     }
   }
 
@@ -889,7 +913,11 @@ function Dots(p5playable, outsideDiv) {
       dots[currentId[0]].dots[sendingBox].pop();
     }
 
-    currentId = [DotEnum.UNDEF, -1, -1];             
+    currentId = [DotEnum.UNDEF, -1, -1];    
+
+    let event = new CustomEvent('DRAG_LEFT', { detail : 'DRAG_LEFT'});  // trigger DRAG_LEFT event
+    div.dispatchEvent(event);
+
     return true;
   }
 
@@ -1083,6 +1111,9 @@ function Dots(p5playable, outsideDiv) {
           if (removeDotsAllowed) {
             deleteDot(currentId);
             currentId = [DotEnum.UNDEF,-1,-1];
+
+            let event = new CustomEvent('DRAG_DOT_OUT', { detail : 'DRAG_DOT_OUT'});  // trigger add dot event
+            div.dispatchEvent(event);
           }
           else { resetDotPosition(currentId); }
         }
@@ -1094,7 +1125,11 @@ function Dots(p5playable, outsideDiv) {
 
   this.mousePressed = function()
   {
-    if (mouseOnDotButton()) {  addDots = !addDots;  }
+    if (mouseOnDotButton()) {  
+      addDots = !addDots; 
+      let event = new CustomEvent('CLICK_ADD', { detail : 'CLICK_ADD'});  // trigger add dot event
+      div.dispatchEvent(event); 
+    }
     if (mouseOnRuleButton()) {  standardRule = !standardRule;  }
 
     if (mouseOnBoxes() && !mouseOnDot() && addDotsAllowed) {
@@ -1130,6 +1165,9 @@ function Dots(p5playable, outsideDiv) {
     drawSummaryBox();
     drawDotButton();
     drawRuleButton();
+    for (let i=0; i < popups.length; i++) {
+      popups[i].draw();
+    }
   };
 
   this.windowResized = function(width,height)
@@ -1190,6 +1228,8 @@ function Dots(p5playable, outsideDiv) {
     if (boxes != null) {
       boxes.updateSize(boxesX, boxesY, boxesW, boxesH, boxTextSize, xSpacer, dotD);
     }
+
+    for (let i=0; i < popups.length; i++) { popups[i].resize(canvasW,canvasH); }
   };
 
 
@@ -1199,6 +1239,8 @@ function Dots(p5playable, outsideDiv) {
   };
 
   this.setup = function(b, n, color = 'green') {
+
+    this.turnOnTutorial();
 
     if (color in colorSchemes) { 
       colors = new AppColors(...colorSchemes[color]);
@@ -1221,6 +1263,11 @@ function Dots(p5playable, outsideDiv) {
     dots.push(new DotArray(p5, numBoxes, colors.dotFill, colors.dotStroke, boxes));
     dots.push(new DotArray(p5, numBoxes, colors.antidotFill, colors.antidotStroke, boxes));
     if (numBoxes < 4) ruleButtonOn = false;
+
+    addEventListeners();
+
+    let event = new CustomEvent('BEGIN', { detail : 'BEGIN'});  // trigger DRAG_LEFT event
+    div.dispatchEvent(event);
   };
 
   this.turnOffAddDotButton = function() {  dotButtonOn = false; };
@@ -1255,6 +1302,14 @@ function Dots(p5playable, outsideDiv) {
 
   this.addInstruction = function(popup) {
     popups.push(popup);
+  };
+
+  this.turnOnTutorial = function() {
+    popups.push(new Popup(p5, 0.03, 0.3,  0.25, 'BEGIN', 'ADD_DOT', '1. Click on a box to add a dot.'));
+    // popups.push(new Popup(p5, 0.03, 0.45,  0.25, '2. Drag a dot out of the boxes to delete it.'));
+    // popups.push(new Popup(p5, 0.4, 0.05, 0.2, '3. Toggle the Add button to switch to adding antidots.'));
+    // popups[popups.length - 1].setArrow(0.32, 0.08);
+    // popups.push(new Popup(p5, 0.03, 0.6,  0.25, '4. If you have a dot and an antidot in the same box, drag them together to annihilate them.'));
   };
 
 }
