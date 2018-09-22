@@ -8,9 +8,6 @@ This page builds on James Tanton's **exploding dots** curriculum.  If you're new
 In this exploration we'll learn what **strings** are and how to interpret strings as numbers.  Then we'll see how Kurt Gödel used this idea in his famous Incompleteness Theorem.
 
 
-SIDE NOTE: Some of the ideas in this video are challenging to learn and also challenging to explain (my personal disclaimer).  If you're new to this stuff you should know that it never makes full sense the first time through.  So do not be dissuaded and check out the video below.
-
-
 ![fullwidth](https://youtu.be/oXyek2Q40AI)
 
 
@@ -20,15 +17,6 @@ SIDE NOTE: Some of the ideas in this video are challenging to learn and also cha
 Here is the base $26$ machine from the video.  It uses the rule $1 \leftarrow 26$.  The **dots** are red and **antidots** are light blue.  Instead of using the standard number symbols `{0123456789}` to encode numbers, it uses the alphabet `{abcdefghijlmnopqrstuvwxyz}`.  
 
 First, some helpful instructions.  Notice the gray band above every playable?  You can always reset a playable by clicking this gray band.  Once to  `stop` the playable and  then again to `play` the playable.  (Ooh, you can also see the code for this playable when you click the `stop` button. Cool. We'll show you how to write your own playable on a different page soon.)
-
-
-INSTRUCTIONS:
-- Click on a box to add a **dot**.  
-- Drag a **dot** out of the boxes to delete it.  
-- Drag a **dot** to the left to *explode* it.
-- Drag a **dot** to the right to *unexplode* it.
-- Notice the `Add` button in the upper left.  Click on it.  Now you can add **antidots** too.  
-- If you have a **dot** and an **antidot** in the same box, drag them together to annihilate them.  
 
 
 I've initilized the machine with the string `cab`, which has a base $10$ value of $1353$.  Said another way, the base $10$ number $1353$ has the code `cab` in this base $26$ machine.  
@@ -43,11 +31,11 @@ I've initilized the machine with the string `cab`, which has a base $10$ value o
 
 ```p5js/playable/autoplay
 
-//xsmartdown.import=http://127.0.0.1:8080/dots.js
+//smartdown.import=http://127.0.0.1:8080/dots.js
 
 
 // import the dots library
-//smartdown.import=/dots.js
+//xsmartdown.import=/dots.js
 
 
 // this is the url for the background picture
@@ -73,12 +61,12 @@ myDiv.style.overflow = 'auto';
 const base = 26;               // set the base for the machine
 const numberBoxes = 3;         // set how many boxes you want
 
-var dots = new dotlib.Dots(p5);  // create the dots and boxes machine
+var dots = new dotlib.Dots(p5, this.div);  // create the dots and boxes machine
 
 
 p5.setup = function() {                          // this function is called when you start the
                                                  // playable. 
-  dots.setup(base, numberBoxes, 'red');             // initialize the machine with the base and number of boxes. 
+  dots.setup(base, numberBoxes, 'red',true);             // initialize the machine with the base and number of boxes. 
   var canvasWidth = p5.windowWidth;              // set the size of the playable
   var canvasHeight = p5.windowHeight * 0.8;
   p5.createCanvas(canvasWidth,canvasHeight);     // create the canvas we will draw on
@@ -137,11 +125,11 @@ In this playable you can type in an alphabet from your keyboard.  The number of 
 
 ```p5js/playable/autoplay
 
-//xsmartdown.import=http://127.0.0.1:8080/dots.js
+//smartdown.import=http://127.0.0.1:8080/dots.js
 
 
 // import the dots library
-//smartdown.import=/dots.js
+//xsmartdown.import=/dots.js
 
 // this is the url for the background picture
 const bgURL = 'https://gist.githubusercontent.com/wildthinkslaboratory/ac98c0bb68ccf7528dc39fa1922d2bdb/raw/0fe1c494e0a94243f3b6d10dd38ef2a341d92f95/bgRedCream-20.jpg';
@@ -166,7 +154,7 @@ const base = 2;               // set the base for the machine
 const numberBoxes = 3;         // set how many boxes you want
 
 
-let dots = new dotlib.Dots(p5);  // create the dots and boxes machine
+let dots = new dotlib.Dots(p5, this.div);  // create the dots and boxes machine
 
 
 p5.setup = function() {                          // this function is called when you start the

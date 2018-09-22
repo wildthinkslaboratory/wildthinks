@@ -19,8 +19,7 @@ Here's a cool way to write down numbers.  It's called negative binary and we can
 
 
 
-In negative binary we use the rule $-1 \leftarrow 2$.  Two **dots** on the right change into one negative **dot** or **antidot** on the left. Let's write the number $2$. Notice there are two purple **dots** in the right most box below.  That's the ones box.  Drag a **dot** to the left.  ( You can also drag it back to the right when you're done. )  The two purple purple **dots** turn into one blue **antidot** in the negative two box.  Can you figure out why an **antidot** appears when you drag these two dots?
-
+In negative binary we use the rule $-1 \leftarrow 2$.  Two purple **dots** on the right change into one blue negative **dot** or **antidot** on the left. Let's write the number $2$.   
 
 
 ```p5js/playable/autoplay
@@ -53,12 +52,14 @@ this.div.innerHTML = '';
 const base = -2;               // set the base for the machine
 const numberBoxes = 2;         // set how many boxes you want
 
-const instructions = 'Drag a DOT to the left. Two DOTS on the right change into one negative DOT or ANTIDOT on the left.';
+const instructions = 'Drag a DOT to the left. (You can also drag it back to the right.)';
+let popup = new Popup(p5, 0.03, 0.3,  0.25, 'BEGIN', '', instructions);
 
 var dots = new dotlib.Dots(p5, this.div);  // create the dots and boxes machine
 
 p5.setup = function() {                          // this function is called when you start the
                                                  // playable. 
+  dots.addInstructions(popup);
   dots.setup(base, numberBoxes);                 // initialize the machine with the base and number of boxes. 
   var canvasWidth = p5.windowWidth ;             // set the size of the playable
   var canvasHeight = p5.windowHeight * 0.7;
@@ -101,9 +102,7 @@ p5.mouseDragged = function() {                   // this function is called ever
 p5.mouseReleased = function() {                  // this function is called when the user releases the mouse 
   dots.mouseReleased();                          // button after a click.
 }
-```
-
-
+```  
 
 So the code for the number $2$ is `-1`  `0`.  We have one **antidot** in the $-2$ box.  That's $\left( -1 \right)\left( -2 \right) + 0 \cdot 1 = 2$.
 
@@ -114,16 +113,6 @@ But we promised that there wouldn't be any negative signs in our code.  Let's fi
 ## Transform the **Antidot**
 
 First, some helpful instructions. Notice the gray band above every playable?  You can always reset a playable by clicking this gray band.  Once to  `stop` the playable and  then again to `play` the playable.  (Ooh, you can also see the code for this playable when you click the `stop` button. It's a scrollable box. Cool. We'll show you how to write your own playable on a different page soon.)
-
-INSTRUCTIONS:
-- Click on a box to add a **dot**.  
-- Drag a **dot** out of the boxes to delete it.  
-- Notice the `Add` button in the upper left.  Click on it.  Now you can add **antidots** too.  
-- If you have a **dot** and an **antidot** in the same box, drag them together to annihilate them.  
-
-
-
-OK, now let's fix that **antidot**.  Try adding $0$ to the middle box by adding both a **dot** AND an **antidot**.  Now you can drag an **antidot** to the left.  No more **antidot**!
 
 
 
@@ -159,10 +148,17 @@ const numberBoxes = 3;         // set how many boxes you want
 
 var dots = new dotlib.Dots(p5, this.div);  // create the dots and boxes machine
 
+const instructions1 = "Now let's fix that ANTIDOT.  Try adding 0 to the middle box by adding both a DOT and an ANTIDOT.  Now you can drag an ANTIDOT to the left.";
+
+let popup1 = new Popup(p5, 0.03, 0.2,  0.25, 'DOT_ANNIHILATE', 'DRAG_LEFT', instructions1);
+const instructions2 = 'No more ANTIDOT!';
+let popup2 = new Popup(p5, 0.03, 0.45,  0.2, 'DRAG_LEFT', '', instructions2);
 
 p5.setup = function() {                          // this function is called when you start the
                                                  // playable. 
-  dots.setup(base, numberBoxes);             // initialize the machine with the base and number of boxes. 
+  dots.addInstructions(popup1);
+  dots.addInstructions(popup2);
+  dots.setup(base, numberBoxes, 'green', true);  // initialize the machine with the base and number of boxes. 
   var canvasWidth = p5.windowWidth;              // set the size of the playable
   var canvasHeight = p5.windowHeight * 0.7;
   p5.createCanvas(canvasWidth,canvasHeight);     // create the canvas we will draw on
@@ -170,7 +166,7 @@ p5.setup = function() {                          // this function is called when
 
   dots.loadSounds();                             // load the sounds for the app
   dots.turnOffRuleButton();                      // configure the machine the way we want it.
-  dots.addDotsToBox(1,0,1);
+  dots.setUpDotsAfterTutorial(1,0,1);
 };
 
 

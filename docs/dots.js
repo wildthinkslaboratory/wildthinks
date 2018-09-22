@@ -121,7 +121,6 @@ function getNumberString(n, symbols) {
 // Popup class
 //////////////////////////////////////////////////////////////////////////////
 const PopupStatusEnum = Object.freeze({INACTIVE : -1, OFF : 0 , ON : 1 });
-const LocalEvents = Object.freeze({ADD_DOT : 0, CLICK_ADD : 1 , DRAG_DOT_OUT : 2, DRAG_LEFT : 3, END_TUTORIAL : 4, BEGIN : 5});
 
 class Popup {
   constructor(playableP5, rx, ry, rw, on, off, m) {
@@ -134,7 +133,7 @@ class Popup {
     this.message = m;
     this.fill = [255,255,200,0];  // currently all popups are yellowish with black writing
     this.stroke = [0,0,0,0];
-    this.state = PopupStatusEnum.INACTIVE;  
+    this.state = PopupStatusEnum.OFF;  
     this.textSize = 25;
     this.canvasW = 0;
     this.canvasH = 0;
@@ -592,16 +591,22 @@ function Dots(p5playable, outsideDiv) {
   // Popups
   /////////////////////////////////////////////////////////////////////////////
   let popups = [];
+  let dotsetup = [0,0,0];
 
   function respondToLocalEvent(e) {
     for (let i=0; i < popups.length; i++) {
       if (popups[i].triggerOn === e.detail) {
-        popups[i].state = PopupStatusEnum.ON;
-        console.log(popups[i]);
+        if (popups[i].state === PopupStatusEnum.OFF) {
+          popups[i].state = PopupStatusEnum.ON;
+        }
       }
       if (popups[i].triggerOff === e.detail) {
         popups[i].state = PopupStatusEnum.INACTIVE;
       }
+    }
+    if (e.detail === 'DOT_ANNIHILATE') {
+      //setUpBoxes(dotsetup[0], dotsetup[1], dotsetup[2]);
+      setUpBoxes(...dotsetup);
     }
   }
   //ADD_DOT : 0, CLICK_ADD : 1 , DRAG_DOT_OUT : 2, DRAG_LEFT : 3, END_TUTORIAL
@@ -610,8 +615,8 @@ function Dots(p5playable, outsideDiv) {
     div.addEventListener('CLICK_ADD', respondToLocalEvent);
     div.addEventListener('DRAG_DOT_OUT', respondToLocalEvent);
     div.addEventListener('DRAG_LEFT', respondToLocalEvent);
-    div.addEventListener('END_TUTORIAL', respondToLocalEvent);
     div.addEventListener('BEGIN', respondToLocalEvent);
+    div.addEventListener('DOT_ANNIHILATE', respondToLocalEvent);
 
   }
 
@@ -860,6 +865,8 @@ function Dots(p5playable, outsideDiv) {
         if (annihilateSound.isLoaded()) {
           annihilateSound.play();
         }
+        let event = new CustomEvent('DOT_ANNIHILATE', { detail : 'DOT_ANNIHILATE'});  // trigger DRAG_LEFT event
+        div.dispatchEvent(event);
         return true;
       }
     }
@@ -1013,7 +1020,17 @@ function Dots(p5playable, outsideDiv) {
 
 
 
+  function setUpBoxes(numberOfDots, dotType, box) {
+    let dotArrayID = dotType;
+    if (dotArrayID > 1) dotArrayID = 1;
+    for (let i=0; i < numberOfDots; i++) {
+      const boxW = boxesW/numBoxes;
+      const x = boxesX + (numBoxes - box - 1)* boxW + boxW/2;
+      const y = boxesY + (boxesH/2);
+      dots[1-dotArrayID].addDot(x + p5.random(-2*dotD, 2*dotD), y + p5.random(-2*dotD, 2*dotD), box);
+    }
 
+  }
 
   ////
   // App mouse events
@@ -1238,9 +1255,9 @@ function Dots(p5playable, outsideDiv) {
     annihilateSound = p5.loadSound(annihilateSoundFile);
   };
 
-  this.setup = function(b, n, color = 'green') {
+  this.setup = function(b, n, color = 'green', tutorial = false) {
 
-    this.turnOnTutorial();
+    if (tutorial) { this.turnOnTutorial(); }
 
     if (color in colorSchemes) { 
       colors = new AppColors(...colorSchemes[color]);
@@ -1278,16 +1295,12 @@ function Dots(p5playable, outsideDiv) {
 
   this.allowRemoveDots = function(b) { removeDotsAllowed = b; };
 
-  this.addDotsToBox = function(numberOfDots, dotType, box) {
-    let dotArrayID = dotType;
-    if (dotArrayID > 1) dotArrayID = 1;
-    for (let i=0; i < numberOfDots; i++) {
-      const boxW = boxesW/numBoxes;
-      const x = boxesX + (numBoxes - box - 1)* boxW + boxW/2;
-      const y = boxesY + (boxesH/2);
-      dots[1-dotArrayID].addDot(x + p5.random(-2*dotD, 2*dotD), y + p5.random(-2*dotD, 2*dotD), box);
-    }
+  this.addDotsToBox = function(numberOfDots, dotType, box) {  
+    setUpBoxes(numberOfDots, dotType, box);
+  };
 
+  this.setUpDotsAfterTutorial = function(numberOfDots, dotType, box) {
+    dotsetup = [numberOfDots, dotType, box];
   };
 
   this.setAlphabetSymbols = function(a) {
@@ -1300,16 +1313,16 @@ function Dots(p5playable, outsideDiv) {
     }
   };
 
-  this.addInstruction = function(popup) {
+  this.addInstructions = function(popup) {
     popups.push(popup);
   };
 
   this.turnOnTutorial = function() {
     popups.push(new Popup(p5, 0.03, 0.3,  0.25, 'BEGIN', 'ADD_DOT', '1. Click on a box to add a dot.'));
-    // popups.push(new Popup(p5, 0.03, 0.45,  0.25, '2. Drag a dot out of the boxes to delete it.'));
-    // popups.push(new Popup(p5, 0.4, 0.05, 0.2, '3. Toggle the Add button to switch to adding antidots.'));
-    // popups[popups.length - 1].setArrow(0.32, 0.08);
-    // popups.push(new Popup(p5, 0.03, 0.6,  0.25, '4. If you have a dot and an antidot in the same box, drag them together to annihilate them.'));
+    popups.push(new Popup(p5, 0.03, 0.45,  0.25, 'ADD_DOT', 'DRAG_DOT_OUT', '2. Drag a dot out of the boxes to delete it.'));
+    popups.push(new Popup(p5, 0.4, 0.05, 0.2, 'DRAG_DOT_OUT', 'CLICK_ADD', '3. Toggle the Add button to switch to adding antidots.'));
+    popups[popups.length - 1].setArrow(0.32, 0.08);
+    popups.push(new Popup(p5, 0.03, 0.6,  0.25, 'CLICK_ADD', 'DOT_ANNIHILATE', '4. If you have a dot and an antidot in the same box, drag them together to annihilate them.'));
   };
 
 }
