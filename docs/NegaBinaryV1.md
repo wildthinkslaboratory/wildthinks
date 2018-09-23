@@ -247,7 +247,7 @@ const base = -2;               // set the base for the machine
 const numberBoxes = 4;         // set how many boxes you want
 
 var dots = new dotlib.Dots(p5, this.div);  // create the dots and boxes machine
-const instructions = 'Checkout the new rule button';
+const instructions = 'Click the rule button to activate the new rule';
 const popup = new Popup(p5, 0.35, 0.15,  0.3, 'BEGIN', 'CLICK_RULE', 'BEGIN', instructions);
 popup.setArrow(0.5, 0.1);
 
