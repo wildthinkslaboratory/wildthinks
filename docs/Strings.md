@@ -16,7 +16,7 @@ In this exploration we'll learn what **strings** are and how to interpret string
 
 Here is the base $26$ machine from the video.  It uses the rule $1 \leftarrow 26$.  The **dots** are red and **antidots** are light blue.  Instead of using the standard number symbols `{0123456789}` to encode numbers, it uses the alphabet `{abcdefghijlmnopqrstuvwxyz}`.  
 
-First, some helpful instructions.  Notice the gray band above every playable?  You can always reset a playable by clicking this gray band.  Once to  `stop` the playable and  then again to `play` the playable.  (Ooh, you can also see the code for this playable when you click the `stop` button. Cool. We'll show you how to write your own playable on a different page soon.)
+First, some helpful instructions.  Notice the gray band above every playable?  You can always reset a playable by clicking this gray band.  Once to  `stop` the playable and  then again to `play` the playable.  
 
 
 I've initilized the machine with the string `cab`, which has a base $10$ value of $1353$.  Said another way, the base $10$ number $1353$ has the code `cab` in this base $26$ machine.  
@@ -344,6 +344,7 @@ function cleanInput(i) {                                // here's where we clean
 
 The next part of Gödel's proof is a variation of Georg Cantor's proof that you can't map a set to it's powerset.  The background concepts for Cantor's proof are amazingly few and simple for a proof that has such far reaching consequences.  We just need to understand a little bit about functions and functional mappings and we need to know what a power set is.  His proof uses something called *diagonalization* and I think it's a good candidate for an interactive web exploration.  I'll put that on my list of things I want to build.  Stay tuned.
 
+[Go on to the Strings and Gödel Page](:@Strings)
 
 [Back to Home](:@Home)
 

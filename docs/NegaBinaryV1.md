@@ -11,7 +11,7 @@ This page builds on James Tanton's Exploding Dots curriculum.  If you're new to 
 
 So you've learned how to write numbers in [binary (base 2) ](http://gdaymath.com/lessons/explodingdots/1-2-1-leftarrow-2-machine/), and you know how to write numbers in [base 3](http://gdaymath.com/lessons/explodingdots/2-3-explaining-machines/) as well as the usual way in base 10.  
 
-Here's another cool way to write down numbers.  It's called negative binary and we can write all of the integers with it, both negative and positive, using only the symbols `0` and `1`.  Here's the catch.  We aren't going to use any negative signs, $-$, in front of a number to say that it's negative.  Goldfish from [Goldfish and Robin](https://www.youtube.com/channel/UCciX2VHmW7Ix_FVWQ_u4RwQ) will show you how to do it.
+Here's another cool way to write down numbers.  It's called **negative binary** and we can write all of the integers with it, both negative and positive, using only the symbols `0` and `1`.  Here's the catch.  We aren't going to use any negative signs, $-$, in front of a number to say that it's negative.  Goldfish from [Goldfish and Robin](https://www.youtube.com/channel/UCciX2VHmW7Ix_FVWQ_u4RwQ) will show you how to do it.
 
 
 ![fullwidth](https://youtu.be/ZN1iXkyuIi8)
@@ -114,7 +114,7 @@ But we promised that there wouldn't be any negative signs in our code.  Let's fi
 
 ## Transform the **Antidot**
 
-First, some helpful instructions. Notice the gray band above every playable?  You can always reset a playable by clicking this gray band.  Once to  `stop` the playable and  then again to `play` the playable.  (Ooh, you can also see the code for this playable when you click the `stop` button. It's a scrollable box. Cool. We'll show you how to write your own playable on a different page soon.)
+First, some helpful instructions. Notice the gray band above every playable?  You can always reset a playable by clicking this gray band.  Once to  `stop` the playable and  then again to `play` the playable. 
 
 
 
@@ -386,7 +386,7 @@ p5.mouseReleased = function() {                  // this function is called when
   dots.mouseReleased();                          // button after a click.
 }
 ```
-
+[Go on to the Strings and Gödel Page](:@Strings)
 
 [Back to Home](:@Home)
 
