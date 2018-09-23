@@ -9,7 +9,7 @@ This page builds on James Tanton's Exploding Dots curriculum.  If you're new to 
 
 ## Welcome to our Negative Binary page
 
-So you've learned how to write numbers in [binary (base 2) ](), and you know how to write numbers in [base 3]() as well as the usual way in base 10.  
+So you've learned how to write numbers in [binary (base 2) ](http://gdaymath.com/lessons/explodingdots/1-2-1-leftarrow-2-machine/), and you know how to write numbers in [base 3](http://gdaymath.com/lessons/explodingdots/2-3-explaining-machines/) as well as the usual way in base 10.  
 
 Here's another cool way to write down numbers.  It's called negative binary and we can write all of the integers with it, both negative and positive, using only the symbols `0` and `1`.  Here's the catch.  We aren't going to use any negative signs, $-$, in front of a number to say that it's negative.  Goldfish from [Goldfish and Robin](https://www.youtube.com/channel/UCciX2VHmW7Ix_FVWQ_u4RwQ) will show you how to do it.
 
