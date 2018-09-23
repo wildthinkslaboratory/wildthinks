@@ -25,11 +25,11 @@ In negative binary we use the rule $-1 \leftarrow 2$.  Two purple **dots** on th
 
 
 ```p5js/playable/autoplay
-//xsmartdown.import=http://127.0.0.1:8080/dots.js
+//smartdown.import=http://127.0.0.1:8080/dots.js
 
 
 // import the dots library
-//smartdown.import=/dots.js
+//xsmartdown.import=/dots.js
 
 // this is the url for the background picture
 const bgURL = 'https://gist.githubusercontent.com/wildthinkslaboratory/ac98c0bb68ccf7528dc39fa1922d2bdb/raw/a813f0d1c5d0108a8b923ce73dd17ebddc692972/ExpDotsBackground.001.jpeg';
@@ -119,11 +119,11 @@ First, some helpful instructions. Notice the gray band above every playable?  Yo
 
 
 ```p5js/playable/autoplay
-//xsmartdown.import=http://127.0.0.1:8080/dots.js
+//smartdown.import=http://127.0.0.1:8080/dots.js
 
 
 // import the dots library
-//smartdown.import=/dots.js
+//xsmartdown.import=/dots.js
 
 
 // this is the url for the background picture
@@ -154,7 +154,7 @@ const instructions1 = "Now let's fix that ANTIDOT.  Try adding 0 to the middle b
 
 let popup1 = new Popup(p5, 0.03, 0.2,  0.25, 'DRAG_DOT_OUT', 'DRAG_LEFT', 'DOT_ANNIHILATE', instructions1);
 const instructions2 = 'No more ANTIDOT!';
-let popup2 = new Popup(p5, 0.03, 0.45,  0.2, 'DRAG_LEFT', '', 'DRAG_DOT_OUT', instructions2);
+let popup2 = new Popup(p5, 0.03, 0.45,  0.2, 'DRAG_LEFT', 'FADE_OUT', 'DRAG_DOT_OUT', instructions2);
 
 p5.setup = function() {                          // this function is called when you start the
                                                  // playable. 
@@ -217,11 +217,11 @@ See if you can figure out the code for $-3$.
 
 
 ```p5js/playable/autoplay
-//xsmartdown.import=http://127.0.0.1:8080/dots.js
+//smartdown.import=http://127.0.0.1:8080/dots.js
 
 
 // import the dots library
-//smartdown.import=/dots.js
+//xsmartdown.import=/dots.js
 
 
 // this is the url for the background picture
@@ -315,11 +315,11 @@ Here's a fully working machine and here are some things for you to try.
 
 
 ```p5js/playable/autoplay
-//xsmartdown.import=http://127.0.0.1:8080/dots.js
+//smartdown.import=http://127.0.0.1:8080/dots.js
 
 
 // import the dots library
-//smartdown.import=/dots.js
+//xsmartdown.import=/dots.js
 
 // this is the url for the background picture
 const bgURL = 'https://gist.githubusercontent.com/wildthinkslaboratory/ac98c0bb68ccf7528dc39fa1922d2bdb/raw/a813f0d1c5d0108a8b923ce73dd17ebddc692972/ExpDotsBackground.001.jpeg';

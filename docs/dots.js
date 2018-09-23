@@ -142,6 +142,7 @@ class Popup {
     this.triggerOn = on;
     this.triggerOff = off;
     this.follows = follows;
+    this.fadeDir = true;   // true for fade on, false for fade off
   }
 
 
@@ -185,9 +186,23 @@ class Popup {
     if (this.state === PopupStatusEnum.ON) {  // we only draw popups when they are on
 
 
-      if (this.fill[3] < 255) {            // this makes the popups fade in
+      if (this.fill[3] < 255 && this.fadeDir) {            // this makes the popups fade in
         this.fill[3] += 15;
         this.stroke[3] += 15;
+      }
+      else { 
+        if (this.triggerOff === 'FADE_OUT') {
+          this.fadeDir = false;
+        }
+      }
+    
+
+      if (!this.fadeDir) {                         // slowly fad out
+        if (this.fill[3] >= 5) {
+          this.fill[3] -= 5;
+          this.stroke[3] -= 5;
+        }
+        else { this.state = PopupStatusEnum.INACTIVE; }  // it's faded out turn it inactive
       }
 
       this.p5.push();
@@ -618,6 +633,7 @@ function Dots(p5playable, outsideDiv) {
       if (popups[i].triggerOff === e.detail) {
         if (popups[i].state === PopupStatusEnum.ON) {
           popups[i].state = PopupStatusEnum.INACTIVE;
+
           //console.log('turning inactive', popups[i].message);
         }
       }  
