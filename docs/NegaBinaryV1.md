@@ -9,7 +9,9 @@ This page builds on James Tanton's Exploding Dots curriculum.  If you're new to 
 
 ## Welcome to our Negative Binary page
 
-Here's a cool way to write down numbers.  It's called negative binary and we can write all of the integers with it, both negative and positive, using only the symbols `0` and `1`.  Here's the catch.  We aren't going to use any negative signs, $-$, in front of a number to say that it's negative.  Goldfish from [Goldfish and Robin](https://www.youtube.com/channel/UCciX2VHmW7Ix_FVWQ_u4RwQ) will show you how to do it.
+So you've learned how to write numbers in [binary (base 2) ](), and you know how to write numbers in [base 3]() as well as the usual way in base 10.  
+
+Here's another cool way to write down numbers.  It's called negative binary and we can write all of the integers with it, both negative and positive, using only the symbols `0` and `1`.  Here's the catch.  We aren't going to use any negative signs, $-$, in front of a number to say that it's negative.  Goldfish from [Goldfish and Robin](https://www.youtube.com/channel/UCciX2VHmW7Ix_FVWQ_u4RwQ) will show you how to do it.
 
 
 ![fullwidth](https://youtu.be/ZN1iXkyuIi8)
@@ -311,6 +313,7 @@ Here's a fully working machine and here are some things for you to try.
 - Is every number's $\lbrace 0, 1 \rbrace$ code unique?  If so, how would you prove it?
 
 
+
 ```p5js/playable/autoplay
 //xsmartdown.import=http://127.0.0.1:8080/dots.js
 
@@ -383,6 +386,7 @@ p5.mouseReleased = function() {                  // this function is called when
   dots.mouseReleased();                          // button after a click.
 }
 ```
+
 
 [Back to Home](:@Home)
 

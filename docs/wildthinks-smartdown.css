@@ -34,7 +34,10 @@
 .wildthinks-theme.smartdown-container .h6,
 .wildthinks-theme.smartdown-container p.smartdown_p {
   /*padding: 0; */
-  padding: 15px 100px;      /* Padding within a paragraph */
+  padding-top: 8px;      /* Padding within a paragraph */
+  padding-bottom: 8px;
+  padding-left: 100px;
+  padding-right: 100px;
   /*border:1px solid red; */  /* for debugging */  
 }
 

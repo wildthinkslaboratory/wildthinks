@@ -113,14 +113,12 @@ p5.mouseReleased = function() {                  // this function is called when
 ## Choose your own alphabet
 
 
-In this playable you can type in an alphabet from your keyboard.  The number of symbols in your alphabet will become the base of the machine and the symbols of your alphabet will be used to write the codes. Currently this machine doesn't allow you to use white space as part of your alphabet so you can't interpret sentences as numbers like we did in the video.  You could substitute the underscore `_` for a space if you wanted.  This machine is only three boxes long, but imagine what it would be like to have one with a hundred boxes, or a million boxes.  You can begin to see how we could interpret an email, a book, a program or a proof as a number.
+In this playable you can type in an alphabet from your keyboard.  The number of symbols in your alphabet will become the base of the machine and the symbols of your alphabet will be used to write the codes.  This machine is only three boxes long, but imagine what it would be like to have one with a hundred boxes, or a million boxes.  You can begin to see how we could interpret an email, a book, a program or a proof as a number.
+
+[Enter an alphabet](:?Alphabet)
+[Current alphabet](:!Alphabet)
 
 
-### Things to try
-- The machine is initialized with the standard base $2$ alphabet `{01}`.  Set the machine to encode the number four.  It should show the code `100`.  Now change the alphabet to `{0123456789}`.  The code `100` will stay the same, but what is the new value for this code?  
-- What happens if you choose the alphabet `{10}` (subtly different from the alphabet `{01}`)?  This will change the value AND the code.  You'll need to adjust the position of **dots** to get the code `100` back. What does the code `100` mean in this machine?  Note that usually we ignore any `0` symbols that are placed in front of a number.  In this case we ignore any  leading `1` symbols.  What other numbers could the code `100` stand for?
-- I like the alphabet `{_o}`.  The underscore `_` for zero reminds me of an empty box and the `o` for one is like a little **dot**. 
-- Experiment and come up with your very own number system.  Using all your exploding dots knowledge you can work out how to do addition, subtraction, multiplication  and division with it. 
 
 
 ```p5js/playable/autoplay
@@ -222,9 +220,13 @@ function cleanUpAlphabet(a) {                                    // here's where
 
 ```
 
+### Things to try
+- The machine is initialized with the standard base $2$ alphabet `{01}`.  Set the machine to encode the number four.  It should show the code `100`.  Now change the alphabet to `{0123456789}`.  The code `100` will stay the same, but what is the new value for this code?  
+- What happens if you choose the alphabet `{10}` (subtly different from the alphabet `{01}`)?  This will change the value AND the code.  You'll need to adjust the position of **dots** to get the code `100` back. What does the code `100` mean in this machine?  Note that usually we ignore any `0` symbols that are placed in front of a number.  In this case we ignore any  leading `1` symbols.  What other numbers could the code `100` stand for?
+- I like the alphabet `{_o}`.  The underscore `_` for zero reminds me of an empty box and the `o` for one is like a little **dot**. 
+- Experiment and come up with your very own number system.  Using all your exploding dots knowledge you can work out how to do addition, subtraction, multiplication  and division with it. 
 
-[Enter an alphabet](:?Alphabet)
-[Current alphabet](:!Alphabet)
+
 
 ## Make a Better Number System
 
