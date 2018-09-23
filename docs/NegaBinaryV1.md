@@ -25,11 +25,11 @@ In negative binary we use the rule $-1 \leftarrow 2$.  Two purple **dots** on th
 
 
 ```p5js/playable/autoplay
-//smartdown.import=http://127.0.0.1:8080/dots.js
+//xsmartdown.import=http://127.0.0.1:8080/dots.js
 
 
 // import the dots library
-//xsmartdown.import=/dots.js
+//smartdown.import=/dots.js
 
 // this is the url for the background picture
 const bgURL = 'https://gist.githubusercontent.com/wildthinkslaboratory/ac98c0bb68ccf7528dc39fa1922d2bdb/raw/a813f0d1c5d0108a8b923ce73dd17ebddc692972/ExpDotsBackground.001.jpeg';
@@ -119,11 +119,11 @@ First, some helpful instructions. Notice the gray band above every playable?  Yo
 
 
 ```p5js/playable/autoplay
-//smartdown.import=http://127.0.0.1:8080/dots.js
+//xsmartdown.import=http://127.0.0.1:8080/dots.js
 
 
 // import the dots library
-//xsmartdown.import=/dots.js
+//smartdown.import=/dots.js
 
 
 // this is the url for the background picture
@@ -217,11 +217,11 @@ See if you can figure out the code for $-3$.
 
 
 ```p5js/playable/autoplay
-//smartdown.import=http://127.0.0.1:8080/dots.js
+//xsmartdown.import=http://127.0.0.1:8080/dots.js
 
 
 // import the dots library
-//xsmartdown.import=/dots.js
+//smartdown.import=/dots.js
 
 
 // this is the url for the background picture
@@ -315,11 +315,11 @@ Here's a fully working machine and here are some things for you to try.
 
 
 ```p5js/playable/autoplay
-//smartdown.import=http://127.0.0.1:8080/dots.js
+//xsmartdown.import=http://127.0.0.1:8080/dots.js
 
 
 // import the dots library
-//xsmartdown.import=/dots.js
+//smartdown.import=/dots.js
 
 // this is the url for the background picture
 const bgURL = 'https://gist.githubusercontent.com/wildthinkslaboratory/ac98c0bb68ccf7528dc39fa1922d2bdb/raw/a813f0d1c5d0108a8b923ce73dd17ebddc692972/ExpDotsBackground.001.jpeg';
