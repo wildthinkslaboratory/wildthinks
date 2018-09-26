@@ -104,7 +104,7 @@ p5.mouseReleased = function() {                  // this function is called when
 }
 ```  
 
-So the code for the number 2 is [](:?code1|number)  $\cdot$ (-2) + [](:?code2|number)  $\cdot$ 1 = [](:!total) [check](:=total=code1*(-2)+code2)  [correct?](:=correct=total==2) [](:!correct)
+So the code for the number 2 is `-1` `0`.  That's $(-1)(-2) + (0)(1) = 2$.
 
 
 But we promised that there wouldn't be any negative signs in our code.  Let's fix that.
