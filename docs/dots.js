@@ -558,6 +558,7 @@ function Dots(p5playable, outsideDiv) {
   let dotD;     // dot diameter
   let xSpacer = 10;  // how much space between the boxes
   let boxTextSize;
+  let codeInset;
   // let marginX;
   // let marginY;
 
@@ -668,6 +669,18 @@ function Dots(p5playable, outsideDiv) {
     const height = endcapH;
 
     p5.push();
+  
+    p5.textSize(valueTextSize);
+    p5.stroke(...colors.writingFill);
+    p5.noFill();
+    //p5.fill(colors.valueFill[0],colors.valueFill[1],colors.valueFill[2],50);
+    p5.rect(x - 2*codeInset, y - ySpacer/4, boxesW + 2*codeInset, height + ySpacer/2, 10);
+
+    p5.fill(...colors.writingFill);
+    const codeText = 'code';
+    const [textX, textY] = centerTextInRect(p5, x - 2*codeInset, y, 2*codeInset, height, codeText);
+    p5.text(codeText, textX, textY);
+
     p5.noStroke();
     p5.fill(...colors.valueFill);
 
@@ -675,8 +688,8 @@ function Dots(p5playable, outsideDiv) {
       p5.rect(x + i*width, y , width - xSpacer, height, 10);
     }
 
+ 
     p5.noStroke();
-    p5.textSize(valueTextSize);
     p5.fill(...colors.writingFill);
 
 
@@ -1239,12 +1252,13 @@ function Dots(p5playable, outsideDiv) {
     }
 
     endcapH = canvasH * 0.1;
-    boxesW = canvasW * 0.9; // width of all the boxes together
+    boxesW = canvasW * 0.85; // width of all the boxes together
 
     const boxWidth = boxesW / numBoxes;
 
     boxesH = canvasH * 0.5; // height of boxes
-    boxesX = (width - boxesW) / 2;
+    codeInset = boxesW * 0.05;
+    boxesX = (width - boxesW) / 2  + codeInset/2;
     
     boxTextSize = boxesH * 0.5;  // text size
     valueTextSize = endcapH * 0.5;
