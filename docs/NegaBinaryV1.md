@@ -25,8 +25,6 @@ In negative binary we use the rule $-1 \leftarrow 2$.  Two purple **dots** on th
 
 
 ```p5js/playable/autoplay
-//xsmartdown.import=http://127.0.0.1:8080/dots.js
-
 
 // import the dots library
 //smartdown.import=/dots.js
@@ -106,7 +104,8 @@ p5.mouseReleased = function() {                  // this function is called when
 }
 ```  
 
-So the code for the number $2$ is `-1`  `0`.  We have one **antidot** in the $-2$ box.  That's $\left( -1 \right)\left( -2 \right) + 0 \cdot 1 = 2$.
+So the code for the number 2 is [](:?code1|number)  $\cdot$ (-2) + [](:?code2|number)  $\cdot$ 1 = [](:!total) [check](:=total=code1*(-2)+code2)  [correct?](:=correct=total==2) [](:!correct)
+
 
 But we promised that there wouldn't be any negative signs in our code.  Let's fix that.
 
@@ -114,13 +113,11 @@ But we promised that there wouldn't be any negative signs in our code.  Let's fi
 
 ## Transform the **Antidot**
 
-First, some helpful instructions. Notice the gray band above every playable?  You can always reset a playable by clicking this gray band.  Once to  `stop` the playable and  then again to `play` the playable. 
+First, some helpful instructions. You can always reset the app by clicking this gray band.  Once to  `stop` the playable and  then again to `play` the playable.  Notice the gray band above every playable? 
 
 
 
 ```p5js/playable/autoplay
-//xsmartdown.import=http://127.0.0.1:8080/dots.js
-
 
 // import the dots library
 //smartdown.import=/dots.js
@@ -217,8 +214,6 @@ See if you can figure out the code for $-3$.
 
 
 ```p5js/playable/autoplay
-//xsmartdown.import=http://127.0.0.1:8080/dots.js
-
 
 // import the dots library
 //smartdown.import=/dots.js
@@ -315,8 +310,6 @@ Here's a fully working machine and here are some things for you to try.
 
 
 ```p5js/playable/autoplay
-//xsmartdown.import=http://127.0.0.1:8080/dots.js
-
 
 // import the dots library
 //smartdown.import=/dots.js
