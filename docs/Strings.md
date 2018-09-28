@@ -350,7 +350,7 @@ function cleanInput(i) {                                // here's where we clean
 
 ## What's Next?  Gödel's Incompleteness Theorem Part 2?
 
-The next part of Gödel's proof is a variation of Georg Cantor's proof that you can't map a set to it's powerset.  The background concepts for Cantor's proof are amazingly few and simple for a proof that has such far reaching consequences.  We just need to understand a little bit about functions and functional mappings and we need to know what a power set is.  His proof uses something called *diagonalization* and I think it's a good candidate for an interactive web exploration.  I'll put that on my list of things I want to build.  Stay tuned.
+The next part of Gödel's proof is a variation of Georg Cantor's proof that you can't map a set to its powerset.  The background concepts for Cantor's proof are amazingly few and simple for a proof that has such far reaching consequences.  We just need to understand a little bit about functions and functional mappings and we need to know what a power set is.  His proof uses something called *diagonalization* and I think it's a good candidate for an interactive web exploration.  I'll put that on my list of things I want to build.  Stay tuned.
 
 
 
