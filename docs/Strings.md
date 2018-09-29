@@ -236,7 +236,7 @@ Our current system for writing numbers in base $10$ with the alphabet `{01234567
 ## Mystery String Challenge
 So Kurt Gödel took a bunch of strings that were originally intended as proofs and he interpreted them as numbers and then he studied their mathematical properties.  This led to him writing a mathematical definition of proof numbers.  I thought it might be fun to give you an interesting set of strings to interpret as numbers.  The following playable is a Deterministic Finite Automata (DFA).  Don't worry if you don't know what a DFA is.  All you need to know is that it eats up strings.    
 
-Some strings it likes and some strings it doesn't like. If you were to collect all the strings it likes (or accepts) into a set, how would you describe those strings?  If you followed Gödel's example and you interpreted the strings as numbers, what base would you use and what alphabet?  Do your string numbers have any interesting mathematical properties?  It can be helpful to go through all possible strings, starting with the shortest strings first, and build 
+Some strings it likes and some strings it doesn't like. If you were to collect all the strings it likes (or accepts) into a set, how would you describe those strings?  If you followed Gödel's example and you interpreted the strings as numbers, what base would you use and what alphabet?  Do your string numbers have any interesting mathematical properties?  It can be helpful to go through all possible strings, starting with the shortest strings first.
 
 
 INSTRUCTIONS: 

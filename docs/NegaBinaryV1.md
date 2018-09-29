@@ -113,7 +113,7 @@ But we promised that there wouldn't be any negative signs in our code.  Let's fi
 
 ## Transform the **Antidot**
 
-First, some helpful instructions. You can always reset the app by clicking this gray band below this paragraph.  Once to  `stop` the playable and  then again to `play` .
+First, some helpful instructions. You can always reset the app by clicking the gray band below this paragraph.  Once to  `stop` the playable and  then again to `play` .
 
 
 
