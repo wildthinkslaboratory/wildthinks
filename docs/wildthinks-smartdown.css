@@ -15,7 +15,7 @@
   /*padding: 0;*/
   padding: 10px 12px;   /* Padding from the edge of the page */
   /*line-height: 1.35; */ /* Override default of 1.35 */
-  /* border:1px solid green; */ /* for debugging */
+  /*border:1px solid green; *//* for debugging */
   /* font-size: 20px;    */    /* Override font size of 18px */
 }
 
@@ -36,8 +36,8 @@
   /*padding: 0; */
   padding-top: 8px;      /* Padding within a paragraph */
   padding-bottom: 8px;
-  padding-left: 100px;
-  padding-right: 100px;
+  padding-left: 50px;
+  padding-right: 50px;
   /*border:1px solid red; */  /* for debugging */  
 }
 
