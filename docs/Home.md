@@ -1,4 +1,4 @@
-![](https://gist.githubusercontent.com/wildthinkslaboratory/ac98c0bb68ccf7528dc39fa1922d2bdb/raw/7f5b396d56cbb06748ebcc6fda251d6a10260a0d/banner2.png)
+![fullwidth](https://gist.githubusercontent.com/wildthinkslaboratory/ac98c0bb68ccf7528dc39fa1922d2bdb/raw/7f5b396d56cbb06748ebcc6fda251d6a10260a0d/banner2.png)
 
 
 
@@ -43,6 +43,6 @@ At Wildthinks we sponsor and mentor a fabulous group of kid YouTube creators who
 
 #### Composed in Smartdown 
 
-The pages on this site are written in [Smartdown](https://smartdown.site). Smartdown make it easy to share technical and interactive content such as charts, graphs, and featherweight programs called playables.  
+The pages on this site are written in [Smartdown](https://smartdown.io). Smartdown make it easy to share technical and interactive content such as charts, graphs, and featherweight programs called playables.  
 
 

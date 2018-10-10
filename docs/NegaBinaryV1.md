@@ -385,7 +385,7 @@ p5.mouseReleased = function() {                  // this function is called when
 
 #### Composed in Smartdown 
 
-The pages on this site are written in [Smartdown](https://smartdown.site). Smartdown make it easy to share technical and interactive content such as charts, graphs, and featherweight programs called playables.  
+The pages on this site are written in [Smartdown](https://smartdown.io). Smartdown make it easy to share technical and interactive content such as charts, graphs, and featherweight programs called playables.  
 
 
 
