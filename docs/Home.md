@@ -8,6 +8,8 @@
 
 Our goal is to build interactive explorations of our favorite topics in discrete mathematics, logic, proof writing, and theoretical computer science.  
 
+[Who we are](:@About)
+
 
 
 ## Negative Binary Exploding Dots
