@@ -33,14 +33,45 @@
 .wildthinks-theme.smartdown-container .h5,
 .wildthinks-theme.smartdown-container .h6,
 .wildthinks-theme.smartdown-container p.smartdown_p {
-  /*padding: 0; */
-  padding-top: 8px;      /* Padding within a paragraph */
-  padding-bottom: 8px;
-  padding-left: 50px;
-  padding-right: 50px;
-  /*border:1px solid red; */  /* for debugging */  
+  padding: 1% 10%;
 }
 
+.wildthinks-theme.smartdown-container .smartdown_p > img.fullwidth {
+  width: 100vw;
+  position: relative;
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
+  max-width: unset;
+}
+
+.wildthinks-theme.smartdown-container .smartdown_p > img.thumbnail {
+  margin: 0 0;
+}
+
+.wildthinks-theme.smartdown-container .video-container.youtube.thumbnail {
+  xborder: 1px solid red;
+  padding: 1% 10%;
+  background-color: white;
+}
+
+.wildthinks-theme.smartdown-container .a-disclosable {
+  display: inline-block;
+  color: #D44;
+}
+
+.wildthinks-theme.smartdown-container .a-disclosable:hover {
+  text-decoration: none;
+  color: #D44;
+  font-weight: bold;
+}
+
+.smartdown-container .disclosable-content.popup {
+  color: #FFF;
+  background-color: #D44;
+  border: none;
+}
 
  /*************
 
