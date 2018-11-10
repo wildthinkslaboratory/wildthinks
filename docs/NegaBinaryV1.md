@@ -1,4 +1,4 @@
-![](https://gist.githubusercontent.com/wildthinkslaboratory/ac98c0bb68ccf7528dc39fa1922d2bdb/raw/eb65f6202d8185468cea211757f0700fcef3aacd/negaBinaryBanner1.png)
+![fullwidth](https://gist.githubusercontent.com/wildthinkslaboratory/ac98c0bb68ccf7528dc39fa1922d2bdb/raw/eb65f6202d8185468cea211757f0700fcef3aacd/negaBinaryBanner1.png)
 
 
 
@@ -21,7 +21,7 @@ Here's another cool way to write down numbers.  It's called **negative binary** 
 
 
 
-In negative binary we use the rule $-1 \leftarrow 2$.  Two purple **dots** on the right change into one blue negative **dot** or **antidot** on the left. Let's write the number $2$.   
+In negative binary we use the rule $-1 \leftarrow 2$.  Two purple **dots** on the right change into one blue negative **dot** or **antidot** on the left. Let's write the number $2$.  We'll start by putting two dots into the box on the right.  
 
 
 ```p5js/playable/autoplay
