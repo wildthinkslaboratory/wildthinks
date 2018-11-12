@@ -1,28 +1,44 @@
-![fullwidth](https://gist.githubusercontent.com/wildthinkslaboratory/ac98c0bb68ccf7528dc39fa1922d2bdb/raw/eb65f6202d8185468cea211757f0700fcef3aacd/negaBinaryBanner1.png)
+![fullwidth](https://gist.githubusercontent.com/wildthinkslaboratory/ac98c0bb68ccf7528dc39fa1922d2bdb/raw/7f5b396d56cbb06748ebcc6fda251d6a10260a0d/banner2.png)
 
 
-
+# :::: EDpointer
 
 This page builds on James Tanton's Exploding Dots curriculum.  If you're new to exploding dots, checkout these amazing pages: [G'Day Math! Exploding Dots](http://gdaymath.com/courses/exploding-dots/) and [Global Math Week Exploding Dots](https://www.explodingdots.org).
 
+# ::::
 
 
-## Welcome to our Negative Binary page
 
-So you've learned how to write numbers in [binary (base 2) ](http://gdaymath.com/lessons/explodingdots/1-2-1-leftarrow-2-machine/), and you know how to write numbers in [base 3](http://gdaymath.com/lessons/explodingdots/2-3-explaining-machines/) as well as the usual way in base 10.  
+# Welcome to our Negative Binary page
 
-Here's another cool way to write down numbers.  It's called **negative binary** and we can write all of the integers with it, both negative and positive, using only the symbols `0` and `1`.  Here's the catch.  We aren't going to use any negative signs, $-$, in front of a number to say that it's negative.  Goldfish from [Goldfish and Robin](https://www.youtube.com/channel/UCciX2VHmW7Ix_FVWQ_u4RwQ) will show you how to do it.
+So you've learned how to write numbers in [base 2 (binary) ](http://gdaymath.com/lessons/explodingdots/1-2-1-leftarrow-2-machine/), and you know how to write numbers in [base 3](http://gdaymath.com/lessons/explodingdots/2-3-explaining-machines/) as well as the usual way in [base 10](http://gdaymath.com/lessons/explodingdots/1-4-1-leftarrow-10-machine/).  
 
+Here's another cool way to write down numbers.  It's called [**negative binary**](::negbin/tooltip) and we can write all of the integers with it, both negative and positive, using only the symbols `0` and `1`.  Here's the catch.  We aren't going to use any negative signs, `-`, in front of a number to say that it's negative.  
+
+# :::: negbin
+**Negative Binary** represents numbers in base -2. Both positive and negative numbers are represented with the symbols `0` and `1` without the use of a minus sign `-`.
+# ::::
+
+# [Begin](::d1)
+
+# :::: d1
 
 ![fullwidth](https://youtu.be/ZN1iXkyuIi8)
 
 
-## Let's Begin
+# [Continue](::d2)
 
+# :::: d2
 
+# Now You Try
 
-In negative binary we use the rule $-1 \leftarrow 2$.  Two purple **dots** on the right change into one blue negative **dot** or **antidot** on the left. Let's write the number $2$.  We'll start by putting two dots into the box on the right.  
+Remember the main rule: two purple **dots** on the right change into one blue negative **dot** or **antidot** in the box to the left. Let's write the number $2$.  We'll start by putting two dots into the rightmost box of the [**playable**](::playable/tooltip).  
 
+# :::: playable
+
+The interactive app below is called a **playable**.  Notice the thin gray bar above it.  You can reset the app by clicking on this band.  Once to stop the playable and again to start it.  When the playable is stopped you can see the playable's code.  
+
+# ::::
 
 ```p5js/playable/autoplay
 
@@ -104,17 +120,14 @@ p5.mouseReleased = function() {                  // this function is called when
 }
 ```  
 
-So the code for the number 2 is `-1` `0`.  That's $(-1)(-2) + (0)(1) = 2$.
+When we put two dots into this machine we get the code `-1` `0`.  We have one negative dot in the $-2$ box and no dots in the $1$ box.  That's $(-1)(-2) + (0)(1) = 2$.
 
 
-But we promised that there wouldn't be any negative signs in our code.  Let's fix that.
+But we want to write all our codes with only positive dots.  Let's fix that.
 
 
 
-## Transform the **Antidot**
-
-First, some helpful instructions. You can always reset the app by clicking the gray band below this paragraph.  Once to  `stop` the playable and  then again to `play` .
-
+# Transform the **Antidot**
 
 
 ```p5js/playable/autoplay
@@ -205,12 +218,11 @@ So the code for the number $2$ is `110`.  We have a **dot** in the $4$ box, a **
 Also, we learned a new rule:   $\fbox{$\bullet$} \fbox{$\bullet$} \leftarrow \fbox{$\phantom{\circ}$} \fbox{$\circ$}$ .  Now we can transform an **antidot** into **dots**.  (We can also use this trick to transform a **dot** into **antidots**.)
 
 
+# [More](::d3)
+
+# :::: d3
 
 ## What's the code for -3?
-
-
-
-See if you can figure out the code for $-3$.
 
 
 ```p5js/playable/autoplay
@@ -381,13 +393,21 @@ p5.mouseReleased = function() {                  // this function is called when
 ```
 [Go on to the Strings and Gödel Page](:@Strings)
 
+# ::::
+
+# ::::
+
+# ::::
+
 [Back to Home](:@Home)
+
+# :::: endnote
 
 #### Composed in Smartdown 
 
-The pages on this site are written in [Smartdown](https://smartdown.io). Smartdown make it easy to share technical and interactive content such as charts, graphs, and featherweight programs called playables.  
+The pages on this site are written in [Smartdown](https://smartdown.io). Smartdown makes it easy to share technical and interactive content such as charts, graphs, and featherweight programs called playables.  
 
-
+# ::::
 
 
 

@@ -33,7 +33,7 @@
 .wildthinks-theme.smartdown-container .h5,
 .wildthinks-theme.smartdown-container .h6,
 .wildthinks-theme.smartdown-container p.smartdown_p {
-  padding: 1% 10%;
+  padding: 20px 5%;
 }
 
 .wildthinks-theme.smartdown-container .smartdown_p > img.fullwidth {
@@ -58,21 +58,48 @@
 
 .wildthinks-theme.smartdown-container .a-disclosable {
   display: inline-block;
-  color: #D44;
+  xcolor:#ea4;
+  color:#6a2;
+  text-decoration: underline;
 }
 
 .wildthinks-theme.smartdown-container .a-disclosable:hover {
   text-decoration: none;
-  color: #D44;
+  color: #9c5;
+  xcolor: #fb4;
   font-weight: bold;
 }
 
 .smartdown-container .disclosable-content.popup {
   color: #FFF;
-  background-color: #D44;
+  background-color: #8c6;
+  xbackground-color: #fb4;
+  border: none;
+  z-index: 99;
+}
+
+.wildthinks-theme.smartdown-container .btn-infocell.btn-infocell-disclosable {
+  color: #fff !important;
+  text-transform: uppercase;
+  background: #2aa;
+  padding: 20px;
   border: none;
 }
 
+.wildthinks-theme.smartdown-container .btn-infocell.btn-infocell-disclosable:hover {
+  background: #5dd;
+  letter-spacing: 1px;
+  -webkit-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
+  -moz-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
+  box-shadow: 5px 40px -10px rgba(0,0,0,0.57);
+  transition: all 0.4s ease 0s;
+
+}
+
+.smartdown-container .disclosable-content.visible {
+  padding: unset; 
+  border: none;
+}
  /*************
 
  Original styles from smartdown source. C-style comments stripped
