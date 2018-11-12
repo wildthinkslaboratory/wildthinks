@@ -1,16 +1,19 @@
-![fullwidth](https://gist.githubusercontent.com/wildthinkslaboratory/ac98c0bb68ccf7528dc39fa1922d2bdb/raw/86e53be54318e87d44d8db3ca0a15896690e1f30/stringsBanner-20.jpg)
-
-This page builds on James Tanton's **exploding dots** curriculum.  If you're new to exploding dots, checkout these amazing pages: [G'Day Math! **Exploding Dots**](http://gdaymath.com/courses/exploding-dots/) and [Global Math Week **Exploding Dots**](https://www.explodingdots.org).
+![fullwidth](https://gist.githubusercontent.com/wildthinkslaboratory/ac98c0bb68ccf7528dc39fa1922d2bdb/raw/7f5b396d56cbb06748ebcc6fda251d6a10260a0d/banner2.png)
 
 
-## Exploding Dots Meets Kurt Gödel (Also, Strings are Numbers) 
 
-In this exploration we'll learn what **strings** are and how to interpret strings as numbers.  Then we'll see how Kurt Gödel used this idea in his famous Incompleteness Theorem.
+## Exploding Dots Meets Kurt Gödel 
 
+One of the most powerful ideas that people learn from James Tanton's [**Exploding Dots**](http://gdaymath.com/courses/exploding-dots/) (beginning number theory) is that there are many, many ways to write down numbers and do arithmetic.  When we are no longer stuck in base 10, the world of numbers opens up and strange things start to happen.  All kinds of text, writing and data can be interpreted as numbers.  In this exploration we'll see how Kurt Gödel used this idea in his famous Incompleteness Theorem.
+
+# [Begin](::d1)
+# :::: d1
 
 ![fullwidth](https://youtu.be/oXyek2Q40AI)
 
+# [Continue](::d2)
 
+# :::: d2
 ## Words are Numbers!  A Base 26 Machine
 
 
@@ -352,14 +355,8 @@ function cleanInput(i) {                                // here's where we clean
 
 The next part of Gödel's proof is a variation of Georg Cantor's proof that you can't map a set to its powerset.  The background concepts for Cantor's proof are amazingly few and simple for a proof that has such far reaching consequences.  We just need to understand a little bit about functions and functional mappings and we need to know what a power set is.  His proof uses something called *diagonalization* and I think it's a good candidate for an interactive web exploration.  I'll put that on my list of things I want to build.  Stay tuned.
 
-
+# ::::
+# ::::
 
 [Back to Home](:@Home)
-
-
-#### Composed in Smartdown 
-
-The pages on this site are written in [Smartdown](https://smartdown.io). Smartdown makes it easy to share technical and interactive content such as charts, graphs, and featherweight programs called playables.  
-
-
 
