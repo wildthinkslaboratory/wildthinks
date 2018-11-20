@@ -21,7 +21,7 @@ Here is the base $26$ machine from the video.  It uses the rule $1 \leftarrow 26
 
 # :::: playable
 
-The interactive app below is called a **playable**.  Notice the thin gray bar above it.  You can reset the app by clicking on this band.  Once to stop the playable and again to start it.  When the playable is stopped you can see the playable's code.  
+The interactive app below is called a **playable**.  Notice the thin gray bar above it.  You can reset the app by clicking on this band, once to stop the playable and again to start it.  When the playable is stopped you can see the playable's code.  
 
 # ::::
 
