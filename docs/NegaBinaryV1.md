@@ -41,7 +41,7 @@ The interactive app below is called a **playable**.  Notice the thin gray bar ab
 ```p5js/playable/autoplay
 
 // import the dots library
-//smartdown.import=/dots.js
+//smartdown.import=dots.js
 
 // this is the url for the background picture
 const bgURL = 'https://gist.githubusercontent.com/wildthinkslaboratory/ac98c0bb68ccf7528dc39fa1922d2bdb/raw/a813f0d1c5d0108a8b923ce73dd17ebddc692972/ExpDotsBackground.001.jpeg';
@@ -131,7 +131,7 @@ But we want to write all our codes with only positive dots.  Let's fix that.
 ```p5js/playable/autoplay
 
 // import the dots library
-//smartdown.import=/dots.js
+//smartdown.import=dots.js
 
 
 // this is the url for the background picture
@@ -226,7 +226,7 @@ Also, we learned a new rule:   $\fbox{$\bullet$} \fbox{$\bullet$} \leftarrow \fb
 ```p5js/playable/autoplay
 
 // import the dots library
-//smartdown.import=/dots.js
+//smartdown.import=dots.js
 
 
 // this is the url for the background picture
@@ -322,7 +322,7 @@ Here's a fully working machine and here are some things for you to try.
 ```p5js/playable/autoplay
 
 // import the dots library
-//smartdown.import=/dots.js
+//smartdown.import=dots.js
 
 // this is the url for the background picture
 const bgURL = 'https://gist.githubusercontent.com/wildthinkslaboratory/ac98c0bb68ccf7528dc39fa1922d2bdb/raw/a813f0d1c5d0108a8b923ce73dd17ebddc692972/ExpDotsBackground.001.jpeg';
