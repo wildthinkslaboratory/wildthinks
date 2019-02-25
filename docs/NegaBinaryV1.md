@@ -1,7 +1,5 @@
 ![fullwidth](https://gist.githubusercontent.com/wildthinkslaboratory/ac98c0bb68ccf7528dc39fa1922d2bdb/raw/7f5b396d56cbb06748ebcc6fda251d6a10260a0d/banner2.png)
 
-
-
 # --outlinebox notice
 **Notice:**
 This page builds on James Tanton's Exploding Dots curriculum. If you're new to exploding dots, checkout these amazing pages: [G'Day Math! Exploding Dots](http://gdaymath.com/courses/exploding-dots/) and [Global Math Week Exploding Dots](https://www.explodingdots.org).  Then come back here and continue the journey.
@@ -9,7 +7,7 @@ This page builds on James Tanton's Exploding Dots curriculum. If you're new to e
 
 # Negative Binary 
 
-So you've learned how to write numbers in [base 2 (binary) ](http://gdaymath.com/lessons/explodingdots/1-2-1-leftarrow-2-machine/), and you know how to write numbers in [base 3](http://gdaymath.com/lessons/explodingdots/2-3-explaining-machines/) as well as the usual way in [base 10](http://gdaymath.com/lessons/explodingdots/1-4-1-leftarrow-10-machine/).  Here's another cool way to write down numbers.  It's called [**negative binary**](::negbin/tooltip) and we can write all of the integers with it, both negative and positive, using only the symbols `0` and `1`.  Here's the catch.  We aren't going to use any negative signs, `-`, in front of a number to say that it's negative.  
+So you've learned how to write numbers in [base 2 (binary) ](http://gdaymath.com/lessons/explodingdots/1-2-1-leftarrow-2-machine/), and you know how to write numbers in [base 3](http://gdaymath.com/lessons/explodingdots/2-3-explaining-machines/) as well as the usual way in [base 10](http://gdaymath.com/lessons/explodingdots/1-4-1-leftarrow-10-machine/).  Here's another cool way to write down numbers.  It's called [**negative binary**](::negbin/tooltip) and we can write all of the integers with it, both negative and positive, using only the symbols `0` and `1`.  Here's the catch.  We aren't going to use any negative signs, `-`, in front of a number to say that it's negative.  Here's a video from Goldfish and Robin that will show you how to get started.
 
 # :::: negbin
 **Negative Binary** represents numbers in base -2. Both positive and negative numbers are represented with the symbols `0` and `1` without the use of a minus sign `-`.
@@ -19,8 +17,13 @@ So you've learned how to write numbers in [base 2 (binary) ](http://gdaymath.com
 
 # Now You Try
 
-Remember the main rule: two purple **dots** on the right change into one blue negative **dot** or **antidot** in the box to the left. Let's write the number $2$.  We'll start by putting two dots into the rightmost box of the [**playable**](::playable/tooltip).  
+Remember the main rule!
+# --outlinebox main_rule
+**The main rule:**
+ Two purple **dots** on the right change into one blue negative **dot** or **antidot** in the box to the left.   $\fbox{$\circ$} \leftarrow \fbox{${\bullet \bullet}$} $ 
+# --outlinebox
 
+Let's write the number $2$.  We'll start by putting two dots into the rightmost box of the [**playable**](::playable/tooltip). 
 # :::: playable
 The interactive app below is called a **playable**.  Notice the thin gray bar above it.  You can reset the app by clicking on this band, once to stop the playable and again to start it.  When the playable is stopped you can see the playable's code.  
 # ::::
@@ -106,15 +109,11 @@ p5.mouseReleased = function() {                  // this function is called when
 }
 ```  
 
-When we put two dots into this machine we get the code `-1` `0`.  We have one negative dot in the $-2$ box and no dots in the $1$ box.  That's $(-1)(-2) + (0)(1) = 2$.
-
-
-But we want to write all our codes with only positive dots.  Let's fix that.
-
-
+When we put two dots into this machine and drag one to the left, we get the code `-1` `0`.  We have one negative dot in the $-2$ box and no dots in the $1$ box.  That's $(-1)(-2) + (0)(1) = 2$.  So the code `-1` `0` represents the number $2$ but the problem is we weren't going to use negative signs in our code.  Let's fix that.
 
 # Transform the **Antidot**
 
+Before we get rid of the antidot in our code for $2$, we need to learn a little bit about how this machine works.  Here's a short interactive tutorial.
 
 ```p5js/playable/autoplay
 
@@ -199,15 +198,42 @@ p5.mouseReleased = function() {                  // this function is called when
 }
 ```
 
+So the code for the number $2$ is [](:?answer1) 
+
+```javascript/autoplay
+smartdown.setVariable('answer1', '');
+this.dependOn = ['answer1'];
 
 
-So the code for the number $2$ is `110`.  We have a **dot** in the $4$ box, a **dot** in the  $-2$ box and nothing in the $1$ box.  That gives us $4 + \left(-2 \right) + 0 = 2$.  
+this.depend = function() {
+  if (env.answer1 === '110') {
+    smartdown.showDisclosure('highfive','','bottomright');  
+    setTimeout(function () {
+           smartdown.hideDisclosure('highfive','','bottomright'); 
+      }, 3000);
+    setTimeout(function () {
+           smartdown.showDisclosure('d1', '', '');
+      }, 3000);
+  } 
+};
+```
 
-Also, we learned a new rule:   $\fbox{$\bullet$} \fbox{$\bullet$} \leftarrow \fbox{$\phantom{\circ}$} \fbox{$\circ$}$ .  Now we can transform an **antidot** into **dots**.  (We can also use this trick to transform a **dot** into **antidots**.)
+# :::: highfive
+# --colorbox
+High five! :raised_hand:
+# --colorbox
+# ::::
 
+
+# :::: d1
+
+We have a **dot** in the $4$ box, a **dot** in the  $-2$ box and nothing in the $1$ box.  That gives us $4 + \left(-2 \right) + 0 = 2$. 
+
+Also, we learned a new rule:   $\fbox{$\bullet$} \fbox{$\bullet$} \leftarrow \fbox{$\phantom{\circ}$} \fbox{$\circ$}$ .  Now we can transform an **antidot** into **dots**.  (We can also use this trick to transform a **dot** into **antidots**.) In the next app we've added a rule button that toggles between the rules so you can use either one.
 
 
 ## What's the code for -3?
+
 
 
 ```p5js/playable/autoplay
@@ -288,9 +314,35 @@ p5.mouseReleased = function() {                  // this function is called when
   dots.mouseReleased();                          // button after a click.
 }
 ```
+What's the code for $-3$? [](:?answer2) 
+
+```javascript/autoplay
+smartdown.setVariable('answer2', '');
+this.dependOn = ['answer2'];
 
 
-Did you get `1101` ?  That's $(-8) + 4 + 0 + 1 = -3$.
+this.depend = function() {
+  if (env.answer2 === '1101') {
+    smartdown.showDisclosure('cool','','bottomright');  
+    setTimeout(function () {
+           smartdown.hideDisclosure('cool','','bottomright'); 
+      }, 3000);
+    setTimeout(function () {
+           smartdown.showDisclosure('d2', '', '');
+      }, 2000);
+  } 
+};
+```
+
+# :::: cool
+# --colorbox
+Cool.
+# --colorbox
+# ::::
+
+# :::: d2 
+
+That's $(-8) + 4 + 0 + 1 = -3$.
 
 
 
@@ -380,6 +432,9 @@ p5.mouseReleased = function() {                  // this function is called when
   dots.mouseReleased();                          // button after a click.
 }
 ```
+# ::::
+# ::::
+
 [Go on to the Strings and Gödel Page](:@Strings)
 
 
