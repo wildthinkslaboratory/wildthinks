@@ -6,14 +6,8 @@
 
 One of the most powerful ideas that people learn from James Tanton's [Exploding Dots](http://gdaymath.com/courses/exploding-dots/) (beginning number theory) is that there are many, many ways to write down numbers and do arithmetic.  When we are no longer stuck in base 10, the world of numbers opens up and strange things start to happen.  All kinds of text, writing and data can be interpreted as numbers.  In this exploration we'll see how Kurt Gödel used this idea in his famous Incompleteness Theorem.
 
-# [Begin](::d1)
-# :::: d1
-
 ![fullwidth](https://youtu.be/oXyek2Q40AI)
 
-# [Continue](::d2)
-
-# :::: d2
 ## Words are Numbers!  A Base 26 Machine
 
 
@@ -116,10 +110,6 @@ p5.mouseReleased = function() {                  // this function is called when
 - Which base $10$ number has the code `hi`? 
 - What's the base $10$ value of your favorite three letter word?
 
-
-# [Continue](::d3)
-
-# :::: d3
 
 ## Choose your own alphabet
 
@@ -240,18 +230,10 @@ function cleanUpAlphabet(a) {                                    // here's where
 - Experiment and come up with your very own number system.  Using all your exploding dots knowledge you can work out how to do addition, subtraction, multiplication  and division with it. 
 
 
-# [Continue](::d4)
-
-# :::: d4
-
 ## Make a Better Number System
 
 Our current system for writing numbers in base $10$ with the alphabet `{0123456789}`, evolved over a long period of time.  It's been used for so long in so many cultures that most people don't know any other way to count and do mathematics.  That doesn't mean it's the best system.  I personally think we could devise a better one.  Base $12$ is an intriguing possibility.  It has four divisors: $2,3,4$ and $6$.  The number $10$ only has two: $2$ and $5$.  Think back to when you learned the multiplication tables.  How might that process be different if the base had more divisors?  What if we had an alphabet where the symbols actually looked like the quantities they described?  What are the advantages and disadvantages to having a small base versus a larger base?  I hope you'll experiment.  If you come up with any great new system please let me know and I will add it to my page.
 
-
-# [Continue](::d5) 
-
-# :::: d5
 
 ## Mystery String Challenge
 So Kurt Gödel took a bunch of strings that were originally intended as proofs and he interpreted them as numbers and then he studied their mathematical properties.  This led to him writing a mathematical definition of proof numbers.  I thought it might be fun to give you an interesting set of strings to interpret as numbers.  The following playable is a Deterministic Finite Automata (DFA).  Don't worry if you don't know what a DFA is.  All you need to know is that it eats up strings.    
@@ -375,11 +357,6 @@ function cleanInput(i) {                                // here's where we clean
 
 The next part of Gödel's proof is a variation of Georg Cantor's proof that you can't map a set to its powerset.  The background concepts for Cantor's proof are amazingly few and simple for a proof that has such far reaching consequences.  We just need to understand a little bit about functions and functional mappings and we need to know what a power set is.  His proof uses something called *diagonalization* and I think it's a good candidate for an interactive web exploration.  I'll put that on my list of things I want to build.  Stay tuned.
 
-# ::::
-# ::::
-# ::::
-# ::::
-# ::::
 
 [Back to Home](:@Home)
 
