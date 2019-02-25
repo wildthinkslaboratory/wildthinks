@@ -1,15 +1,13 @@
 ![fullwidth](https://gist.githubusercontent.com/wildthinkslaboratory/ac98c0bb68ccf7528dc39fa1922d2bdb/raw/7f5b396d56cbb06748ebcc6fda251d6a10260a0d/banner2.png)
 
 
-# :::: EDpointer
 
-This page builds on James Tanton's Exploding Dots curriculum.  If you're new to exploding dots, checkout these amazing pages: [G'Day Math! Exploding Dots](http://gdaymath.com/courses/exploding-dots/) and [Global Math Week Exploding Dots](https://www.explodingdots.org).
+# --outlinebox notice
+**Notice:**
+This page builds on James Tanton's Exploding Dots curriculum. If you're new to exploding dots, checkout these amazing pages: [G'Day Math! Exploding Dots](http://gdaymath.com/courses/exploding-dots/) and [Global Math Week Exploding Dots](https://www.explodingdots.org).  Then come back here and continue the journey.
+# --outlinebox
 
-# ::::
-
-
-
-# Welcome to our Negative Binary page
+# Negative Binary 
 
 So you've learned how to write numbers in [base 2 (binary) ](http://gdaymath.com/lessons/explodingdots/1-2-1-leftarrow-2-machine/), and you know how to write numbers in [base 3](http://gdaymath.com/lessons/explodingdots/2-3-explaining-machines/) as well as the usual way in [base 10](http://gdaymath.com/lessons/explodingdots/1-4-1-leftarrow-10-machine/).  Here's another cool way to write down numbers.  It's called [**negative binary**](::negbin/tooltip) and we can write all of the integers with it, both negative and positive, using only the symbols `0` and `1`.  Here's the catch.  We aren't going to use any negative signs, `-`, in front of a number to say that it's negative.  
 
@@ -17,25 +15,14 @@ So you've learned how to write numbers in [base 2 (binary) ](http://gdaymath.com
 **Negative Binary** represents numbers in base -2. Both positive and negative numbers are represented with the symbols `0` and `1` without the use of a minus sign `-`.
 # ::::
 
-# [Begin](::d1)
-
-# :::: d1
-
 ![fullwidth](https://youtu.be/ZN1iXkyuIi8)
-
-
-# [Continue](::d2)
-
-# :::: d2
 
 # Now You Try
 
 Remember the main rule: two purple **dots** on the right change into one blue negative **dot** or **antidot** in the box to the left. Let's write the number $2$.  We'll start by putting two dots into the rightmost box of the [**playable**](::playable/tooltip).  
 
 # :::: playable
-
 The interactive app below is called a **playable**.  Notice the thin gray bar above it.  You can reset the app by clicking on this band, once to stop the playable and again to start it.  When the playable is stopped you can see the playable's code.  
-
 # ::::
 
 ```p5js/playable/autoplay
@@ -54,7 +41,7 @@ myDiv.style['background-image'] = `url(${bgURL})`;
 myDiv.style['background-repeat'] = 'no-repeat';
 myDiv.style['background-size'] = 'cover';
 myDiv.style.height = '100%';
-myDiv.style.width = '100%';
+myDiv.style.width = '96%';
 myDiv.style.padding = '0';
 myDiv.style.margin = '0';
 myDiv.style.overflow = 'hidden';
@@ -62,7 +49,8 @@ myDiv.style.border = '5px solid gray';
 this.div.style.margin = '10px auto'; // shorthand for '10px auto 10px auto'
 this.div.innerHTML = '';
 
-
+const widthScale = 0.96;
+const heightScale = 0.8;
 const base = -2;               // set the base for the machine
 const numberBoxes = 2;         // set how many boxes you want
 
@@ -75,8 +63,8 @@ p5.setup = function() {                          // this function is called when
                                                  // playable. 
   dots.addInstructions(popup);
   dots.setup(base, numberBoxes);                 // initialize the machine with the base and number of boxes. 
-  var canvasWidth = p5.windowWidth ;             // set the size of the playable
-  var canvasHeight = p5.windowHeight * 0.7;
+  var canvasWidth = p5.windowWidth * widthScale;  // set the size of the playable
+  var canvasHeight = p5.windowHeight * heightScale;
   p5.createCanvas(canvasWidth,canvasHeight);     // create the canvas we will draw on
   p5.windowResized();                            
 
@@ -90,8 +78,8 @@ p5.setup = function() {                          // this function is called when
 
 
 p5.windowResized = function() {                  // this function is called when the user changes
-  const canvasWidth = p5.windowWidth;            // the size of the window.  It will rescale all the 
-  const canvasHeight = p5.windowHeight * 0.7;    // components to fit into the new window size.
+  const canvasWidth = p5.windowWidth * widthScale;  // the size of the window.  It will rescale all the 
+  const canvasHeight = p5.windowHeight * heightScale;    // components to fit into the new window size.
   dots.windowResized(canvasWidth, canvasHeight);
   p5.resizeCanvas(canvasWidth, canvasHeight);
 }
@@ -145,7 +133,7 @@ myDiv.style['background-image'] = `url(${bgURL})`;
 myDiv.style['background-repeat'] = 'no-repeat';
 myDiv.style['background-size'] = 'cover';
 myDiv.style.height = '100%';
-myDiv.style.width = '100%';
+myDiv.style.width = '96%';
 myDiv.style.padding = '0';
 myDiv.style.margin = '0';
 myDiv.style.overflow = 'hidden';
@@ -153,6 +141,8 @@ myDiv.style.border = '5px solid gray';
 this.div.style.margin = '10px auto'; // shorthand for '10px auto 10px auto'
 this.div.innerHTML = '';
 
+const widthScale = 0.96;
+const heightScale = 0.8;
 const base = -2;               // set the base for the machine
 const numberBoxes = 3;         // set how many boxes you want
 
@@ -169,8 +159,8 @@ p5.setup = function() {                          // this function is called when
   dots.addInstructions(popup1);
   dots.addInstructions(popup2);
   dots.setup(base, numberBoxes, 'green', true);  // initialize the machine with the base and number of boxes. 
-  var canvasWidth = p5.windowWidth;              // set the size of the playable
-  var canvasHeight = p5.windowHeight * 0.7;
+  var canvasWidth = p5.windowWidth * widthScale;  // set the size of the playable
+  var canvasHeight = p5.windowHeight * heightScale;
   p5.createCanvas(canvasWidth,canvasHeight);     // create the canvas we will draw on
   p5.windowResized();                            
 
@@ -181,8 +171,8 @@ p5.setup = function() {                          // this function is called when
 
 
 p5.windowResized = function() {                  // this function is called when the user changes
-  const canvasWidth = p5.windowWidth;            // the size of the window.  It will rescale all the 
-  const canvasHeight = p5.windowHeight * 0.7;    // components to fit into the new window size.
+  const canvasWidth = p5.windowWidth * widthScale;  // the size of the window.  It will rescale all the 
+  const canvasHeight = p5.windowHeight * heightScale;    // components to fit into the new window size.
   dots.windowResized(canvasWidth, canvasHeight);
   p5.resizeCanvas(canvasWidth, canvasHeight);
 }
@@ -216,9 +206,6 @@ So the code for the number $2$ is `110`.  We have a **dot** in the $4$ box, a **
 Also, we learned a new rule:   $\fbox{$\bullet$} \fbox{$\bullet$} \leftarrow \fbox{$\phantom{\circ}$} \fbox{$\circ$}$ .  Now we can transform an **antidot** into **dots**.  (We can also use this trick to transform a **dot** into **antidots**.)
 
 
-# [More](::d3)
-
-# :::: d3
 
 ## What's the code for -3?
 
@@ -240,7 +227,7 @@ myDiv.style['background-image'] = `url(${bgURL})`;
 myDiv.style['background-repeat'] = 'no-repeat';
 myDiv.style['background-size'] = 'cover';
 myDiv.style.height = '100%';
-myDiv.style.width = '100%';
+myDiv.style.width = '96%';
 myDiv.style.padding = '0';
 myDiv.style.margin = '0';
 myDiv.style.overflow = 'hidden';
@@ -248,6 +235,8 @@ myDiv.style.border = '5px solid gray';
 this.div.style.margin = '10px auto'; // shorthand for '10px auto 10px auto'
 this.div.innerHTML = '';
 
+const widthScale = 0.96;
+const heightScale = 0.8;
 const base = -2;               // set the base for the machine
 const numberBoxes = 4;         // set how many boxes you want
 
@@ -260,8 +249,8 @@ p5.setup = function() {                          // this function is called when
                                                  // playable. 
   dots.addInstructions(popup);
   dots.setup(base, numberBoxes);             // initialize the machine with the base and number of boxes. 
-  var canvasWidth = p5.windowWidth;              // set the size of the playable
-  var canvasHeight = p5.windowHeight * 0.8;
+  var canvasWidth = p5.windowWidth * widthScale;  // set the size of the playable
+  var canvasHeight = p5.windowHeight * heightScale;
   p5.createCanvas(canvasWidth,canvasHeight);     // create the canvas we will draw on
   p5.windowResized();                            
 
@@ -272,8 +261,8 @@ p5.setup = function() {                          // this function is called when
 
 
 p5.windowResized = function() {                  // this function is called when the user changes
-  const canvasWidth = p5.windowWidth;            // the size of the window.  It will rescale all the 
-  const canvasHeight = p5.windowHeight * 0.8;    // components to fit into the new window size.
+  const canvasWidth = p5.windowWidth * widthScale;  // the size of the window.  It will rescale all the 
+  const canvasHeight = p5.windowHeight * heightScale; // components to fit into the new window size.
   dots.windowResized(canvasWidth, canvasHeight);
   p5.resizeCanvas(canvasWidth, canvasHeight);
 }
@@ -335,7 +324,7 @@ myDiv.style['background-image'] = `url(${bgURL})`;
 myDiv.style['background-repeat'] = 'no-repeat';
 myDiv.style['background-size'] = 'cover';
 myDiv.style.height = '100%';
-myDiv.style.width = '100%';
+myDiv.style.width = '96%';
 myDiv.style.padding = '0';
 myDiv.style.margin = '0';
 myDiv.style.overflow = 'hidden';
@@ -343,6 +332,8 @@ myDiv.style.border = '5px solid gray';
 this.div.style.margin = '10px auto'; // shorthand for '10px auto 10px auto'
 this.div.innerHTML = '';
 
+const widthScale = 0.96;
+const heightScale = 0.8;
 const base = -2;               // set the base for the machine
 const numberBoxes = 6;         // set how many boxes you want
 
@@ -352,8 +343,8 @@ var dots = new dotlib.Dots(p5, this.div);  // create the dots and boxes machine
 p5.setup = function() {                          // this function is called when you start the
                                                  // playable. 
   dots.setup(base, numberBoxes);             // initialize the machine with the base and number of boxes. 
-  var canvasWidth = p5.windowWidth;              // set the size of the playable
-  var canvasHeight = p5.windowHeight * 0.8;
+  var canvasWidth = p5.windowWidth * widthScale;    // set the size of the playable
+  var canvasHeight = p5.windowHeight * heightScale;
   p5.createCanvas(canvasWidth,canvasHeight);     // create the canvas we will draw on
   p5.windowResized();                            
 
@@ -362,8 +353,8 @@ p5.setup = function() {                          // this function is called when
 
 
 p5.windowResized = function() {                  // this function is called when the user changes
-  const canvasWidth = p5.windowWidth;            // the size of the window.  It will rescale all the 
-  const canvasHeight = p5.windowHeight * 0.8;    // components to fit into the new window size.
+  const canvasWidth = p5.windowWidth * widthScale;  // the size of the window.  It will rescale all the 
+  const canvasHeight = p5.windowHeight * heightScale; // components to fit into the new window size.
   dots.windowResized(canvasWidth, canvasHeight);
   p5.resizeCanvas(canvasWidth, canvasHeight);
 }
@@ -391,11 +382,7 @@ p5.mouseReleased = function() {                  // this function is called when
 ```
 [Go on to the Strings and Gödel Page](:@Strings)
 
-# ::::
 
-# ::::
-
-# ::::
 
 [Back to Home](:@Home)
 

@@ -4,7 +4,7 @@
 
 ## Exploding Dots Meets Kurt Gödel 
 
-One of the most powerful ideas that people learn from James Tanton's [**Exploding Dots**](http://gdaymath.com/courses/exploding-dots/) (beginning number theory) is that there are many, many ways to write down numbers and do arithmetic.  When we are no longer stuck in base 10, the world of numbers opens up and strange things start to happen.  All kinds of text, writing and data can be interpreted as numbers.  In this exploration we'll see how Kurt Gödel used this idea in his famous Incompleteness Theorem.
+One of the most powerful ideas that people learn from James Tanton's [Exploding Dots](http://gdaymath.com/courses/exploding-dots/) (beginning number theory) is that there are many, many ways to write down numbers and do arithmetic.  When we are no longer stuck in base 10, the world of numbers opens up and strange things start to happen.  All kinds of text, writing and data can be interpreted as numbers.  In this exploration we'll see how Kurt Gödel used this idea in his famous Incompleteness Theorem.
 
 # [Begin](::d1)
 # :::: d1
@@ -47,7 +47,7 @@ myDiv.style['background-image'] = `url(${bgURL})`;
 myDiv.style['background-repeat'] = 'no-repeat';
 myDiv.style['background-size'] = 'cover';
 myDiv.style.height = '100%';
-myDiv.style.width = '100%';
+myDiv.style.width = '96%';
 myDiv.style.padding = '0';
 myDiv.style.margin = '0';
 myDiv.style.overflow = 'hidden';
@@ -56,6 +56,8 @@ this.div.style.margin = '10px auto'; // shorthand for '10px auto 10px auto'
 this.div.innerHTML = '';
 myDiv.style.overflow = 'auto';
 
+const widthScale = 0.96;
+const heightScale = 0.8;
 const base = 26;               // set the base for the machine
 const numberBoxes = 3;         // set how many boxes you want
 
@@ -64,9 +66,9 @@ var dots = new dotlib.Dots(p5, this.div);  // create the dots and boxes machine
 
 p5.setup = function() {                          // this function is called when you start the
                                                  // playable. 
-  dots.setup(base, numberBoxes, 'red',true);             // initialize the machine with the base and number of boxes. 
-  var canvasWidth = p5.windowWidth;              // set the size of the playable
-  var canvasHeight = p5.windowHeight * 0.8;
+  dots.setup(base, numberBoxes, 'red',true);     // initialize the machine with the base and number of boxes. 
+  var canvasWidth = p5.windowWidth * widthScale;   // set the size of the playable
+  var canvasHeight = p5.windowHeight * heightScale;
   p5.createCanvas(canvasWidth,canvasHeight);     // create the canvas we will draw on
   p5.windowResized();                            
 
@@ -78,8 +80,8 @@ p5.setup = function() {                          // this function is called when
 
 
 p5.windowResized = function() {                  // this function is called when the user changes
-  const canvasWidth = p5.windowWidth;            // the size of the window.  It will rescale all the 
-  const canvasHeight = p5.windowHeight * 0.8;    // components to fit into the new window size.
+  const canvasWidth = p5.windowWidth * widthScale;   // the size of the window.  It will rescale all the 
+  const canvasHeight = p5.windowHeight * heightScale;    // components to fit into the new window size.
   dots.windowResized(canvasWidth, canvasHeight);
   p5.resizeCanvas(canvasWidth, canvasHeight);
 }
@@ -149,7 +151,7 @@ myDiv.style['background-image'] = `url(${bgURL})`;
 myDiv.style['background-repeat'] = 'no-repeat';
 myDiv.style['background-size'] = 'cover';
 myDiv.style.height = '100%';
-myDiv.style.width = '100%';
+myDiv.style.width = '96%';
 myDiv.style.padding = '0';
 myDiv.style.margin = '0';
 myDiv.style.overflow = 'hidden';
@@ -157,6 +159,8 @@ myDiv.style.border = '5px solid gray';
 this.div.style.margin = '10px auto'; // shorthand for '10px auto 10px auto'
 this.div.innerHTML = '';
 
+const widthScale = 0.96;
+const heightScale = 0.8;
 const base = 2;               // set the base for the machine
 const numberBoxes = 3;         // set how many boxes you want
 
@@ -167,8 +171,8 @@ let dots = new dotlib.Dots(p5, this.div);  // create the dots and boxes machine
 p5.setup = function() {                          // this function is called when you start the
                                                  // playable. 
   dots.setup(base, numberBoxes, 'red');             // initialize the machine with the base and number of boxes. 
-  var canvasWidth = p5.windowWidth;              // set the size of the playable
-  var canvasHeight = p5.windowHeight * 0.8;
+  var canvasWidth = p5.windowWidth * widthScale;    // set the size of the playable
+  var canvasHeight = p5.windowHeight * heightScale;
   p5.createCanvas(canvasWidth,canvasHeight);     // create the canvas we will draw on
   p5.windowResized();    
 
@@ -179,8 +183,8 @@ p5.setup = function() {                          // this function is called when
 
 
 p5.windowResized = function() {                  // this function is called when the user changes
-  const canvasWidth = p5.windowWidth;            // the size of the window.  It will rescale all the 
-  const canvasHeight = p5.windowHeight * 0.8;    // components to fit into the new window size.
+  const canvasWidth = p5.windowWidth * widthScale;   // the size of the window.  It will rescale all the 
+  const canvasHeight = p5.windowHeight * heightScale; // components to fit into the new window size.
   dots.windowResized(canvasWidth, canvasHeight); 
   p5.resizeCanvas(canvasWidth, canvasHeight);
 }
@@ -283,13 +287,16 @@ myDiv.style['background-image'] = `url(${bgURL})`;
 myDiv.style['background-repeat'] = 'no-repeat';
 myDiv.style['background-size'] = 'cover';
 myDiv.style.height = '100%';
-myDiv.style.width = '100%';
+myDiv.style.width = '96%';
 myDiv.style.padding = '0';
 myDiv.style.margin = '0';
 myDiv.style.overflow = 'hidden';
 myDiv.style.border = '5px solid gray';
 this.div.style.margin = '10px auto'; // shorthand for '10px auto 10px auto'
 this.div.innerHTML = '';
+
+const widthScale = 0.96;
+const heightScale = 0.8;
 
 const machine = {
   nodes : 3,
@@ -315,8 +322,8 @@ p5.setup = function() {                          // this function is called when
 
 
 p5.windowResized = function() {                  // this function is called when the user changes
-  const canvasWidth = p5.windowWidth;            // the size of the window.  It will rescale all the 
-  const canvasHeight = p5.windowHeight * 0.8;    // components to fit into the new window size.
+  const canvasWidth = p5.windowWidth * widthScale;  // the size of the window.  It will rescale all the 
+  const canvasHeight = p5.windowHeight * heightScale; // components to fit into the new window size.
   dfa.windowResized(canvasWidth, canvasHeight); 
   p5.resizeCanvas(canvasWidth, canvasHeight);
 }
