@@ -3,12 +3,10 @@
 
 
 
-GOAL: It should be Willy Wonka and the chocolate factory
-
-[Video](::video1)
-
-
 # :::: video1
+
+There will be a video eventually.  These are just notes on what will be in the video.
+
 Imagine you have a bunch of stuff you want to understand.  It's not just random stuff (nothing really is) but it's hard to wrap your head around what's going on.  One strategy is to just pick up two pieces and ask the question how are these things the same?  How are they different?  Well let's say we decide to focus on just one aspect of these things. Maybe we pick some measure of size.  Which came first?  Well, this one did.  But now I want the big picture.  What's the story with all of these things?  By making lots of pairs and asking the same question I can make many pairwise answers.  Then putting all of these answers together, a picture starts to emerge.  For some pairs I may not have answers.  That's OK.  I can use all these little relationships to understand the big picture.  I can see a pattern start to emerge.
 
 Organizing is a kind of math.  All this organizing, making lots of little comparisons is math.  Its one of the foundational ideas in mathematics.  It's called a relation. and we use them all the time to describr the relationships and patterns we see around us.  
