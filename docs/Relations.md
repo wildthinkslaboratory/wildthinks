@@ -1,26 +1,20 @@
 
 ![fullwidth](https://gist.githubusercontent.com/wildthinkslaboratory/ac98c0bb68ccf7528dc39fa1922d2bdb/raw/7f5b396d56cbb06748ebcc6fda251d6a10260a0d/banner2.png)
 
-[Video Notes](::video1)
 
-# :::: video1
 
-There will be a video eventually.  These are just notes on what will be in the video.
-
-Imagine you have a bunch of stuff you want to understand.  It's not just random stuff (nothing really is) but it's hard to wrap your head around what's going on.  One strategy is to just pick up two pieces and ask the question how are these things the same?  How are they different?  Well let's say we decide to focus on just one aspect of these things. Maybe we pick some measure of size.  Which came first?  Well, this one did.  But now I want the big picture.  What's the story with all of these things?  By making lots of pairs and asking the same question I can make many pairwise answers.  Then putting all of these answers together, a picture starts to emerge.  For some pairs I may not have answers.  That's OK.  I can use all these little relationships to understand the big picture.  I can see a pattern start to emerge.
-
-Organizing is a kind of math.  All this organizing, making lots of little comparisons is math.  Its one of the foundational ideas in mathematics.  It's called a relation. and we use them all the time to describr the relationships and patterns we see around us.  
-
-# :::: 
 
 # Relations
-A relation is a foundational idea in mathematics. You use them all the time when you do math, but you may not be aware of them.  Functions, like $f(x) = x + 2$, are relations. Statements like $3 \geq 4$ or $4 \times 3 = 12$ are statements about relations.   Relations give us a way to describe the patterns and relationships we see in the world.  They might describe relationships between numbers or they might describe relationships between other stuff: people, websites, words, ideas, whatever stuff you care about.  
+
+Imagine you have a bunch of stuff you want to understand.  It's not random stuff but it's a lot of stuff and it's hard to wrap your head around what's going on.  One strategy we can use to make sense of our data is to just pick up two pieces and compare them.  We can ask a yes or no question like: "Is this one bigger than that one?" or "Are they the same color?". If we make lots and lots of pairwise comparisons and put all of the answers together, a picture emerges and we can see a pattern. In math we call all these pairwise comparisons a relation.
+
+You use relations all the time when you do math, but you may not be aware of them.  Functions, like $f(x) = x + 2$, are relations. Statements like $3 \geq 4$ or $4 \times 3 = 12$ are statements about relations.   Relations give us a way to describe the patterns and relationships we see in the world.  They might describe relationships between numbers or they might describe relationships between other stuff: people, websites, words, ideas, whatever stuff you care about.  
 
 Relations are made from pairs.  So, what's a pair?  It's just two things put together, just as you'd expect. What things?  Anything you want. Lots of things come in pairs.
 
 ![fullwidth](https://gist.githubusercontent.com/wildthinkslaboratory/ac98c0bb68ccf7528dc39fa1922d2bdb/raw/6d038aa6b0d21ce503d4628a5dff3a292056030d/pairs.jpeg)
 
-In math the order that we put things together in a pair matters.  Here's a more precise definition of a pair.
+In math, the order that we put things together in a pair matters.  Here's a more precise definition of a pair.
 
 # --outlinebox notation
 **Definition 1**
@@ -101,7 +95,7 @@ For sets $A$, $B$, any subset of the cartesian product $A \times B$ is called a 
 
 
 
-The following set of pairs is relation on our stuff that describes a relationship between the elements.  Take a few moments and see if you can figure out what that relationship is, then click on the pairs to add them to a graph.
+The following set of pairs is a relation on our stuff.  There is some question that was asked for all $81$ pairs and this collection of pairs are those for which the answer was yes. Take a few moments and see if you guess what the question is.  Then click on the pairs to add them to a graph.  Graphs are a useful way to visualize a relation.  
 
 ```d3/autoplay
 
@@ -376,30 +370,303 @@ function render() {
 }
 
 
-render();
+
+```
+
+This mathematical relation describes a food web between these plants and animals.   The predators are on the top of the hierarchy and have only outgoing arrows. The plants are on the bottom and have only incoming arrows. The question is "Will the first thing eat the second thing?"
+
+Ok, here's a different relation on the same set of stuff.  What do you think this relation represents?  Click on the pairs to create a graph.
+
+```d3/autoplay
+
+
+smartdown.importCssCode(
+`
+.link {
+  stroke: #000;
+  stroke-width: 4;
+  fill: none;
+}
+
+.inactive {
+	display: none;
+}
+
+`);
+
+
+var nodes = [
+	{
+		name: 'fox',
+	 	url: 'https://gist.githubusercontent.com/wildthinkslaboratory/ac98c0bb68ccf7528dc39fa1922d2bdb/raw/bba97e7daf0b769f71765771769d121bd4351ecd/fox.jpeg',
+	 	x: 0.25,
+	 	y: 0.17,
+	 	active: false
+	 	},
+	{
+		name: 'owl',
+	 	url: 'https://gist.githubusercontent.com/wildthinkslaboratory/ac98c0bb68ccf7528dc39fa1922d2bdb/raw/bba97e7daf0b769f71765771769d121bd4351ecd/owl.jpeg',
+	 	x: 0.83,
+	 	y: 0.17,
+	 	active: false 
+	 	},
+	{
+		name: 'rabbit',
+		url: 'https://gist.githubusercontent.com/wildthinkslaboratory/ac98c0bb68ccf7528dc39fa1922d2bdb/raw/bba97e7daf0b769f71765771769d121bd4351ecd/rabbit.jpeg',
+	 	x: 0.125,
+	 	y: 0.5,
+	 	active: false 
+	 	},
+	{
+		name: 'mouse',
+		url: 'https://gist.githubusercontent.com/wildthinkslaboratory/ac98c0bb68ccf7528dc39fa1922d2bdb/raw/bba97e7daf0b769f71765771769d121bd4351ecd/mouse.jpeg',
+	 	x: 0.325,
+	 	y: 0.5,
+	 	active: false  
+	 	},
+	{
+		name: 'bird',
+		url: 'https://gist.githubusercontent.com/wildthinkslaboratory/ac98c0bb68ccf7528dc39fa1922d2bdb/raw/bba97e7daf0b769f71765771769d121bd4351ecd/bird.jpeg',
+	 	x: 0.5,
+	 	y: 0.17,
+	 	active: false  
+	 	},
+	{
+		name: 'cricket',
+		url: 'https://gist.githubusercontent.com/wildthinkslaboratory/ac98c0bb68ccf7528dc39fa1922d2bdb/raw/bba97e7daf0b769f71765771769d121bd4351ecd/cricket.jpeg',
+	 	x: 0.17,
+	 	y: 0.83,
+	 	active: false  
+	 	},
+	{
+		name: 'wheat',
+		url: 'https://gist.githubusercontent.com/wildthinkslaboratory/ac98c0bb68ccf7528dc39fa1922d2bdb/raw/bba97e7daf0b769f71765771769d121bd4351ecd/wheat.jpeg',
+	 	x: 0.625,
+	 	y: 0.5,
+	 	active: false  
+	 	},
+	{
+		name: 'grass',
+		url: 'https://gist.githubusercontent.com/wildthinkslaboratory/ac98c0bb68ccf7528dc39fa1922d2bdb/raw/bba97e7daf0b769f71765771769d121bd4351ecd/grass.jpeg',
+	 	x: 0.5,
+	 	y: 0.83,
+	 	active: false  
+	 	},
+	{
+		name: 'carrot',
+		url: 'https://gist.githubusercontent.com/wildthinkslaboratory/ac98c0bb68ccf7528dc39fa1922d2bdb/raw/bba97e7daf0b769f71765771769d121bd4351ecd/carrot.jpeg',
+	 	x: 0.83,
+	 	y: 0.83,
+	 	active: false  
+	 	} 
+];
+
+var links = [
+  {source: 0, target: 2, exitAdj: 'W', enterAdj: 'N', id: 0, active: true},
+  {source: 2, target: 0, exitAdj: 'N', enterAdj: 'W', id: 1, active: true},
+  {source: 0, target: 3, exitAdj: 'E', enterAdj: 'N', id: 2, active: true},
+  {source: 3, target: 0, exitAdj: 'N', enterAdj: 'E', id: 3, active: true},
+  {source: 2, target: 3, exitAdj: 'E', enterAdj: 'W', id: 4, active: true},
+  {source: 3, target: 2, exitAdj: 'W', enterAdj: 'E', id: 5, active: true},
+  {source: 1, target: 4, exitAdj: 'W', enterAdj: 'E', id: 6, active: true},
+  {source: 4, target: 1, exitAdj: 'E', enterAdj: 'W', id: 7, active: true},
+  {source: 6, target: 7, exitAdj: 'W', enterAdj: 'N', id: 8, active: true},
+  {source: 7, target: 6, exitAdj: 'N', enterAdj: 'W', id: 9, active: true},
+  {source: 6, target: 8, exitAdj: 'E', enterAdj: 'N', id: 10, active: true},
+  {source: 8, target: 6, exitAdj: 'N', enterAdj: 'E', id: 11, active: true},
+  {source: 7, target: 8, exitAdj: 'E', enterAdj: 'W', id: 12, active: true},
+  {source: 8, target: 7, exitAdj: 'W', enterAdj: 'E', id: 13, active: true},
+];
+
+var dagLinks = [];
+
+
+	
+
+
+var target = this.div;
+target.style.height = '100%';
+target.style.width = '96%';
+const pageWidth = target.offsetWidth;
+const width = pageWidth * 0.75;
+const xDivider = width * 0.25;
+const height = width * 0.66;
+const imgSize = height/6;
+const linkImageSize = height/ links.length;
+const linkWidth = xDivider/4;
+
+
+
+function xAdjustment(heading) {
+	if (heading == 'E') {
+		return imgSize/2;
+	}
+	else if (heading == 'W') {
+		return -imgSize/2;
+	}
+	return 0;
+}
+
+function yAdjustment(heading) {
+	if (heading == 'S') {
+		return imgSize/2;
+	}
+	else if (heading == 'N') {
+		return -imgSize/2;
+	}
+	return 0;
+}
+
+var svg = d3.select(target)
+			.append('svg')
+			.attr('width',pageWidth)
+			.attr('height', height);
+
+	// define arrow markers for graph links
+	svg.append('svg:defs').append('svg:marker')
+    .attr('id', 'end-arrow')
+    .attr('viewBox', '0 -5 10 10')
+    .attr('refX', 6)
+    .attr('markerWidth', 3)
+    .attr('markerHeight', 3)
+    .attr('orient', 'auto')
+  	.append('svg:path')
+    .attr('d', 'M0,-5L10,0L0,5')
+    .attr('fill', '#000');
+
+
+var pairs =	svg.selectAll('g')
+   		.data(links)
+   		.enter()
+   		.append('g')
+   		.attr('class', 'pair')
+   		.on('click', function(d,i) {
+   			if (d.active == true) {
+        		dagLinks.push(d);
+      			d.active = false;
+      			nodes[d.source].active = true;
+      			nodes[d.target].active = true;
+      			if (dagLinks.length == 14) {
+					nodes[5].active = true;
+				}
+        		render();	
+			}
+
+   		});
+
+
+  	pairs.append('image')
+  		.attr('xlink:href', function(l) {
+			var sourceNode = nodes.filter(function(d, i) {
+       		return i == l.source;
+     		})[0];
+			return sourceNode.url;
+		})
+		.attr('x', linkWidth/2)
+		.attr('y', function(d) {
+			return d.id * linkImageSize;
+		})
+		.attr('width',linkImageSize - 5)
+		.attr('height',linkImageSize - 5);
+
+	pairs.append('image')
+		.attr('xlink:href', function(l) {
+			var targetNode = nodes.filter(function(d, i) {
+       		return i == l.target;
+     		})[0];
+			return targetNode.url;
+		})
+		.attr('x', 2*linkWidth + linkWidth/2)
+		.attr('y', function(d) {
+			return d.id * linkImageSize;
+		})
+		.attr('width',linkImageSize - 5)
+		.attr('height', linkImageSize - 5);
+
+
+	pairs.append('line')
+		.classed('link', true)
+  		.attr('x1', 1.5 * linkWidth)
+  		.attr('y1', function(d) {return (d.id + 1) * linkImageSize - linkImageSize/2;})
+  		.attr('x2', 2.25 * linkWidth)
+  		.attr('y2', function(d) {return (d.id + 1) * linkImageSize - linkImageSize/2;})
+  		.attr("marker-end", "url(#end-arrow)");
+
+const duration = 2000;
+
+function render() {
+
+	svg.selectAll('g.pair')
+		.data(links)
+		.filter(function(d) { return d.active == false; })
+		.classed('inactive', true);
+
+
+  	svg.selectAll('node_image')
+    .data(nodes.filter(function(d){ return d.active == true; }))
+  	.enter()
+  	.append('image')
+	.attr('xlink:href', function(d) {
+		return d.url;
+		})
+	.attr('x', function(d) {
+		return d.x * width - imgSize/2 + xDivider;
+		} )
+	.attr('y', function(d) {
+		return d.y * height - imgSize/2;
+		})
+	.attr('width',imgSize)
+	.attr('height',imgSize);
+
+	svg.selectAll('link') 
+	.data(dagLinks)
+	.enter();
+
+	svg.selectAll("link")
+   .data(dagLinks)
+   .enter()
+   .append("path")
+   .attr("class", "link")
+   .attr("d", function(l) {
+   	var sourceNode = nodes.filter(function(d, i) {
+       return i == l.source;
+     })[0];
+    const targetNode = nodes.filter(function(d, i) {
+       return i == l.target;
+     })[0];
+    const xStart = xDivider + sourceNode.x * width + xAdjustment(l.exitAdj);
+    const yStart = sourceNode.y * height + yAdjustment(l.exitAdj);
+    const xControlPt1 = xStart + xAdjustment(l.exitAdj);
+    const yControlPt1 = yStart + yAdjustment(l.exitAdj);
+    const xEnd = xDivider + targetNode.x * width + xAdjustment(l.enterAdj);
+    const yEnd = targetNode.y * height + yAdjustment(l.enterAdj);
+    const xControlPt2 = xEnd + xAdjustment(l.enterAdj);
+    const yControlPt2 = yEnd + yAdjustment(l.enterAdj);
+    return `M ${xStart}, ${yStart} C ${xControlPt1}, ${yControlPt1} 
+    		${xControlPt2}, ${yControlPt2} 
+    		${xEnd}, ${yEnd}`;
+   	})
+   .attr("marker-end", "url(#end-arrow)");
+
+  svg.selectAll('link')
+  .data(dagLinks)
+  .exit()
+  .remove();
+
+}
+
 
 
 ```
 
-This mathematical relation describes a food web between these plants and animals. The first element of any of these pairs will eat the second element of the pair.  The predators are on the top of the hierarchy and have only outgoing arrows. The plants are on the bottom and have only incoming arrows. 
-
-Ok, here's a different relation on the same set of stuff.  What do you think this relation represents?
-
-![fullwidth](https://gist.githubusercontent.com/wildthinkslaboratory/ac98c0bb68ccf7528dc39fa1922d2bdb/raw/71856e7d81be6577f9ec708902975a8025cb6ba2/functions1.005.jpeg)
-
-[Show relation with arrow notation](::taxonomy)
-# :::: taxonomy
-![fullwidth](https://gist.githubusercontent.com/wildthinkslaboratory/ac98c0bb68ccf7528dc39fa1922d2bdb/raw/71856e7d81be6577f9ec708902975a8025cb6ba2/functions1.006.jpeg)
-
-This mathematical relation breaks our stuff into groups.  The birds are related to each other, the plants are all related to each other and the mammals are also grouped together.  The cricket is all alone and does show up in any pairs.  
-# ::::
-
- 
-
-What relationships do you see?
+This mathematical relation breaks our stuff into groups.  The birds are related to each other, the plants are all related to each other and the mammals are also grouped together.  The cricket is all alone and not related to anyone else.
 
 
 # Relations You Already Know from Math Class
+
+So now that you've seen we can use relations to organize our favorite stuff, let's talk about some relations that you already know.
+
+
 
 # Guess the Relation
 
