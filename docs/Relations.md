@@ -81,7 +81,7 @@ $$\{(2,2),(2,3),(2,4),(3,2),(3,3),(3,4),(4,2),(4,3),(4,4)\}$$
 
 #### --aliceblue
 
-But numbers can be so dull. We can form pairs and cartesian products from anything we want.  Here's a set of things.
+We can form pairs and cartesian products from anything we want.  Here's a set of things.
 
 ![fullwidth](https://gist.githubusercontent.com/wildthinkslaboratory/ac98c0bb68ccf7528dc39fa1922d2bdb/raw/71856e7d81be6577f9ec708902975a8025cb6ba2/functions1.002.jpeg)
 
@@ -101,16 +101,285 @@ For sets $A$, $B$, any subset of the cartesian product $A \times B$ is called a 
 
 
 
-Here's a relation on our stuff that describes a relationship between the elements.  Take a few moments and see if you can figure out what that relationship is.  
+The following set of pairs is relation on our stuff that describes a relationship between the elements.  Take a few moments and see if you can figure out what that relationship is, then click on the pairs to add them to a graph.
 
-![fullwidth](https://gist.githubusercontent.com/wildthinkslaboratory/ac98c0bb68ccf7528dc39fa1922d2bdb/raw/1cbeba9f6aa2ac0c759106fa3e534e67c7ea2718/foodwebcrossproduct.jpeg)
+```d3/autoplay
 
-It can be hard to figure out what a relation describes by looking at ordered pairs.  We can replace every pair $(a,b)$ with an arrow $a \rightarrow b$ between $a$ and $b$.  It's the exact same set of pairs, but see if the relationship is clearer.
 
-[Show relation with arrow notation](::food_web)
-# :::: food_web
+smartdown.importCssCode(
+`
+.link {
+  stroke: #000;
+  stroke-width: 4;
+  fill: none;
+}
 
-![fullwidth](https://gist.githubusercontent.com/wildthinkslaboratory/ac98c0bb68ccf7528dc39fa1922d2bdb/raw/71856e7d81be6577f9ec708902975a8025cb6ba2/functions1.004.jpeg)
+.inactive {
+	display: none;
+}
+
+`);
+
+
+var nodes = [
+	{
+		name: 'fox',
+	 	url: 'https://gist.githubusercontent.com/wildthinkslaboratory/ac98c0bb68ccf7528dc39fa1922d2bdb/raw/bba97e7daf0b769f71765771769d121bd4351ecd/fox.jpeg',
+	 	x: 0.25,
+	 	y: 0.17,
+	 	active: false
+	 	},
+	{
+		name: 'owl',
+	 	url: 'https://gist.githubusercontent.com/wildthinkslaboratory/ac98c0bb68ccf7528dc39fa1922d2bdb/raw/bba97e7daf0b769f71765771769d121bd4351ecd/owl.jpeg',
+	 	x: 0.75,
+	 	y: 0.17,
+	 	active: false 
+	 	},
+	{
+		name: 'rabbit',
+		url: 'https://gist.githubusercontent.com/wildthinkslaboratory/ac98c0bb68ccf7528dc39fa1922d2bdb/raw/bba97e7daf0b769f71765771769d121bd4351ecd/rabbit.jpeg',
+	 	x: 0.125,
+	 	y: 0.5,
+	 	active: false 
+	 	},
+	{
+		name: 'mouse',
+		url: 'https://gist.githubusercontent.com/wildthinkslaboratory/ac98c0bb68ccf7528dc39fa1922d2bdb/raw/bba97e7daf0b769f71765771769d121bd4351ecd/mouse.jpeg',
+	 	x: 0.375,
+	 	y: 0.5,
+	 	active: false  
+	 	},
+	{
+		name: 'bird',
+		url: 'https://gist.githubusercontent.com/wildthinkslaboratory/ac98c0bb68ccf7528dc39fa1922d2bdb/raw/bba97e7daf0b769f71765771769d121bd4351ecd/bird.jpeg',
+	 	x: 0.625,
+	 	y: 0.5,
+	 	active: false  
+	 	},
+	{
+		name: 'cricket',
+		url: 'https://gist.githubusercontent.com/wildthinkslaboratory/ac98c0bb68ccf7528dc39fa1922d2bdb/raw/bba97e7daf0b769f71765771769d121bd4351ecd/cricket.jpeg',
+	 	x: 0.875,
+	 	y: 0.5,
+	 	active: false  
+	 	},
+	{
+		name: 'wheat',
+		url: 'https://gist.githubusercontent.com/wildthinkslaboratory/ac98c0bb68ccf7528dc39fa1922d2bdb/raw/bba97e7daf0b769f71765771769d121bd4351ecd/wheat.jpeg',
+	 	x: 0.83,
+	 	y: 0.83,
+	 	active: false  
+	 	},
+	{
+		name: 'grass',
+		url: 'https://gist.githubusercontent.com/wildthinkslaboratory/ac98c0bb68ccf7528dc39fa1922d2bdb/raw/bba97e7daf0b769f71765771769d121bd4351ecd/grass.jpeg',
+	 	x: 0.5,
+	 	y: 0.83,
+	 	active: false  
+	 	},
+	{
+		name: 'carrot',
+		url: 'https://gist.githubusercontent.com/wildthinkslaboratory/ac98c0bb68ccf7528dc39fa1922d2bdb/raw/bba97e7daf0b769f71765771769d121bd4351ecd/carrot.jpeg',
+	 	x: 0.17,
+	 	y: 0.83,
+	 	active: false  
+	 	} 
+];
+
+var links = [
+  {source: 0, target: 2, exitAdj: 'W', enterAdj: 'N', id: 0, active: true},
+  {source: 0, target: 3, exitAdj: 'S', enterAdj: 'N', id: 1, active: true},
+  {source: 0, target: 4, exitAdj: 'E', enterAdj: 'N', id: 2, active: true},
+  {source: 1, target: 3, exitAdj: 'W', enterAdj: 'E', id: 3, active: true},
+  {source: 1, target: 5, exitAdj: 'S', enterAdj: 'N', id: 4, active: true},
+  {source: 2, target: 7, exitAdj: 'S', enterAdj: 'N', id: 5, active: true},
+  {source: 2, target: 8, exitAdj: 'S', enterAdj: 'N', id: 6, active: true},
+  {source: 3, target: 6, exitAdj: 'S', enterAdj: 'W', id: 7, active: true},
+  {source: 4, target: 5, exitAdj: 'E', enterAdj: 'W', id: 8, active: true},
+  {source: 4, target: 6, exitAdj: 'S', enterAdj: 'N', id: 9, active: true},
+  {source: 5, target: 6, exitAdj: 'S', enterAdj: 'N', id: 10, active: true},
+  {source: 5, target: 7, exitAdj: 'S', enterAdj: 'E', id: 11, active: true}
+];
+
+var dagLinks = [];
+
+
+	
+
+
+var target = this.div;
+target.style.height = '100%';
+target.style.width = '96%';
+const pageWidth = target.offsetWidth;
+const width = pageWidth * 0.75;
+const xDivider = width * 0.25;
+const height = width * 0.66;
+const imgSize = height/6;
+const linkImageSize = height/ links.length;
+const linkWidth = xDivider/4;
+
+
+
+function xAdjustment(heading) {
+	if (heading == 'E') {
+		return imgSize/2;
+	}
+	else if (heading == 'W') {
+		return -imgSize/2;
+	}
+	return 0;
+}
+
+function yAdjustment(heading) {
+	if (heading == 'S') {
+		return imgSize/2;
+	}
+	else if (heading == 'N') {
+		return -imgSize/2;
+	}
+	return 0;
+}
+
+var svg = d3.select(target)
+			.append('svg')
+			.attr('width',pageWidth)
+			.attr('height', height);
+
+	// define arrow markers for graph links
+	svg.append('svg:defs').append('svg:marker')
+    .attr('id', 'end-arrow')
+    .attr('viewBox', '0 -5 10 10')
+    .attr('refX', 6)
+    .attr('markerWidth', 3)
+    .attr('markerHeight', 3)
+    .attr('orient', 'auto')
+  	.append('svg:path')
+    .attr('d', 'M0,-5L10,0L0,5')
+    .attr('fill', '#000');
+
+
+var pairs =	svg.selectAll('g')
+   		.data(links)
+   		.enter()
+   		.append('g')
+   		.attr('class', 'pair')
+   		.on('click', function(d,i) {
+   			if (d.active == true) {
+        		dagLinks.push(d);
+      			d.active = false;
+      			nodes[d.source].active = true;
+      			nodes[d.target].active = true;
+        		render();	
+			}
+   		});
+
+
+  	pairs.append('image')
+  		.attr('xlink:href', function(l) {
+			var sourceNode = nodes.filter(function(d, i) {
+       		return i == l.source;
+     		})[0];
+			return sourceNode.url;
+		})
+		.attr('x', linkWidth/2)
+		.attr('y', function(d) {
+			return d.id * linkImageSize;
+		})
+		.attr('width',linkImageSize - 5)
+		.attr('height',linkImageSize - 5);
+
+	pairs.append('image')
+		.attr('xlink:href', function(l) {
+			var targetNode = nodes.filter(function(d, i) {
+       		return i == l.target;
+     		})[0];
+			return targetNode.url;
+		})
+		.attr('x', 2*linkWidth + linkWidth/2)
+		.attr('y', function(d) {
+			return d.id * linkImageSize;
+		})
+		.attr('width',linkImageSize - 5)
+		.attr('height', linkImageSize - 5);
+
+
+	pairs.append('line')
+		.classed('link', true)
+  		.attr('x1', 1.5 * linkWidth)
+  		.attr('y1', function(d) {return (d.id + 1) * linkImageSize - linkImageSize/2;})
+  		.attr('x2', 2.25 * linkWidth)
+  		.attr('y2', function(d) {return (d.id + 1) * linkImageSize - linkImageSize/2;})
+  		.attr("marker-end", "url(#end-arrow)");
+
+const duration = 2000;
+
+function render() {
+
+	svg.selectAll('g.pair')
+		.data(links)
+		.filter(function(d) { return d.active == false; })
+		.classed('inactive', true);
+
+
+  	svg.selectAll('node_image')
+    .data(nodes.filter(function(d){ return d.active == true; }))
+  	.enter()
+  	.append('image')
+	.attr('xlink:href', function(d) {
+		return d.url;
+		})
+	.attr('x', function(d) {
+		return d.x * width - imgSize/2 + xDivider;
+		} )
+	.attr('y', function(d) {
+		return d.y * height - imgSize/2;
+		})
+	.attr('width',imgSize)
+	.attr('height',imgSize);
+
+	svg.selectAll('link') 
+	.data(dagLinks)
+	.enter();
+
+	svg.selectAll("link")
+   .data(dagLinks)
+   .enter()
+   .append("path")
+   .attr("class", "link")
+   .attr("d", function(l) {
+   	var sourceNode = nodes.filter(function(d, i) {
+       return i == l.source;
+     })[0];
+    const targetNode = nodes.filter(function(d, i) {
+       return i == l.target;
+     })[0];
+    const xStart = xDivider + sourceNode.x * width + xAdjustment(l.exitAdj);
+    const yStart = sourceNode.y * height + yAdjustment(l.exitAdj);
+    const xControlPt1 = xStart + xAdjustment(l.exitAdj);
+    const yControlPt1 = yStart + yAdjustment(l.exitAdj);
+    const xEnd = xDivider + targetNode.x * width + xAdjustment(l.enterAdj);
+    const yEnd = targetNode.y * height + yAdjustment(l.enterAdj);
+    const xControlPt2 = xEnd + xAdjustment(l.enterAdj);
+    const yControlPt2 = yEnd + yAdjustment(l.enterAdj);
+    return `M ${xStart}, ${yStart} C ${xControlPt1}, ${yControlPt1} 
+    		${xControlPt2}, ${yControlPt2} 
+    		${xEnd}, ${yEnd}`;
+   	})
+   .attr("marker-end", "url(#end-arrow)");
+
+  svg.selectAll('link')
+  .data(dagLinks)
+  .exit()
+  .remove();
+
+}
+
+
+render();
+
+
+```
 
 This mathematical relation describes a food web between these plants and animals. The first element of any of these pairs will eat the second element of the pair.  The predators are on the top of the hierarchy and have only outgoing arrows. The plants are on the bottom and have only incoming arrows. 
 
@@ -125,7 +394,7 @@ Ok, here's a different relation on the same set of stuff.  What do you think thi
 This mathematical relation breaks our stuff into groups.  The birds are related to each other, the plants are all related to each other and the mammals are also grouped together.  The cricket is all alone and does show up in any pairs.  
 # ::::
 
-# :::: 
+ 
 
 What relationships do you see?
 
@@ -180,10 +449,9 @@ This set of pairs forms the less than relation .
 # ::::
 
 #### --partialborder
-
 # ::::
 
-# Field Trip Time
+# Online Field Trip
 # :::: feild_trip
 real world examples
 function - gdp -> happiness
@@ -195,4 +463,8 @@ function - movie
 
 # ::::
 
+# More Exercises
 
+
+
+[Partial Orders and Equivalence Relations](:@MoreRelations)
