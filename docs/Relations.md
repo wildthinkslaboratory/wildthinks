@@ -6,96 +6,11 @@
 
 # Relations
 
-Imagine you have a bunch of stuff you want to understand.  It's not random stuff but it's a lot of stuff and it's hard to wrap your head around what's going on.  One strategy we can use to make sense of our data is to just pick up two pieces and compare them.  We can ask a yes or no question like: "Is this one bigger than that one?" or "Are they the same color?". If we make lots and lots of pairwise comparisons and put all of the answers together, a picture emerges and we can see a pattern. In math we call all these pairwise comparisons a relation.
+Let's start with a puzzle.  Here's some stuff.  We could call it a set of stuff.
 
-You use relations all the time when you do math, but you may not be aware of them.  Functions, like $f(x) = x + 2$, are relations. Statements like $3 \geq 4$ or $4 \times 3 = 12$ are statements about relations.   Relations give us a way to describe the patterns and relationships we see in the world.  They might describe relationships between numbers or they might describe relationships between other stuff: people, websites, words, ideas, whatever stuff you care about.  
+![halfwidth](https://gist.githubusercontent.com/wildthinkslaboratory/ac98c0bb68ccf7528dc39fa1922d2bdb/raw/71856e7d81be6577f9ec708902975a8025cb6ba2/functions1.002.jpeg)
 
-Relations are made from pairs.  So, what's a pair?  It's just two things put together, just as you'd expect. What things?  Anything you want. Lots of things come in pairs.
-
-![fullwidth](https://gist.githubusercontent.com/wildthinkslaboratory/ac98c0bb68ccf7528dc39fa1922d2bdb/raw/6d038aa6b0d21ce503d4628a5dff3a292056030d/pairs.jpeg)
-
-In math, the order that we put things together in a pair matters.  Here's a more precise definition of a pair.
-
-# --outlinebox notation
-**Definition 1**
-If we have two things $a$ and $b$ we can put them together to form the **ordered pair** $$a \rightarrow b.$$  We can change the order to create the pair $b \rightarrow a$.  The order is important and the pair $a \rightarrow b$ is not the same as the pair $b \rightarrow a$.
-
-The **cartesian product** of two sets $A$ and $B$ is the set of all **ordered pairs** $a \rightarrow b$ that can be made with the first element $a$ being chosen from set $A$ and the second element $b$ being chosen from set $B$.  We sometimes use the symbols $A \times B$ to represent this set of ordered pairs.  
-
-The cartesian product of a single set $A$ is the set of all ordered pairs we can make with the first and second element both being chosen from the set $A$.  Note that this includes pairs of the form $a \rightarrow a$ where the first and second element are the same thing.  This set of pairs can be described with the symbols $A \times A$.
-
-[Notes on Notation and Ordered Pairs](::pair_notation/center,shadow)
-[Same definition, more math symbols](::math_def_pair/center/shadow)
-# --outlinebox
-
-# :::: math_def_pair
-
-# --outlinebox math_pair
-**Definition 1** 
-For sets $A$ and $B$ the **cartesian product** of $A$ and $B$ is denoted by $A \times B$ and equals
-$$\{a \rightarrow b \, | \, a \in A, \, b \in B \}$$
-
-An element $a \rightarrow b$ of $A \times B$ is called an **ordered pair**.
-[Close](::math_def_pair)
-# --outlinebox
-# ::::
-
-# :::: pair_notation
-# --aliceblue pair_notation_dec
-#### Notation for Ordered Pairs
-
-The arrow notation $a \rightarrow b$ we use for pairs is not the standard notation.  Pairs are more commonly represented by surrounding two elements $a$ and $b$ with parentheses seperated by a comma $(a,b)$.  Most people's introduction to pairs is graphing points on the two dimensional coordinate plane.  
-![fullwidth](https://gist.githubusercontent.com/wildthinkslaboratory/ac98c0bb68ccf7528dc39fa1922d2bdb/raw/23e062f0eb125b79970538509b95eae7ef38c957/xyplanepairs.jpeg)
-In this narrow context, parentheses pairs make fairly good sense, but here we want to talk about pairs in a much bigger more general context.  
-The advantage of the arrow notation is that it makes clear the order of the elements in the pair.  It also looks like an edge in a directed graph which is an intuitive model for learning about relations and functions.  So we'll write pairs with arrows $a \rightarrow b$ so long as it avoids confusion with other notations.
-
- [Close](::pair_notation)
-# --aliceblue
-# ::::
-
-We can form a cartesian product between two sets of numbers.
-
-#### --aliceblue example1
-
-**Example 1** 
-If $A = \\{ 2,3,4 \\}$ and $B = \\{ 3,5 \\}$, then the *cartesian product* $A \times B$ is the set of pairs
-
-$$\{(2,3),(2,5),(3,3),(3,5),(4,3),(4,5)\}$$
-
-#### --aliceblue
-
-In the next example, we take the cartesian product of a set with itself.
-
-#### --aliceblue example2
-
-**Example 2** 
-If $A = \\{ 2,3,4 \\}$ then the *cartesian product* $A \times A$ is the set of pairs
-
-$$\{(2,2),(2,3),(2,4),(3,2),(3,3),(3,4),(4,2),(4,3),(4,4)\}$$
-
-#### --aliceblue
-
-We can form pairs and cartesian products from anything we want.  Here's a set of things.
-
-![fullwidth](https://gist.githubusercontent.com/wildthinkslaboratory/ac98c0bb68ccf7528dc39fa1922d2bdb/raw/71856e7d81be6577f9ec708902975a8025cb6ba2/functions1.002.jpeg)
-
-Think about all the possible pairs we could make with these things.  There's a lot of them. There are $9$ ways we could pick the first element of a pair and $9$ ways we could pick the second element of the pair.  That's $9 \times 9 = 81$ different pairs we could make. Here's the full cartesian product of them with all $81$ pairs.
-
-![fullwidth](https://gist.githubusercontent.com/wildthinkslaboratory/ac98c0bb68ccf7528dc39fa1922d2bdb/raw/1cbeba9f6aa2ac0c759106fa3e534e67c7ea2718/foodweb.jpeg) 
-
-
-
-A **relation** is just a subset of those pairs. 
-# --outlinebox def_binary_relation
-
-**Definition 2** 
-For sets $A$, $B$, any subset of the cartesian product $A \times B$ is called a **binary relation** from $A$ to $B$. Any subset of $A \times A$ is called a **binary relation** on $A$.
-
-# --outlinebox
-
-
-
-The following set of pairs is a relation on our stuff.  There is some question that was asked for all $81$ pairs and this collection of pairs are those for which the answer was yes. Take a few moments and see if you guess what the question is.  Then click on the pairs to add them to a graph.  Graphs are a useful way to visualize a relation.  
+Next, we've take that stuff and formed it into pairs of stuff (groups of two). Twelve pairs to be exact. Together, these pairs describe a relationship that exists between our stuff.  Can you guess what it is?  See if you can get it by just looking at the pairs and then click on the pairs one by one to add them to a graph.  
 
 ```d3/autoplay
 
@@ -372,10 +287,94 @@ function render() {
 
 
 ```
+The pairs describe a food web between these plants and animals. The predators are on the top of the hierarchy and have only outgoing arrows. The plants are on the bottom and have only incoming arrows. In every pair, the first thing will eat the second.
 
-This mathematical relation describes a food web between these plants and animals.   The predators are on the top of the hierarchy and have only outgoing arrows. The plants are on the bottom and have only incoming arrows. The question is "Will the first thing eat the second thing?"
+Working with pairs like this is a great way to wrap your head around what's going on within or between sets of stuff.  We just pick up two pieces and compare them.  We can ask a yes or no question like: "Is this one bigger than that one?" or "Are they the same color?". If we make lots and lots of pairwise comparisons and put all of the answers together, a picture emerges and we can see a pattern. In math we call these pairwise comparisons a relation.
 
-Ok, here's a different relation on the same set of stuff.  What do you think this relation represents?  Click on the pairs to create a graph.
+You use relations all the time when you do math, but you may not be aware of them.  Functions, like $f(x) = x + 2$, are relations. Statements like $3 \geq 4$ or $4 \times 3 = 12$ are statements about relations.   Relations give us a way to describe the patterns and relationships we see in the world.  They might describe relationships between numbers or they might describe relationships between other stuff: people, websites, words, ideas, whatever stuff you care about.  
+
+Relations are made from pairs.  So, what's a pair?  It's just two things put together, just as you'd expect. What things?  Anything you want. Lots of things come in pairs.
+
+![fullwidth](https://gist.githubusercontent.com/wildthinkslaboratory/ac98c0bb68ccf7528dc39fa1922d2bdb/raw/6d038aa6b0d21ce503d4628a5dff3a292056030d/pairs.jpeg)
+
+In math, the order that we put things together in a pair matters.  Here's a more precise definition of a pair.
+
+# --outlinebox notation
+**Definition 1**
+If we have two things $a$ and $b$ we can put them together to form the **ordered pair** $$a \rightarrow b.$$  We can change the order to create the pair $b \rightarrow a$.  The order is important and the pair $a \rightarrow b$ is not the same as the pair $b \rightarrow a$.
+
+The **cartesian product** of two sets $A$ and $B$ is the set of all **ordered pairs** $a \rightarrow b$ that can be made with the first element $a$ being chosen from set $A$ and the second element $b$ being chosen from set $B$.  We sometimes use the symbols $A \times B$ to represent this set of ordered pairs.  
+
+The cartesian product of a single set $A$ is the set of all ordered pairs we can make with the first and second element both being chosen from the set $A$.  Note that this includes pairs of the form $a \rightarrow a$ where the first and second element are the same thing.  This set of pairs can be described with the symbols $A \times A$.
+
+[Notes on Notation and Ordered Pairs](::pair_notation/center,shadow)
+[Same definition, more math symbols](::math_def_pair/center/shadow)
+# --outlinebox
+
+# :::: math_def_pair
+
+# --outlinebox math_pair
+**Definition 1** 
+For sets $A$ and $B$ the **cartesian product** of $A$ and $B$ is denoted by $A \times B$ and equals
+$$\{a \rightarrow b \, | \, a \in A, \, b \in B \}$$
+
+An element $a \rightarrow b$ of $A \times B$ is called an **ordered pair**.
+[Close](::math_def_pair)
+# --outlinebox
+# ::::
+
+# :::: pair_notation
+# --aliceblue pair_notation_dec
+#### Notation for Ordered Pairs
+
+The arrow notation $a \rightarrow b$ we use for pairs is not the standard notation.  Pairs are more commonly represented by surrounding two elements $a$ and $b$ with parentheses seperated by a comma $(a,b)$.  Most people's introduction to pairs is graphing points on the two dimensional coordinate plane.  
+![fullwidth](https://gist.githubusercontent.com/wildthinkslaboratory/ac98c0bb68ccf7528dc39fa1922d2bdb/raw/23e062f0eb125b79970538509b95eae7ef38c957/xyplanepairs.jpeg)
+In this narrow context, parentheses pairs make fairly good sense, but here we want to talk about pairs in a much bigger more general context.  
+The advantage of the arrow notation is that it makes clear the order of the elements in the pair.  It also looks like an edge in a directed graph which is an intuitive model for learning about relations and functions.  So we'll write pairs with arrows $a \rightarrow b$ so long as it avoids confusion with other notations.
+
+ [Close](::pair_notation)
+# --aliceblue
+# ::::
+
+We can form a cartesian product between two sets of numbers.
+
+#### --aliceblue example1
+
+**Example 1** 
+If $A = \\{ 2,3,4 \\}$ and $B = \\{ 3,5 \\}$, then the *cartesian product* $A \times B$ is the set of pairs
+
+$$\{(2,3),(2,5),(3,3),(3,5),(4,3),(4,5)\}$$
+
+#### --aliceblue
+
+In the next example, we take the cartesian product of a set with itself.
+
+#### --aliceblue example2
+
+**Example 2** 
+If $A = \\{ 2,3,4 \\}$ then the *cartesian product* $A \times A$ is the set of pairs
+
+$$\{(2,2),(2,3),(2,4),(3,2),(3,3),(3,4),(4,2),(4,3),(4,4)\}$$
+
+#### --aliceblue
+
+
+Think about all the possible pairs we could make with our set of stuff from the earlier puzzle.  There's a lot of them. There are $9$ ways we could pick the first element of a pair and $9$ ways we could pick the second element of the pair.  That's $9 \times 9 = 81$ different pairs we could make. Here's the full cartesian product of them with all $81$ pairs.
+
+![fullwidth](https://gist.githubusercontent.com/wildthinkslaboratory/ac98c0bb68ccf7528dc39fa1922d2bdb/raw/1cbeba9f6aa2ac0c759106fa3e534e67c7ea2718/foodweb.jpeg) 
+
+
+
+A **relation** is just a subset of those pairs. 
+# --outlinebox def_binary_relation
+
+**Definition 2** 
+For sets $A$, $B$, any subset of the cartesian product $A \times B$ is called a **binary relation** from $A$ to $B$. Any subset of $A \times A$ is called a **binary relation** on $A$.
+
+# --outlinebox
+
+
+Here's another relation on our set of stuff.  What do you think this relation represents?  They could be just a randomly selected subset of those $81$ pairs.  There's nothing in the definition that says a relation can't be random.  But this relation is not.  There is some unifying question that was asked for all $81$ pairs and this is the collection of pairs for which the answer was yes. Click on the pairs to create a graph.
 
 ```d3/autoplay
 
@@ -659,14 +658,16 @@ function render() {
 
 ```
 
-This mathematical relation breaks our stuff into groups.  The birds are related to each other, the plants are all related to each other and the mammals are also grouped together.  The cricket is all alone and not related to anyone else.
+ The birds are related to each other, the plants are all related to each other and the mammals are also grouped together.  The cricket is all alone and not related to anyone else. This relation seems to break our stuff down into taxonomic groups.  You could quibble with the structure of this relation since it doesn't follow the classic taxonomy groupings. The animals are broken down into three groups while the plants are all lumped together into one.  However, this is math and in math you get to make up your own relations.  I made this one up and this is the way I made it.  You can always make a different one with whatever stuff you like and whatever groups you want.  
 
 
 # Relations You Already Know from Math Class
 
 So now that you've seen we can use relations to organize our favorite stuff, let's talk about some relations that you already know.
 
-
+- greater than or equals (partial orders, total orders)
+- equals (equivalence classes)
+- functions
 
 # Guess the Relation
 
