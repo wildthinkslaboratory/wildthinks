@@ -343,7 +343,12 @@ We can form a cartesian product between two sets of numbers.
 **Example 1** 
 If $A = \\{ 2,3,4 \\}$ and $B = \\{ 3,5 \\}$, then the *cartesian product* $A \times B$ is the set of pairs
 
-$$\{(2,3),(2,5),(3,3),(3,5),(4,3),(4,5)\}$$
+$$ 
+\begin{eqnarray}
+2 \rightarrow 3 \; \; \; \; \; & 2 \rightarrow 5 \; \; \; \; \;& 3 \rightarrow 3 \\
+3 \rightarrow 5 \; \; \; \; \; & 4 \rightarrow 3 \; \; \; \; \;& 4 \rightarrow 5
+\end{eqnarray}
+$$
 
 A tree diagram is a nice way to visualize a cartesian product. Expand the tree below by clicking on the nodes.
 
@@ -649,7 +654,7 @@ function update(source) {
 
 #### --aliceblue
 
-In the next example, we take the cartesian product of a set with itself.
+Notice that the cartesian product $A \times B$ is not the same as the cartesian product $B \times A$, although they have the same number of pairs in them.
 
 #### --aliceblue example2
 
