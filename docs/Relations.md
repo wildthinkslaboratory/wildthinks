@@ -6,11 +6,11 @@
 
 # Relations
 
-Let's start with a puzzle.  Here's some stuff.  We could call it a set of stuff.
+Let's start with a puzzle.  Here's a set of stuff.
 
-![halfwidth](https://gist.githubusercontent.com/wildthinkslaboratory/ac98c0bb68ccf7528dc39fa1922d2bdb/raw/71856e7d81be6577f9ec708902975a8025cb6ba2/functions1.002.jpeg)
+![halfwidth](https://gist.githubusercontent.com/wildthinkslaboratory/ac98c0bb68ccf7528dc39fa1922d2bdb/raw/2fc4fa2c4a8f54b0e90cd11451dc189cfb1568f8/stuff.jpeg)
 
-Next, we've take that stuff and formed it into pairs of stuff (groups of two). Twelve pairs to be exact. Together, these pairs describe a relationship that exists between our stuff.  Can you guess what it is?  See if you can get it by just looking at the pairs and then click on the pairs one by one to add them to a graph.  
+Here are a bunch of pairs (groups of two) that we've made from our stuff. Twelve pairs to be exact. Together, these pairs describe a relationship that exists between our stuff.  Can you guess what it is?  See if you can get it by just looking at the pairs and then click on the pairs one by one to add them to a graph.  
 
 ```d3/autoplay
 
@@ -289,7 +289,7 @@ function render() {
 ```
 The pairs describe a food web between these plants and animals. The predators are on the top of the hierarchy and have only outgoing arrows. The plants are on the bottom and have only incoming arrows. In every pair, the first thing will eat the second.
 
-Working with pairs like this is a great way to wrap your head around what's going on within or between sets of stuff.  We just pick up two pieces and compare them.  We can ask a yes or no question like: "Is this one bigger than that one?" or "Are they the same color?". If we make lots and lots of pairwise comparisons and put all of the answers together, a picture emerges and we can see a pattern. In math we call these pairwise comparisons a relation.
+Working with pairs like this is a great way to wrap your head around what's going on within or between sets of stuff.  We just pick up two elements and compare them.  We can ask a yes or no question like: "Is this one bigger than that one?" or "Are they the same color?". If we make lots and lots of pairwise comparisons and put all of the answers together, a picture emerges and we can see a pattern. In math we call these pairwise comparisons a relation.
 
 You use relations all the time when you do math, but you may not be aware of them.  Functions, like $f(x) = x + 2$, are relations. Statements like $3 \geq 4$ or $4 \times 3 = 12$ are statements about relations.   Relations give us a way to describe the patterns and relationships we see in the world.  They might describe relationships between numbers or they might describe relationships between other stuff: people, websites, words, ideas, whatever stuff you care about.  
 
@@ -345,6 +345,308 @@ If $A = \\{ 2,3,4 \\}$ and $B = \\{ 3,5 \\}$, then the *cartesian product* $A \t
 
 $$\{(2,3),(2,5),(3,3),(3,5),(4,3),(4,5)\}$$
 
+A tree diagram is a nice way to visualize a cartesian product. Expand the tree below by clicking on the nodes.
+
+```d3/autoplay
+
+
+smartdown.importCssCode(
+`
+.node circle {
+  fill: #fff;
+  stroke: #929;
+  stroke-width: 3px;
+}
+
+.node text {
+  font: 18px sans-serif;
+}
+
+.treelink {
+  fill: none;
+  stroke: #ccc;
+  stroke-width: 2px;
+}
+
+
+`);
+
+
+var treeData =
+  {
+    'name'  : 'A',
+    'value': '',
+    'children': [
+      { 
+        'name': 'B',
+        'value': '2',
+        'children': [
+          { 
+          	'name': '',
+          	'value': '3',
+          	'pair': '2 \u2192 3' 
+          },
+          { 
+          	'name': '',
+          	'value': '5',
+          	'pair': '2 \u2192 5' }
+        ]
+      },
+      { 
+        'name': 'B',
+        'value': '3',
+        'children': [
+          { 
+          	'name': '',
+          	'value': '3',
+          	'pair': '3 \u2192 3' 
+          },
+          { 
+          	'name': '',
+          	'value': '5',
+          	'pair': '3 \u2192 5' 
+          }
+        ]
+      },
+      { 
+        'name': 'B',
+        'value': '4',
+        'children': [
+          { 
+          	'name': '',
+          	'value': '3',
+          	'pair': '4 \u2192 3' 
+          },
+          { 
+          	'name': '',
+          	'value': '5',
+          	'pair': '4 \u2192 5'
+          }
+        ]
+      }
+    ]
+  };
+
+
+
+
+
+var target = this.div;
+target.style.height = '100%';
+target.style.width = '96%';
+//target.style['background-color'] = '#555';
+const pageWidth = target.offsetWidth;
+const pageHeight = pageWidth * 0.5;
+
+
+// Set the dimensions and margins of the diagram
+const margin = {top: 20, right: 90, bottom: 30, left: 90};
+const width = pageWidth - margin.left - margin.right;
+const height = pageHeight - margin.top - margin.bottom;
+
+const closed_fill = '#c5c';
+const open_fill = '#fff';
+
+// appends a 'group' element to 'svg'
+// moves the 'group' element to the top left margin
+var svg = d3.select(target).append('svg')
+    .attr('width', width + margin.right + margin.left)
+    .attr('height', height + margin.top + margin.bottom)
+  .append('g')
+    .attr('transform', 'translate('
+          + margin.left + ',' + margin.top + ')');
+
+var i = 0;
+var duration = 750;
+var root;
+
+// declares a tree layout and assigns the size
+var treemap = d3.tree().size([height, width]);
+
+// Assigns parent, children, height, depth
+root = d3.hierarchy(treeData, function(d) { return d.children; });
+root.x0 = height/2;
+root.y0 = 0;
+
+// Collapse after the second level
+root.children.forEach(collapse);
+
+update(root);
+
+// Collapse the node and all it's children
+function collapse(d) {
+  if(d.children) {
+    d._children = d.children
+    d._children.forEach(collapse)
+    d.children = null
+  }
+}
+
+function update(source) {
+
+  // Assigns the x and y position for the nodes
+  var treeData = treemap(root);
+
+  // Compute the new tree layout.
+  var nodes = treeData.descendants(),
+      links = treeData.descendants().slice(1);
+
+  // Normalize for fixed-depth.
+  nodes.forEach(function(d){ d.y = d.depth * 180});
+
+  // ****************** Nodes section ***************************
+
+  // Update the nodes...
+  var node = svg.selectAll('g.node')
+      .data(nodes, function(d) {return d.id || (d.id = ++i); });
+
+  // Enter any new nodes at the parent's previous position.
+  var nodeEnter = node.enter().append('g')
+      .attr('class', 'node')
+      .attr('transform', function(d) {
+        return 'translate(' + source.y0 + ',' + source.x0 + ')';
+    })
+    .on('click', click);
+
+  // Add Circle for the nodes
+  nodeEnter.append('circle')
+      .attr('class', 'node')
+      .attr('r', 1e-6)
+      .style('fill', function(d) {
+          return d._children ? closed_fill : open_fill;
+      });
+
+  // Add labels for the nodes
+  nodeEnter.append('text')
+      .attr('dy', '.35em')
+      .attr('x', function(d) {
+      	  	return 7;
+          //return d.children || d._children ? -13 : 13;
+      })
+      .attr('text-anchor', function(d) {
+          return d.children || d._children ? 'end' : 'start';
+      })
+      .text(function(d) { return d.data.name; });
+
+  // Add labels for the nodes
+  nodeEnter.append('text')
+      .attr('dy', '.35em')
+      .attr('x', -25)
+      .attr('text-anchor', function(d) {
+          return d.children || d._children ? 'end' : 'start';
+      })
+      .text(function(d) { return d.data.value; });
+
+
+  // Add labels for the nodes
+  nodeEnter.append('text')
+      .attr('dy', '.35em')
+      .attr('x', 25)
+      .attr('text-anchor', function(d) {
+          return d.children || d._children ? 'end' : 'start';
+      })
+      .text(function(d) { return d.data.pair; });
+
+  // UPDATE
+  var nodeUpdate = nodeEnter.merge(node);
+
+  // Transition to the proper position for the node
+  nodeUpdate.transition()
+    .duration(duration)
+    .attr('transform', function(d) { 
+        return 'translate(' + d.y + ',' + d.x + ')';
+     });
+
+  // Update the node attributes and style
+  nodeUpdate.select('circle.node')
+    .attr('r', 10)
+    .style('fill', function(d) {
+        return d._children ? closed_fill : open_fill;
+    })
+    .attr('cursor', 'pointer');
+
+
+  // Remove any exiting nodes
+  var nodeExit = node.exit().transition()
+      .duration(duration)
+      .attr('transform', function(d) {
+          return 'translate(' + source.y + ',' + source.x + ')';
+      })
+      .remove();
+
+  // On exit reduce the node circles size to 0
+  nodeExit.select('circle')
+    .attr('r', 1e-6);
+
+  // On exit reduce the opacity of text labels
+  nodeExit.select('text')
+    .style('fill-opacity', 1e-6);
+
+  // ****************** links section ***************************
+
+  // Update the links...
+  var link = svg.selectAll('path.treelink')
+      .data(links, function(d) { return d.id; });
+
+  // Enter any new links at the parent's previous position.
+  var linkEnter = link.enter().insert('path', 'g')
+      .attr('class', 'treelink')
+      .attr('d', function(d){
+        var o = {x: source.x0, y: source.y0}
+        return diagonal(o, o)
+      });
+
+  // UPDATE
+  var linkUpdate = linkEnter.merge(link);
+
+  // Transition back to the parent element position
+  linkUpdate.transition()
+      .duration(duration)
+      .attr('d', function(d){ return diagonal(d, d.parent) });
+
+  // Remove any exiting links
+  var linkExit = link.exit().transition()
+      .duration(duration)
+      .attr('d', function(d) {
+        var o = {x: source.x, y: source.y}
+        return diagonal(o, o)
+      })
+      .remove();
+
+  // Store the old positions for transition.
+  nodes.forEach(function(d){
+    d.x0 = d.x;
+    d.y0 = d.y;
+  });
+
+  // Creates a curved (diagonal) path from parent to the child nodes
+  function diagonal(s, d) {
+
+    path = `M ${s.y} ${s.x}
+            C ${(s.y + d.y) / 2} ${s.x},
+              ${(s.y + d.y) / 2} ${d.x},
+              ${d.y} ${d.x}`
+
+    return path
+  }
+
+  // Toggle children on click.
+  function click(d) {
+    if (d.children) {
+        d._children = d.children;
+        d.children = null;
+      } else {
+        d.children = d._children;
+        d._children = null;
+      }
+    update(d);
+  }
+}
+
+
+```
+
+
 #### --aliceblue
 
 In the next example, we take the cartesian product of a set with itself.
@@ -374,7 +676,7 @@ For sets $A$, $B$, any subset of the cartesian product $A \times B$ is called a 
 # --outlinebox
 
 
-Here's another relation on our set of stuff.  What do you think this relation represents?  They could be just a randomly selected subset of those $81$ pairs.  There's nothing in the definition that says a relation can't be random.  But this relation is not.  There is some unifying question that was asked for all $81$ pairs and this is the collection of pairs for which the answer was yes. Click on the pairs to create a graph.
+Here's another relation on our set of stuff.  What do you think this relation represents?  Are they just a randomly selected subset of those $81$ pairs?  There's nothing in the definition that says a relation can't be random. However, this relation is not.  There is some unifying question that was asked for all $81$ pairs and this is the collection of pairs for which the answer was yes. Click on the pairs to create a graph.
 
 ```d3/autoplay
 
