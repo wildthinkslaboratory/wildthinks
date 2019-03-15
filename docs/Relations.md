@@ -297,7 +297,11 @@ Relations are made from pairs.  So, what's a pair?  It's just two things put tog
 
 ![fullwidth](https://gist.githubusercontent.com/wildthinkslaboratory/ac98c0bb68ccf7528dc39fa1922d2bdb/raw/6d038aa6b0d21ce503d4628a5dff3a292056030d/pairs.jpeg)
 
+----
+
 In math, the order that we put things together in a pair matters.  Here's a more precise definition of a pair.
+
+----
 
 # --outlinebox notation
 **Definition 1**
@@ -336,7 +340,11 @@ The advantage of the arrow notation is that it makes clear the order of the elem
 # --aliceblue
 # ::::
 
+----
+
 We can form a cartesian product between two sets of numbers.
+
+----
 
 #### --aliceblue example1
 
@@ -352,8 +360,7 @@ $$
 
 A tree diagram is a nice way to visualize a cartesian product. Expand the tree below by clicking on the nodes.
 
-#### --aliceblue cp1
-# $A \times B$
+ **A $\times$ B**
 ```d3/autoplay
 
 
@@ -652,12 +659,9 @@ function update(source) {
 
 
 ```
-#### --aliceblue
-
 Notice that the cartesian product $A \times B$ is not the same as the cartesian product $B \times A$, although they have the same number of pairs in them.
 
-#### --aliceblue cp2
-# $B \times A$
+ **B $\times$ A**
 ```d3/autoplay
 
 
@@ -951,7 +955,10 @@ function update(source) {
 
 ```
 #### --aliceblue
-#### --aliceblue
+
+----
+
+----
 
 #### --aliceblue example2
 
