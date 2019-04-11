@@ -36,4 +36,4 @@ This quilt is hand pieced.  I was initially concerned because I'm not skilled at
 
 ![halfwidth](https://cmsassets.mybluprint.com/dims4/default/965a347/2147483647/strip/true/crop/650x388+0+50/resize/2880x1720!/quality/90/?url=https%3A%2F%2Fcmsassets.mybluprint.com%2F54%2F94%2F8130ae72247aca4effa3ea766c3d%2Fapplique-butterfly-craftsy.jpg)
 
-**IDEA:** We could surround it with a border of squares, each made by a different person, a design of their choosing but respecting the color scheme.  Then it would become a story quilt of sorts.  Talia and Hannah are coming out to visit us this summer.  I wonder if I could get them to do a bit of piecing when they're here.
+**IDEA:** We could surround it with a border of squares, each made by a different person, a design of their choosing but respecting the color scheme.  Then it would become a story quilt of sorts.  Talia and Hannah are coming out to visit us this summer.  I wonder if I could get them to do a bit of piecing when they're here.  I'm sure my kids would want to make one.  They're all old enough to do good technical construction.  
