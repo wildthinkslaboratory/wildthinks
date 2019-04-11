@@ -382,7 +382,6 @@ smartdown.importCssCode(
   stroke-width: 2px;
 }
 
-
 `);
 
 
@@ -442,52 +441,50 @@ var treeData =
   };
 
 
-
-
-
-var target = this.div;
-target.style.height = '100%';
-target.style.width = '96%';
-//target.style['background-color'] = '#555';
-const pageWidth = target.offsetWidth;
+var myDiv = this.div;
+myDiv.style.height = '100%';
+myDiv.style.width = '96%';
+const pageWidth = myDiv.offsetWidth;
 const pageHeight = pageWidth * 0.3;
 
 
-// Set the dimensions and margins of the diagram
 const margin = {top: 20, right: 90, bottom: 30, left: 90};
 const width = pageWidth - margin.left - margin.right;
 const height = pageHeight - margin.top - margin.bottom;
 
-const closed_fill = '#c5c';
+
+const closed_fill = '#c5c';  // node color
 const open_fill = '#fff';
 
-// appends a 'group' element to 'svg'
-// moves the 'group' element to the top left margin
-var svg = d3.select(target).append('svg')
-    .attr('width', width + margin.right + margin.left)
-    .attr('height', height + margin.top + margin.bottom)
-  .append('g')
-    .attr('transform', 'translate('
-          + margin.left + ',' + margin.top + ')');
+// a svg drawing with a group added, placed in upper left
+var svg = d3.select(myDiv).append('svg')         
+            .attr('width', width + margin.right + margin.left)
+            .attr('height', height + margin.top + margin.bottom)
+            .append('g')
+            .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
 
 var i = 0;
-var duration = 750;
-var root;
+var duration = 750;  // transition duration
+
 
 // declares a tree layout and assigns the size
 var treemap = d3.tree().size([height, width]);
 
+
 // Assigns parent, children, height, depth
-root = d3.hierarchy(treeData, function(d) { return d.children; });
+var root = d3.hierarchy(treeData, function(d) { return d.children; });
 root.x0 = height/2;
 root.y0 = 0;
 
+
 // Collapse after the second level
 root.children.forEach(collapse);
-
 update(root);
 
+
 // Collapse the node and all it's children
+// basically we hide the children by storing the tree in the hidden _children field
+// then set children to null
 function collapse(d) {
   if(d.children) {
     d._children = d.children
@@ -495,6 +492,7 @@ function collapse(d) {
     d.children = null
   }
 }
+
 
 function update(source) {
 
@@ -530,7 +528,7 @@ function update(source) {
           return d._children ? closed_fill : open_fill;
       });
 
-  // Add labels for the nodes
+  // Add labels for set name
   nodeEnter.append('text')
       .attr('dy', '.35em')
       .attr('x', function(d) {
@@ -542,7 +540,7 @@ function update(source) {
       })
       .text(function(d) { return d.data.name; });
 
-  // Add labels for the nodes
+  // Add labels for the set elements
   nodeEnter.append('text')
       .attr('dy', '.35em')
       .attr('x', -25)
@@ -552,7 +550,7 @@ function update(source) {
       .text(function(d) { return d.data.value; });
 
 
-  // Add labels for the nodes
+  // Add labels for the leaf node pairs
   nodeEnter.append('text')
       .attr('dy', '.35em')
       .attr('x', 25)
@@ -738,51 +736,50 @@ var treeData =
 
 
 
-
-
-var target = this.div;
-target.style.height = '100%';
-target.style.width = '96%';
-//target.style['background-color'] = '#555';
-const pageWidth = target.offsetWidth;
+var myDiv = this.div;
+myDiv.style.height = '100%';
+myDiv.style.width = '96%';
+const pageWidth = myDiv.offsetWidth;
 const pageHeight = pageWidth * 0.3;
 
 
-// Set the dimensions and margins of the diagram
 const margin = {top: 20, right: 90, bottom: 30, left: 90};
 const width = pageWidth - margin.left - margin.right;
 const height = pageHeight - margin.top - margin.bottom;
 
-const closed_fill = '#c5c';
+
+const closed_fill = '#c5c';  // node color
 const open_fill = '#fff';
 
-// appends a 'group' element to 'svg'
-// moves the 'group' element to the top left margin
-var svg = d3.select(target).append('svg')
-    .attr('width', width + margin.right + margin.left)
-    .attr('height', height + margin.top + margin.bottom)
-  .append('g')
-    .attr('transform', 'translate('
-          + margin.left + ',' + margin.top + ')');
+// a svg drawing with a group added, placed in upper left
+var svg = d3.select(myDiv).append('svg')         
+            .attr('width', width + margin.right + margin.left)
+            .attr('height', height + margin.top + margin.bottom)
+            .append('g')
+            .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
 
 var i = 0;
-var duration = 750;
-var root;
+var duration = 750;  // transition duration
+
 
 // declares a tree layout and assigns the size
 var treemap = d3.tree().size([height, width]);
 
+
 // Assigns parent, children, height, depth
-root = d3.hierarchy(treeData, function(d) { return d.children; });
+var root = d3.hierarchy(treeData, function(d) { return d.children; });
 root.x0 = height/2;
 root.y0 = 0;
 
+
 // Collapse after the second level
 root.children.forEach(collapse);
-
 update(root);
 
+
 // Collapse the node and all it's children
+// basically we hide the children by storing the tree in the hidden _children field
+// then set children to null
 function collapse(d) {
   if(d.children) {
     d._children = d.children
@@ -790,6 +787,7 @@ function collapse(d) {
     d.children = null
   }
 }
+
 
 function update(source) {
 
@@ -825,11 +823,11 @@ function update(source) {
           return d._children ? closed_fill : open_fill;
       });
 
-  // Add labels for the nodes
+  // Add labels for set name
   nodeEnter.append('text')
       .attr('dy', '.35em')
       .attr('x', function(d) {
-      	  	return 7;
+            return 7;
           //return d.children || d._children ? -13 : 13;
       })
       .attr('text-anchor', function(d) {
@@ -837,7 +835,7 @@ function update(source) {
       })
       .text(function(d) { return d.data.name; });
 
-  // Add labels for the nodes
+  // Add labels for the set elements
   nodeEnter.append('text')
       .attr('dy', '.35em')
       .attr('x', -25)
@@ -847,7 +845,7 @@ function update(source) {
       .text(function(d) { return d.data.value; });
 
 
-  // Add labels for the nodes
+  // Add labels for the leaf node pairs
   nodeEnter.append('text')
       .attr('dy', '.35em')
       .attr('x', 25)
@@ -1275,7 +1273,7 @@ function render() {
 
 ```
 
- The birds are related to each other, the plants are all related to each other and the mammals are also grouped together.  The cricket is all alone and not related to anyone else. This relation seems to break our stuff down into taxonomic groups.  You could quibble with the structure of this relation since it doesn't follow the classic taxonomy groupings. The animals are broken down into three groups while the plants are all lumped together into one.  However, this is math and in math you get to make up your own relations.  I made this one up and this is the way I made it.  You can always make a different one with whatever stuff you like and whatever groups you want.  
+ The birds are related to each other, the plants are all related to each other and the mammals are also grouped together.  The cricket is all alone and not related to anyone else. Two elements are related if they share a taxonomic group.  You could quibble with the structure of this relation since it doesn't follow the classic taxonomy groupings. The animals are broken down into three groups while the plants are all lumped together into one.  However, this is math and in math you get to make up your own relations.  I made this one up and this is the way I made it.  You can always make a different one with whatever stuff you like and whatever groups you want.  
 
 
 # Relations You Already Know from Math Class
