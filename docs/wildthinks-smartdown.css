@@ -29,39 +29,28 @@
 .wildthinks-theme.smartdown-container p.smartdown_p img.fullwidth {
 }
 
-.wildthinks-theme.smartdown-container .disclosable-content.disclosable-outlinebox {
-}
 
-.wildthinks-theme.smartdown-container .disclosable-content.disclosable-colorbox {
+.wildthinks-theme.smartdown-container .decoration-colorbox {
   background: #55B;
 }
 
-.wildthinks-theme.smartdown-container .disclosable-content.disclosable-aliceblue {
+.wildthinks-theme.smartdown-container .decoration-aliceblue {
   border: 2px solid lightgray;
 }
 
-.wildthinks-theme.smartdown-container .disclosable-content.disclosable-attach {  
+.wildthinks-theme.smartdown-container .disclosable-attach {  
   background: #5BB;
   color: white;
   border-radius: 8px;
   border: none;
 }
 
-.wildthinks-theme.smartdown-container .disclosable-content.disclosable-position {
+.wildthinks-theme.smartdown-container .disclosable-position {
   max-height: 75%;
 }
 
-.wildthinks-theme.smartdown-container .infocell-link-disclosable {
-  color: #5BB;
-}
 
-
-.wildthinks-theme.smartdown-container .infocell-link-disclosable:hover {
-  color: #5BB;
-}
-
-
-.wildthinks-theme.smartdown-container .btn-infocell.btn-infocell-disclosable {
+.wildthinks-theme.smartdown-container .disclosable-trigger-button {
   cursor: pointer;
   border-radius: 5px;
   text-decoration: none;
@@ -73,8 +62,25 @@
   color: #3389dd;
   border: 2px #3389dd solid;
 }
-
-.wildthinks-theme.smartdown-container .btn-infocell.btn-infocell-disclosable:hover {
+.wildthinks-theme.smartdown-container .disclosable-trigger-button:hover {
   background-color: #3389dd;
   color: #fff;
 }
+
+.wildthinks-theme.smartdown-container .disclosable-trigger-tooltip-wrapper {
+ 
+}
+
+.wildthinks-theme.smartdown-container .disclosable-trigger-tooltip {
+  color: #5BB;
+}
+
+.wildthinks-theme.smartdown-container .disclosable-trigger-tooltip:hover {
+  
+}
+
+
+
+
+
+
