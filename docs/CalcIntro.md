@@ -45,7 +45,13 @@ this.depend = function() {
 
 
 
- board = JXG.JSXGraph.initBoard('box', {boundingbox:[-1.5,2,8,-3], keepaspectratio:true, axis:false});
+ board = JXG.JSXGraph.initBoard('box', {boundingbox:[-1.5,2,8,-1], keepaspectratio:true, axis:false});
+var rText = board.create('text',[2.85,0.5,'r'], {fontSize:16});
+var rText = board.create('text',[5.4,1.6,'&#960 r'], {fontSize:16});
+var rDim = board.create('line',[[3,0],[3,1]],
+  {straightFirst:false, straightLast:false, strokeWidth:2, color:'black'});
+var cDim = board.create('line',[[3.9,1.5],[3.9 + Math.PI,1.5]],
+  {straightFirst:false, straightLast:false, strokeWidth:2, color:'black'});
         // var N = board.createElement('slider', [[0,1.5],[3,1.5],[1,4,40]], {name:'number of triangles',snapWidth:1});
         var circ = board.createElement('circle',[[1,0],1],{strokeWidth:1, strokecolor:'blue', strokeWidth:2});
 		var xshift = 4;        

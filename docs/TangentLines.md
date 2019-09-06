@@ -7,7 +7,7 @@ There are two branches of calculus, **Differential Calculus**  and **Integral Ca
 Below is an animation of a ball toss.  Next to the animation you will see a concave down parabala that plots the height of the ball relative to time.  
 
 # --aliceblue instructions
-**App Notes:** In addition to running the animation with the **start** and **reset** buttons, the red dot on the $x$ axis can be dragged to the left or right.  
+**App Notes:** In addition to running the animation with the **start** and **reset** buttons, the red dot on the  time $t$ axis can be dragged to the left or right.  
 # --aliceblue
 
 [start](:=toss=true) [reset](:=toss=false)
