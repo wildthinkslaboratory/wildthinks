@@ -34,6 +34,7 @@ myDiv.innerHTML = `<div id='box' class='jxgbox' style='height:600px;'>`;
 smartdown.setVariable('triangles', 4);
 var N = 4;
 
+// get the number of triangles from smartdown cell
 this.dependOn = ['triangles'];
 this.depend = function() {
   board.suspendUpdate();
@@ -41,106 +42,110 @@ this.depend = function() {
   board.unsuspendUpdate();
 };
 
+// create the board
+board = JXG.JSXGraph.initBoard('box', {boundingbox:[-1.5,2,8,-1], keepaspectratio:true, axis:false});
 
-
- board = JXG.JSXGraph.initBoard('box', {boundingbox:[-1.5,2,8,-1], keepaspectratio:true, axis:false});
+// dimensions of the final rectangle with labels
 var rText = board.create('text',[2.85,0.5,'r'], {fontSize:16});
 var rText = board.create('text',[5.4,1.6,'&#960 r'], {fontSize:16});
-var rDim = board.create('line',[[3,0],[3,1]],
-  {straightFirst:false, straightLast:false, strokeWidth:2, color:'black'});
-var cDim = board.create('line',[[3.9,1.5],[3.9 + Math.PI,1.5]],
-  {straightFirst:false, straightLast:false, strokeWidth:2, color:'black'});
-        // var N = board.createElement('slider', [[0,1.5],[3,1.5],[1,4,40]], {name:'number of triangles',snapWidth:1});
-        var circ = board.createElement('circle',[[1,0],1],{strokeWidth:1, strokecolor:'blue', strokeWidth:2});
-		var xshift = 4;        
+var rDim = board.create('line',[[3,0],[3,1]], {straightFirst:false, straightLast:false, strokeWidth:2, color:'black'});
+var cDim = board.create('line',[[3.9,1.5],[3.9 + Math.PI,1.5]], {straightFirst:false, straightLast:false, strokeWidth:2, color:'black'});
 
-        var c = board.createElement('curve', [[0],[0]],{strokecolor:'blue', strokeWidth:2}); 
-        c.updateDataArray = function() {
-                var r = 1, n = N, 
-                    x = [xshift], y = [0],
-                    phi = Math.PI/n,
-                    h = r*Math.cos(phi),
-                    s = r*Math.sin(phi),
-                    i, j, 
-                    px = 0, py = 0, sgn = 1, 
-                    d = 16, 
-                    dt = phi/d, 
-                    pt;
+// draw the circle
+var circ = board.create('circle',[[1,0],1],{strokeWidth:1, strokecolor:'blue', strokeWidth:2});
+var xshift = 4;        
+
+var r = 1;
+
+
+// draw the rearranged triangles curves
+var rectArcs = board.create('curve', [[0],[0]],{strokecolor:'blue', strokeWidth:2}); 
+rectArcs.updateDataArray = function() {  
+    let x = [xshift];
+    let y = [0];
+    let phi = Math.PI/N;
+    let h = r*Math.cos(phi);
+    let s = r*Math.sin(phi);
+    let px = 0; 
+    let py = 0;
+    let sgn = 1; 
+    let d = 16; 
+    let dt = phi/d; 
+  
+    // draw the blue arcs                  
+    for (let i=0; i<N; i++) {                          // for each triangle
+        for (let j=-d; j<=d; j++) {                    // number of points in the blue arc
+            let pt = dt*j;
+            x.push(px+r*Math.sin(pt) + xshift);
+            y.push(sgn*r*Math.cos(pt)-(sgn-1)*h*0.5);
+        }
+        px += s;
+        sgn *= (-1);  // up or down
+    }
+
+    x.push((N-1)*s + xshift);
+    y.push(h+(sgn-1)*h*0.5);
+    this.dataX = x;
+    this.dataY = y;
+}
+
+
+// draw the red triangles in the rearranged triangles
+var c1 = board.create('curve', [[0],[0]],{strokecolor:'red', strokeWidth:2}); 
+c1.updateDataArray = function() { 
+    let x = [xshift];  // put the starting point in
+    let y = [0];
+    let phi = Math.PI/N;
+    let h = r*Math.cos(phi);
+    let s = r*Math.sin(phi);
+    let px = 0, py = 0;  
+    let dt = phi*2; 
+                   
+    let sgn = 1;
+    for (let i=0; i<N; i++) {
+        for (let j=-1; j<=1; j=j+2) {
+            let pt = dt*j/2;
+            x.push(px+r*Math.sin(pt) + xshift);
+            y.push(sgn*r*Math.cos(pt)-(sgn-1)*h*0.5);
+        }
+        px += s;
+        sgn *= (-1);
+    }
+
+    x.push((N-1)*s + xshift);  // add the last point
+    y.push(h+(sgn-1)*h*0.5);
+    this.dataX = x;
+    this.dataY = y;
+}
+
+// draw red triangles in circle
+var c2 = board.create('curve', [[0],[0]],{strokecolor:'red', strokeWidth:2}); 
+c2.updateDataArray = function() {
+    let px = circ.midpoint.X(); 
+    let py = circ.midpoint.Y();  
+    let x = [px]; 
+    let y = [py];
+    let phi = Math.PI/N;
+    let s = r*Math.sin(phi);
+    let dt = phi*2;
+    let pt = Math.PI*0.5+phi;
                     
-                for (i=0;i<n;i++) {
-                    for (j=-d;j<=d;j++) {
-                        pt = dt*j;
-                        x.push(px+r*Math.sin(pt) + xshift);
-                        y.push(sgn*r*Math.cos(pt)-(sgn-1)*h*0.5);
-                    }
-                    px += s;
-                    sgn *= (-1);
-                }
-                x.push((n-1)*s + xshift);
-                y.push(h+(sgn-1)*h*0.5);
-                this.dataX = x;
-                this.dataY = y;
-            }
+    for (let i=0; i<N; i++) {
+        for (let j=-1; j<=1; j=j+2) {
+            x.push(px+r*Math.cos(pt));
+            y.push(py+r*Math.sin(pt));
+            pt -= dt;
+        }
+        x.push(px);
+        y.push(py);
+        pt += dt;
+    }
+    this.dataX = x;
+    this.dataY = y;
+}
+            
+board.update();
 
-
-        var c1 = board.createElement('curve', [[0],[0]],{strokecolor:'red', strokeWidth:2}); 
-        c1.updateDataArray = function() {
-                var r = 1, n = N, 
-                    x = [x], y = [0],
-                    phi = Math.PI/n,
-                    h = r*Math.cos(phi),
-                    s = r*Math.sin(phi),
-                    i, j, 
-                    px = 0, py = 0, sgn = 1, 
-                    d = 1/2, 
-                    dt = phi/d, 
-                    pt;
-                    
-                for (i=0;i<n;i++) {
-                    for (j=-d;j<=d;j++) {
-                        pt = dt*j;
-                        x.push(px+r*Math.sin(pt) + xshift);
-                        y.push(sgn*r*Math.cos(pt)-(sgn-1)*h*0.5);
-                    }
-                    px += s;
-                    sgn *= (-1);
-                }
-                x.push((n-1)*s + xshift);
-                y.push(h+(sgn-1)*h*0.5);
-                this.dataX = x;
-                this.dataY = y;
-            }
-
-
-        var c2 = board.createElement('curve', [[0],[0]],{strokecolor:'red', strokeWidth:2}); 
-        c2.updateDataArray = function() {
-                var r = 1, n = N, 
-                    px = circ.midpoint.X(), py = circ.midpoint.Y(),  
-                    x = [px], y = [py],
-                    phi = Math.PI/n,
-                    s = r*Math.sin(phi),
-                    i, j, 
-                    d = 1/2, 
-                    dt = phi/d, 
-                    pt = Math.PI*0.5+phi;
-                    
-                for (i=0;i<n;i++) {
-                    for (j=-d;j<=d;j++) {
-                        x.push(px+r*Math.cos(pt));
-                        y.push(py+r*Math.sin(pt));
-                        pt -= dt;
-                    }
-
-                    x.push(px);
-                    y.push(py);
-                    pt += dt;
-                }
-                console.log('x',x);
-                console.log('y',y);
-                this.dataX = x;
-                this.dataY = y;
-            }
-            board.update();
 ```
 
 As we make the triangles smaller, the sum of their total area gets closer and closer to the area of the circle.  Our rearranged version of the triangles is also changing.  The more triangles we add, the more it looks like a rectangle.  The width of the rectangle is getting closer to being the radius of the circle $r$ and the length of the rectangle is approaching half the circumference of the circle $\pi r$.  Move the slider back and forth until you've convinced yourself of these dimensions.  Now we have a classic straight line geometry problem for area.  Multiplying the length times the width we get an area of $\pi r^2$ for our circle.
@@ -148,22 +153,7 @@ As we make the triangles smaller, the sum of their total area gets closer and cl
 
 ### Coming Up Next
 
-[Tangent Lines and While They're Cool](:@TangentLines)
-# :::: todo
+[Limits and Continuity](:@CalculusPrimer/Limits)
 
-## To Do
-
-- review current pages for:
-	- bugs 
-	- formatting issues (whitespace, color etc.) 
-	- content
-
-- differential calculus
-	- tangent line what is it
-	- motivation for tangent line
-	- tangent line app 
-- 
-
-# ::::
 
 

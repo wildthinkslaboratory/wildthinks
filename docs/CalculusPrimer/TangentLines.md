@@ -256,7 +256,7 @@ So this is the question that Isaac Newton was trying to answer when the proverbi
 
 #### Coming Up Next 
 
-[Learn to Calculate the Slope of the Tangent Line](:@Derivative)
+[Learn to Calculate the Slope of the Tangent Line](:@CalculusPrimer/Derivative)
 
 
 
