@@ -135,9 +135,9 @@ var yArrow = board.create('line',[[-0.5,2.2],[-0.5,8]],
 
 
 // parabala and it's derivative
-var f = function(x) { return  -2*x*x + 8*x ; };
-var df = function(x) { return -4*x + 8; }
-var graph_f = board.create('functiongraph', [f,0,4]);
+let f = function(x) { return  -2*x*x + 8*x ; };
+let df = function(x) { return -4*x + 8; }
+let graph_f = board.create('functiongraph', [f,0,4]);
 
 // point on x axis
 var x = board.create('glider', [0, 0, board.defaultAxes.x], {name: 't', size:6});
@@ -253,6 +253,129 @@ In this example, the slope of the tangent line tells us the speed the ball is tr
 Not all functions represent moving objects. More generally, tangent lines tell us something called the **instantaneous rate of change** of our function. We can pick a point on our function and determine whether the function is increasing or decreasing at that spot, and how quickly it's values are changing.  
 
 So this is the question that Isaac Newton was trying to answer when the proverbial apple fell from the tree.  Next we see how to calculate the slope of the tangent line and in the process get our first taste of calculus.
+
+
+### Another Example of Tangent Lines
+
+# --aliceblue problem
+**Problem:**
+A rectangular pen $8\text{ft}^2$ in area is to be fenced off for a pet rabbit.  If one side of the pen is already protected by a barn wall, what dimensions will require the shortest length of fence?
+# --aliceblue
+
+If our pen has dimensions $x$ by $y$, then we know that $xy = 8$.  We also know that the length of fence $L$ will be equal to $L = 2x + y$.  We can write the a function for the length in terms of $x$ 
+$$L = 2x + \frac{8}{x}$$
+```javascript /playable/autoplay
+//smartdown.import=https://cdnjs.cloudflare.com/ajax/libs/jsxgraph/0.99.7/jsxgraphcore.js
+
+smartdown.importCssUrl('https://cdnjs.cloudflare.com/ajax/libs/jsxgraph/0.99.7/jsxgraph.css');
+
+const myDiv = this.div;
+myDiv.style.width = '100%';
+myDiv.style.height = '100%';
+myDiv.style.margin = 'auto';
+myDiv.innerHTML = `<div id='box' class='jxgbox' style='height:600px;'>`;
+
+// smartdown.setVariable('xvalue', '1');
+
+
+
+// create the board
+JXG.Options.text.display = 'internal';
+board = JXG.JSXGraph.initBoard('box', {boundingbox:[-10,25,10,-1], keepaspectratio:true, axis:true});
+
+// create the labels for axis
+var xAxisLabel = board.create('text',[0.2,-0.4,'x'], {fontSize:16});
+var yAxisLabel = board.create('text',[0.5,1,'Length of Fence'], {fontSize:16});
+var textRot = board.create('transform', [Math.PI/2, 0,0], {type:'rotate'}); 
+textRot.bindTo(yAxisLabel);
+board.update();
+var xArrow = board.create('line',[[1,-0.4],[4,-0.4]],
+  {straightFirst:false, straightLast:false, strokeWidth:2, color:'black', lastArrow:true});
+var yArrow = board.create('line',[[-1,6],[-1,10]],
+  {straightFirst:false, straightLast:false, strokeWidth:2, color:'black', lastArrow:true});
+
+
+// function and it's derivative
+var f = function(x) { return  2*x + 8/x; };
+var df = function(x) { return 2  - (8/(x*x)); }
+
+var graph_f = board.create('functiongraph', [f,0,25]);
+
+// point on x axis
+var x = board.create('glider', [1, 0, board.defaultAxes.x], {name: 'x', size:6});
+// point on function
+var fx = board.create('point', [
+                function() { return x.X(); }, 
+                function() { return f(x.X()); }
+          ], {name: '', color: 'blue', fixed: true, size:3});
+
+// invisible point we need because it takes two points to make the tangent line
+var fx2 = board.create('point', [
+                function() { return x.X() + 1; }, 
+                function() { return f(x.X()) + df(x.X()); }
+          ], {visible:false});
+
+console.log('slope at 2 ', df(2));
+// tangent line
+var line = board.create('line',[fx, fx2],{strokeColor:'#FF5522'});
+
+
+
+var line1 = board.create('line',[[20,9], [20,25] ],{strokeColor:'black', strokeWidth:5, straightFirst:false, straightLast:false});
+var line2 = board.create('line',[[20,10], [function() { return 20 - x.X(); }, 10 ] ],{strokeColor:'black', strokeWidth:2, straightFirst:false, straightLast:false});
+
+var y = function() { return 8 / x.X();};
+
+var line3 = board.create('line',[[
+  function() { return 20 - x.X(); }, 
+  10], [
+  function() { return 20 - x.X(); },
+  function() { return 10 + y(x.X()); }] ],{strokeColor:'black', strokeWidth:2, straightFirst:false, straightLast:false});
+var line4 = board.create('line',[[
+  function() { return 20 - x.X(); },
+  function() { return 10 + y(x.X()); }], [
+  20,
+  function() { return 10 + y(x.X()); }] ],{strokeColor:'black', strokeWidth:2, straightFirst:false, straightLast:false});
+
+// text displaying current slope of tangent line
+var slopeText = board.create('text',[3,3,function(){ return 'Slope of Tangent Line = ' + df(x.X()).toFixed(4); }], {fontSize:20});
+
+var xText = board.create('text',[10,7.5,function(){ return 'x = ' + x.X().toFixed(4); }], {fontSize:20});
+var yText = board.create('text',[10,6,function(){ return 'y = ' + y(x.X()).toFixed(4); }], {fontSize:20});
+var LText = board.create('text',[10,4.5,function(){ return 'L = ' + f(x.X()).toFixed(4); }], {fontSize:20});
+var barnText = board.create('text',[20.2, 15, 'barn wall'], {fontSize:20});
+var xTextmoving = board.create('text',[ function() { return 20 - x.X()/2; }, 9.5, 'x']);
+var yTextmoving = board.create('text',[
+  function() { return 19 - x.X(); }, 
+  function() { return 10 + y(x.X())/2; }, 'y']);
+
+
+
+  
+// this restricts the domain to values where f(x) is positive.
+board.on('update', function() {
+  if (x.X() < 0) {
+    x.setPositionDirectly(JXG.COORDS_BY_USER, [0,0]); 
+    x.prepareUpdate().update(true).updateRenderer();
+  }
+  // env.xvalue = x.X();
+  
+});
+
+// // set up the start and reset buttons for animation
+// this.dependOn = ['xvalue'];
+// this.depend = function() { 
+//   if (env.xvalue != '') {
+//     board.suspendUpdate();
+//     let v = parseFloat(env.xvalue);
+//     x.setPositionDirectly(JXG.COORDS_BY_USER, [v,0]); 
+//     board.unsuspendUpdate();
+//   }
+// };
+
+
+```
+
 
 #### Coming Up Next 
 

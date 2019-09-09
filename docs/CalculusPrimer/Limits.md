@@ -10,9 +10,11 @@ From James Tanton's *Thinking Mathematics: Volume 6, Some Calculus*
 
 # --aliceblue
 
+I also went back and looked in my college calculus book *Calculus with Analytic Geometry* by George F. Simmons from 20+ years ago. Its old and battered, but I occasionally still use a s a reference.  I was surprised to find that it also relies on an informal definition of a limit and includes only a brief section on limits after the notion of derivative has already been introduced.
+
 Limits and continuity is a valid area of mathematical study and you will need to master some of it to succeed in class, but just remember **it is not critical to understanding and enjoying calculus**.  
 
-### One Quick Look at Limits
+### A Quick Look at Limits
 
 Consider the function 
 $$ f(x) = \frac{x^2 - 1}{x-1}.$$
@@ -66,11 +68,11 @@ var graph_f = board.create('functiongraph', [f,-10,10]);
 
 
 ---
-except the function $f(x)$ has a hole in the graph at the point where $x=1$ because the function is undefined at that point. Dividing by zero is not OK. Even though the function is not defined at $x=1$, we can ask the question
+except the function $f(x)$ has a hole in the graph at the point where $x=1$ because the function is undefined at that point. Dividing by zero is not OK. Even though the function is not defined at $x=1$, we can still ask the question
 
 # --outlinebox question
 **Question**
-What value does the function get close to as we get closer and closer to $x=1$ without ever reaching it?
+What value does the function get **close** to as we get **closer and closer** to $x=1$ without ever reaching it?
 # --outlinebox
 
 ```javascript /playable/autoplay
@@ -149,7 +151,7 @@ So even though the function is undefined at $x=1$, the limit there exists and is
 
 # --outlinebox point1
 **Remember**
-The limit of the function at a point is not the same as the value at that point. The limit at a point tells what value the function is **getting close to** rather than what the value actually is.  
+The limit of the function at a point $\lim_{x \to 1} f(x)$ is not the same as the value of the function at that point $f(1)$. The limit at a point tells what value the function is **getting close to** rather than what the function value actually is.  
 # --outlinebox
 
 1. This kind of thinking requires a leap of faith.  
@@ -157,17 +159,97 @@ The limit of the function at a point is not the same as the value at that point.
 3. Defined different at point example
 4. definition of continuity 
 
+This is an informal introduction to limits and continuity.  There is a formal definition of limit.  It involvles lots of $\delta$'s and $\epsilon$'s and it's useful for writing proofs about limits such as **The Squeeze Theorem**.   
 
-### Limits on Weird Functions
+### Functions that Misbehave
+
+The formal stuff about limits comes into play when functions are poorly behaved.  What does "poorly behaved" mean?  We're going to be informal about that too.  Here's some misbehaving functions.
+$f(x) =
+\left\{
+  \begin{array}{ll}
+    x  & \mbox{if } x \leq 0 \\
+    x+2 & \mbox{if } x > 0
+  \end{array}
+\right.$
+```javascript /playable/autoplay/inline
+//smartdown.import=https://cdnjs.cloudflare.com/ajax/libs/jsxgraph/0.99.7/jsxgraphcore.js
+
+smartdown.importCssUrl('https://cdnjs.cloudflare.com/ajax/libs/jsxgraph/0.99.7/jsxgraph.css');
+
+const myDiv = this.div;
+myDiv.style.width = '100%';
+myDiv.style.height = '100%';
+myDiv.style.margin = 'auto';
+myDiv.innerHTML = `<div id='box' class='jxgbox' style='height:300px; width:300px;'>`;
+
+// create the board
+board = JXG.JSXGraph.initBoard('box', {boundingbox:[-5,5,5,-5], keepaspectratio:true, axis:true});
+
+// parabala and it's derivative
+var f = function(x) { 
+  if (x <= 0) return x;
+  return x+2;
+};
+
+var graph_f = board.create('functiongraph', [f,-10,10]);
+
+// undefined point
+var p1 = board.create('point', [0,2], {name:'', fixed:true, size:3, strokeColor:'blue', fillColor:'white', fillOpacity:1, strokeOpacity:1});
+var p2 = board.create('point', [0,0], {name:'', color:'blue'});
+
+ 
+```
+
+$ f(x) = \frac{x^2 - 1}{x-1}$
+```javascript /playable/autoplay/inline
+//smartdown.import=https://cdnjs.cloudflare.com/ajax/libs/jsxgraph/0.99.7/jsxgraphcore.js
+
+smartdown.importCssUrl('https://cdnjs.cloudflare.com/ajax/libs/jsxgraph/0.99.7/jsxgraph.css');
+
+const myDiv = this.div;
+myDiv.style.width = '100%';
+myDiv.style.height = '100%';
+myDiv.style.margin = 'auto';
+myDiv.innerHTML = `<div id='box' class='jxgbox' style='height:300px; width:300px;'>`;
+
+// create the board
+board = JXG.JSXGraph.initBoard('box', {boundingbox:[-5,5,5,-5], keepaspectratio:true, axis:true});
+
+// parabala and it's derivative
+var f = function(x) { return  (x*x - 1)/(x - 1); };
+var graph_f = board.create('functiongraph', [f,-10,10]);
+
+// undefined point
+var und_p = board.create('point', [1,2], {name:'', fixed:true, size:4, strokeColor:'green', fillColor:'white', fillOpacity:1, strokeOpacity:1});
+ 
+```
+$ f(x) = \frac{x^2 - 1}{x-1}$
+```javascript /playable/autoplay/inline
+//smartdown.import=https://cdnjs.cloudflare.com/ajax/libs/jsxgraph/0.99.7/jsxgraphcore.js
+
+smartdown.importCssUrl('https://cdnjs.cloudflare.com/ajax/libs/jsxgraph/0.99.7/jsxgraph.css');
+
+const myDiv = this.div;
+myDiv.style.width = '100%';
+myDiv.style.height = '100%';
+myDiv.style.margin = 'auto';
+myDiv.innerHTML = `<div id='box' class='jxgbox' style='height:300px; width:300px;'>`;
+
+// create the board
+board = JXG.JSXGraph.initBoard('box', {boundingbox:[-5,5,5,-5], keepaspectratio:true, axis:true});
+
+// parabala and it's derivative
+var f = function(x) { return  (x*x - 1)/(x - 1); };
+var graph_f = board.create('functiongraph', [f,-10,10]);
+
+// undefined point
+var und_p = board.create('point', [1,2], {name:'', fixed:true, size:4, strokeColor:'green', fillColor:'white', fillOpacity:1, strokeOpacity:1});
+ 
+```
+---
 
 Know the difference between a well behaved and non-wellbehaved function.
 
-### What's Missing
-
-- formal definition of a limit
-- $\delta$, $\epsilon$ proofs
-- sums and products of limits
-- Squeeze Theorem
 
 ### Up Next
 
