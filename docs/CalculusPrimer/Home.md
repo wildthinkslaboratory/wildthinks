@@ -15,7 +15,10 @@ var n = 40;
 
 var brd = JXG.JSXGraph.initBoard('box', {boundingbox:[-3,5,3,-3],axis:true});
 
+// some colors for random selection
 colors = ['#00FF77', '#FF7700', '#7700FF', '#FFFF00', '#2222FF', '#FF2222'];
+
+// some random points
 var p = [];
 p.push(brd.create('point',[-2.7,(Math.random()-0.2)*5]));
 p.push(brd.create('point',[-1,(Math.random()-0.2)*5]));
@@ -23,18 +26,16 @@ p.push(brd.create('point',[0,(Math.random()-0.2)*5]));
 p.push(brd.create('point',[1,(Math.random()-0.2)*5]));
 p.push(brd.create('point',[2.7,(Math.random()-0.2)*5]));
 
-
+// we make a polynomial from the random points
 var f = JXG.Math.Numerics.lagrangePolynomial(p);
 
 var plot = brd.create('functiongraph',[f,-3,3]);
 var nfun = function() { return n; }
-// var up = brd.create('riemannsum',[f,function(){ return n.Value();}, 'upper',-3,3],{fillColor:'#ff0000', fillOpacity:0.3});
 var lo = brd.create('riemannsum',[f,nfun, 'lower',-3,3],
 	{strokeColor: 'blue', fillColor:colors[Math.floor(Math.random()*colors.length)], fillOpacity:0.5});
  
-// brd.create('text',[-2,-2,function(){ return 'Diff='+(JXG.Math.Numerics.riemann(f,nfun,'upper',-3,3)-JXG.Math.Numerics.riemann(f,nfun,'lower',-3,3)).toFixed(4); }]);
 
-// get the number of triangles from smartdown cell
+// get the number of divisions
 this.dependOn = ['N'];
 this.depend = function() {
   brd.suspendUpdate();
@@ -60,14 +61,15 @@ Calculus is a beautiful subject, but sometimes the beauty of calculus doesn't sh
 *Burn Math Class* by Jason Wilkes
 # --aliceblue
 
-[The Main Idea](:@CalculusPrimer/Intro)
-[Limits](:@CalculusPrimer/Limits)
-[Tangent Lines](:@CalculusPrimer/TangentLines)
-[The Derivative](:@CalculusPrimer/Derivative)
-[Applications of the Derivative](:@CalculusPrimer/AppDerivatives)
-[The Integral](:@CalculusPrimer/Integral)
-[Applications of Integration](:@CalculusPrimer/IntegralApps)
-[The Fundamental Theorem of Calculus](:@CalculusPrimer/FundamentalTheorem)
+#### Begin Here
+1. [The Main Idea](:@CalculusPrimer/Intro)
+2. [Limits](:@CalculusPrimer/Limits)
+3. [Tangent Lines](:@CalculusPrimer/TangentLines)
+4. [The Derivative](:@CalculusPrimer/Derivative)
+5. [Applications of the Derivative](:@CalculusPrimer/AppDerivatives)
+6. [The Integral](:@CalculusPrimer/Integral)
+7. [Applications of Integration](:@CalculusPrimer/IntegralApps)
+8. [The Fundamental Theorem of Calculus](:@CalculusPrimer/FundamentalTheorem)
 
 # :::: todo
 TODO

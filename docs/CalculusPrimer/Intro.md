@@ -185,9 +185,6 @@ var diameter = function() {
 
 // create the brd
 brd = JXG.JSXGraph.initBoard('box', {boundingbox:[-1.5,2,8,-1], keepaspectratio:true, axis:false});
-//var perimeterText = brd.create('text', [2.3,0, 'perimeter'], {fontSize:20});
-//var perimeterText = brd.create('text', [2.3,-0.2, 'diameter'], {fontSize:20});
-
 
 var pText = brd.create('text', [3,0, function() { return 'perimeter = ' + perimeter().toFixed(4).toString(); }], {fontSize:30});
 
@@ -198,11 +195,11 @@ var piText = brd.create('text', [3,-0.6,
     {fontSize:30});
 
 
-// draw the circle
+// invisible circle
 var circ = brd.create('circle',[[1,0],1],{strokeWidth:1, strokecolor:'blue', strokeWidth:2, visible:false});
 var r = 1;
 
-// draw red triangles in circle
+// draw polygon sides
 var c2 = brd.create('curve', [[0],[0]],{strokecolor:'red', strokeWidth:2}); 
 c2.updateDataArray = function() {
     let px = circ.midpoint.X(); 
@@ -228,7 +225,7 @@ c2.updateDataArray = function() {
     this.dataY = y;
 }
 
-// draw red triangles in circle
+// draw diameter
 var c = brd.create('curve', [[0],[0]],{strokecolor:'blue', strokeWidth:2}); 
 c.updateDataArray = function() {
 
@@ -246,7 +243,7 @@ c.updateDataArray = function() {
 
 brd.update();
 
-// get the number of triangles from smartdown cell
+// get the number of sides for polygon from smartdown cell
 this.dependOn = ['polygon'];
 this.depend = function() {
   brd.suspendUpdate();
@@ -259,7 +256,7 @@ this.depend = function() {
 
 ### The Result of an Infinite Process
 
-In both of our examples we start our with an awkward straight line approximation of the thing we want to calculate.  We chop things up into smaller and smaller straight line pieces.  As we increase the number of pieces, our approximation gets better and better. The belief is that if this process could continue to infinity, the end of this infinite process produces the result we desire.  This kind of thinking is the foundation of calculus.  It isn't too hard to believe when we look at these examples.  But there is a 'leap of faith' here as Dr. Tanton would say.  It's important to be aware of what we're believing.
+In both of our examples we start our with an awkward straight line approximation of the thing we want to calculate.  We chop things up into smaller and smaller straight line pieces.  As we increase the number of pieces, our approximation gets better and better. The belief is that if this process could continue to infinity, the end of this infinite process produces the result we desire.  This kind of thinking is the foundation of calculus.  It isn't too hard to believe when we look at these examples, but there is a 'leap of faith' here as Dr. Tanton would say.  It's important to be aware of what we're believing.
 
 ### Coming Up Next
 
