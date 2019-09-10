@@ -11,6 +11,7 @@ If we zoom in on curvy stuff, it starts to look more and more straight.
 # --outlinebox
 
 ![fullwidth](https://cdn-image.travelandleisure.com/sites/default/files/styles/1600x1000/public/1479851209/sunrise-2014-EARTH1116.jpg?itok=T8sGC69d)
+
 Take a curvy shape like the earth, and zoom in super close.  Let's consider a sample of the earth's surface that is about 20 square miles.  That's big enough so most of us wouldn't want to walk across it in a single day.  For most of what we do in our daily lives on our 20 square mile plot, we can assume that the earth is flat and that works pretty well.   It wasn't until the 17th century that we conclusively determined that the earth was round, so it worked pretty well for a majority of human existence. 
 
 A flat approximation is great because it makes the math easy.  However, if we want to fly from California to New York in an airplane, or if we are interested in launching satellites or sending robots to Mars then we have to zoom out and consider the full curvy shape of the earth.  The trick of calculus is to zoom in real close until we can pretend our curve is flat.  Sometimes we'll cut our shape into lots of tiny zoomed in pieces, use straight line math on the pieces and then glue all the little pieces back together to get a result that works for the full curvy shape.
@@ -29,7 +30,7 @@ const myDiv = this.div;
 myDiv.style.width = '100%';
 myDiv.style.height = '100%';
 myDiv.style.margin = 'auto';
-myDiv.innerHTML = `<div id='box' class='jxgbox' style='height:600px;'>`;
+myDiv.innerHTML = `<div id='box1' class='jxgbox' style='height:600px;'>`;
 
 smartdown.setVariable('triangles', 4);
 var N = 4;
@@ -43,7 +44,7 @@ this.depend = function() {
 };
 
 // create the board
-board = JXG.JSXGraph.initBoard('box', {boundingbox:[-1.5,2,8,-1], keepaspectratio:true, axis:false});
+board = JXG.JSXGraph.initBoard('box1', {boundingbox:[-1.5,2,8,-1], keepaspectratio:true, axis:false});
 
 // dimensions of the final rectangle with labels
 var rText = board.create('text',[2.85,0.5,'r'], {fontSize:16});
@@ -147,12 +148,41 @@ c2.updateDataArray = function() {
 board.update();
 
 ```
+As we add more and more triangles, our approximation gets better and better. The rearranged version of the circle looks more and more like a rectangle as the number of triangles gets larger. 
 
-As we make the triangles smaller, the sum of their total area gets closer and closer to the area of the circle.  Our rearranged version of the triangles is also changing.  The more triangles we add, the more it looks like a rectangle.  The width of the rectangle is getting closer to being the radius of the circle $r$ and the length of the rectangle is approaching half the circumference of the circle $\pi r$.  Move the slider back and forth until you've convinced yourself of these dimensions.  Now we have a classic straight line geometry problem for area.  Multiplying the length times the width we get an area of $\pi r^2$ for our circle.
+# --partialborder q1
+ The area of this rectangle is getting closer and closer to
+[](:Xa1) 64
+[](:Xpir2) $\pi r^2$
+[](:Xa2) $\infty$
+# --partialborder
+
+```javascript/autoplay
+smartdown.setVariable('pir2', false);
+this.dependOn = ['pir2'];
+
+this.depend = function() {
+  if (env.pir2 == true) {
+      smartdown.showDisclosure('yes','','bottomright');  
+      setTimeout(function () {
+           smartdown.hideDisclosure('yes','','bottomright'); 
+      }, 3000);
+    } 
+  };
+```
+
+# :::: yes
+
+# --colorbox yes
+YES! :ok_hand:
+# --colorbox
+
+# ::::
 
 ### Another Fun Example
-Same strategy. Just play and think.
-[Size of Polygon](:-polygon/3/40/1) [](:!polygon)
+Here's a similar example playing with polygons.  We look at the ratio of a polygon's perimeter to its diameter.
+
+[Number of Polygon Sides](:-polygon/3/40/1) [](:!polygon)
 ```javascript /playable/autoplay
 //smartdown.import=https://cdnjs.cloudflare.com/ajax/libs/jsxgraph/0.99.7/jsxgraphcore.js
 
@@ -163,7 +193,7 @@ const myDiv = this.div;
 myDiv.style.width = '100%';
 myDiv.style.height = '100%';
 myDiv.style.margin = 'auto';
-myDiv.innerHTML = `<div id='box' class='jxgbox' style='height:600px;'>`;
+myDiv.innerHTML = `<div id='box2' class='jxgbox' style='height:600px;'>`;
 
 smartdown.setVariable('polygon', 4);
 var N = 4;
@@ -184,7 +214,7 @@ var diameter = function() {
 
 
 // create the brd
-brd = JXG.JSXGraph.initBoard('box', {boundingbox:[-1.5,2,8,-1], keepaspectratio:true, axis:false});
+brd = JXG.JSXGraph.initBoard('box2', {boundingbox:[-1.5,2,8,-1], keepaspectratio:true, axis:false});
 
 var pText = brd.create('text', [3,0, function() { return 'perimeter = ' + perimeter().toFixed(4).toString(); }], {fontSize:30});
 
@@ -253,12 +283,49 @@ this.depend = function() {
 
 
 ```
+---
+
+# --partialborder q2
+As the number of sides gets larger and larger, the ratio of a polygons perimeter to it's diameter is getting closer and closer to 
+[](:Xpi) $\pi$
+[](:Xa3) 3
+[](:Xr2) $r^2$
+# --partialborder
+
+
+```javascript/autoplay
+smartdown.setVariable('pi', false);
+smartdown.setVariable('a3', false);
+smartdown.setVariable('r2', false);
+
+this.dependOn = ['pi', 'a3', 'r2'];
+
+this.depend = function() {
+  if (env.pi == true && env.a3 == false && env.r2 == false) {
+      smartdown.showDisclosure('correct','','bottomright');  
+      setTimeout(function () {
+           smartdown.hideDisclosure('correct','','bottomright'); 
+      }, 3000);
+    } 
+  };
+```
+
+# :::: correct
+
+# --colorbox right
+correct! :grinning:
+# --colorbox
+
+# ::::
+
+
 
 ### The Result of an Infinite Process
 
-In both of our examples we start our with an awkward straight line approximation of the thing we want to calculate.  We chop things up into smaller and smaller straight line pieces.  As we increase the number of pieces, our approximation gets better and better. The belief is that if this process could continue to infinity, the end of this infinite process produces the result we desire.  This kind of thinking is the foundation of calculus.  It isn't too hard to believe when we look at these examples, but there is a 'leap of faith' here as Dr. Tanton would say.  It's important to be aware of what we're believing.
+In both of our examples we start our with an awkward straight line approximation of the thing we want to calculate.  Zooming in, we chop things up into smaller and smaller straight line pieces.  As we increase the number of pieces, our approximation gets better and better. We believe that if this process could continue to infinity, the end of this infinite process produces the result we desire.  This kind of thinking is the foundation of calculus.  It isn't too hard to believe when we look at these examples, but there is a 'leap of faith' here as Dr. Tanton would say.  It's important to be aware of what we're believing.
 
 ### Coming Up Next
 
-[Limits and Continuity](:@CalculusPrimer/Limits)
+[Onward to Limits and Continuity](:@CalculusPrimer/Limits)
+[Back to Home Page](:@CalculusPrimer/Home)
 

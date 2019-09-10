@@ -23,7 +23,7 @@
 .wildthinks-theme.smartdown-container .h5,
 .wildthinks-theme.smartdown-container .h6,
 .wildthinks-theme.smartdown-container p.smartdown_p {
-
+  padding: 5px;
 }
 
 .wildthinks-theme.smartdown-container p.smartdown_p img.fullwidth {

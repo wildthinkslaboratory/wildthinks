@@ -20,7 +20,7 @@ const myDiv = this.div;
 myDiv.style.width = '100%';
 myDiv.style.height = '100%';
 myDiv.style.margin = 'auto';
-myDiv.innerHTML = `<div id='box' class='jxgbox' style='height:600px;'>`;
+myDiv.innerHTML = `<div id='box1' class='jxgbox' style='height:600px;'>`;
 
 smartdown.setVariable('toss', false);
 
@@ -36,7 +36,7 @@ this.depend = function() {
 
 // create the board
 JXG.Options.text.display = 'internal';
-board = JXG.JSXGraph.initBoard('box', {boundingbox:[-10,9,10,-1], keepaspectratio:true, axis:true});
+board = JXG.JSXGraph.initBoard('box1', {boundingbox:[-10,9,10,-1], keepaspectratio:true, axis:true});
 
 // create the labels for axis
 var xAxisLabel = board.create('text',[0.2,-0.4,'Time'], {fontSize:16});
@@ -104,7 +104,7 @@ const myDiv = this.div;
 myDiv.style.width = '100%';
 myDiv.style.height = '100%';
 myDiv.style.margin = 'auto';
-myDiv.innerHTML = `<div id='box' class='jxgbox' style='height:600px;'>`;
+myDiv.innerHTML = `<div id='box2' class='jxgbox' style='height:600px;'>`;
 
 smartdown.setVariable('toss1', false);
 
@@ -120,7 +120,7 @@ this.depend = function() {
 
 // create the board
 JXG.Options.text.display = 'internal';
-board = JXG.JSXGraph.initBoard('box', {boundingbox:[-10,9,10,-1], keepaspectratio:true, axis:true});
+board = JXG.JSXGraph.initBoard('box2', {boundingbox:[-10,9,10,-1], keepaspectratio:true, axis:true});
 
 // create the labels for axis
 var xAxisLabel = board.create('text',[0.2,-0.4,'Time'], {fontSize:16});
@@ -243,7 +243,7 @@ right on! :thumbsup:
 # :::: tryagain
 
 # --colorbox try
-keep trying
+keep trying :stuck_out_tongue:
 # --colorbox
 
 # ::::
@@ -273,7 +273,7 @@ const myDiv = this.div;
 myDiv.style.width = '100%';
 myDiv.style.height = '100%';
 myDiv.style.margin = 'auto';
-myDiv.innerHTML = `<div id='box' class='jxgbox' style='height:600px;'>`;
+myDiv.innerHTML = `<div id='box3' class='jxgbox' style='height:600px;'>`;
 
 // smartdown.setVariable('xvalue', '1');
 
@@ -281,7 +281,7 @@ myDiv.innerHTML = `<div id='box' class='jxgbox' style='height:600px;'>`;
 
 // create the board
 JXG.Options.text.display = 'internal';
-board = JXG.JSXGraph.initBoard('box', {boundingbox:[-10,25,10,-1], keepaspectratio:true, axis:true});
+board = JXG.JSXGraph.initBoard('box3', {boundingbox:[-10,25,10,-1], keepaspectratio:true, axis:true});
 
 // create the labels for axis
 var xAxisLabel = board.create('text',[0.2,-0.4,'x'], {fontSize:16});

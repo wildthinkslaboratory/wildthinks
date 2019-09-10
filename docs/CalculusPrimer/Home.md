@@ -74,23 +74,22 @@ Calculus is a beautiful subject, but sometimes the beauty of calculus doesn't sh
 # :::: todo
 TODO
 ___
-Intro Page
-	- clean up code
-	- add new animation
-	- link new animation in
-	- introduce the idea of limit informally
 
-- Home page
-	- needs a picture or something colorful
-
-- Main Idea page
+- Main Idea Page
+	- add questions after apps.
 - Limits Page
-	- need a simple limit example where the function is undefined at the point we take the limit
+	- clean up code
+	- additional examples
+		- obvious example
+		- value of function different than limit example
+	- continuity
+	- more misbehaving functions
 - Tangent Lines
-	- need better questions
-	- need another example
+	- improve questions
+	- finish second example
 - Derivative Page
 	- need to develop the definition part (maybe they make it themselves with an app)
 
+![thumbnail](https://upload.wikimedia.org/wikipedia/commons/c/c1/Wiki_slope_in_2d.svg)
 # ::::
 

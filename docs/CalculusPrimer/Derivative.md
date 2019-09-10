@@ -1,8 +1,48 @@
 ## Definition of Derivative
 
-#### How do you find the Tangent Line?
+### How do you find the Tangent Line?
 
-We want to find find the slope of the tangent line to the function below at the point where $x=4$. It's not obvious what to do.  A line is determined by two points or a point and a slope.  We have just one point and no slope. What if we pick another point on the function a little to the left or a little to the right of $x=4$.  We can draw a line between these two points and figure out the slope of that line.  A line that intersects the function twice like this is called a **secant** line. 
+
+##### Problem
+
+We want to find the slope of the tangent line to the function $f(x) = \frac{x^2}{4} - 1$
+```javascript /playable/autoplay/inline
+//smartdown.import=https://cdnjs.cloudflare.com/ajax/libs/jsxgraph/0.99.7/jsxgraphcore.js
+
+smartdown.importCssUrl('https://cdnjs.cloudflare.com/ajax/libs/jsxgraph/0.99.7/jsxgraph.css');
+
+const myDiv = this.div;
+myDiv.style.width = '100%';
+myDiv.style.height = '100%';
+myDiv.style.margin = 'auto';
+myDiv.innerHTML = `<div id='box1' class='jxgbox' style='height:300px; width:300px;'>`;
+
+// create the board
+board = JXG.JSXGraph.initBoard('box1', {boundingbox:[-8,13,8,-3], keepaspectratio:true, axis:true});
+
+// parabala and it's derivative
+var f = function(x) { return  x*x/4 - 1; };
+var df = function(x) { return x/2; }
+var graph_f = board.create('functiongraph', [f,-10,10]);
+
+// point x on axis we want to get derivative value
+var x = board.create('point', [4,0], {name:'x', size:3, color:'blue', fixed:true});
+var fx = board.create('point', [4,f(4)], {name:'', color:'blue', fixed:true});
+
+```
+at the point where $x=4$. 
+
+It's not obvious what to do.  A line is determined by two points or a point and a slope.  The slope of a line is the change in $y$ values divided by the change in $x$ values.  
+
+# --outlinebox slope
+The **slope** $m$ of a line determined by points $(x_1,y_1)$ and $(x_2,y_2)$ is
+$$ m = \frac{y_2 - y_1}{x_2 - x_1}.$$
+# --outlinebox
+
+When looking for tangent lines, we have just one point and no slope. 
+
+##### Solution
+What if we pick another point on the function a little to the left or a little to the right of $x=4$.  We can draw a line between these two points and figure out the slope of that line.  A line that intersects the function twice like this is called a **secant** line. 
 
 Take a moment to look at the definition of the secant line below and make sure you understand it. Notice that it's just the normal definition of slope, the change in $y$ values divided by the change in $x$ values.
 
@@ -21,10 +61,10 @@ const myDiv = this.div;
 myDiv.style.width = '100%';
 myDiv.style.height = '100%';
 myDiv.style.margin = 'auto';
-myDiv.innerHTML = `<div id='box' class='jxgbox' style='height:600px;'>`;
+myDiv.innerHTML = `<div id='box2' class='jxgbox' style='height:600px;'>`;
 
 // create the board
-board = JXG.JSXGraph.initBoard('box', {boundingbox:[-10,9,10,-4], keepaspectratio:true, axis:true});
+board = JXG.JSXGraph.initBoard('box2', {boundingbox:[-10,9,10,-4], keepaspectratio:true, axis:true});
 
 // parabala and it's derivative
 var f = function(x) { return  x*x/4 - 1; };
@@ -76,7 +116,11 @@ var runText = board.create('text', [
 
  
 ```
+
+# --partialborder q1
 What is the slope of the tangent line when $x = 4$? [](:?answer1)
+# --partialborder
+
 ```javascript/autoplay
 smartdown.setVariable('answer1', '');
 this.dependOn = ['answer1'];
