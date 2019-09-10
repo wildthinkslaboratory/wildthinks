@@ -150,10 +150,118 @@ board.update();
 
 As we make the triangles smaller, the sum of their total area gets closer and closer to the area of the circle.  Our rearranged version of the triangles is also changing.  The more triangles we add, the more it looks like a rectangle.  The width of the rectangle is getting closer to being the radius of the circle $r$ and the length of the rectangle is approaching half the circumference of the circle $\pi r$.  Move the slider back and forth until you've convinced yourself of these dimensions.  Now we have a classic straight line geometry problem for area.  Multiplying the length times the width we get an area of $\pi r^2$ for our circle.
 
+### Another Fun Example
+Same strategy. Just play and think.
+[Size of Polygon](:-polygon/3/40/1) [](:!polygon)
+```javascript /playable/autoplay
+//smartdown.import=https://cdnjs.cloudflare.com/ajax/libs/jsxgraph/0.99.7/jsxgraphcore.js
+
+smartdown.importCssUrl('https://cdnjs.cloudflare.com/ajax/libs/jsxgraph/0.99.7/jsxgraph.css');
+
+
+const myDiv = this.div;
+myDiv.style.width = '100%';
+myDiv.style.height = '100%';
+myDiv.style.margin = 'auto';
+myDiv.innerHTML = `<div id='box' class='jxgbox' style='height:600px;'>`;
+
+smartdown.setVariable('polygon', 4);
+var N = 4;
+
+
+var perimeter = function() {
+    let Phi = (Math.PI)/N;
+    return 2*N*(Math.sin(Phi));
+}
+
+var diameter = function() {
+    let Phi = (Math.PI)/N;
+    if (N % 2) {
+        return 1 + Math.cos(Phi);
+    }
+    return 2 * Math.cos(Phi);
+}
+
+
+// create the brd
+brd = JXG.JSXGraph.initBoard('box', {boundingbox:[-1.5,2,8,-1], keepaspectratio:true, axis:false});
+//var perimeterText = brd.create('text', [2.3,0, 'perimeter'], {fontSize:20});
+//var perimeterText = brd.create('text', [2.3,-0.2, 'diameter'], {fontSize:20});
+
+
+var pText = brd.create('text', [3,0, function() { return 'perimeter = ' + perimeter().toFixed(4).toString(); }], {fontSize:30});
+
+var dText = brd.create('text', [3,-0.3, function() { return 'diameter = ' + diameter().toFixed(4).toString(); }], {fontSize:30});
+
+var piText = brd.create('text', [3,-0.6, 
+    function() { return 'perimeter/diameter = ' + (perimeter()/diameter()).toFixed(4).toString(); }], 
+    {fontSize:30});
+
+
+// draw the circle
+var circ = brd.create('circle',[[1,0],1],{strokeWidth:1, strokecolor:'blue', strokeWidth:2, visible:false});
+var r = 1;
+
+// draw red triangles in circle
+var c2 = brd.create('curve', [[0],[0]],{strokecolor:'red', strokeWidth:2}); 
+c2.updateDataArray = function() {
+    let px = circ.midpoint.X(); 
+    let py = circ.midpoint.Y();  
+    let x = []; 
+    let y = [];
+    let Phi = (Math.PI)/N;
+    let s = r*Math.sin(Phi);
+    let dt = Phi*2;
+    let pt = Math.PI*0.5+Phi;
+                 
+    for (let i=0; i<N; i++) {
+        for (let j=-1; j<=1; j=j+2) {
+            x.push(px+r*Math.cos(pt));
+            y.push(py+r*Math.sin(pt));
+            pt -= dt;
+        }
+        //x.push(px);
+        //y.push(py);
+        pt += dt;
+    }
+    this.dataX = x;
+    this.dataY = y;
+}
+
+// draw red triangles in circle
+var c = brd.create('curve', [[0],[0]],{strokecolor:'blue', strokeWidth:2}); 
+c.updateDataArray = function() {
+
+    let px = circ.midpoint.X(); 
+    let py = circ.midpoint.Y();  
+    let Phi = (Math.PI)/N;
+    let d = r*Math.cos(Phi);
+    if (N % 2) { d = 1; }
+    let x = [px,px,px]; 
+    let y = [py+r*Math.cos(Phi),py,py - d];
+                 
+    this.dataX = x;
+    this.dataY = y;
+}
+
+brd.update();
+
+// get the number of triangles from smartdown cell
+this.dependOn = ['polygon'];
+this.depend = function() {
+  brd.suspendUpdate();
+  N = parseInt(env.polygon);
+  brd.unsuspendUpdate();
+};
+
+
+```
+
+### The Result of an Infinite Process
+
+In both of our examples we start our with an awkward straight line approximation of the thing we want to calculate.  We chop things up into smaller and smaller straight line pieces.  As we increase the number of pieces, our approximation gets better and better. The belief is that if this process could continue to infinity, the end of this infinite process produces the result we desire.  This kind of thinking is the foundation of calculus.  It isn't too hard to believe when we look at these examples.  But there is a 'leap of faith' here as Dr. Tanton would say.  It's important to be aware of what we're believing.
 
 ### Coming Up Next
 
 [Limits and Continuity](:@CalculusPrimer/Limits)
-
-
 
