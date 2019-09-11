@@ -159,10 +159,12 @@ As we add more and more triangles, our approximation gets better and better. The
 
 ```javascript/autoplay
 smartdown.setVariable('pir2', false);
-this.dependOn = ['pir2'];
+smartdown.setVariable('a1', false);
+smartdown.setVariable('a2', false);
+this.dependOn = ['pir2', 'a1', 'a2'];
 
 this.depend = function() {
-  if (env.pir2 == true) {
+  if (env.pir2 == true && env.a1 == false && env.a2 == false) {
       smartdown.showDisclosure('yes','','bottomright');  
       setTimeout(function () {
            smartdown.hideDisclosure('yes','','bottomright'); 

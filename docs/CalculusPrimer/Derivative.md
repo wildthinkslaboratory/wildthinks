@@ -32,26 +32,23 @@ var fx = board.create('point', [4,f(4)], {name:'', color:'blue', fixed:true});
 ```
 at the point where $x=4$. 
 
-It's not obvious what to do.  A line is determined by two points or a point and a slope.  The slope of a line is the change in $y$ values divided by the change in $x$ values.  
-
-# --outlinebox slope
-The **slope** $m$ of a line determined by points $(x_1,y_1)$ and $(x_2,y_2)$ is
+It's not obvious what to do.  A line is determined by two points or a point and a slope. The **slope** $m$ of a line determined by points $(x_1,y_1)$ and $(x_2,y_2)$ is the change in $y$ values divided by the change in $x$ values.  
 $$ m = \frac{y_2 - y_1}{x_2 - x_1}.$$
-# --outlinebox
 
-When looking for tangent lines, we have just one point and no slope. 
+
+We want to find the slope of the tangent line at $x=4$, but we have just one point and no slope. 
 
 ##### Solution
-What if we pick another point on the function a little to the left or a little to the right of $x=4$.  We can draw a line between these two points and figure out the slope of that line.  A line that intersects the function twice like this is called a **secant** line. 
-
-Take a moment to look at the definition of the secant line below and make sure you understand it. Notice that it's just the normal definition of slope, the change in $y$ values divided by the change in $x$ values.
-
-# --outlinebox secant
-Slope of the **secant** line through two points $(x,f(x))$ and $(x+h,f(x+h))$ on function $f(x)$.
+What if we pick another point on the function a little to the left or a little to the right of $x=4$.  We can draw a line between these two points and figure out the slope of that line.  A line that intersects the function twice like this is called a **secant** line. The slope of the **secant** line through two points $(x,f(x))$ and $(x+h,f(x+h))$ on function $f(x)$ is
 $$ \frac{f(x + h) - f(x)}{h}$$
+Take a moment to look at this definition and make sure you understand it. Notice that it's just the normal definition of slope, the change in $y$ values divided by the change in $x$ values.
+
+# --outlinebox question
+**Question**
+What value does the slope of the secant get **close** to as we get **closer and closer** to $h=0$ without ever reaching it?
 # --outlinebox
 
-Now see if you can use the graph of the secant line in the app below to figure out what the slope of the tangent line is at $x=4$.  You can drag the large red dot right and left to see different secant lines.
+Use the graph of the secant line in the app below to figure out what the slope of the tangent line is at $x=4$.  You can drag the large red dot right and left to see different secant lines.
 ```javascript /playable/autoplay
 //smartdown.import=https://cdnjs.cloudflare.com/ajax/libs/jsxgraph/0.99.7/jsxgraphcore.js
 
@@ -156,5 +153,8 @@ $$ f'(x) = \lim_{h \to 0} \frac{f(x + h) - f(x)}{h}$$
 The notation $f'(x)$ is how we represent a function that is a derivative of some function $f(x)$.  Similarly, if we took the derivative of a function $g(x)$ we'd call it $g'(x)$.  The other new notation here is $$ \lim_{h \to 0}$$. This means we let the values of $h$ in the expression get really close to the value $0$.
 
 Don't memorize this formula, remember that it is a slope and then you can always construct it.
+
+[Applications of Derivaties](:@CalculusPrimer/AppDerivatives)
+[Back to Home Page](:@CalculusPrimer/Home)
 
 # ::::

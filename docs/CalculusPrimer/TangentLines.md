@@ -380,6 +380,7 @@ board.on('update', function() {
 #### Coming Up Next 
 
 [Learn to Calculate the Slope of the Tangent Line](:@CalculusPrimer/Derivative)
+[Back to Home Page](:@CalculusPrimer/Home)
 
 
 

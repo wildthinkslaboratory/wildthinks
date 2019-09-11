@@ -1,18 +1,28 @@
 ### Limits and Continuity
 
-In most highschool classes you begin with a section on something called **limits and continuity**.  I was thinking about what the most important ideas from this section are when I stumbled on to this doozy of a quote from mathematician James Tanton.  He was talking about teaching limits and continuity at the highschool level.
 
+Many highschool calculus classes will begin with a section on **limits and continuity**.  While researching this topic I stumbled on to this doozy of a [quote from mathematician James Tanton](::tantonOnLimits/center/lightbox).  It's a good read and I highly recommend it.  A key take away that I wasn't aware of is that the creators of calculus themselves didn't have a formal notion of a limit.  All this formalism about limits came 150 years later when people started applying calculus to weird misbehaving functions.
+
+# :::: tantonOnLimits
 # --aliceblue limits
-*At this stage of the discussion, the notion of a “limit” should indeed be informal. In fact, the creators of calculus during the 1500s and 1600s did not think in terms of limits and found that intuition sufficed for the development at hand, compelling the subject onward in all its glory. It was only some 150 years later, after the subject was fully developed, that folk began to dig deeply into the foundations of the subject and begin to question beginning thoughts. What does it mean to be “continuous” exactly? What does a “leap of faith” really mean? Mathematicians at that time started to push the theory of calculus towards extreme situations (Does it work for the bizarre function that equals 1 for all rational numbers and 0 for all irrational numbers?) Troubles started to appear and so mathematicians had to resort to absolute technical clarity. French mathematician Augustine-Louis Cauchy (1789-1857) proposed the notion of a limit, and the full technical rigor for it was developed by Karl Weierstrass (1815-97).
-The standard high-school curriculum does not present the problems that call for precise formulation of a limit, nor does it present the technical definition that goes with it! There is a half-hearted attempt to be “precise,” which, in the end is only confusing.*
+![icon](https://aperiodical.com/wp-content/uploads/2018/06/tanton-300x300.png)
+"... Many programs give the impression that this material is a precursor to rigor and technical precision, but, in the end, appeal to intuition over and over again. A student who thinks deeply is given the impression that a foundation is laid, but one with no cement or stone and therefore no real means to support a structure of any weight.
+At this stage of the discussion, the notion of a “limit” should indeed be informal. In fact, the creators of calculus during the 1500s and 1600s did not think in terms of limits and found that intuition sufficed for the development at hand, compelling the subject onward in all its glory. It was only some 150 years later, after the subject was fully developed, that folk began to dig deeply into the foundations of the subject and begin to question beginning thoughts. What does it mean to be “continuous” exactly? What does a “leap of faith” really mean? Mathematicians at that time started to push the theory of calculus towards extreme situations (Does it work for the bizarre function that equals 1 for all rational numbers and 0 for all irrational numbers?) Troubles started to appear and so mathematicians had to resort to absolute technical clarity. French mathematician Augustine-Louis Cauchy (1789-1857) proposed the notion of a limit, and the full technical rigor for it was developed by Karl Weierstrass (1815-97).
+The standard high-school curriculum does not present the problems that call for precise formulation of a limit, nor does it present the technical definition that goes with it! There is a half-hearted attempt to be “precise,” which, in the end is only confusing. "
 
 From James Tanton's *Thinking Mathematics: Volume 6, Some Calculus*
+[Close](::tantonOnLimits)
 
 # --aliceblue
+# ::::
 
-I also went back and looked in my college calculus book *Calculus with Analytic Geometry* by George F. Simmons from 20+ years ago. Its old and battered, but I occasionally still use a s a reference.  I was surprised to find that it also relies on an informal definition of a limit and includes only a brief section on limits after the notion of derivative has already been introduced.
 
-Limits and continuity is a valid area of mathematical study and you will need to master some of it to succeed in class, but just remember **it is not critical to understanding and enjoying calculus**.  
+# --outlinebox bogged
+**Remember**
+Do not get too bogged down on pseudo rigorous limits and continuity problems.  It's not essential for enjoying and understanding calculus.
+# --outlinebox
+
+In fact, if you want, you can go straight on to [Tangent Lines](:@CalculusPrimer/TangentLines) and come back and do this page later.
 
 ### A Quick Look at Limits
 
@@ -21,7 +31,6 @@ $$ f(x) = \frac{x^2 - 1}{x-1}.$$
 The graph of $f(x)$ looks a lot like the graph of $g(x) = x + 1$  
 
 ---
-
 $ f(x) = \frac{x^2 - 1}{x-1}$
 ```javascript /playable/autoplay/inline
 //smartdown.import=https://cdnjs.cloudflare.com/ajax/libs/jsxgraph/0.99.7/jsxgraphcore.js
@@ -74,6 +83,10 @@ except the function $f(x)$ has a hole in the graph at the point where $x=1$ beca
 **Question**
 What value does the function get **close** to as we get **closer and closer** to $x=1$ without ever reaching it?
 # --outlinebox
+
+# --aliceblue instructions
+**App Notes:** The red dot on the $x$ axis can be dragged to the left or right.  
+# --aliceblue
 
 ```javascript /playable/autoplay
 //smartdown.import=https://cdnjs.cloudflare.com/ajax/libs/jsxgraph/0.99.7/jsxgraphcore.js
@@ -151,16 +164,10 @@ boom! :boom:
 
 The **limit** as $x$ approaches $1$ of $\frac{x^2 - 1}{x-1}$ is $2$.  Here's how we write it.
 $$\lim_{x \to 1} \frac{x^2 - 1}{x-1} = 2$$
-So even though the function is undefined at $x=1$, the limit there exists and is equal to $2$.   
+So even though the function is undefined at $x=1$, the limit there exists and is equal to $2$. In the upcoming pages we'll see an important example of this kind of limit where the function is undefined at a point, but the limit exists.  All of differential calculus is based on a specific limit like this.  
 
-# --outlinebox point1
-**Remember**
-The limit of the function at a point $\lim_{x \to 1} f(x)$ is not the same as the value of the function at that point $f(1)$. The limit at a point tells what value the function is **getting close to** rather than what the function value actually is.  
-# --outlinebox
 
-### Let's Do Another Example
-
-Here's another example.
+### Another example.  
 $$f(x) =
 \left\{
   \begin{array}{ll}
@@ -177,10 +184,10 @@ const myDiv = this.div;
 myDiv.style.width = '100%';
 myDiv.style.height = '100%';
 myDiv.style.margin = 'auto';
-myDiv.innerHTML = `<div id='box4' class='jxgbox' style='height:600px; width:1000px'>`;
+myDiv.innerHTML = `<div id='box10' class='jxgbox' style='height:600px; width:1000px'>`;
 
 // create the board
-board = JXG.JSXGraph.initBoard('box4', {boundingbox:[-5,5,10,-5], keepaspectratio:true, axis:true});
+board = JXG.JSXGraph.initBoard('box10', {boundingbox:[-5,5,10,-5], keepaspectratio:true, axis:true});
 
 // parabala and it's derivative
 var f = function(x) { return  x*x*x - 3; };
@@ -219,7 +226,9 @@ var fText = board.create('text',[3,1.5,
 # --partialborder q2
 
 What is $\lim_{x \to 1} x^3 - 3$? [](:?a1)
+What is $f(1)$? [](:?a3)
 What is $\lim_{x \to 0} x^3 - 3$? [](:?a2)
+What is $f(0)$? [](:?a4)
 
 # --partialborder 
 
@@ -266,13 +275,88 @@ Cool! :sunglasses:
 # --colorbox
 
 # ::::
+ 
+ # --colorbox important
+**Very Important Idea:**
+We get the value of a function $f(x)$ at a point $a$ by just plugging $a$ into $f(x)$ and seeing what we get.  We get the limit of $f(x)$ at point $a$ $$\lim_{x \to a} f(x)$$ by taking values **nearby** $a$ and plugging those into $f(x)$.  How nearby?  As close as we can get without reaching $a$.
+# --colorbox
 
-### Continuity
+Most of the time this distinction doesn't matter because the value of the function at a point and the limit at that point will be the same. In this case we'll say the function is **continuous** at that point.
+
+# --outlinebox continuous
+Informally, a function $f(x)$ is continuous at a point $x = a$ if the value of the function and the limit of the function are the same at that point.  $$f(a) = \lim_{x \to a} f(x)$$
+A function is continuous if it is continuous for all of it's domain values.
+# --outlinebox
+
+#### Nice Continuous Functions 
+Here are a few lovely continuous functions.
+$f(x) = x^2$
+```javascript /playable/autoplay/inline
+//smartdown.import=https://cdnjs.cloudflare.com/ajax/libs/jsxgraph/0.99.7/jsxgraphcore.js
+
+smartdown.importCssUrl('https://cdnjs.cloudflare.com/ajax/libs/jsxgraph/0.99.7/jsxgraph.css');
+
+const myDiv = this.div;
+myDiv.style.width = '100%';
+myDiv.style.height = '100%';
+myDiv.style.margin = 'auto';
+myDiv.innerHTML = `<div id='box4' class='jxgbox' style='height:300px; width:300px;'>`;
+
+// create the board
+board = JXG.JSXGraph.initBoard('box4', {boundingbox:[-5,5,5,-5], keepaspectratio:true, axis:true});
+
+// parabala and it's derivative
+var f = function(x) { return x*x - 2; };
+
+var graph_f = board.create('functiongraph', [f,-5,5]);
+ 
+```
+
+$ f(x) = \sin x$
+```javascript /playable/autoplay/inline
+//smartdown.import=https://cdnjs.cloudflare.com/ajax/libs/jsxgraph/0.99.7/jsxgraphcore.js
+
+smartdown.importCssUrl('https://cdnjs.cloudflare.com/ajax/libs/jsxgraph/0.99.7/jsxgraph.css');
+
+const myDiv = this.div;
+myDiv.style.width = '100%';
+myDiv.style.height = '100%';
+myDiv.style.margin = 'auto';
+myDiv.innerHTML = `<div id='box5' class='jxgbox' style='height:300px; width:300px;'>`;
+
+// create the board
+board = JXG.JSXGraph.initBoard('box5', {boundingbox:[-5,5,5,-5], keepaspectratio:true, axis:true});
 
 
-### Functions that Misbehave
+var f = function(x) { return  Math.sin(x); };
+var graph_f = board.create('functiongraph', [f,-10,10]);
+ 
+```
+$ f(x) = x^3$
+```javascript /playable/autoplay/inline
+//smartdown.import=https://cdnjs.cloudflare.com/ajax/libs/jsxgraph/0.99.7/jsxgraphcore.js
 
-The formal stuff about limits comes into play when functions are poorly behaved.  What does "poorly behaved" mean?  We're going to be informal about that too.  Here's some misbehaving functions.
+smartdown.importCssUrl('https://cdnjs.cloudflare.com/ajax/libs/jsxgraph/0.99.7/jsxgraph.css');
+
+const myDiv = this.div;
+myDiv.style.width = '100%';
+myDiv.style.height = '100%';
+myDiv.style.margin = 'auto';
+myDiv.innerHTML = `<div id='box6' class='jxgbox' style='height:300px; width:300px;'>`;
+
+// create the board
+board = JXG.JSXGraph.initBoard('box6', {boundingbox:[-5,5,5,-5], keepaspectratio:true, axis:true});
+
+// parabala and it's derivative
+var f = function(x) { return  x*x*x; };
+
+var graph_f = board.create('functiongraph', [f,-10,10]);
+ 
+```
+---
+
+#### Weird Misbehaving Functions
+Here are some weird and discontinuous functions.
 $f(x) =
 \left\{
   \begin{array}{ll}
@@ -289,10 +373,10 @@ const myDiv = this.div;
 myDiv.style.width = '100%';
 myDiv.style.height = '100%';
 myDiv.style.margin = 'auto';
-myDiv.innerHTML = `<div id='box5' class='jxgbox' style='height:300px; width:300px;'>`;
+myDiv.innerHTML = `<div id='box7' class='jxgbox' style='height:300px; width:300px;'>`;
 
 // create the board
-board = JXG.JSXGraph.initBoard('box5', {boundingbox:[-5,5,5,-5], keepaspectratio:true, axis:true});
+board = JXG.JSXGraph.initBoard('box7', {boundingbox:[-5,5,5,-5], keepaspectratio:true, axis:true});
 
 // parabala and it's derivative
 var f = function(x) { 
@@ -309,7 +393,7 @@ var p2 = board.create('point', [0,0], {name:'', color:'blue'});
  
 ```
 
-$ f(x) = \frac{x^2 - 1}{x-1}$
+$ f(x) = \tan x$
 ```javascript /playable/autoplay/inline
 //smartdown.import=https://cdnjs.cloudflare.com/ajax/libs/jsxgraph/0.99.7/jsxgraphcore.js
 
@@ -319,20 +403,17 @@ const myDiv = this.div;
 myDiv.style.width = '100%';
 myDiv.style.height = '100%';
 myDiv.style.margin = 'auto';
-myDiv.innerHTML = `<div id='box6' class='jxgbox' style='height:300px; width:300px;'>`;
+myDiv.innerHTML = `<div id='box8' class='jxgbox' style='height:300px; width:300px;'>`;
 
 // create the board
-board = JXG.JSXGraph.initBoard('box6', {boundingbox:[-5,5,5,-5], keepaspectratio:true, axis:true});
+board = JXG.JSXGraph.initBoard('box8', {boundingbox:[-5,5,5,-5], keepaspectratio:true, axis:true});
 
 
-var f = function(x) { return  x*x - 3; };
+var f = function(x) { return  Math.tan(x); };
 var graph_f = board.create('functiongraph', [f,-10,10]);
-
-// undefined point
-var und_p = board.create('point', [1,2], {name:'', fixed:true, size:4, strokeColor:'green', fillColor:'white', fillOpacity:1, strokeOpacity:1});
  
 ```
-$ f(x) = \frac{x^2 - 1}{x-1}$
+$ f(x) = \lfloor x \rfloor$
 ```javascript /playable/autoplay/inline
 //smartdown.import=https://cdnjs.cloudflare.com/ajax/libs/jsxgraph/0.99.7/jsxgraphcore.js
 
@@ -342,22 +423,27 @@ const myDiv = this.div;
 myDiv.style.width = '100%';
 myDiv.style.height = '100%';
 myDiv.style.margin = 'auto';
-myDiv.innerHTML = `<div id='box7' class='jxgbox' style='height:300px; width:300px;'>`;
+myDiv.innerHTML = `<div id='box9' class='jxgbox' style='height:300px; width:300px;'>`;
 
 // create the board
-board = JXG.JSXGraph.initBoard('box7', {boundingbox:[-5,5,5,-5], keepaspectratio:true, axis:true});
+board = JXG.JSXGraph.initBoard('box9', {boundingbox:[-5,5,5,-5], keepaspectratio:true, axis:true});
 
 // parabala and it's derivative
-var f = function(x) { return  (x*x - 1)/(x - 1); };
+var f = function(x) { return  Math.floor(x); };
+
 var graph_f = board.create('functiongraph', [f,-10,10]);
 
-// undefined point
-var und_p = board.create('point', [1,2], {name:'', fixed:true, size:4, strokeColor:'green', fillColor:'white', fillOpacity:1, strokeOpacity:1});
+for (let i=-10; i <= 10; i++) {
+  board.create('point', [i,i], {name:'', fixed:true, color:'blue'});
+  board.create('point', [i+1,i], {name:'', fixed:true, strokeColor:'blue', fillColor:'white'});
+}
  
 ```
 ---
+If you are working with funtions like these you may need to learn more about the mathematics of limits.
 
-Know the difference between a well behaved and non-wellbehaved function.
+
+
 
 ### Coming Up Next
 
@@ -365,5 +451,3 @@ Know the difference between a well behaved and non-wellbehaved function.
 [Back to Home Page](:@CalculusPrimer/Home)
 
 # ::::
-
-

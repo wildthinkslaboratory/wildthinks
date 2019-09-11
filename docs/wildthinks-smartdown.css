@@ -31,7 +31,7 @@
 
 
 .wildthinks-theme.smartdown-container .decoration-colorbox {
-  background: #55B;
+  background: #559;
 }
 
 .wildthinks-theme.smartdown-container .decoration-aliceblue {
@@ -46,7 +46,9 @@
 }
 
 .wildthinks-theme.smartdown-container .disclosable-position {
-  max-height: 75%;
+  width: auto;
+  max-width: 75%;
+  min-width: 25%;
 }
 
 
