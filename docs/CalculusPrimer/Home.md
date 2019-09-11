@@ -51,7 +51,7 @@ Dear Izzy and Andre,
 
 Both of you will be starting calculus classes in the next two years. I hope the exploration in these pages will smooth the way.
 
-Calculus will introduce you to some big and fabulous new ideas.  Also, calculus is a hard class. But it's not the new ideas that make it hard.  Calculus is also hard because there's a lot of new [notation](::notation/tooltip).  Calculus is hard because solving a calculus problem often requires a lot of steps with lots and lots of messy algebra. The struggle to decipher the crazy notation and manage the tedious algebra can eclipse the big beautiful ideas.  
+Calculus will introduce you to some big and fabulous new ideas.  Also, calculus is a hard class. But it's not the new ideas that make it hard.  Calculus is hard because there's a lot of new [notation](::notation/tooltip).  Calculus is also hard because solving a calculus problem often requires a lot of steps with lots and lots of messy algebra. The struggle to decipher the crazy notation and manage the tedious algebra can eclipse the big beautiful ideas.  
 
 In calculus we learn two tasks: taking derivatives and computing integrals.  However, a majority of the class is actually deriving and then memorizing short cut rules for computing these things.  When the class is over, students may be more likely to remember the short cut rules than the higher level ideas that made them necessary.  
 
