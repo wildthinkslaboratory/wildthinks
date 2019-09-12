@@ -1,7 +1,7 @@
 ### Limits and Continuity
 
 
-Many highschool calculus classes will begin with a section on **limits and continuity**.  While researching this topic I stumbled on to this doozy of a [quote from mathematician James Tanton](::tantonOnLimits/center/lightbox).  It's a good read and I highly recommend it.  A key take away that I wasn't aware of is that the creators of calculus themselves didn't have a formal notion of a limit.  All this formalism about limits came 150 years later when people started applying calculus to weird misbehaving functions.
+Many highschool calculus classes will begin with a section on **limits and continuity**.  While researching this topic I stumbled on to this doozy of a [quote from mathematician James Tanton](::tantonOnLimits/center/lightbox/scrollable).  It's a good read and I highly recommend it.  A key take away that I wasn't aware of is that the creators of calculus themselves didn't have a formal notion of a limit.  All this formalism about limits came 150 years later when people started applying calculus to weird misbehaving functions.
 
 # :::: tantonOnLimits
 # --aliceblue limits

@@ -1,9 +1,7 @@
-## Definition of Derivative
-
-### How do you find the Tangent Line?
+## How do you find the Tangent Line?
 
 
-##### Problem
+### Problem
 
 We want to find the slope of the tangent line to the function $f(x) = \frac{x^2}{4} - 1$
 ```javascript /playable/autoplay/inline
@@ -38,7 +36,7 @@ $$ m = \frac{y_2 - y_1}{x_2 - x_1}.$$
 
 We want to find the slope of the tangent line at $x=4$, but we have just one point and no slope. 
 
-##### Solution
+### Solution
 What if we pick another point on the function a little to the left or a little to the right of $x=4$.  We can draw a line between these two points and figure out the slope of that line.  A line that intersects the function twice like this is called a **secant** line. The slope of the **secant** line through two points $(x,f(x))$ and $(x+h,f(x+h))$ on function $f(x)$ is
 $$ \frac{f(x + h) - f(x)}{h}$$
 Take a moment to look at this definition and make sure you understand it. Notice that it's just the normal definition of slope, the change in $y$ values divided by the change in $x$ values.
@@ -143,6 +141,7 @@ right on! :thumbsup:
 
 
 # :::: disc1
+
 Congratulations! You just did some calculus. If we let the value of $h$ get very small, the slope of the secant line gets closer and closer to the slope of the tangent.  The slope of the secant line is actually undefined when $h=0$.  We aren't allowed to divide by zero. But it's ok.  When we zoom in close around $x=4$, we can see what's happening.  We don't have to move $h$ all the way to $0$ to see where slope is  going to end up.
 
 Here is the definition of the derivative.  Compare it to the definition of the secant line from above.  
@@ -152,7 +151,27 @@ $$ f'(x) = \lim_{h \to 0} \frac{f(x + h) - f(x)}{h}$$
 # --outlinebox
 The notation $f'(x)$ is how we represent a function that is a derivative of some function $f(x)$.  Similarly, if we took the derivative of a function $g(x)$ we'd call it $g'(x)$.  The other new notation here is $$ \lim_{h \to 0}$$. This means we let the values of $h$ in the expression get really close to the value $0$.
 
+# :::: temp
+
+Introduce the term **derivative**. 
 Don't memorize this formula, remember that it is a slope and then you can always construct it.
+
+So there's the definition of the derivative and then
+
+### Short cut rules
+
+- sums
+- single polynomial
+- products
+- quotients
+- trig
+- chain rule
+- inverse function
+
+Rolle's Theorem 
+Related Rate problems
+Implicit differentiation
+# ::::
 
 [Applications of Derivaties](:@CalculusPrimer/AppDerivatives)
 [Back to Home Page](:@CalculusPrimer/Home)

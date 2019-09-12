@@ -14,7 +14,7 @@ If we zoom in on curvy stuff, it starts to look more and more straight.
 
 Take a curvy shape like the earth, and zoom in super close.  Let's consider a sample of the earth's surface that is about 20 square miles.  That's big enough so most of us wouldn't want to walk across it in a single day.  For most of what we do in our daily lives on our 20 square mile plot, we can assume that the earth is flat and that works pretty well.   It wasn't until the 17th century that we conclusively determined that the earth was round, so it worked pretty well for a majority of human existence. 
 
-A flat approximation is great because it makes the math easy.  However, if we want to fly from California to New York in an airplane, or if we are interested in launching satellites or sending robots to Mars then we have to zoom out and consider the full curvy shape of the earth.  The trick of calculus is to zoom in real close until we can pretend our curve is flat.  Sometimes we'll cut our shape into lots of tiny zoomed in pieces, use straight line math on the pieces and then glue all the little pieces back together to get a result that works for the full curvy shape.
+A flat approximation is great because it makes the math easy.  However, if we want to fly from California to New York in an airplane, or if we are interested in launching satellites or sending robots to Mars then we have to zoom out and consider the full curvy shape of the earth.  The trick of calculus is to zoom in real close until we can pretend our curve is flat. We do our math there with straight lines.  We then glue lots of tiny straight line  solutions together to get a result that works for the full curvy shape.
 
 Let's use this strategy to figure out the area of a circle.  We'll start by dividing the circle into 4 pie pieces.  We have two views of our pieces, first as a circle and second, arranged in line with the pieces alternating directions. We'll approximate the area of the circle by calculating the area of the four triangles which have nice straight lines and areas that are easy to calculate.  Currently our approximation is too small.  The triangles don't cover all the area in the circle.  Now let's zoom in and make the triangles smaller by sliding the **number of triangles** slider to the right.    
 
@@ -184,7 +184,7 @@ YES! :ok_hand:
 ### Another Fun Example
 Here's a similar example playing with polygons.  We look at the ratio of a polygon's perimeter to its diameter.
 
-[Number of Polygon Sides](:-polygon/3/40/1) [](:!polygon)
+[Number of Polygon Sides](:-polygon/3/99/1) [](:!polygon)
 ```javascript /playable/autoplay
 //smartdown.import=https://cdnjs.cloudflare.com/ajax/libs/jsxgraph/0.99.7/jsxgraphcore.js
 
