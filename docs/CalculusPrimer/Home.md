@@ -53,9 +53,7 @@ Both of you will be starting calculus classes in the next two years. I hope the 
 
 Calculus will introduce you to some big and fabulous new ideas.  Also, calculus is a hard class. But it's not the new ideas that make it hard.  Calculus is hard because there's a lot of new [notation](::notation/tooltip).  Calculus is also hard because solving a calculus problem often requires a lot of steps with lots and lots of messy algebra. The struggle to decipher the crazy notation and manage the tedious algebra can eclipse the big beautiful ideas.  
 
-In calculus we learn two tasks: taking derivatives and computing integrals.  However, a majority of the class is actually deriving and then memorizing short cut rules for computing these things.  When the class is over, students may be more likely to remember the short cut rules than the higher level ideas that made them necessary.  
-
-The focus of this primer is on the high level ideas.   If you have the high level ideas firmly in your head before you start, you can focus on the details of intricate problem solving without losing the big picture.  Take your time, play with the apps to build intuition.  These are bold ideas with far reaching applications and consequences.  They require time and patience to fully sink in. 
+The goal of this primer is to give you an interactive way to play with the big ideas before you start calculus class.  I hope you can build intuition and firmly anchor these ideas in your mind.  Then, when you get to class you will be free to focus on the fussy details of working problems without losing the forest for the trees (or without losing the beautiful definition of the derivative to the countless shortcut rules for computing them).  These are bold ideas with far reaching applications and consequences.  They require time and patience to fully sink in. So take your time, play and enjoy.
 
 # :::: notation
 ![fullwidth](https://online-learning.harvard.edu/sites/default/files/styles/header/public/course/asset-v1_HarvardX%2BCalcAPL1x%2B2T2017%2Btype%40asset%2Bblock%40TITLE-Calculus-Applied-2120x1192-NO-SPOTLIGHT%202.png?itok=crWwjmVi)
@@ -77,7 +75,6 @@ We can be thankful we got Leibniz's notation and not Newton's or things could be
 #### Begin Here
 1. [The Main Idea](:@CalculusPrimer/Intro)
 2. [Limits](:@CalculusPrimer/Limits)
-3. [Continuity](:@CalculusPrimer/Continuity)
 3. [Tangent Lines](:@CalculusPrimer/TangentLines)
 4. [The Derivative](:@CalculusPrimer/Derivative)
 5. [Applications of the Derivative](:@CalculusPrimer/AppDerivatives)
@@ -105,6 +102,8 @@ ___
 	- finish second example
 - Derivative Page
 	- need to develop the definition part (maybe they make it themselves with an app)
+
+	In calculus we learn two tasks: taking derivatives and computing integrals.  However, a majority of the class is actually deriving and then memorizing short cut rules for computing these things.  When the class is over, students may be more likely to remember the short cut rules than the higher level ideas that made them necessary.  
 
 ![thumbnail](https://upload.wikimedia.org/wikipedia/commons/c/c1/Wiki_slope_in_2d.svg)
 # ::::

@@ -262,8 +262,6 @@ So this is the question that Isaac Newton was trying to answer when the proverbi
 A rectangular pen $8\text{ft}^2$ in area is to be fenced off for a pet rabbit.  If one side of the pen is already protected by a barn wall, what dimensions will require the shortest length of fence?
 # --aliceblue
 
-If our pen has dimensions $x$ by $y$, then we know that $xy = 8$.  We also know that the length of fence $L$ will be equal to $L = 2x + y$.  We can write the a function for the length in terms of $x$ 
-$$L = 2x + \frac{8}{x}$$
 ```javascript /playable/autoplay
 //smartdown.import=https://cdnjs.cloudflare.com/ajax/libs/jsxgraph/0.99.7/jsxgraphcore.js
 
@@ -376,6 +374,8 @@ board.on('update', function() {
 
 ```
 
+If our pen has dimensions $x$ by $y$, then we know that $xy = 8$.  We also know that the length of fence $L$ will be equal to $L = 2x + y$.  We can write the a function for the length in terms of $x$ 
+$$L = 2x + \frac{8}{x}$$
 
 #### Coming Up Next 
 

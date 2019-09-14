@@ -149,22 +149,24 @@ board.update();
 
 ```
 As we add more and more triangles, our approximation gets better and better. The rearranged version of the circle looks more and more like a rectangle as the number of triangles gets larger. 
+The area of this rectangle is getting closer and closer to [[](:!areaCircle)](::pulldown1/tooltip).
 
-# --partialborder q1
- The area of this rectangle is getting closer and closer to
+# :::: pulldown1
 [](:Xa1) 64
-[](:Xpir2) $\pi r^2$
-[](:Xa2) $\infty$
-# --partialborder
+[](:Xa2) $\pi r^2$
+[](:Xa3) $\infty$
+# ::::
 
 ```javascript/autoplay
-smartdown.setVariable('pir2', false);
+smartdown.setVariable('areaCircle','???');
 smartdown.setVariable('a1', false);
 smartdown.setVariable('a2', false);
-this.dependOn = ['pir2', 'a1', 'a2'];
+smartdown.setVariable('a3', false);
+this.dependOn = ['a1', 'a2', 'a3'];
 
 this.depend = function() {
-  if (env.pir2 == true && env.a1 == false && env.a2 == false) {
+  if (env.a2 == true && env.a1 == false && env.a3 == false) {
+      smartdown.setVariable('areaCircle','the area of a circle');
       smartdown.showDisclosure('yes','','bottomright');  
       setTimeout(function () {
            smartdown.hideDisclosure('yes','','bottomright'); 
@@ -180,6 +182,7 @@ YES! :ok_hand:
 # --colorbox
 
 # ::::
+
 
 ### Another Fun Example
 Here's a similar example playing with polygons.  We look at the ratio of a polygon's perimeter to its diameter.
@@ -287,24 +290,27 @@ this.depend = function() {
 ```
 ---
 
-# --partialborder q2
-As the number of sides gets larger and larger, the ratio of a polygons perimeter to it's diameter is getting closer and closer to 
-[](:Xpi) $\pi$
-[](:Xa3) 3
-[](:Xr2) $r^2$
-# --partialborder
+As the number of sides gets larger and larger, the ratio of a polygons perimeter to it's diameter is getting closer and closer to [[](:!pi)](::pulldown2/tooltip).
+
+# :::: pulldown2
+[](:Xa4) $\pi$
+[](:Xa5) 3
+[](:Xa6) $r^2$
+# ::::
 
 
 ```javascript/autoplay
-smartdown.setVariable('pi', false);
-smartdown.setVariable('a3', false);
-smartdown.setVariable('r2', false);
+smartdown.setVariable('a4', false);
+smartdown.setVariable('a5', false);
+smartdown.setVariable('a6', false);
+smartdown.setVariable('pi', '???');
 
-this.dependOn = ['pi', 'a3', 'r2'];
+this.dependOn = ['a4', 'a5', 'a6'];
 
 this.depend = function() {
-  if (env.pi == true && env.a3 == false && env.r2 == false) {
-      smartdown.showDisclosure('correct','','bottomright');  
+  if (env.a4 == true && env.a5 == false && env.a6 == false) {
+      smartdown.setVariable('pi', 'Pi');
+      smartdown.showDisclosure('correct','','bottomright'); 
       setTimeout(function () {
            smartdown.hideDisclosure('correct','','bottomright'); 
       }, 3000);

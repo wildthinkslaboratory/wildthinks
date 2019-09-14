@@ -246,14 +246,6 @@ this.depend = function() {
   };
 ```
 
-# :::: shiny
-
-# --colorbox right
-Shiny! :sparkles:
-# --colorbox
-
-# ::::
-
 ```javascript/autoplay
 smartdown.setVariable('a2', '');
 this.dependOn = ['a2'];
@@ -267,6 +259,39 @@ this.depend = function() {
     } 
   };
 ```
+```javascript/autoplay
+smartdown.setVariable('a3', '');
+this.dependOn = ['a3'];
+
+this.depend = function() {
+  if (env.a3.trim() == '3') {
+      smartdown.showDisclosure('boom','','bottomright');  
+      setTimeout(function () {
+           smartdown.hideDisclosure('boom','','bottomright'); 
+      }, 3000);
+    } 
+  };
+```
+```javascript/autoplay
+smartdown.setVariable('a4', '');
+this.dependOn = ['a4'];
+
+this.depend = function() {
+  if (env.a4.trim() == '-3') {
+      smartdown.showDisclosure('shiny','','bottomright');  
+      setTimeout(function () {
+           smartdown.hideDisclosure('shiny','','bottomright'); 
+      }, 3000);
+    } 
+  };
+```
+# :::: shiny
+
+# --colorbox right
+Shiny! :sparkles:
+# --colorbox
+
+# ::::
 
 # :::: cool
 
@@ -276,15 +301,10 @@ Cool! :sunglasses:
 
 # ::::
  
- # --colorbox important
-**Very Important Idea:**
-We get the value of a function $f(x)$ at a point $a$ by just plugging $a$ into $f(x)$ and seeing what we get.  We get the limit of $f(x)$ at point $a$ $$\lim_{x \to a} f(x)$$ by taking values **nearby** $a$ and plugging those into $f(x)$.  How nearby?  As close as we can get without reaching $a$.
-# --colorbox
-
-Most of the time this distinction doesn't matter because the value of the function at a point and the limit at that point will be the same. In this case we'll say the function is **continuous** at that point.
+Notice that sometimes the limit of the function at a point is the same as the value of the function at that point and sometimes they're different.  Most of the time this distinction doesn't matter because the value of the function at a point and the limit at that point will be the same. In this case we'll say the function is **continuous** at that point.
 
 # --outlinebox continuous
-Informally, a function $f(x)$ is continuous at a point $x = a$ if the value of the function and the limit of the function are the same at that point.  $$f(a) = \lim_{x \to a} f(x)$$
+Informally, a function $f(x)$ is **continuous** at a point $x = a$ if the value of the function and the limit of the function are the same at that point.  $$f(a) = \lim_{x \to a} f(x)$$
 A function is continuous if it is continuous for all of it's domain values.
 # --outlinebox
 
@@ -442,8 +462,111 @@ for (let i=-10; i <= 10; i++) {
 ---
 If you are working with funtions like these you may need to learn more about the mathematics of limits.
 
+# --aliceblue review
+### Review
+It's important to remember that the limit of a function at a point may not be the same as the [[](:!value)](::pulldown1/tooltip) of the function at that point.  The limit of a function at a point $x = a$ tells us what the function does as $x$ [[](:!close)](::pulldown2/tooltip) $a$.  A function is continuous at a point if the value of the limit is the same as the [[](:!value2)](::pulldown4/tooltip) at that point.  Most functions we see in beginning calculus problems are [[](:!continuous)](::pulldown3/tooltip).
+
+For more practice on identifying limits, check out [IXL's Calculus Problems](https://www.ixl.com/math/calculus/find-limits-using-graphs).  You can do a bunch of problems without an account.  If you want them to keep track of your progress you will need to join and pay a monthly fee.
+
+# --aliceblue
+
+# :::: pulldown1
+[](:Xa5) range
+[](:Xa6) value
+[](:Xa7) domain 
+# ::::
+
+# :::: pulldown2
+[](:Xa8) reaches
+[](:Xa9) is undefined
+[](:Xa10) gets closer and closer to
+# ::::
+
+# :::: pulldown3
+[](:Xa11) continuous
+[](:Xa12) discontinuous
+[](:Xa13) straight lines
+# ::::
+
+# :::: pulldown4
+[](:Xa14) value of the function
+[](:Xa15) x value
+# ::::
 
 
+```javascript/autoplay
+smartdown.setVariable('value','???');
+smartdown.setVariable('a5', false);
+smartdown.setVariable('a6', false);
+smartdown.setVariable('a7', false);
+this.dependOn = ['a5', 'a6', 'a7'];
+
+this.depend = function() {
+  if (env.a6 == true && env.a5 == false && env.a7 == false) {
+      smartdown.setVariable('value','value');
+      smartdown.showDisclosure('yes','','bottomright');  
+      setTimeout(function () {
+           smartdown.hideDisclosure('yes','','bottomright'); 
+      }, 3000);
+    } 
+  };
+```
+```javascript/autoplay
+smartdown.setVariable('close','???');
+smartdown.setVariable('a8', false);
+smartdown.setVariable('a9', false);
+smartdown.setVariable('a10', false);
+this.dependOn = ['a8', 'a9', 'a10'];
+
+this.depend = function() {
+  if (env.a10 == true && env.a8 == false && env.a9 == false) {
+      smartdown.setVariable('close','closer and closer to');
+      smartdown.showDisclosure('boom','','bottomright');  
+      setTimeout(function () {
+           smartdown.hideDisclosure('boom','','bottomright'); 
+      }, 3000);
+    } 
+  };
+```
+```javascript/autoplay
+smartdown.setVariable('continuous','???');
+smartdown.setVariable('a11', false);
+smartdown.setVariable('a12', false);
+smartdown.setVariable('a13', false);
+this.dependOn = ['a11', 'a12', 'a13'];
+
+this.depend = function() {
+  if (env.a11 == true && env.a12 == false && env.a13 == false) {
+      smartdown.setVariable('continuous','continuous');
+      smartdown.showDisclosure('cool','','bottomright');  
+      setTimeout(function () {
+           smartdown.hideDisclosure('cool','','bottomright'); 
+      }, 3000);
+    } 
+  };
+```
+```javascript/autoplay
+smartdown.setVariable('value2','???');
+smartdown.setVariable('a14', false);
+smartdown.setVariable('a15', false);
+this.dependOn = ['a14', 'a15'];
+
+this.depend = function() {
+  if (env.a14 == true && env.a15 == false) {
+      smartdown.setVariable('value2','value of the function');
+      smartdown.showDisclosure('shiny','','bottomright');  
+      setTimeout(function () {
+           smartdown.hideDisclosure('shiny','','bottomright'); 
+      }, 3000);
+    } 
+  };
+```
+
+# :::: yes
+# --colorbox yes
+YES! :ok_hand:
+# --colorbox
+# ::::
 
 ### Coming Up Next
 
