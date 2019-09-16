@@ -44,12 +44,11 @@ this.depend = function() {
 };
 
 ```
-[N](:-N/2/100/1) [](:!N) 
+**N**[](:-N/2/100/1) [](:!N) [Application Notes](::instructions/tooltip)
+# :::: instructions
+Drag the slider to the left and the right.
+# ::::
 #### Everything You Should Know About Calculus Before Your First Day of Calculus Class
-
-Dear Izzy and Andre,
-
-Both of you will be starting calculus classes in the next two years. I hope the exploration in these pages will smooth the way.
 
 Calculus will introduce you to some big and fabulous new ideas.  Also, calculus is a hard class. But it's not the new ideas that make it hard.  Calculus is hard because there's a lot of new [notation](::notation/tooltip).  Calculus is also hard because solving a calculus problem often requires a lot of steps with lots and lots of messy algebra. The struggle to decipher the crazy notation and manage the tedious algebra can eclipse the big beautiful ideas.  
 
@@ -74,7 +73,7 @@ We can be thankful we got Leibniz's notation and not Newton's or things could be
 
 #### Begin Here
 1. [The Main Idea](:@CalculusPrimer/Intro)
-2. [Limits](:@CalculusPrimer/Limits)
+2. [The Result of an Infinite Process](:@CalculusPrimer/InfiniteProcess)
 3. [Tangent Lines](:@CalculusPrimer/TangentLines)
 4. [The Derivative](:@CalculusPrimer/Derivative)
 5. [Applications of the Derivative](:@CalculusPrimer/AppDerivatives)

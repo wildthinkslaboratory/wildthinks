@@ -43,7 +43,7 @@
   color: white;
   border-radius: 8px;
   border: none;
-  width:66%;
+  max-width: 66%
 }
 
 .wildthinks-theme.smartdown-container .disclosable-position {

@@ -2,15 +2,21 @@
 
 ## Tangent Lines
 
-There are two branches of calculus, **Differential Calculus**  and **Integral Calculus**.  Differential calculus is motivated by the problem of finding **tangent lines**.  What is a tangent line and why are people trying to find them? Let's look at a real world example to see how tangent lines can help us.  Imagine tossing a ball up into the air.  It rises quickly, then slows.  For an instant it is motionless before reversing direction and falling back to earth.  
+# --outlinebox tangents
+If you have curvy functions, then you need tangent lines.
+# --outlinebox
 
-Below is an animation of a ball toss.  Next to the animation you will see a concave down parabala that plots the height of the ball relative to time.  
+It's hard to overstate how useful tangent lines are. They are needed in every scientific field.  Just about every modern technology relies in some way or another on tangent lines.  When you drive over a bridge you benefit from tangent lines.  When you use your smart phone or go to the doctor or buy countless products throughout your life you benefit from tangent lines. I'm just going to show you three examples where tangent lines are useful.  
 
-# --aliceblue instructions
-**App Notes:** In addition to running the animation with the **start** and **reset** buttons, the red dot on the  time $t$ axis can be dragged to the left or right.  
-# --aliceblue
+## Example 1: Instantaneous Rate of Change
+You're having a water balloon fight.  You're standing on top of a 30 foot building.  You see your friend standing directly below you.  He is 5 feet tall.  You consider dropping a water balloon on him.  What speed will the water balloon be going when it hits his head?  It's easy to figure out the speed of an object when it moves at a constant speed, but the speed of our water balloon is always changing.  
+  
+# :::: instructions
+In addition to running the animation with the **start** and **reset** buttons, the red dot on the  time $t$ axis can be dragged to the left or right.  
+To set the height of the balloon, enter a value in the height box and hit the 'Set Height' button.
+# ::::
 
-[start](:=toss=true) [reset](:=toss=false)
+[start](:=toss1=true) [reset](:=reset1=true) [Set Height](:=setHeight=true) [](:?height) [Application Notes](::instructions/tooltip)
 ```javascript /playable/autoplay
 //smartdown.import=https://cdnjs.cloudflare.com/ajax/libs/jsxgraph/0.99.7/jsxgraphcore.js
 
@@ -20,127 +26,37 @@ const myDiv = this.div;
 myDiv.style.width = '100%';
 myDiv.style.height = '100%';
 myDiv.style.margin = 'auto';
-myDiv.innerHTML = `<div id='box1' class='jxgbox' style='height:600px;'>`;
-
-smartdown.setVariable('toss', false);
-
-// set up the start and reset buttons for animation
-this.dependOn = ['toss'];
-this.depend = function() {
-  if (env.toss == true) {
-    toss();
-  } 
-  else { reset(); }
-};
-
-
-// create the board
-JXG.Options.text.display = 'internal';
-board = JXG.JSXGraph.initBoard('box1', {boundingbox:[-10,9,10,-1], keepaspectratio:true, axis:true});
-
-// create the labels for axis
-var xAxisLabel = board.create('text',[0.2,-0.4,'Time'], {fontSize:16});
-var yAxisLabel = board.create('text',[0.5,0.5,'Height of Ball'], {fontSize:16});
-var textRot = board.create('transform', [Math.PI/2, 0,0], {type:'rotate'}); 
-textRot.bindTo(yAxisLabel);
-board.update();
-var xArrow = board.create('line',[[1,-0.4],[4,-0.4]],
-  {straightFirst:false, straightLast:false, strokeWidth:2, color:'black', lastArrow:true});
-var yArrow = board.create('line',[[-0.5,2.2],[-0.5,8]],
-  {straightFirst:false, straightLast:false, strokeWidth:2, color:'black', lastArrow:true});
-
-
-// parabala and it's derivative
-var f = function(x) { return  -2*x*x + 8*x ; };
-var graph_f = board.create('functiongraph', [f,0,4]);
-
-// point on x axis
-var x = board.create('glider', [0, 0, board.defaultAxes.x], {name: 't', size:6});
-// point on parabala
-var fx = board.create('point', [
-                function() { return x.X(); }, 
-                function() { return f(x.X()); }
-          ], {name: '', color: 'blue', fixed: true, size:3});
-
-
-// ball that is tossed
-var ballPoint = board.create('point', 
-  [-5, function() { return f(x.X());}], 
-  {name: 'Ball', strokeColor: 'green', fillColor: '#AAFF55', size:18});
-
-
-// animation functions toss ball and reset to original position
-var toss = function() { x.moveTo([4,0],2000, {effect: '--'} ); }
-var reset = function () {
-            board.stopAllAnimation();
-            x.moveTo([0,0]);
-        }
-      
-// this restricts the domain to values where f(x) is positive.
-board.on('update', function() {
-
-  if (x.X() < 0) {
-    x.setPositionDirectly(JXG.COORDS_BY_USER, [0,0]); 
-    x.prepareUpdate().update(true).updateRenderer();
-  }
-  if (x.X() > 4) {
-    x.setPositionDirectly(JXG.COORDS_BY_USER, [4,0]); 
-    x.prepareUpdate().update(true).updateRenderer();
-  }  
- });
- 
-```
-If we want to understand how something moves, we're often interested in the speed of travel.  How fast does the ball move?  Is the speed constant or does it vary?  When is the ball traveling fast and when is it traveling slow?  How does the speed vary with time?  These are exactly the type of questions that tangent lines help us answer.  
-
-In the new version of our app below, we've added a tangent line to our graph and we've posted the slope of the tangent line.  Play with this app and think about how the slope of the tangent line relates to the speed of the ball.
-
-[start](:=toss1=true) [reset](:=toss1=false)
-```javascript /playable/autoplay
-//smartdown.import=https://cdnjs.cloudflare.com/ajax/libs/jsxgraph/0.99.7/jsxgraphcore.js
-
-smartdown.importCssUrl('https://cdnjs.cloudflare.com/ajax/libs/jsxgraph/0.99.7/jsxgraph.css');
-
-const myDiv = this.div;
-myDiv.style.width = '100%';
-myDiv.style.height = '100%';
-myDiv.style.margin = 'auto';
-myDiv.innerHTML = `<div id='box2' class='jxgbox' style='height:600px;'>`;
+myDiv.innerHTML = `<div id='box' class='jxgbox' style='height:600px;'>`;
 
 smartdown.setVariable('toss1', false);
-
-// set up the start and reset buttons for animation
-this.dependOn = ['toss1'];
-this.depend = function() {
-  if (env.toss1 == true) {
-    toss();
-  } 
-  else { reset(); }
-};
-
+smartdown.setVariable('setHeight', false);
+smartdown.setVariable('reset1', false);
 
 // create the board
 JXG.Options.text.display = 'internal';
-board = JXG.JSXGraph.initBoard('box2', {boundingbox:[-10,9,10,-1], keepaspectratio:true, axis:true});
+board = JXG.JSXGraph.initBoard('box', {boundingbox:[-5,40,10,-5], keepaspectratio:false, axis:true});
 
 // create the labels for axis
-var xAxisLabel = board.create('text',[0.2,-0.4,'Time'], {fontSize:16});
-var yAxisLabel = board.create('text',[0.5,0.5,'Height of Ball'], {fontSize:16});
-var textRot = board.create('transform', [Math.PI/2, 0,0], {type:'rotate'}); 
-textRot.bindTo(yAxisLabel);
-board.update();
-var xArrow = board.create('line',[[1,-0.4],[4,-0.4]],
+var xAxisLabel = board.create('text',[0.2,-2,'Time'], {fontSize:16});
+//var yAxisLabel = board.create('text',[0.5,0.5,'Height of Ball'], {fontSize:16});
+// var textRot = board.create('transform', [Math.PI/2, 0,0], {type:'rotate'}); 
+// textRot.bindTo(yAxisLabel);
+//board.update();
+var xArrow = board.create('line',[[0.7,-2],[2,-2]],
   {straightFirst:false, straightLast:false, strokeWidth:2, color:'black', lastArrow:true});
-var yArrow = board.create('line',[[-0.5,2.2],[-0.5,8]],
-  {straightFirst:false, straightLast:false, strokeWidth:2, color:'black', lastArrow:true});
-
+var friend = board.create('line',[[-3,0],[-3,5]],
+  {straightFirst:false, straightLast:false, strokeWidth:8, color:'black'});
 
 // parabala and it's derivative
-let f = function(x) { return  -2*x*x + 8*x ; };
-let df = function(x) { return -4*x + 8; }
-let graph_f = board.create('functiongraph', [f,0,4]);
+let f = function(x) { return  -9.81*x*x + 30; };
+let f_inv = function(x) { return Math.sqrt((x-30)/(-9.81)); };
+let df = function(x) { return -19.62*x; }
+let graph_f = board.create('functiongraph', [f,0,1.75]);
 
 // point on x axis
 var x = board.create('glider', [0, 0, board.defaultAxes.x], {name: 't', size:6});
+smartdown.setVariable('height', f(x.X()));
+
 // point on parabala
 var fx = board.create('point', [
                 function() { return x.X(); }, 
@@ -156,22 +72,54 @@ var fx2 = board.create('point', [
 // tangent line
 var line = board.create('line',[fx, fx2],{strokeColor:'#FF5522'});
 
+
+// text displaying current height of the water balloon
+var fText = board.create('text',[3,25,function(){ return 'Height of Balloon = '+ f(x.X()).toFixed(2); }], {fontSize:30});
+
 // text displaying current slope of tangent line
-var slopeText = board.create('text',[4,3,function(){ return 'Slope of Tangent Line = '+ df(x.X()).toFixed(4); }], {fontSize:30});
+var slopeText = board.create('text',[3,20,function(){ return 'Slope of Tangent Line = '+ df(x.X()).toFixed(2); }], {fontSize:30});
+
+// text displaying current slope of tangent line
+var speedText = board.create('text',[3,15,function(){ return 'Speed (ft/sec) = '+ df(x.X()).toFixed(2); }], {fontSize:30});
+
 
 // ball that is tossed
 var ballPoint = board.create('point', 
-  [-5, function() { return f(x.X());}], 
-  {name: 'Ball', strokeColor: 'green', fillColor: '#AAFF55', size:18});
+  [-3, function() { return f(x.X());}], 
+  {name: 'Balloon', strokeColor: 'green', fillColor: '#AAFF55', size:10});
 
 
 // animation functions toss ball and reset to original position
-var toss = function() { x.moveTo([4,0],2000, {effect: '--'} ); }
+var toss = function() { x.moveTo([1.749,0],1750, {effect: '--'} ); }
 var reset = function () {
             board.stopAllAnimation();
             x.moveTo([0,0]);
         }
       
+// set up the start and reset buttons for animation
+this.dependOn = ['toss1','reset1','setHeight'];
+this.depend = function() {
+  if (env.toss1 == true) {
+    toss();
+    smartdown.setVariable('toss1', false);
+  } 
+  if (env.reset1 == true) { 
+    reset(); 
+    smartdown.setVariable('reset1', false);
+  }
+
+  if (env.setHeight == true) {
+    h = parseFloat(env.height);
+    if (h >=0 || h <= 2) {
+      x.setPositionDirectly(JXG.COORDS_BY_USER, [f_inv(h),0]); 
+      x.prepareUpdate().update(true).updateRenderer();
+    }
+    smartdown.setVariable('setHeight',false);
+  }
+
+
+};
+
 // this restricts the domain to values where f(x) is positive.
 board.on('update', function() {
 
@@ -179,89 +127,58 @@ board.on('update', function() {
     x.setPositionDirectly(JXG.COORDS_BY_USER, [0,0]); 
     x.prepareUpdate().update(true).updateRenderer();
   }
-  if (x.X() > 4) {
-    x.setPositionDirectly(JXG.COORDS_BY_USER, [4,0]); 
+  if (x.X() > 1.75) {
+    x.setPositionDirectly(JXG.COORDS_BY_USER, [1.75,0]); 
     x.prepareUpdate().update(true).updateRenderer();
-  }  
+  } 
+  smartdown.setVariable('height', f(x.X()).toFixed(2));
  });
  
 ```
-
-# --aliceblue questions
-**Questions:**
-
-For what value of time is the slope of the tangent line $0$? [](:?zeroslope)
-Assuming the function is only defined between $0$ and $4$, when is the slope positive?  [](:?positiveInterval)  [formatting tips](::tip)
-# :::: tip
-Intervals with less than or equal signs $5 \leq x \leq 7$ are written with square brackets [5,7].
-Intervals with strictly less then signs $5 < x < 7$ are written with parentheses (5,7).
-Intervals can be mixed.  $5 < x \leq 7$ is written as (5,7].
-Intervals with infinity $\infty < x \leq 100$ are written as (inf,100].
+Notice that the slope of the tangent line tells us the speed of the balloon. It's not the average speed over some time window.  It tells us the instantaneous speed at a given time.  We call this the **instantaneous rate of change** of the balloon.  If we set the height to 5 feet, we can see that the ball will be traveling about [[](:!nspeed)](::pulldown2/tooltip) feet per second which is around 21 mph.  Ouch! Maybe you should reconsider dropping it.  
+# :::: yes
+# --colorbox yes
+YES! :ok_hand:
+# --colorbox
 # ::::
-When is the slope negative?  [](:?negativeInterval)
-[submit answers](:=submit=true)
-# --aliceblue
 
+# :::: pulldown2
+[](:Xa4) 4
+[](:Xa5) 10
+[](:Xa6) 31
+# ::::
 ```javascript/autoplay
-smartdown.setVariable('zeroslope', '');
-smartdown.setVariable('positiveInterval', '');
-smartdown.setVariable('negativeInterval', '');
-smartdown.setVariable('submit', false);
-
-this.dependOn = ['submit'];
+smartdown.setVariable('nspeed','???');
+smartdown.setVariable('a4', false);
+smartdown.setVariable('a5', false);
+smartdown.setVariable('a6', false);
+this.dependOn = ['a4', 'a5', 'a6'];
 
 this.depend = function() {
-  if (env.submit == true) {
-    console.log('submit');
-    if (env.zeroslope.trim() == '2' 
-    && env.positiveInterval.trim() == '(0,2)' 
-    && env.negativeInterval.trim() == '(2,4)') {
-      smartdown.showDisclosure('righton','','bottomright');  
+  if (env.a6 == true && env.a4 == false && env.a5 == false) {
+      smartdown.setVariable('nspeed','31');
+      smartdown.showDisclosure('yes','','bottomright');  
       setTimeout(function () {
-           smartdown.hideDisclosure('righton','','bottomright'); 
+           smartdown.hideDisclosure('yes','','bottomright'); 
       }, 3000);
-    } else {
-      smartdown.showDisclosure('tryagain','','bottomright');  
-      setTimeout(function () {
-           smartdown.hideDisclosure('tryagain','','bottomright'); 
-      }, 3000);
-    }
-
-  } 
-  env.submit = false;
-};
+    } 
+  };
 ```
 
-# :::: righton
+### Example 2: Minimization Problem
 
-# --colorbox right
-right on! :thumbsup:
-# --colorbox
+A rectangular pen $8\text{ft}^2$ in area is to be fenced off for a pet rabbit.  One side of the pen will be the barn wall. The remaining three sides we'll make with fencing. However, fencing is really expensive.  We need to find the dimensions for the pen that minimize the length of fence.
 
+Say our pen has width $w$ and length $l$.  In order to get $8\text{ft}^2$ in area, we must have $wl = 8$. We also know that the length of fence $F$ will be  $F = 2w + l$.  We can write the amount of fencing in terms of the width $w$  as $F = 2w + \frac{8}{w}$
+
+# --outlinebox question
+How can we use the slope of the tangent line to find the minimum fence length?
+# --outlinebox
+# :::: instructions2
+The red dot on the  time $w$ axis can be dragged to the left or right.  
+To set the slope of the tangent line or the width, enter a value in the box and hit the button.
 # ::::
-
-# :::: tryagain
-
-# --colorbox try
-keep trying :stuck_out_tongue:
-# --colorbox
-
-# ::::
-
-In this example, the slope of the tangent line tells us the speed the ball is traveling at a given time $t$. Positive slopes tell us that the ball is traveling in the upward direction and negative slopes occur when the ball is falling down.  The absolute value of the speed is greatest when the ball is initially tossed and again when it hits the ground.  And all this can be seen by looking at tangent lines.
-
-Not all functions represent moving objects. More generally, tangent lines tell us something called the **instantaneous rate of change** of our function. We can pick a point on our function and determine whether the function is increasing or decreasing at that spot, and how quickly it's values are changing.  
-
-So this is the question that Isaac Newton was trying to answer when the proverbial apple fell from the tree.  Next we see how to calculate the slope of the tangent line and in the process get our first taste of calculus.
-
-
-### Another Example of Tangent Lines
-
-# --aliceblue problem
-**Problem:**
-A rectangular pen $8\text{ft}^2$ in area is to be fenced off for a pet rabbit.  If one side of the pen is already protected by a barn wall, what dimensions will require the shortest length of fence?
-# --aliceblue
-
+[Set Slope of Tangent Line](:=setSlope=true) [](:?slope) [Set Width](:=setWidth=true) [](:?width) [Application Notes](::instructions2/tooltip)
 ```javascript /playable/autoplay
 //smartdown.import=https://cdnjs.cloudflare.com/ajax/libs/jsxgraph/0.99.7/jsxgraphcore.js
 
@@ -273,34 +190,38 @@ myDiv.style.height = '100%';
 myDiv.style.margin = 'auto';
 myDiv.innerHTML = `<div id='box3' class='jxgbox' style='height:600px;'>`;
 
-// smartdown.setVariable('xvalue', '1');
-
+smartdown.setVariable('setSlope', false);
+smartdown.setVariable('setWidth', false);
 
 
 // create the board
 JXG.Options.text.display = 'internal';
-board = JXG.JSXGraph.initBoard('box3', {boundingbox:[-10,25,10,-1], keepaspectratio:true, axis:true});
+board = JXG.JSXGraph.initBoard('box3', {boundingbox:[-5,15,20,-1], keepaspectratio:true, axis:true});
 
 // create the labels for axis
-var xAxisLabel = board.create('text',[0.2,-0.4,'x'], {fontSize:16});
+var xAxisLabel = board.create('text',[0.2,-0.4,'width'], {fontSize:16});
 var yAxisLabel = board.create('text',[0.5,1,'Length of Fence'], {fontSize:16});
 var textRot = board.create('transform', [Math.PI/2, 0,0], {type:'rotate'}); 
 textRot.bindTo(yAxisLabel);
 board.update();
-var xArrow = board.create('line',[[1,-0.4],[4,-0.4]],
+var xArrow = board.create('line',[[2,-0.4],[5,-0.4]],
   {straightFirst:false, straightLast:false, strokeWidth:2, color:'black', lastArrow:true});
-var yArrow = board.create('line',[[-1,6],[-1,10]],
+var yArrow = board.create('line',[[-1,4],[-1,8]],
   {straightFirst:false, straightLast:false, strokeWidth:2, color:'black', lastArrow:true});
 
 
 // function and it's derivative
 var f = function(x) { return  2*x + 8/x; };
-var df = function(x) { return 2  - (8/(x*x)); }
+var df = function(x) { return 2  - (8/(x*x)); };
+var df_inv = function(x) { return Math.sqrt(8/(2-x)); };
 
-var graph_f = board.create('functiongraph', [f,0,25]);
+var graph_f = board.create('functiongraph', [f,0,10]);
 
 // point on x axis
-var x = board.create('glider', [1, 0, board.defaultAxes.x], {name: 'x', size:6});
+var x = board.create('glider', [1, 0, board.defaultAxes.x], {name: 'w', size:6});
+smartdown.setVariable('width', x.X().toFixed(2));
+smartdown.setVariable('slope', df(x.X()).toFixed(2));
+
 // point on function
 var fx = board.create('point', [
                 function() { return x.X(); }, 
@@ -313,69 +234,79 @@ var fx2 = board.create('point', [
                 function() { return f(x.X()) + df(x.X()); }
           ], {visible:false});
 
-console.log('slope at 2 ', df(2));
+
 // tangent line
 var line = board.create('line',[fx, fx2],{strokeColor:'#FF5522'});
 
 
 
-var line1 = board.create('line',[[20,9], [20,25] ],{strokeColor:'black', strokeWidth:5, straightFirst:false, straightLast:false});
-var line2 = board.create('line',[[20,10], [function() { return 20 - x.X(); }, 10 ] ],{strokeColor:'black', strokeWidth:2, straightFirst:false, straightLast:false});
+var line1 = board.create('line',[[15,9], [15,25] ],{strokeColor:'black', strokeWidth:5, straightFirst:false, straightLast:false});
+var line2 = board.create('line',[[15,10], [function() { return 15 - x.X(); }, 10 ] ],{strokeColor:'black', strokeWidth:2, straightFirst:false, straightLast:false});
 
 var y = function() { return 8 / x.X();};
 
 var line3 = board.create('line',[[
-  function() { return 20 - x.X(); }, 
+  function() { return 15 - x.X(); }, 
   10], [
-  function() { return 20 - x.X(); },
+  function() { return 15 - x.X(); },
   function() { return 10 + y(x.X()); }] ],{strokeColor:'black', strokeWidth:2, straightFirst:false, straightLast:false});
 var line4 = board.create('line',[[
-  function() { return 20 - x.X(); },
+  function() { return 15 - x.X(); },
   function() { return 10 + y(x.X()); }], [
-  20,
+  15,
   function() { return 10 + y(x.X()); }] ],{strokeColor:'black', strokeWidth:2, straightFirst:false, straightLast:false});
 
 // text displaying current slope of tangent line
 var slopeText = board.create('text',[3,3,function(){ return 'Slope of Tangent Line = ' + df(x.X()).toFixed(4); }], {fontSize:20});
 
-var xText = board.create('text',[10,7.5,function(){ return 'x = ' + x.X().toFixed(4); }], {fontSize:20});
-var yText = board.create('text',[10,6,function(){ return 'y = ' + y(x.X()).toFixed(4); }], {fontSize:20});
-var LText = board.create('text',[10,4.5,function(){ return 'L = ' + f(x.X()).toFixed(4); }], {fontSize:20});
-var barnText = board.create('text',[20.2, 15, 'barn wall'], {fontSize:20});
-var xTextmoving = board.create('text',[ function() { return 20 - x.X()/2; }, 9.5, 'x']);
+var xText = board.create('text',[7,7.5,function(){ return 'w = ' + x.X().toFixed(4); }], {fontSize:20});
+var yText = board.create('text',[7,6,function(){ return 'l = ' + y(x.X()).toFixed(4); }], {fontSize:20});
+var LText = board.create('text',[7,4.5,function(){ return 'F = ' + f(x.X()).toFixed(4); }], {fontSize:20});
+var barnText = board.create('text',[15.2, 10, 'barn wall'], {fontSize:20});
+var xTextmoving = board.create('text',[ function() { return 15 - x.X()/2; }, 9.5, 'w']);
 var yTextmoving = board.create('text',[
-  function() { return 19 - x.X(); }, 
-  function() { return 10 + y(x.X())/2; }, 'y']);
+  function() { return 14 - x.X(); }, 
+  function() { return 10 + y(x.X())/2; }, 'l']);
 
 
 
   
 // this restricts the domain to values where f(x) is positive.
 board.on('update', function() {
+  console.log('update happening');
   if (x.X() < 0) {
     x.setPositionDirectly(JXG.COORDS_BY_USER, [0,0]); 
     x.prepareUpdate().update(true).updateRenderer();
   }
-  // env.xvalue = x.X();
+  smartdown.setVariable('width', x.X().toFixed(2));
+  smartdown.setVariable('slope', df(x.X()).toFixed(2));
   
 });
 
-// // set up the start and reset buttons for animation
-// this.dependOn = ['xvalue'];
-// this.depend = function() { 
-//   if (env.xvalue != '') {
-//     board.suspendUpdate();
-//     let v = parseFloat(env.xvalue);
-//     x.setPositionDirectly(JXG.COORDS_BY_USER, [v,0]); 
-//     board.unsuspendUpdate();
-//   }
-// };
+// set up the start and reset buttons for animation
+this.dependOn = ['setSlope','setWidth'];
+this.depend = function() { 
+  if (env.setWidth == true) {
+    let w = parseFloat(env.width);
+    x.setPositionDirectly(JXG.COORDS_BY_USER, [w,0]); 
+    x.prepareUpdate().update(true).updateRenderer();
+  }
+  if (env.setSlope == true) {
+    let s = parseFloat(env.slope);
+    let w = df_inv(s);
+    x.setPositionDirectly(JXG.COORDS_BY_USER, [w,0]); 
+    x.prepareUpdate().update(true).updateRenderer();
+  }
+};
 
 
 ```
+The minimum amount of fence occurs when the slope of the tangent line is [](:?minslope) and the width is [](:?bestwidth).
+### Example 3: Maximization Problem
 
-If our pen has dimensions $x$ by $y$, then we know that $xy = 8$.  We also know that the length of fence $L$ will be equal to $L = 2x + y$.  We can write the a function for the length in terms of $x$ 
-$$L = 2x + \frac{8}{x}$$
+Tangent lines give us a snap shot of how our function is changing at a given point.  
+
+
 
 #### Coming Up Next 
 

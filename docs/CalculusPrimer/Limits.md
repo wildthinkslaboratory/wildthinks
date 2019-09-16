@@ -1,29 +1,3 @@
-### Limits and Continuity
-
-
-Many highschool calculus classes will begin with a section on **limits and continuity**.  While researching this topic I stumbled on to this doozy of a [quote from mathematician James Tanton](::tantonOnLimits/center/lightbox/scrollable).  It's a good read and I highly recommend it.  A key take away that I wasn't aware of is that the creators of calculus themselves didn't have a formal notion of a limit.  All this formalism about limits came 150 years later when people started applying calculus to weird misbehaving functions.
-
-# :::: tantonOnLimits
-# --aliceblue limits
-![icon](https://aperiodical.com/wp-content/uploads/2018/06/tanton-300x300.png)
-"... Many programs give the impression that this material is a precursor to rigor and technical precision, but, in the end, appeal to intuition over and over again. A student who thinks deeply is given the impression that a foundation is laid, but one with no cement or stone and therefore no real means to support a structure of any weight.
-At this stage of the discussion, the notion of a “limit” should indeed be informal. In fact, the creators of calculus during the 1500s and 1600s did not think in terms of limits and found that intuition sufficed for the development at hand, compelling the subject onward in all its glory. It was only some 150 years later, after the subject was fully developed, that folk began to dig deeply into the foundations of the subject and begin to question beginning thoughts. What does it mean to be “continuous” exactly? What does a “leap of faith” really mean? Mathematicians at that time started to push the theory of calculus towards extreme situations (Does it work for the bizarre function that equals 1 for all rational numbers and 0 for all irrational numbers?) Troubles started to appear and so mathematicians had to resort to absolute technical clarity. French mathematician Augustine-Louis Cauchy (1789-1857) proposed the notion of a limit, and the full technical rigor for it was developed by Karl Weierstrass (1815-97).
-The standard high-school curriculum does not present the problems that call for precise formulation of a limit, nor does it present the technical definition that goes with it! There is a half-hearted attempt to be “precise,” which, in the end is only confusing. "
-
-From James Tanton's *Thinking Mathematics: Volume 6, Some Calculus*
-[Close](::tantonOnLimits)
-
-# --aliceblue
-# ::::
-
-
-# --outlinebox bogged
-**Remember**
-Do not get too bogged down on pseudo rigorous limits and continuity problems.  It's not essential for enjoying and understanding calculus.
-# --outlinebox
-
-In fact, if you want, you can go straight on to [Tangent Lines](:@CalculusPrimer/TangentLines) and come back and do this page later.
-
 ### A Quick Look at Limits
 
 Consider the function 
@@ -84,10 +58,10 @@ except the function $f(x)$ has a hole in the graph at the point where $x=1$ beca
 What value does the function get **close** to as we get **closer and closer** to $x=1$ without ever reaching it?
 # --outlinebox
 
-# --aliceblue instructions
-**App Notes:** The red dot on the $x$ axis can be dragged to the left or right.  
-# --aliceblue
-
+# :::: instructions
+The red dot on the $x$ axis can be dragged to the left or right.  
+# ::::
+[Application Notes](::instructions/tooltip)
 ```javascript /playable/autoplay
 //smartdown.import=https://cdnjs.cloudflare.com/ajax/libs/jsxgraph/0.99.7/jsxgraphcore.js
 
@@ -175,6 +149,7 @@ $$f(x) =
     3 & \mbox{if } x = 1
   \end{array}
 \right.$$
+[Application Notes](::instructions/tooltip)
 ```javascript /playable/autoplay
 //smartdown.import=https://cdnjs.cloudflare.com/ajax/libs/jsxgraph/0.99.7/jsxgraphcore.js
 
@@ -460,7 +435,7 @@ for (let i=-10; i <= 10; i++) {
  
 ```
 ---
-If you are working with funtions like these you may need to learn more about the mathematics of limits.
+If you are working with funtions like these weird functions, you need to be more careful and precise about taking limits.  However, we can avoid functions like these for now.
 
 # --aliceblue review
 ### Review

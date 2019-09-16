@@ -1,3 +1,5 @@
+
+
 ## How do you find the Tangent Line?
 
 
@@ -144,14 +146,23 @@ right on! :thumbsup:
 
 Congratulations! You just did some calculus. If we let the value of $h$ get very small, the slope of the secant line gets closer and closer to the slope of the tangent.  The slope of the secant line is actually undefined when $h=0$.  We aren't allowed to divide by zero. But it's ok.  When we zoom in close around $x=4$, we can see what's happening.  We don't have to move $h$ all the way to $0$ to see where slope is  going to end up.
 
-Here is the definition of the derivative.  Compare it to the definition of the secant line from above.  
+Here is the definition of the derivative.  Compare it to the definition of the secant line from above. 
+# --aliceblue derivative3 
+# --colorbox derivative2
 # --outlinebox derivative
 **Definition of the Derivative**
 $$ f'(x) = \lim_{h \to 0} \frac{f(x + h) - f(x)}{h}$$
 # --outlinebox
+# --colorbox
+# --aliceblue
+
 The notation $f'(x)$ is how we represent a function that is a derivative of some function $f(x)$.  Similarly, if we took the derivative of a function $g(x)$ we'd call it $g'(x)$.  The other new notation here is $$ \lim_{h \to 0}$$. This means we let the values of $h$ in the expression get really close to the value $0$.
 
 # :::: temp
+What is a tangent line?
+Why is it hard to calculate?
+
+notes on notation: different notations for derivative
 
 Introduce the term **derivative**. 
 Don't memorize this formula, remember that it is a slope and then you can always construct it.

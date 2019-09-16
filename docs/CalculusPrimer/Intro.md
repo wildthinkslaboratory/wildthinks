@@ -1,5 +1,6 @@
 
 
+
 ### The Main Idea of Calculus
 
 In geometry class you learn how to solve lots of important problems that deal with shapes and lines, points and angles.  It's all very useful for answering questions that occur in everyday life.  However, most of what you learn in geometry deals with straight lines: lines, squares, rectangles, polygons.  The only curves we learn about are circles.  The tasks of geometry, like finding areas and volumes, seem much harder for curvy shapes.  
@@ -12,19 +13,23 @@ If we zoom in on curvy stuff, it starts to look more and more straight.
 
 ![fullwidth](https://cdn-image.travelandleisure.com/sites/default/files/styles/1600x1000/public/1479851209/sunrise-2014-EARTH1116.jpg?itok=T8sGC69d)
 
-Take a curvy shape like the earth, and zoom in super close.  Let's consider a sample of the earth's surface that is about 20 square miles.  That's big enough so most of us wouldn't want to walk across it in a single day.  For most of what we do in our daily lives on our 20 square mile plot, we can assume that the earth is flat and that works pretty well.   It wasn't until the 17th century that we conclusively determined that the earth was round, so it worked pretty well for a majority of human existence. 
+Take a curvy shape like the earth, and zoom in super close.  Let's consider a sample of the earth's surface that is about 20 square miles.  For most of what we do in our daily lives on our 20 square mile plot, we can assume that the earth is flat and that works pretty well.   It wasn't until the 17th century that we conclusively determined that the earth was round, so it worked pretty well for a majority of human existence. 
 
 A flat approximation is great because it makes the math easy.  However, if we want to fly from California to New York in an airplane, or if we are interested in launching satellites or sending robots to Mars then we have to zoom out and consider the full curvy shape of the earth.  The trick of calculus is to zoom in real close until we can pretend our curve is flat. We do our math there with straight lines.  We then glue lots of tiny straight line  solutions together to get a result that works for the full curvy shape.
 
 Let's use this strategy to figure out the area of a circle.  We'll start by dividing the circle into 4 pie pieces.  We have two views of our pieces, first as a circle and second, arranged in line with the pieces alternating directions. We'll approximate the area of the circle by calculating the area of the four triangles which have nice straight lines and areas that are easy to calculate.  Currently our approximation is too small.  The triangles don't cover all the area in the circle.  Now let's zoom in and make the triangles smaller by sliding the **number of triangles** slider to the right.    
 
+# :::: instructions
+Drag the slider to the left and the right.
+# ::::
 
-[Number of Triangles](:-triangles/1/40/1) [](:!triangles)
+Number of Triangles [](:-triangles/1/40/1) [](:!triangles) [Application Notes](::instructions/tooltip)
 ```javascript /playable/autoplay
 //smartdown.import=https://cdnjs.cloudflare.com/ajax/libs/jsxgraph/0.99.7/jsxgraphcore.js
 
 smartdown.importCssUrl('https://cdnjs.cloudflare.com/ajax/libs/jsxgraph/0.99.7/jsxgraph.css');
 
+console.log('test log');
 
 const myDiv = this.div;
 myDiv.style.width = '100%';
@@ -166,7 +171,7 @@ this.dependOn = ['a1', 'a2', 'a3'];
 
 this.depend = function() {
   if (env.a2 == true && env.a1 == false && env.a3 == false) {
-      smartdown.setVariable('areaCircle','the area of a circle');
+      smartdown.setVariable('areaCircle','the area of our circle');
       smartdown.showDisclosure('yes','','bottomright');  
       setTimeout(function () {
            smartdown.hideDisclosure('yes','','bottomright'); 
@@ -187,7 +192,7 @@ YES! :ok_hand:
 ### Another Fun Example
 Here's a similar example playing with polygons.  We look at the ratio of a polygon's perimeter to its diameter.
 
-[Number of Polygon Sides](:-polygon/3/99/1) [](:!polygon)
+Number of Polygon Sides[](:-polygon/3/99/1) [](:!polygon) [Application Notes](::instructions/tooltip)
 ```javascript /playable/autoplay
 //smartdown.import=https://cdnjs.cloudflare.com/ajax/libs/jsxgraph/0.99.7/jsxgraphcore.js
 
@@ -328,12 +333,8 @@ correct! :grinning:
 
 
 
-### The Result of an Infinite Process
-
-In both of our examples we start our with an awkward straight line approximation of the thing we want to calculate.  Zooming in, we chop things up into smaller and smaller straight line pieces.  As we increase the number of pieces, our approximation gets better and better. We believe that if this process could continue to infinity, the end of this infinite process produces the result we desire.  This kind of thinking is the foundation of calculus.  It isn't too hard to believe when we look at these examples, but there is a 'leap of faith' here as Dr. Tanton would say.  It's important to be aware of what we're believing.
-
 ### Coming Up Next
 
-[Onward to Limits and Continuity](:@CalculusPrimer/Limits)
+[The Result of an Infinite Process](:@CalculusPrimer/InfiniteProcess)
 [Back to Home Page](:@CalculusPrimer/Home)
 
