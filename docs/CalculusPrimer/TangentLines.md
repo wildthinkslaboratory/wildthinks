@@ -34,10 +34,10 @@ const myDiv = this.div;
 myDiv.style.width = '100%';
 myDiv.style.height = '100%';
 myDiv.style.margin = 'auto';
-myDiv.innerHTML = `<div id='box1' class='jxgbox' style='height:300px; width:300px;'>`;
+myDiv.innerHTML = `<div id='box5' class='jxgbox' style='height:300px; width:300px;'>`;
 
 // create the board
-board = JXG.JSXGraph.initBoard('box1', {boundingbox:[-5,5,5,-5], keepaspectratio:true, axis:true});
+board = JXG.JSXGraph.initBoard('box5', {boundingbox:[-5,5,5,-5], keepaspectratio:true, axis:true});
 
 // parabala and it's derivative
 var f = function(x) { return  x*x; };
