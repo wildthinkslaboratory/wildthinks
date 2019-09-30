@@ -212,7 +212,7 @@ this.depend = function() {
            smartdown.hideDisclosure('highfive','','bottomright'); 
       }, 3000);
     setTimeout(function () {
-           smartdown.showDisclosure('d1', '', '');
+           smartdown.showDisclosure('d1', '', 'transparent');
       }, 3000);
   } 
 };
@@ -328,7 +328,7 @@ this.depend = function() {
            smartdown.hideDisclosure('cool','','bottomright'); 
       }, 3000);
     setTimeout(function () {
-           smartdown.showDisclosure('d2', '', '');
+           smartdown.showDisclosure('d2', '', 'transparent');
       }, 2000);
   } 
 };

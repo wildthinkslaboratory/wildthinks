@@ -118,7 +118,7 @@ this.dependOn = ['answer1'];
 this.depend = function() {
   if (env.answer1.trim() == '2') {
       smartdown.showDisclosure('boom','','bottomright');  
-      smartdown.showDisclosure('limit', '', '');
+      smartdown.showDisclosure('limit', '', 'transparent');
       setTimeout(function () {
            smartdown.hideDisclosure('boom','','bottomright'); 
       }, 3000);
