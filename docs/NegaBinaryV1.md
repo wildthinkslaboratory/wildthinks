@@ -60,52 +60,52 @@ const numberBoxes = 2;         // set how many boxes you want
 const instructions = 'Drag a DOT to the left. (You can also drag it back to the right.)';
 let popup = new Popup(p5, 0.03, 0.3,  0.25, 'BEGIN', '', 'BEGIN', instructions);
 
-var dots = new dotlib.Dots(p5, this.div);  // create the dots and boxes machine
+var dots1 = new dotlib.Dots(p5, this.div);  // create the dots and boxes machine
 
 p5.setup = function() {                          // this function is called when you start the
                                                  // playable. 
-  dots.addInstructions(popup);
-  dots.setup(base, numberBoxes);                 // initialize the machine with the base and number of boxes. 
+  dots1.addInstructions(popup);
+  dots1.setup(base, numberBoxes);                 // initialize the machine with the base and number of boxes. 
   var canvasWidth = p5.windowWidth * widthScale;  // set the size of the playable
   var canvasHeight = p5.windowHeight * heightScale;
   p5.createCanvas(canvasWidth,canvasHeight);     // create the canvas we will draw on
   p5.windowResized();                            
 
-  dots.loadSounds();                             // load the sounds for the app
-  dots.turnOffRuleButton();                      // configure the machine the way we want it.
-  dots.turnOffAddDotButton();
-  dots.allowAddDots(false);
-  dots.allowRemoveDots(false);
-  dots.addDotsToBox(2,1,0);
+  dots1.loadSounds();                             // load the sounds for the app
+  dots1.turnOffRuleButton();                      // configure the machine the way we want it.
+  dots1.turnOffAddDotButton();
+  dots1.allowAddDots(false);
+  dots1.allowRemoveDots(false);
+  dots1.addDotsToBox(2,1,0);
 };
 
 
 p5.windowResized = function() {                  // this function is called when the user changes
   const canvasWidth = p5.windowWidth * widthScale;  // the size of the window.  It will rescale all the 
   const canvasHeight = p5.windowHeight * heightScale;    // components to fit into the new window size.
-  dots.windowResized(canvasWidth, canvasHeight);
+  dots1.windowResized(canvasWidth, canvasHeight);
   p5.resizeCanvas(canvasWidth, canvasHeight);
 }
 
 
 p5.draw = function() {                           // this function gets called repeatedly in a loop.
-  dots.draw();                                   // The machine is redrawn multiple times a second.
+  dots1.draw();                                   // The machine is redrawn multiple times a second.
 }
 
 
 p5.mousePressed = function()                     // this function is called everytime the user clicks the mouse
 {
-  dots.mousePressed();
+  dots1.mousePressed();
 }
 
 
 p5.mouseDragged = function() {                   // this function is called everytime the user drags the mouse
-  dots.mouseDragged();
+  dots1.mouseDragged();
 }
 
 
 p5.mouseReleased = function() {                  // this function is called when the user releases the mouse 
-  dots.mouseReleased();                          // button after a click.
+  dots1.mouseReleased();                          // button after a click.
 }
 ```  
 
@@ -211,9 +211,9 @@ this.depend = function() {
     setTimeout(function () {
            smartdown.hideDisclosure('highfive','','bottomright'); 
       }, 3000);
-    setTimeout(function () {
-           smartdown.showDisclosure('d1', '', 'transparent');
-      }, 3000);
+//     setTimeout(function () {
+ //          smartdown.showDisclosure('d1', '', 'transparent');
+//      }, 3000); 
   } 
 };
 ```
@@ -225,7 +225,6 @@ High five! :raised_hand:
 # ::::
 
 
-# :::: d1
 
 We have a **dot** in the $4$ box, a **dot** in the  $-2$ box and nothing in the $1$ box.  That gives us $4 + \left(-2 \right) + 0 = 2$. 
 
@@ -327,9 +326,9 @@ this.depend = function() {
     setTimeout(function () {
            smartdown.hideDisclosure('cool','','bottomright'); 
       }, 3000);
-    setTimeout(function () {
-           smartdown.showDisclosure('d2', '', 'transparent');
-      }, 2000);
+//    setTimeout(function () {
+//           smartdown.showDisclosure('d2', '', 'transparent');
+//      }, 2000);
   } 
 };
 ```
@@ -340,7 +339,6 @@ Cool.
 # --colorbox
 # ::::
 
-# :::: d2 
 
 That's $(-8) + 4 + 0 + 1 = -3$.
 
@@ -432,8 +430,6 @@ p5.mouseReleased = function() {                  // this function is called when
   dots.mouseReleased();                          // button after a click.
 }
 ```
-# ::::
-# ::::
 
 [Go on to the Strings and Gödel Page](:@Strings)
 
