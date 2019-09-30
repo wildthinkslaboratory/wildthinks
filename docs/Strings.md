@@ -19,7 +19,7 @@ The interactive app below is called a **playable**.  Notice the thin gray bar ab
 
 # ::::
 
-In the [**playable**](::playable/tooltip) below, I've initilized the machine with the string `cab`, which has a base $10$ value of $1353$.  Said another way, the base $10$ number $1353$ has the code `cab` in this base $26$ machine.  
+In the [**playable**](::playable/tooltip/transparent) below, I've initilized the machine with the string `cab`, which has a base $10$ value of $1353$.  Said another way, the base $10$ number $1353$ has the code `cab` in this base $26$ machine.  
 
 ```p5js/playable/autoplay
 

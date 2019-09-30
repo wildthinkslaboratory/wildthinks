@@ -23,7 +23,7 @@ Let's use this strategy to figure out the area of a circle.  We'll start by divi
 Drag the slider to the left and the right.
 # ::::
 
-Number of Triangles [](:-triangles/1/40/1) [](:!triangles) [Application Notes](::instructions/tooltip)
+Number of Triangles [](:-triangles/1/40/1) [](:!triangles) [Application Notes](::instructions/tooltip/transparent)
 ```javascript /playable/autoplay
 //smartdown.import=https://cdnjs.cloudflare.com/ajax/libs/jsxgraph/0.99.7/jsxgraphcore.js
 
@@ -154,7 +154,7 @@ board.update();
 
 ```
 As we add more and more triangles, our approximation gets better and better. The rearranged version of the circle looks more and more like a rectangle as the number of triangles gets larger. 
-The area of this rectangle is getting closer and closer to [[](:!areaCircle)](::pulldown1/tooltip).
+The area of this rectangle is getting closer and closer to [[](:!areaCircle)](::pulldown1/tooltip/transparent).
 
 # :::: pulldown1
 [](:Xa1) 64
@@ -192,7 +192,7 @@ YES! :ok_hand:
 ### Another Fun Example
 Here's a similar example playing with polygons.  We look at the ratio of a polygon's perimeter to its diameter.
 
-Number of Polygon Sides[](:-polygon/3/99/1) [](:!polygon) [Application Notes](::instructions/tooltip)
+Number of Polygon Sides[](:-polygon/3/99/1) [](:!polygon) [Application Notes](::instructions/tooltip/transparent)
 ```javascript /playable/autoplay
 //smartdown.import=https://cdnjs.cloudflare.com/ajax/libs/jsxgraph/0.99.7/jsxgraphcore.js
 
@@ -295,7 +295,7 @@ this.depend = function() {
 ```
 ---
 
-As the number of sides gets larger and larger, the ratio of a polygons perimeter to it's diameter is getting closer and closer to [[](:!pi)](::pulldown2/tooltip).
+As the number of sides gets larger and larger, the ratio of a polygons perimeter to it's diameter is getting closer and closer to [[](:!pi)](::pulldown2/tooltip/transparent).
 
 # :::: pulldown2
 [](:Xa4) $\pi$

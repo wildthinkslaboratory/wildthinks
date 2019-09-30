@@ -63,7 +63,8 @@ In addition to running the animation with the **start** and **reset** buttons, t
 To set the height of the balloon, enter a value in the height box and hit the 'Set Height' button.
 # ::::
 
-[start](:=toss1=true) [reset](:=reset1=true) [Set Height](:=setHeight=true) [](:?height) [Application Notes](::instructions/tooltip)
+[Set Start Height](:?startHeight)
+[start](:=toss1=true) [reset](:=reset1=true) [Set Height](:=setHeight=true) [](:?height) [Application Notes](::instructions/tooltip/transparent)
 ```javascript /playable/autoplay
 //smartdown.import=https://cdnjs.cloudflare.com/ajax/libs/jsxgraph/0.99.7/jsxgraphcore.js
 
@@ -78,10 +79,13 @@ myDiv.innerHTML = `<div id='box2' class='jxgbox' style='height:600px;'>`;
 smartdown.setVariable('toss1', false);
 smartdown.setVariable('setHeight', false);
 smartdown.setVariable('reset1', false);
+smartdown.setVariable('startHeight', 30);
 
+var startHeight = 30;
 // create the board
 JXG.Options.text.display = 'internal';
 board = JXG.JSXGraph.initBoard('box2', {boundingbox:[-5,40,10,-5], keepaspectratio:false, axis:true});
+window.board = board;
 
 // create the labels for axis
 var xAxisLabel = board.create('text',[0.2,-2,'Time'], {fontSize:16});
@@ -95,10 +99,10 @@ var friend = board.create('line',[[-3,0],[-3,5]],
   {straightFirst:false, straightLast:false, strokeWidth:8, color:'black'});
 
 // parabala and it's derivative
-let f = function(x) { return  -9.81*x*x + 30; };
-let f_inv = function(x) { return Math.sqrt((x-30)/(-9.81)); };
+let f = function(x) { return  -9.81*x*x + startHeight; };
+let f_inv = function(x) { return Math.sqrt((x-startHeight)/(-9.81)); };
 let df = function(x) { return -19.62*x; }
-let graph_f = board.create('functiongraph', [f,0,1.75]);
+let graph_f = board.create('functiongraph', [f,0,5]);
 
 // point on x axis
 var x = board.create('glider', [0, 0, board.defaultAxes.x], {name: 't', size:6});
@@ -144,8 +148,11 @@ var reset = function () {
         }
       
 // set up the start and reset buttons for animation
-this.dependOn = ['toss1','reset1','setHeight'];
+this.dependOn = ['toss1','reset1','setHeight', 'startHeight'];
 this.depend = function() {
+
+  startHeight = parseFloat(env.startHeight);
+
   if (env.toss1 == true) {
     toss();
     smartdown.setVariable('toss1', false);
@@ -160,6 +167,7 @@ this.depend = function() {
     if (h >=0 || h <= 2) {
       x.setPositionDirectly(JXG.COORDS_BY_USER, [f_inv(h),0]); 
       x.prepareUpdate().update(true).updateRenderer();
+      fx.prepareUpdate().update(true).updateRenderer();
     }
     smartdown.setVariable('setHeight',false);
   }
@@ -182,7 +190,7 @@ board.on('update', function() {
  });
  
 ```
-Notice that the slope of the tangent line tells us the speed of the balloon. It's not the average speed over some time window.  It tells us the instantaneous speed at a given time.  We call this the **instantaneous rate of change** of the balloon.  If we set the height to 5 feet, we can see that the ball will be traveling about [[](:!nspeed)](::pulldown2/tooltip) feet per second which is around 21 mph.  Ouch! Maybe you should reconsider dropping it.  
+Notice that the slope of the tangent line tells us the speed of the balloon. It's not the average speed over some time window.  It tells us the instantaneous speed at a given time.  We call this the **instantaneous rate of change** of the balloon.  If we set the height to 5 feet, we can see that the ball will be traveling about [[](:!nspeed)](::pulldown2/tooltip/transparent) feet per second which is around 21 mph.  Ouch! Maybe you should reconsider dropping it.  
 # :::: yes
 # --colorbox yes
 YES! :ok_hand:
@@ -225,7 +233,7 @@ How can we use the slope of the tangent line to find the minimum possible amount
 The red dot on the  time $w$ axis can be dragged to the left or right.  
 To set the slope of the tangent line or the width, enter a value in the box and hit the button.
 # ::::
-[Set Slope of Tangent Line](:=setSlope=true) [](:?slope) [Set Width](:=setWidth=true) [](:?width) [Application Notes](::instructions2/tooltip)
+[Set Slope of Tangent Line](:=setSlope=true) [](:?slope) [Set Width](:=setWidth=true) [](:?width) [Application Notes](::instructions2/tooltip/transparent)
 ```javascript /playable/autoplay
 //smartdown.import=https://cdnjs.cloudflare.com/ajax/libs/jsxgraph/0.99.7/jsxgraphcore.js
 
@@ -378,7 +386,7 @@ Light will take the path that minimizes the time of travel.  To find the correct
 # :::: instructions3
 All the red dots are draggable.    
 # ::::
-[Application Notes](::instructions3/tooltip) 
+[Application Notes](::instructions3/tooltip/transparent) 
 ```javascript /playable/autoplay
 //smartdown.import=https://cdnjs.cloudflare.com/ajax/libs/jsxgraph/0.99.7/jsxgraphcore.js
 

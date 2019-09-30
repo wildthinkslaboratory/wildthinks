@@ -44,13 +44,13 @@ this.depend = function() {
 };
 
 ```
-**N**[](:-N/2/100/1) [](:!N) [Application Notes](::instructions/tooltip)
+**N**[](:-N/2/100/1) [](:!N) [Application Notes](::instructions/tooltip/transparent)
 # :::: instructions
 Drag the slider to the left and the right.
 # ::::
 #### Everything You Should Know About Calculus Before Your First Day of Calculus Class
 
-Calculus will introduce you to some big and fabulous new ideas.  Also, calculus is a hard class. But it's not the new ideas that make it hard.  Calculus is hard because there's a lot of new [notation](::notation/tooltip).  Calculus is also hard because solving a calculus problem often requires a lot of steps with lots and lots of messy algebra. The struggle to decipher the crazy notation and manage the tedious algebra can eclipse the big beautiful ideas.  
+Calculus will introduce you to some big and fabulous new ideas.  Also, calculus is a hard class. But it's not the new ideas that make it hard.  Calculus is hard because there's a lot of new [notation](::notation/tooltip/transparent).  Calculus is also hard because solving a calculus problem often requires a lot of steps with lots and lots of messy algebra. The struggle to decipher the crazy notation and manage the tedious algebra can eclipse the big beautiful ideas.  
 
 The goal of this primer is to give you an interactive way to play with the big ideas before you start calculus class.  I hope you can build intuition and firmly anchor these ideas in your mind.  Then, when you get to class you will be free to focus on the fussy details of working problems without losing the forest for the trees (or without losing the beautiful definition of the derivative to the countless shortcut rules for computing them).  These are bold ideas with far reaching applications and consequences.  They require time and patience to fully sink in. So take your time, play and enjoy.
 

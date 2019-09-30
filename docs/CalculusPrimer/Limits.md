@@ -61,7 +61,7 @@ What value does the function get **close** to as we get **closer and closer** to
 # :::: instructions
 The red dot on the $x$ axis can be dragged to the left or right.  
 # ::::
-[Application Notes](::instructions/tooltip)
+[Application Notes](::instructions/tooltip/transparent)
 ```javascript /playable/autoplay
 //smartdown.import=https://cdnjs.cloudflare.com/ajax/libs/jsxgraph/0.99.7/jsxgraphcore.js
 
@@ -149,7 +149,7 @@ $$f(x) =
     3 & \mbox{if } x = 1
   \end{array}
 \right.$$
-[Application Notes](::instructions/tooltip)
+[Application Notes](::instructions/tooltip/transparent)
 ```javascript /playable/autoplay
 //smartdown.import=https://cdnjs.cloudflare.com/ajax/libs/jsxgraph/0.99.7/jsxgraphcore.js
 
@@ -439,7 +439,7 @@ If you are working with funtions like these weird functions, you need to be more
 
 # --aliceblue review
 ### Review
-It's important to remember that the limit of a function at a point may not be the same as the [[](:!value)](::pulldown1/tooltip) of the function at that point.  The limit of a function at a point $x = a$ tells us what the function does as $x$ [[](:!close)](::pulldown2/tooltip) $a$.  A function is continuous at a point if the value of the limit is the same as the [[](:!value2)](::pulldown4/tooltip) at that point.  Most functions we see in beginning calculus problems are [[](:!continuous)](::pulldown3/tooltip).
+It's important to remember that the limit of a function at a point may not be the same as the [[](:!value)](::pulldown1/tooltip/transparent) of the function at that point.  The limit of a function at a point $x = a$ tells us what the function does as $x$ [[](:!close)](::pulldown2/tooltip/transparent) $a$.  A function is continuous at a point if the value of the limit is the same as the [[](:!value2)](::pulldown4/tooltip/transparent) at that point.  Most functions we see in beginning calculus problems are [[](:!continuous)](::pulldown3/tooltip/transparent).
 
 For more practice on identifying limits, check out [IXL's Calculus Problems](https://www.ixl.com/math/calculus/find-limits-using-graphs).  You can do a bunch of problems without an account.  If you want them to keep track of your progress you will need to join and pay a monthly fee.
 
