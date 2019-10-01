@@ -46,32 +46,47 @@ this.depend = function() {
 ```
 **N**[](:-N/2/100/1) [](:!N) [Application Notes](::instructions/tooltip/transparent)
 # :::: instructions
-Drag the slider to the left and the right.
+- Drag the slider to the left and the right. 
+- Drag the red dots to adjust the curve.
+
 # ::::
-#### Everything You Should Know About Calculus Before Your First Day of Calculus Class
 
-Calculus will introduce you to some big and fabulous new ideas.  Also, calculus is a hard class. But it's not the new ideas that make it hard.  Calculus is hard because there's a lot of new [notation](::notation/tooltip/transparent).  Calculus is also hard because solving a calculus problem often requires a lot of steps with lots and lots of messy algebra. The struggle to decipher the crazy notation and manage the tedious algebra can eclipse the big beautiful ideas.  
+### A Calculus Primer
 
-The goal of this primer is to give you an interactive way to play with the big ideas before you start calculus class.  I hope you can build intuition and firmly anchor these ideas in your mind.  Then, when you get to class you will be free to focus on the fussy details of working problems without losing the forest for the trees (or without losing the beautiful definition of the derivative to the countless shortcut rules for computing them).  These are bold ideas with far reaching applications and consequences.  They require time and patience to fully sink in. So take your time, play and enjoy.
+This calculus primer will cover everything you should know about calculus before your first day of calculus class.  A few first thoughts about calculus and this primer are
+
+1. Calculus is beautiful.
+
+2. Calculus is a [hard](::hard), but this primer isn't!
+
+# :::: hard
+Calculus is not hard for the reasons you may think.  Calculus is hard because 
+	1. there's a lot of new [notation](::notation/tooltip/transparent).  
+	2. solving a calculus problem often requires a lot of steps with lots and lots of messy algebra. 
+We aren't going to do those things in this primer.
+# ::::
+
+3. This calculus primer is interactive. Take your time, play, enjoy and develop your intuition.
+
 
 # :::: notation
 ![fullwidth](https://online-learning.harvard.edu/sites/default/files/styles/header/public/course/asset-v1_HarvardX%2BCalcAPL1x%2B2T2017%2Btype%40asset%2Bblock%40TITLE-Calculus-Applied-2120x1192-NO-SPOTLIGHT%202.png?itok=crWwjmVi)
 We can be thankful we got Leibniz's notation and not Newton's or things could be worse.
 # ::::
 
+----
+
 [Books I used to build these pages](::books/center/lightbox)
 # :::: books
-# --aliceblue books
 **Books** I used to build these pages:
 *Thinking Mathematics: Volume 6, Some Calculus* by James Tanton
 *The Art of Problem Solving: Calculus* by David Patrick
 *Calculus with Analytic Geometry* by George E. Simmons
 *Burn Math Class* by Jason Wilkes
 [Close](::books)
-# --aliceblue
 # ::::
 
-#### Begin Here
+### Begin Here
 1. [The Main Idea](:@CalculusPrimer/Intro)
 2. [The Result of an Infinite Process](:@CalculusPrimer/InfiniteProcess)
 3. [Tangent Lines](:@CalculusPrimer/TangentLines)
@@ -80,6 +95,8 @@ We can be thankful we got Leibniz's notation and not Newton's or things could be
 6. [The Integral](:@CalculusPrimer/Integral)
 7. [Applications of Integration](:@CalculusPrimer/IntegralApps)
 8. [The Fundamental Theorem of Calculus](:@CalculusPrimer/FundamentalTheorem)
+
+##### [Back to WildThinks Homepage](:@Home)
 
 # :::: todo
 TODO

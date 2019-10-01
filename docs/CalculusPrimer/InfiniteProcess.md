@@ -11,19 +11,14 @@ On the previous [page](:@CalculusPrimer/Intro), we let the area of a circle be e
 Now is a reasonable time to ask 
 
 # --outlinebox what
-What on earth does that mean?
+What does that really mean?
 # --outlinebox  
 
 From here you can choose your own adventure
 
-1. Don't think too much about it right now. In fact, simple belief and intuition sufficed in the study of calculus for 150 years.  Read this fabulous [quote from mathematician James Tanton](::tantonOnLimits/center/lightbox/scrollable) and skip ahead to the next section on [Tangent Lines](:@CalculusPrimer/TangentLines).  You can always come back and do this page later. 
-
-2. Do a quick introduction to [Limits](:@CalculusPrimer/Limits).
-
-3. Go down the full [rabbit hole :rabbit:](:@RabbitHole) on this topic.
+1. Don't think too much about it right now. In fact, simple belief and intuition sufficed in the study of calculus for 150 years.  Read this fabulous [quote from mathematician James Tanton](::tantonOnLimits) and skip ahead to the next section on [Tangent Lines](:@CalculusPrimer/TangentLines).  You can always come back and do this page later. 
 
 # :::: tantonOnLimits
-# --aliceblue limits
 ![icon](https://aperiodical.com/wp-content/uploads/2018/06/tanton-300x300.png)
 **On the study of limits in highschool calculus:**
 "... Many programs give the impression that this material is a precursor to rigor and technical precision, but, in the end, appeal to intuition over and over again. A student who thinks deeply is given the impression that a foundation is laid, but one with no cement or stone and therefore no real means to support a structure of any weight.
@@ -32,6 +27,10 @@ The standard high-school curriculum does not present the problems that call for 
 
 From James Tanton's *Thinking Mathematics: Volume 6, Some Calculus*
 [Close](::tantonOnLimits)
-
-# --aliceblue
 # ::::
+
+2. Do a quick introduction to [Limits](:@CalculusPrimer/).
+
+3. Go down the full [rabbit hole :rabbit:](:@CalculusPrimer/RabbitHole) on this topic.
+
+

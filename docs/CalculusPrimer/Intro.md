@@ -1,29 +1,88 @@
 
+## How Do You Find the Area of a Curvy Shape?
+
+You know how to find the area of a square, a triangle or a trapezoid.  With the exception of circles, almost everything you've learned about geometry deals with straight lines.  How do we find the area of the curvy shape below?  
+
+# :::: instructions1
+Drag the red dots along the curve to investigate the area of the shaded region.
+# ::::
+[Application Notes](::instructions1/tooltip/transparent)
+```javascript /playable/autoplay
+//smartdown.import=https://cdnjs.cloudflare.com/ajax/libs/jsxgraph/0.99.7/jsxgraphcore.js
+
+smartdown.importCssUrl('https://cdnjs.cloudflare.com/ajax/libs/jsxgraph/0.99.7/jsxgraph.css');
+
+const myDiv = this.div;
+myDiv.style.width = '100%';
+myDiv.style.height = '100%';
+myDiv.style.margin = 'auto';
+myDiv.innerHTML = `<div id='box0' class='jxgbox' style='height:300px;'>`;
 
 
-### The Main Idea of Calculus
+// create the board
+board0 = JXG.JSXGraph.initBoard('box0', {boundingbox:[-4,22,5,-2], keepaspectratio:false, axis:false});
 
-In geometry class you learn how to solve lots of important problems that deal with shapes and lines, points and angles.  It's all very useful for answering questions that occur in everyday life.  However, most of what you learn in geometry deals with straight lines: lines, squares, rectangles, polygons.  The only curves we learn about are circles.  The tasks of geometry, like finding areas and volumes, seem much harder for curvy shapes.  
+ // parabala and it's derivative
+var g = function(x) { return  10 * Math.cos(Math.PI * x) + 10; };
+var graph_g = board0.create('functiongraph', [g,-5,5], {strokeColor:'#7700FF'});
+var i1 = board0.create('integral', [[-3, 3], graph_g], {fillColor:'#0077FF', fillOpacity:0.3});
 
-# --outlinebox mainidea
-**The Main Idea of Calculus:** from *Burn Math Class* by Jason Wilkes
 
-If we zoom in on curvy stuff, it starts to look more and more straight.  
+
+```
+-----
+
+We can see that the area of one of these blue lumps is [[](:!twenty)](::pulldown2/tooltip/transparent), but how did we come up with that value?  Answer: we used calculus.
+
+# :::: pulldown2
+[](:Xa7) 7
+[](:Xa8) 20
+[](:Xa9) 300
+# ::::
+
+
+```javascript/autoplay
+smartdown.setVariable('a7', false);
+smartdown.setVariable('a8', false);
+smartdown.setVariable('a9', false);
+smartdown.setVariable('twenty', '________');
+
+this.dependOn = ['a7', 'a8', 'a9'];
+
+this.depend = function() {
+  if (env.a7 == false && env.a8 == true && env.a9 == false) {
+      smartdown.setVariable('twenty', '20');
+      smartdown.showDisclosure('correct','','bottomright'); 
+      setTimeout(function () {
+           smartdown.hideDisclosure('correct','','bottomright'); 
+      }, 3000);
+    } 
+  };
+```
+
+## The Main Idea of Calculus
+
+# --outlinebox mi
+If we zoom in on curvy stuff, it starts to look more and more straight. 
+
+from *Burn Math Class* by Jason Wilkes 
 # --outlinebox
 
-![fullwidth](https://cdn-image.travelandleisure.com/sites/default/files/styles/1600x1000/public/1479851209/sunrise-2014-EARTH1116.jpg?itok=T8sGC69d)
 
-Take a curvy shape like the earth, and zoom in super close.  Let's consider a sample of the earth's surface that is about 20 square miles.  For most of what we do in our daily lives on our 20 square mile plot, we can assume that the earth is flat and that works pretty well.   It wasn't until the 17th century that we conclusively determined that the earth was round, so it worked pretty well for a majority of human existence. 
 
-A flat approximation is great because it makes the math easy.  However, if we want to fly from California to New York in an airplane, or if we are interested in launching satellites or sending robots to Mars then we have to zoom out and consider the full curvy shape of the earth.  The trick of calculus is to zoom in real close until we can pretend our curve is flat. We do our math there with straight lines.  We then glue lots of tiny straight line  solutions together to get a result that works for the full curvy shape.
+### Example 1: Area of a Circle
 
-Let's use this strategy to figure out the area of a circle.  We'll start by dividing the circle into 4 pie pieces.  We have two views of our pieces, first as a circle and second, arranged in line with the pieces alternating directions. We'll approximate the area of the circle by calculating the area of the four triangles which have nice straight lines and areas that are easy to calculate.  Currently our approximation is too small.  The triangles don't cover all the area in the circle.  Now let's zoom in and make the triangles smaller by sliding the **number of triangles** slider to the right.    
+[Read](::circleApp/transparent)
+![](https://gist.github.com/wildthinkslaboratory/ac98c0bb68ccf7528dc39fa1922d2bdb/raw/25cdd12010ff563e89b8963523c1ff1f02bd2d1d/circleAreaApp.mp3)
+# :::: circleApp
+We'll divide our circle into 4 pie pieces.  We have two views of our pieces, first inside the circle and second, arranged in line with the pieces alternating directions. We'll approximate the area of the circle by calculating the area of the four triangles.  Currently our approximation is too small since the triangles don't cover all the area in the circle.  To improve our approximation we can increase the number of triangles.
+# ::::
 
-# :::: instructions
+# :::: instructions2
 Drag the slider to the left and the right.
 # ::::
 
-Number of Triangles [](:-triangles/1/40/1) [](:!triangles) [Application Notes](::instructions/tooltip/transparent)
+Number of Triangles [](:-triangles/1/40/1) [](:!triangles) [Application Notes](::instructions2/tooltip/transparent)
 ```javascript /playable/autoplay
 //smartdown.import=https://cdnjs.cloudflare.com/ajax/libs/jsxgraph/0.99.7/jsxgraphcore.js
 
@@ -153,8 +212,7 @@ c2.updateDataArray = function() {
 board.update();
 
 ```
-As we add more and more triangles, our approximation gets better and better. The rearranged version of the circle looks more and more like a rectangle as the number of triangles gets larger. 
-The area of this rectangle is getting closer and closer to [[](:!areaCircle)](::pulldown1/tooltip/transparent).
+As we add more and more triangles, our approximation gets better and better. The rearranged version of the circle looks more and more like a rectangle as the number of triangles gets larger. The area of this rectangle is getting closer and closer to [[](:!areaCircle)](::pulldown1/tooltip/transparent).
 
 # :::: pulldown1
 [](:Xa1) 64
@@ -163,7 +221,7 @@ The area of this rectangle is getting closer and closer to [[](:!areaCircle)](::
 # ::::
 
 ```javascript/autoplay
-smartdown.setVariable('areaCircle','???');
+smartdown.setVariable('areaCircle','________');
 smartdown.setVariable('a1', false);
 smartdown.setVariable('a2', false);
 smartdown.setVariable('a3', false);
@@ -181,18 +239,17 @@ this.depend = function() {
 ```
 
 # :::: yes
-
 # --colorbox yes
 YES! :ok_hand:
 # --colorbox
-
 # ::::
+
 
 
 ### Another Fun Example
 Here's a similar example playing with polygons.  We look at the ratio of a polygon's perimeter to its diameter.
 
-Number of Polygon Sides[](:-polygon/3/99/1) [](:!polygon) [Application Notes](::instructions/tooltip/transparent)
+Number of Polygon Sides[](:-polygon/3/99/1) [](:!polygon) [Application Notes](::instructions2/tooltip/transparent)
 ```javascript /playable/autoplay
 //smartdown.import=https://cdnjs.cloudflare.com/ajax/libs/jsxgraph/0.99.7/jsxgraphcore.js
 
@@ -295,9 +352,9 @@ this.depend = function() {
 ```
 ---
 
-As the number of sides gets larger and larger, the ratio of a polygons perimeter to it's diameter is getting closer and closer to [[](:!pi)](::pulldown2/tooltip/transparent).
+As the number of sides gets larger and larger, the ratio of a polygons perimeter to it's diameter is getting closer and closer to [[](:!pi)](::pulldown3/tooltip/transparent).
 
-# :::: pulldown2
+# :::: pulldown3
 [](:Xa4) $\pi$
 [](:Xa5) 3
 [](:Xa6) $r^2$
@@ -308,7 +365,7 @@ As the number of sides gets larger and larger, the ratio of a polygons perimeter
 smartdown.setVariable('a4', false);
 smartdown.setVariable('a5', false);
 smartdown.setVariable('a6', false);
-smartdown.setVariable('pi', '???');
+smartdown.setVariable('pi', '________');
 
 this.dependOn = ['a4', 'a5', 'a6'];
 
@@ -324,13 +381,80 @@ this.depend = function() {
 ```
 
 # :::: correct
-
 # --colorbox right
 correct! :grinning:
 # --colorbox
-
 # ::::
 
+# --aliceblue ct
+## Concluding Thoughts
+
+# :::: instructions4
+Drag the slider to the left and the right.
+# ::::
+
+Number of Lines [](:-lines/3/50/1) [](:!lines) [Application Notes](::instructions4/tooltip/transparent)
+```javascript /playable/autoplay
+//smartdown.import=https://cdnjs.cloudflare.com/ajax/libs/jsxgraph/0.99.7/jsxgraphcore.js
+
+smartdown.importCssUrl('https://cdnjs.cloudflare.com/ajax/libs/jsxgraph/0.99.7/jsxgraph.css');
+
+console.log('test log');
+
+const myDiv = this.div;
+myDiv.style.width = '100%';
+myDiv.style.height = '100%';
+myDiv.style.margin = 'auto';
+myDiv.innerHTML = `<div id='box4' class='jxgbox' style='height:300px;'>`;
+
+smartdown.setVariable('lines', 20);
+var N = 20;
+
+
+// create the board
+board4 = JXG.JSXGraph.initBoard('box4', {boundingbox:[-2,22,2,-2], keepaspectratio:false, axis:false});
+
+// get the number of triangles from smartdown cell
+this.dependOn = ['lines'];
+this.depend = function() {
+  board4.suspendUpdate();
+  N = parseInt(env.lines);
+  board4.unsuspendUpdate();
+};
+
+ // parabala and it's derivative
+var g = function(x) { return  10 * Math.cos(Math.PI * x) + 10; };
+var graph_g = board4.create('functiongraph', [g,-5,5], {strokeColor:'#3333FF', strokeWidth:2});
+
+
+// draw the red triangles in the rearranged triangles
+var tinylines = board4.create('curve', [[0],[0]],{strokecolor:'purple', strokeWidth:2}); 
+tinylines.updateDataArray = function() { 
+
+    let delta = 4/N;
+    let x = [];
+    let y = [];
+    for (let i=-4; i < 5; i += delta) {
+        x.push(i);
+        y.push(g(i));
+    }
+    this.dataX = x;
+    this.dataY = y;
+}
+
+
+board4.update();
+
+```
+----
+1. We can approximate a curve by connecting lots of very tiny straight lines.
+
+2. Whatever math we need to do, we'll do it on the tiny straight line pieces. 
+
+3. We can glue the tiny straight line  solutions together to get a result that works for the full curvy shape.  
+
+Calculus is an ingenious and practical way to achieve this process.
+# --aliceblue
 
 
 ### Coming Up Next
