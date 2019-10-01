@@ -3,6 +3,7 @@
 ## Tangent Lines
 
 What is a tangent line?  We'll start with an informal definition.  If you have a curvy graph, a tangent line touches the graph at just one single spot.  Here are a couple of examples.
+
 ```javascript /playable/autoplay/inline
 //smartdown.import=https://cdnjs.cloudflare.com/ajax/libs/jsxgraph/0.99.7/jsxgraphcore.js
 
