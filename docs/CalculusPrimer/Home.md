@@ -33,7 +33,8 @@ var plot = brd.create('functiongraph',[f,-3,3]);
 var nfun = function() { return n; }
 var lo = brd.create('riemannsum',[f,nfun, 'lower',-3,3],
 	{strokeColor: 'blue', fillColor:colors[Math.floor(Math.random()*colors.length)], fillOpacity:0.5});
- 
+
+var areaText = brd.create('text',[1,-2, function(){ return 'Area of rectangles =' + lo.Value().toFixed(2); }], {fontSize:20});
 
 // get the number of divisions
 this.dependOn = ['N'];
@@ -71,7 +72,6 @@ We aren't going to do those things in this primer.
 
 # :::: notation
 ![fullwidth](https://online-learning.harvard.edu/sites/default/files/styles/header/public/course/asset-v1_HarvardX%2BCalcAPL1x%2B2T2017%2Btype%40asset%2Bblock%40TITLE-Calculus-Applied-2120x1192-NO-SPOTLIGHT%202.png?itok=crWwjmVi)
-We can be thankful we got Leibniz's notation and not Newton's or things could be worse.
 # ::::
 
 ----
@@ -102,25 +102,21 @@ We can be thankful we got Leibniz's notation and not Newton's or things could be
 TODO
 ___
 
-- Main Idea Page
-	- write a nice conclusion
-	- review code for clean up
-- Limits Page
-	- make intro shorter
-	- hide some in a disclosable
-	- clean up code
-	- managing division by zero
-	- most functions are continuous
-	- misbehaving functions
+Read more calculus books and do more problems.
 
-- Tangent Lines
-	- improve questions
-	- finish second example
-- Derivative Page
-	- need to develop the definition part (maybe they make it themselves with an app)
+4 weeks.
 
-	In calculus we learn two tasks: taking derivatives and computing integrals.  However, a majority of the class is actually deriving and then memorizing short cut rules for computing these things.  When the class is over, students may be more likely to remember the short cut rules than the higher level ideas that made them necessary.  
+3-4 really good real world problems
+Animations and physical model
+Puzzles for each problem that require calculus
 
-![thumbnail](https://upload.wikimedia.org/wikipedia/commons/c/c1/Wiki_slope_in_2d.svg)
+Decide what the full story is.  It needs to be unified.  What should a student walk away remembering?
+
+1. definition of a derivative and how to use it.
+2. definition of an integral and how to use it.
+3. Fundamental theorem of calculus?
+4. Anything else?
+
+
 # ::::
 

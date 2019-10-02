@@ -6,7 +6,7 @@ You know how to find the area of a square, a triangle or a trapezoid.  With the 
 # :::: instructions1
 Drag the red dots along the curve to investigate the area of the shaded region.
 # ::::
-[Application Notes](::instructions1/tooltip/transparent)
+Area of Shaded Region [](:?area) [Application Notes](::instructions1/tooltip/transparent)
 ```javascript /playable/autoplay
 //smartdown.import=https://cdnjs.cloudflare.com/ajax/libs/jsxgraph/0.99.7/jsxgraphcore.js
 
@@ -25,9 +25,12 @@ board0 = JXG.JSXGraph.initBoard('box0', {boundingbox:[-4,22,5,-2], keepaspectrat
  // parabala and it's derivative
 var g = function(x) { return  10 * Math.cos(Math.PI * x) + 10; };
 var graph_g = board0.create('functiongraph', [g,-5,5], {strokeColor:'#7700FF'});
-var i1 = board0.create('integral', [[-3, 3], graph_g], {fillColor:'#0077FF', fillOpacity:0.3});
+var i1 = board0.create('integral', [[-1.6, 3], graph_g], {fillColor:'#0077FF', fillOpacity:0.3});
 
-
+smartdown.setVariable('area', i1.Value().toFixed(2));
+board0.on('update', function() {
+  smartdown.setVariable('area', i1.Value().toFixed(2));
+});
 
 ```
 -----
@@ -453,7 +456,7 @@ board4.update();
 
 3. We can glue the tiny straight line  solutions together to get a result that works for the full curvy shape.  
 
-Calculus is an ingenious and practical way to achieve this process.
+Calculus is an ingenious and practical way to achieve this process.  The magic happens in how we assemble the small solutions into the full solution.
 # --aliceblue
 
 
