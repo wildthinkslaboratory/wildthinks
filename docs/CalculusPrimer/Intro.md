@@ -215,7 +215,7 @@ c2.updateDataArray = function() {
 board.update();
 
 ```
-As we add more and more triangles, our approximation gets better and better. The rearranged version of the circle looks more and more like a rectangle as the number of triangles gets larger. The area of this rectangle is getting closer and closer to [[](:!areaCircle)](::pulldown1/tooltip/transparent).
+As we add more and more triangles, our approximation gets better and better. The rearranged version of the circle looks more and more like a rectangle as the number of triangles gets larger. The height of the rectangle is approaching $r$ the radius of the circle.  The length of the rectangle is getting closer to $\pi r$ which is half of the circumference of the circle. The area of this rectangle is getting closer and closer to [[](:!areaCircle)](::pulldown1/tooltip/transparent).
 
 # :::: pulldown1
 [](:Xa1) 64
@@ -481,7 +481,7 @@ var graph_g = board5.create('functiongraph', [g,-5,5], {strokeColor:'#7700FF'});
 var i1 = board5.create('integral', [[-3, 3], graph_g], {fillColor:'#0077FF', fillOpacity:0.3});
 
 ```
-Returning to our original question, can you think of a strategy to approximate the area of the shaded region?
+Returning to our original question, try to think of a strategy to approximate the area of the shaded region that involves lots of tiny straight line shapes? How would you do it?
 # --outlinebox
 # --aliceblue
 

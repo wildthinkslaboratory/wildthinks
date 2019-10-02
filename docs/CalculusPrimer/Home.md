@@ -89,12 +89,12 @@ We aren't going to do those things in this primer.
 ### Begin Here
 1. [The Main Idea](:@CalculusPrimer/Intro)
 2. [The Result of an Infinite Process](:@CalculusPrimer/InfiniteProcess)
-3. [Tangent Lines](:@CalculusPrimer/TangentLines)
-4. [The Derivative](:@CalculusPrimer/Derivative)
-5. [Applications of the Derivative](:@CalculusPrimer/AppDerivatives)
-6. [The Integral](:@CalculusPrimer/Integral)
-7. [Applications of Integration](:@CalculusPrimer/IntegralApps)
-8. [The Fundamental Theorem of Calculus](:@CalculusPrimer/FundamentalTheorem)
+3. [Tangent Lines](:@CalculusPrimer)
+4. [The Derivative](:@CalculusPrimer)
+5. [Applications of the Derivative](:@CalculusPrimer)
+6. [The Integral](:@CalculusPrimer)
+7. [Applications of Integration](:@CalculusPrimer)
+8. [The Fundamental Theorem of Calculus](:@CalculusPrimer)
 
 ##### [Back to WildThinks Homepage](:@Home)
 
