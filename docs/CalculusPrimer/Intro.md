@@ -452,11 +452,37 @@ board4.update();
 ----
 1. We can approximate a curve by connecting lots of very tiny straight lines.
 
-2. Whatever math we need to do, we'll do it on the tiny straight line pieces. 
+2. Whatever math we need to do, we'll do it on the tiny straight line pieces or shapes. 
 
 3. We can glue the tiny straight line  solutions together to get a result that works for the full curvy shape.  
 
 Calculus is an ingenious and practical way to achieve this process.  The magic happens in how we assemble the small solutions into the full solution.
+
+# --outlinebox q1
+#### Question
+```javascript /playable/autoplay
+//smartdown.import=https://cdnjs.cloudflare.com/ajax/libs/jsxgraph/0.99.7/jsxgraphcore.js
+
+smartdown.importCssUrl('https://cdnjs.cloudflare.com/ajax/libs/jsxgraph/0.99.7/jsxgraph.css');
+
+const myDiv = this.div;
+myDiv.style.width = '100%';
+myDiv.style.height = '100%';
+myDiv.style.margin = 'auto';
+myDiv.innerHTML = `<div id='box5' class='jxgbox' style='height:300px;'>`;
+
+
+// create the board
+board5 = JXG.JSXGraph.initBoard('box5', {boundingbox:[-4,22,5,-2], keepaspectratio:false, axis:false});
+
+ // parabala and it's derivative
+var g = function(x) { return  10 * Math.cos(Math.PI * x) + 10; };
+var graph_g = board5.create('functiongraph', [g,-5,5], {strokeColor:'#7700FF'});
+var i1 = board5.create('integral', [[-3, 3], graph_g], {fillColor:'#0077FF', fillOpacity:0.3});
+
+```
+Returning to our original question, can you think of a strategy to approximate the area of the shaded region?
+# --outlinebox
 # --aliceblue
 
 
