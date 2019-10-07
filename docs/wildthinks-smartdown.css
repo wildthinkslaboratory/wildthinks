@@ -38,12 +38,17 @@
   border: 2px solid lightgray;
 }
 
-.wildthinks-theme.smartdown-container .disclosable-attach {  
+.wildthinks-theme.smartdown-container .disclosable-wrapper.disclosable-attach {
   background: #5BB;
   color: white;
   border-radius: 8px;
   border: none;
   max-width: 66%
+}
+
+.wildthinks-theme.smartdown-container
+.disclosable-wrapper.disclosable-attach .disclosable-content {
+  background: inherit;
 }
 
 .wildthinks-theme.smartdown-container .disclosable-position {
@@ -71,7 +76,7 @@
 }
 
 .wildthinks-theme.smartdown-container .disclosable-trigger-tooltip-wrapper {
- 
+
 }
 
 .wildthinks-theme.smartdown-container .disclosable-trigger-tooltip {
@@ -79,7 +84,7 @@
 }
 
 .wildthinks-theme.smartdown-container .disclosable-trigger-tooltip:hover {
-  
+
 }
 
 

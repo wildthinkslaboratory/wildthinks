@@ -492,7 +492,6 @@ class Boxes {
 
   draw() {
     const p5 = this.p5;
-    p5.frameRate(14);
     p5.push();
     p5.noStroke();
     p5.fill(this.fill);
@@ -1224,7 +1223,6 @@ function Dots(p5playable, outsideDiv) {
 
   this.draw = function()
   {
-    p5.frameRate(15); // 15
     p5.clear();
     boxes.draw();
     dots[0].draw();
