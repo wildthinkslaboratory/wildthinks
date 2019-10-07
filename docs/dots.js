@@ -1302,10 +1302,8 @@ function Dots(p5playable, outsideDiv) {
 
 
   this.loadSounds = function() {
-    addDotSound = { isLoaded: function() { return false; }};
-    annihilateSound = { isLoaded: function() { return false; }};
-    // addDotSound = p5.loadSound(addDotSoundFile);
-    // annihilateSound = p5.loadSound(annihilateSoundFile);
+    addDotSound = p5.loadSound(addDotSoundFile);
+    annihilateSound = p5.loadSound(annihilateSoundFile);
   };
 
   this.setup = function(b, n, color = 'green', tutorial = false) {
