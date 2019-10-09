@@ -16,7 +16,7 @@ What does that really mean?
 
 From here you can choose your own adventure
 
-1. Don't think too much about it right now. In fact, simple belief and intuition sufficed in the study of calculus for 150 years.  Read this fabulous [quote from mathematician James Tanton](::tantonOnLimits) and skip ahead to the next section on [Tangent Lines](:@CalculusPrimer).  You can always come back and do this page later. 
+1. Don't think too much about it right now. In fact, simple belief and intuition sufficed in the study of calculus for 150 years.  Read this fabulous [quote from mathematician James Tanton](::tantonOnLimits/center,scrollable,lightbox) and skip ahead to the next section on [Tangent Lines](:@CalculusPrimer).  You can always come back and do this page later. 
 
 # :::: tantonOnLimits
 ![icon](https://aperiodical.com/wp-content/uploads/2018/06/tanton-300x300.png)
@@ -33,4 +33,4 @@ From James Tanton's *Thinking Mathematics: Volume 6, Some Calculus*
 
 3. Go down the full [rabbit hole :rabbit:](:@CalculusPrimer/RabbitHole) on this topic.
 
-
+[Back to Home Page](:@CalculusPrimer/Home)

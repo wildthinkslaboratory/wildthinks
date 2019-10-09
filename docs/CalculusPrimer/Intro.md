@@ -27,9 +27,9 @@ var g = function(x) { return  10 * Math.cos(Math.PI * x) + 10; };
 var graph_g = board0.create('functiongraph', [g,-5,5], {strokeColor:'#7700FF'});
 var i1 = board0.create('integral', [[-1.6, 3], graph_g], {fillColor:'#0077FF', fillOpacity:0.3});
 
-smartdown.setVariable('area', i1.Value().toFixed(2));
+smartdown.setVariable('area', i1.Value().toFixed(4));
 board0.on('update', function() {
-  smartdown.setVariable('area', i1.Value().toFixed(2));
+  smartdown.setVariable('area', i1.Value().toFixed(4));
 });
 
 ```
@@ -114,10 +114,10 @@ this.depend = function() {
 board = JXG.JSXGraph.initBoard('box1', {boundingbox:[-1.5,2,8,-1], keepaspectratio:true, axis:false});
 
 // dimensions of the final rectangle with labels
-var rText = board.create('text',[2.85,0.5,'r'], {fontSize:16});
-var rText = board.create('text',[5.4,1.6,'&#960 r'], {fontSize:16});
-var rDim = board.create('line',[[3,0],[3,1]], {straightFirst:false, straightLast:false, strokeWidth:2, color:'black'});
-var cDim = board.create('line',[[3.9,1.5],[3.9 + Math.PI,1.5]], {straightFirst:false, straightLast:false, strokeWidth:2, color:'black'});
+var rText = board.create('text',[2.85,0.5,'r'], {fontSize:16, fixed:true});
+var rText = board.create('text',[5.4,1.6,'&#960 r'], {fontSize:16, fixed:true});
+var rDim = board.create('line',[[3,0],[3,1]], {straightFirst:false, straightLast:false, strokeWidth:2, color:'black', fixed:true});
+var cDim = board.create('line',[[3.9,1.5],[3.9 + Math.PI,1.5]], {straightFirst:false, straightLast:false, strokeWidth:2, color:'black', fixed:true});
 
 // draw the circle
 var circ = board.create('circle',[[1,0],1],{strokeWidth:1, strokecolor:'blue', strokeWidth:2});

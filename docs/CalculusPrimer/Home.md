@@ -58,13 +58,14 @@ This calculus primer will cover everything you should know about calculus before
 
 1. Calculus is beautiful.
 
-2. Calculus is a [hard](::hard), but this primer isn't!
+2. Calculus is [hard](::hard), but this primer isn't!
 
 # :::: hard
 Calculus is not hard for the reasons you may think.  Calculus is hard because 
 	1. there's a lot of new [notation](::notation/tooltip/transparent).  
 	2. solving a calculus problem often requires a lot of steps with lots and lots of messy algebra. 
 We aren't going to do those things in this primer.
+[Close](::hard)
 # ::::
 
 3. This calculus primer is interactive. Take your time, play, enjoy and develop your intuition.
