@@ -185,14 +185,14 @@ const myDiv = this.div;
 myDiv.style.width = '100%';
 myDiv.style.height = '100%';
 myDiv.style.margin = 'auto';
-myDiv.innerHTML = `<div id='box0' class='jxgbox' style='height:500px;'>`;
+myDiv.innerHTML = `<div id='box1' class='jxgbox' style='height:500px;'>`;
 
 smartdown.setVariable('useaverage', false);
 smartdown.setVariable('usecurve', false);
 
 JXG.Options.axis.ticks.majorHeight = 40;
 // create the board
-board1 = JXG.JSXGraph.initBoard('box0', {boundingbox:[-1,10,5,-1], keepaspectratio:false, axis:false});
+board1 = JXG.JSXGraph.initBoard('box1', {boundingbox:[-1,10,5,-1], keepaspectratio:false, axis:false});
 
 var xaxis = board1.create('axis', [[0, 0], [1,0]], 
       {name:'time (s)', 
@@ -293,11 +293,11 @@ const myDiv = this.div;
 myDiv.style.width = '100%';
 myDiv.style.height = '100%';
 myDiv.style.margin = 'auto';
-myDiv.innerHTML = `<div id='box0' class='jxgbox' style='height:500px;'>`;
+myDiv.innerHTML = `<div id='box2' class='jxgbox' style='height:500px;'>`;
 
 JXG.Options.axis.ticks.majorHeight = 40;
 // create the board
-board2 = JXG.JSXGraph.initBoard('box0', {boundingbox:[-1,25,5,-4], keepaspectratio:false, axis:false});
+board2 = JXG.JSXGraph.initBoard('box2', {boundingbox:[-1,25,5,-4], keepaspectratio:false, axis:false});
 
 var xaxis = board2.create('axis', [[0, 0], [1,0]], 
       {name:'time (s)', 
