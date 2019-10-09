@@ -488,6 +488,6 @@ Returning to our original question, try to think of a strategy to approximate th
 
 ### Coming Up Next
 
-[The Result of an Infinite Process](:@CalculusPrimer/InfiniteProcess)
+[Another Curvy Question](:@CalculusPrimer/speed)
 [Back to Home Page](:@CalculusPrimer/Home)
 

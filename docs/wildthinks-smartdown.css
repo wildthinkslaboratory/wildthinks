@@ -43,7 +43,8 @@
   color: white;
   border-radius: 8px;
   border: none;
-  max-width: 66%
+  max-width: 66%;
+  overflow: auto;
 }
 
 .wildthinks-theme.smartdown-container
