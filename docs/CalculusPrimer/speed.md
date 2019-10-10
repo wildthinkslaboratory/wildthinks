@@ -173,7 +173,7 @@ It's easy to see that the average speed during this period is 2 meters per secon
 
 Another approach is to calculate the area of the shape formed under the graph from time $t=0$ to time $t=4$.  This shape is a triangle so the area will be half the base times the height.  
 
-Try both approaches.  They produce the same distance.
+Try both approaches.  Do they produce the same answer?
 # ::::
 ![](https://gist.githubusercontent.com/wildthinkslaboratory/ac98c0bb68ccf7528dc39fa1922d2bdb/raw/bf7cdd57d3ea8bde3b39254210f69f271a9463b5/curvyspeed.mp3)
 ```javascript /playable/autoplay
@@ -280,7 +280,14 @@ this.depend = function() {
 
 [Read](::read3/transparent)
 # :::: read3
-The car begins to move at time $t=0$ and increases it's speed until it achieves a maximum speed of 16 meters per second at time $t=4$.  How far has the car traveled after $4$ seconds?
+The car begins to move at time $t=0$ and increases it's speed until it achieves a maximum speed of 16 meters per second at time $t=4$.  How far has the car traveled after $4$ seconds?  The speed changes throughout our time period and it's not obvious what the average speed is.  How can we figure out the distance at time $t=4$?
+
+We'll approximate it with a rectangle.  We'll use the speed at time $t=2$ as the width of the rectangle since that is right in the middle of our time period. [1 Rectangle](:=N=1)
+
+How can we make our approximation more accurate?  How about dividing our time period in two and making two seperate approximations and adding them together. [2 Rectangles](:=N=2)
+
+Why stop at 2? We can add more rectangles, each representing the distance traveled over small part of our time period.
+
 # :::: 
 
 [1 Rectangle](:=N=1) [2 Rectangles](:=N=2) [4 Rectangles](:=N=4) 
@@ -348,7 +355,38 @@ Number of Rectangles [](:-N/0/100/1) [](:!N) [Application Notes](::instructions/
 - Drag the slider to the left and the right. 
 # ::::
 
+After $4$ seconds, the car will have traveled [[](:!distance3)](::pulldown3/tooltip).
 
+# :::: pulldown3
+[](:Xa7) 8 meters
+[](:Xa8) 21 meters
+[](:Xa9) 21 and 1/3 meters
+# ::::
+
+```javascript/autoplay
+smartdown.setVariable('a7', false);
+smartdown.setVariable('a8', false);
+smartdown.setVariable('a9', false);
+smartdown.setVariable('distance3', '________');
+
+this.dependOn = ['a7', 'a8', 'a9'];
+
+this.depend = function() {
+  if (env.a7 == false && env.a8 == false && env.a9 == true) {
+      smartdown.setVariable('distance3', '21 and 1/3 meters');
+      smartdown.showDisclosure('correct','','bottomright'); 
+      setTimeout(function () {
+           smartdown.hideDisclosure('correct','','bottomright'); 
+      }, 3000);
+    } 
+  };
+```
+# --aliceblue ct
+## Concluding Thoughts
+
+Once again we solved a curvy problem by glueing together lots of small straight line solutions!
+
+# --aliceblue
 
 # :::: correct
 # --colorbox right
