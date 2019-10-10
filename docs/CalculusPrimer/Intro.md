@@ -55,7 +55,7 @@ this.dependOn = ['a7', 'a8', 'a9'];
 this.depend = function() {
   if (env.a7 == false && env.a8 == true && env.a9 == false) {
       smartdown.setVariable('twenty', '20');
-      smartdown.showDisclosure('correct','','bottomright'); 
+      smartdown.showDisclosure('correct','','bottomright,transparent,shadow'); 
       setTimeout(function () {
            smartdown.hideDisclosure('correct','','bottomright'); 
       }, 3000);
@@ -233,7 +233,7 @@ this.dependOn = ['a1', 'a2', 'a3'];
 this.depend = function() {
   if (env.a2 == true && env.a1 == false && env.a3 == false) {
       smartdown.setVariable('areaCircle','the area of our circle');
-      smartdown.showDisclosure('yes','','bottomright');  
+      smartdown.showDisclosure('yes','','bottomright,transparent,shadow');  
       setTimeout(function () {
            smartdown.hideDisclosure('yes','','bottomright'); 
       }, 3000);
@@ -375,7 +375,7 @@ this.dependOn = ['a4', 'a5', 'a6'];
 this.depend = function() {
   if (env.a4 == true && env.a5 == false && env.a6 == false) {
       smartdown.setVariable('pi', 'Pi');
-      smartdown.showDisclosure('correct','','bottomright'); 
+      smartdown.showDisclosure('correct','','bottomright,transparent,shadow'); 
       setTimeout(function () {
            smartdown.hideDisclosure('correct','','bottomright'); 
       }, 3000);

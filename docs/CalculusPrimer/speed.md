@@ -52,8 +52,8 @@ this.depend = function() {
 [Read](::read1/transparent)
 # :::: read1
 The car is traveling at a constant speed of 5 meters per second. How far will the car go in 3 seconds? We know that the distance of a moving object is equal to the rate times the time.
-$$d = r \cdot t$$ 
-That means we can model the distance as the area of a rectangle where the length and width are the time and speed.
+$$distance = speed \cdot time$$ 
+That means we can model the distance as the area of a rectangle where the length and height are the time and speed.
 ```javascript /autoplay
 
 const svgrect = 
@@ -156,7 +156,7 @@ this.dependOn = ['a4', 'a5', 'a6'];
 this.depend = function() {
   if (env.a4 == false && env.a5 == false && env.a6 == true) {
       smartdown.setVariable('distance', '15 meters');
-      smartdown.showDisclosure('correct','','bottomright'); 
+      smartdown.showDisclosure('correct','','bottomright,transparent,shadow'); 
       setTimeout(function () {
            smartdown.hideDisclosure('correct','','bottomright'); 
       }, 3000);
@@ -167,11 +167,11 @@ this.depend = function() {
 ### The Second Graph
 [Read](::read2/transparent)
 # :::: read2
-The car starts moving at time $t=0$.  It speeds up until it reaches a maximum speed of 4 meters per second at time $t=4$.  We want to know the distance the car has traveled at time $t=4$.  We'd like to use a rectangle to model the distance in terms of speed and time again, but now the speed changes throughout the time period.  What value could we use for the width of the rectangle?
+The car starts moving at time $t=0$ and gradually increases it's speed. We want to know the distance the car has traveled at time $t=4$.  We'd like to use a rectangle to model the distance in terms of speed and time again, but now the speed changes throughout the time period.  What value could we use for the height of the rectangle?
 
-It's easy to see that the average speed during this period is 2 meters per second so we could let that be the width of the rectangle. 
+It's easy to see that the average speed during this period is 2 meters per second so we could let that be the height of the rectangle. [Use average speed](:=useaverage=true) 
 
-Another approach is to calculate the area of the shape formed under the graph from time $t=0$ to time $t=4$.  This shape is a triangle so the area will be half the base times the height.  
+Another approach is to calculate the area of the shape formed under the graph from time $t=0$ to time $t=4$.  This shape is a triangle so the area will be half the base times the height.  [Use area under the curve](:=usecurve=true)
 
 Try both approaches.  Do they produce the same answer?
 # ::::
@@ -214,7 +214,7 @@ var yaxis = board1.create('axis', [[0, 0], [0, 1]],
       });   
 
  // parabala and it's derivative
-var g = function(x) { if (x < 4) return  x;  else return 4; };
+var g = function(x) { return  x; };
 var graph_g = board1.create('functiongraph', [g,0,5], {strokeColor:'#7700FF', strokeWidth:2});
 
 var averageSpeedArea = board1.create('riemannsum',[g,1, 'middle',0,4], {strokeColor: 'blue', fillColor:'blue', fillOpacity:0.5, visible:false});
@@ -269,7 +269,7 @@ this.dependOn = ['a1', 'a2', 'a3'];
 this.depend = function() {
   if (env.a1 == true && env.a2 == false && env.a3 == false) {
       smartdown.setVariable('distance2', '8 meters');
-      smartdown.showDisclosure('correct','','bottomright'); 
+      smartdown.showDisclosure('correct','','bottomright,transparent,shadow'); 
       setTimeout(function () {
            smartdown.hideDisclosure('correct','','bottomright'); 
       }, 3000);
@@ -280,13 +280,13 @@ this.depend = function() {
 
 [Read](::read3/transparent)
 # :::: read3
-The car begins to move at time $t=0$ and increases it's speed until it achieves a maximum speed of 16 meters per second at time $t=4$.  How far has the car traveled after $4$ seconds?  The speed changes throughout our time period and it's not obvious what the average speed is.  How can we figure out the distance at time $t=4$?
+How far has the car traveled after $4$ seconds?  The speed changes throughout our time period and it's not obvious what the average speed is.  How can we figure out the distance at time $t=4$?
 
-We'll approximate it with a rectangle.  We'll use the speed at time $t=2$ as the width of the rectangle since that is right in the middle of our time period. [1 Rectangle](:=N=1)
+We'll approximate it with a rectangle.  We'll use the speed at time $t=2$ as the height of the rectangle since that is right in the middle of our time period. [1 Rectangle](:=N=1) That gives us a distance of about 16 meters.
 
-How can we make our approximation more accurate?  How about dividing our time period in two and making two seperate approximations and adding them together. [2 Rectangles](:=N=2)
+How can we make our approximation more accurate?  How about dividing our time period in two and making two separate approximations and adding them together. [2 Rectangles](:=N=2) This estimates the distance at about 20 meters.
 
-Why stop at 2? We can add more rectangles, each representing the distance traveled over small part of our time period.
+Why stop at 2 when we can add more rectangles? Each rectangle is an estimate of the distance traveled  over a very small part of our time period.  
 
 # :::: 
 
@@ -330,9 +330,7 @@ var N = 0;
 
  // parabala and it's derivative
 var g = function(x) { return  x * x; };
-var graph_g = board2.create('functiongraph', [g,0,4], {strokeColor:'#7700FF', strokeWidth:2});
-var g2 = function(x) { return 16; }
-var graph_g2 = board2.create('functiongraph', [g2,4,6],  {strokeColor:'#7700FF', strokeWidth:2});
+var graph_g = board2.create('functiongraph', [g,0,5], {strokeColor:'#7700FF', strokeWidth:2});
 var nfun = function() { return N; }
 var area = board2.create('riemannsum',[g,nfun, 'middle',0,4],
   {strokeColor: 'blue', fillColor:'blue', fillOpacity:0.5});
@@ -374,7 +372,7 @@ this.dependOn = ['a7', 'a8', 'a9'];
 this.depend = function() {
   if (env.a7 == false && env.a8 == false && env.a9 == true) {
       smartdown.setVariable('distance3', '21 and 1/3 meters');
-      smartdown.showDisclosure('correct','','bottomright'); 
+      smartdown.showDisclosure('correct','','bottomright,transparent,shadow'); 
       setTimeout(function () {
            smartdown.hideDisclosure('correct','','bottomright'); 
       }, 3000);
@@ -384,9 +382,18 @@ this.depend = function() {
 # --aliceblue ct
 ## Concluding Thoughts
 
-Once again we solved a curvy problem by glueing together lots of small straight line solutions!
+Once again we solved a curvy problem by glueing together lots of small straight line solutions! 
+
+We should note that the computer continues to do a great job of adding up the area of lots of rectangles for us. We probably wouldn't enjoy doing it ourselves with pen and paper.  Calculus will give us an easy way to compute these areas with pen and paper.  It's coming.  Wait for it.
 
 # --aliceblue
+
+### Coming Up Next
+
+[Another Curvy Speed Question](:@CalculusPrimer/distance)
+[Back to Home Page](:@CalculusPrimer/Home)
+
+
 
 # :::: correct
 # --colorbox right

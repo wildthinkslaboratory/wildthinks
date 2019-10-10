@@ -54,27 +54,58 @@ this.depend = function() {
 
 ### A Calculus Primer
 
-This calculus primer will cover everything you should know about calculus before your first day of calculus class.  A few first thoughts about calculus and this primer are
+This calculus primer will cover everything you should know about calculus before your first day of calculus class.  A few first thoughts:
 
-1. Calculus is beautiful.
 
-2. Calculus is [hard](::hard), but this primer isn't!
+
+
+1. Look out for [Buttons](::buttonStuff/button,transparent,center,shadow,outline) to click.  Sometimes they look like [this](:=click=true).
+
+# :::: buttonStuff
+# --colorbox 
+Buttons always do something interesting or reveal more information.
+[Close](::buttonStuff)
+# --colorbox
+# ::::
+
+2. Don't miss any [mouse over text](::mouseover/tooltip,transparent).
+
+# :::: mouseover
+Mouse over text often has important instructions!
+# ::::
+
+3. Calculus is [hard](::hard), but this primer isn't!
 
 # :::: hard
 Calculus is not hard for the reasons you may think.  Calculus is hard because 
-	1. there's a lot of new [notation](::notation/tooltip/transparent).  
+	1. there's a lot of new [notation](::notation/tooltip,transparent).  
 	2. solving a calculus problem often requires a lot of steps with lots and lots of messy algebra. 
 We aren't going to do those things in this primer.
 [Close](::hard)
 # ::::
 
-3. This calculus primer is interactive. Take your time, play, enjoy and develop your intuition.
-
-
 # :::: notation
 ![fullwidth](https://online-learning.harvard.edu/sites/default/files/styles/header/public/course/asset-v1_HarvardX%2BCalcAPL1x%2B2T2017%2Btype%40asset%2Bblock%40TITLE-Calculus-Applied-2120x1192-NO-SPOTLIGHT%202.png?itok=crWwjmVi)
 # ::::
 
+```javascript/autoplay
+smartdown.setVariable('click', false);
+this.dependOn = ['click'];
+this.depend = function() {
+  if (env.click == true) {
+      smartdown.setVariable('click', false);
+      smartdown.showDisclosure('clicked','','bottomright,transparent,shadow'); 
+      setTimeout(function () {
+           smartdown.hideDisclosure('clicked','','bottomright,transparent,shadow'); 
+      }, 3000);
+    } 
+  };
+```
+# :::: clicked
+# --colorbox 
+Button Clicked! :zap:
+# --colorbox
+# ::::
 ----
 
 [Books I used to build these pages](::books/center/lightbox)
@@ -89,13 +120,15 @@ We aren't going to do those things in this primer.
 
 ### Begin Here
 1. [The Main Idea](:@CalculusPrimer/Intro)
-2. [The Result of an Infinite Process](:@CalculusPrimer/InfiniteProcess)
-3. [Tangent Lines](:@CalculusPrimer)
-4. [The Derivative](:@CalculusPrimer)
-5. [Applications of the Derivative](:@CalculusPrimer)
-6. [The Integral](:@CalculusPrimer)
-7. [Applications of Integration](:@CalculusPrimer)
-8. [The Fundamental Theorem of Calculus](:@CalculusPrimer)
+2. [A Curvy Speed Question](:@CalculusPrimer/speed)
+3. [Another Curvy Speed Question](:@CalculusPrimer/distance)
+4. [The Result of an Infinite Process](:@CalculusPrimer/InfiniteProcess)
+5. [Tangent Lines](:@CalculusPrimer)
+6. [The Derivative](:@CalculusPrimer)
+7. [Applications of the Derivative](:@CalculusPrimer)
+8. [The Integral](:@CalculusPrimer)
+9. [Applications of Integration](:@CalculusPrimer)
+10. [The Fundamental Theorem of Calculus](:@CalculusPrimer)
 
 ##### [Back to WildThinks Homepage](:@Home)
 
