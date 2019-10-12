@@ -117,18 +117,25 @@ Button Clicked! :zap:
 *Burn Math Class* by Jason Wilkes
 [Close](::books)
 # ::::
-
+[Dedication](::dedication/button,transparent,center,shadow,outline)
+# :::: dedication
+# --colorbox
+This Calculus Primer is dedicated to Izzy and Andre: two highly creative and rigorous thinkers.
+[Close](::dedication)
+# --colorbox
+# ::::
 ### Begin Here
 1. [The Main Idea](:@CalculusPrimer/Intro)
 2. [A Curvy Speed Question](:@CalculusPrimer/speed)
 3. [Another Curvy Speed Question](:@CalculusPrimer/distance)
-4. [The Result of an Infinite Process](:@CalculusPrimer/InfiniteProcess)
-5. [Tangent Lines](:@CalculusPrimer)
-6. [The Derivative](:@CalculusPrimer)
-7. [Applications of the Derivative](:@CalculusPrimer)
-8. [The Integral](:@CalculusPrimer)
-9. [Applications of Integration](:@CalculusPrimer)
-10. [The Fundamental Theorem of Calculus](:@CalculusPrimer)
+4. [Slopes and Areas](:@CalculusPrimer/ftc1)
+5. [The Result of an Infinite Process](:@CalculusPrimer/InfiniteProcess)
+6. [Tangent Lines](:@CalculusPrimer)
+7. [The Derivative](:@CalculusPrimer)
+8. [Applications of the Derivative](:@CalculusPrimer)
+9. [The Integral](:@CalculusPrimer)
+10. [Applications of Integration](:@CalculusPrimer)
+11. [The Fundamental Theorem of Calculus](:@CalculusPrimer)
 
 ##### [Back to WildThinks Homepage](:@Home)
 

@@ -368,7 +368,7 @@ var secantSlope = function() {
 }
 
 // print the slope of the secant line
-var slopeText = board2.create('text',[1,10,
+var slopeText = board2.create('text',[1,25,
   function(){ return 'Slope of Line = '+ secantSlope(); }], {fontSize:30, visible:false});
 
 
@@ -446,9 +446,7 @@ Speed at time 3 [](:?s33) m/s
 
 1. We continue to solve curvy problems with tiny straight line solutions.
 
-2. Did anyone notice that the speed graphs we computed here look familiar?  These are the exact same speed graphs we used in our [first curvy speed](:@CalculusPrimer/speed) problem.  The area under the speed curve told us the car's distance.  Now, the slope of a line on the distance curve gives us back the car's speed. This interesting connection between [slopes and areas](:@ftc1) is what we'll think about next.
-
-
+2. Did anyone notice that the speed graphs we computed here look familiar?  These are the exact same speed graphs we used in our [first curvy speed](:@CalculusPrimer/speed) problem.  The area under the speed curve told us the car's distance.  Now, the slope of a line on the distance curve gives us back the car's speed. This interesting connection between [slopes and areas](:@CalculusPrimer/ftc1) is what we'll think about next.
 
 # --aliceblue
 
