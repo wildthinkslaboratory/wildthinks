@@ -1,10 +1,10 @@
 ## Putting the Pieces Together
 
-We can use slopes on a distance curve to give us a speed curve.  We can use areas under a speed curve to generate a distance curve.  These two processes seem to be inverses of each other, like addition and subtraction or multiplication and division.  But why?  
+We can use slopes on a distance curve to give us a rate curve.  We can use areas under a rate curve to generate a distance curve.  These two processes seem to be inverses of each other, like addition and subtraction or multiplication and division.  But why?  
 
-The connection is in the simple formula $d = s \cdot t$. Distance is equal to speed times time [d = s * t](:=speedToggle=true).  If we have the speed and the time, then finding the distance is always going to be an area problem.
+The connection is in the simple formula $d = r \cdot t$. Distance is equal to rate times time [d = r * t](:=speedToggle=true).  If we have the rate and the time, then finding the distance is always going to be an area problem.
 
-If instead we have the distance and the time and we want to find the speed, then we write this formula as $s = \frac{d}{t}$.  Speed is the ratio of the distance to the time. [s = d / t](:=distanceToggle=true) Finding the speed in terms of distance and time is a slope problem.  
+If instead we have the distance and the time and we want to find the rate, then we write this formula as $r = \frac{d}{t}$.  Speed is the ratio of the distance to the time. [r = d / t](:=distanceToggle=true) Finding the speed in terms of distance and time is a slope problem.  
 
 ```javascript /playable/autoplay
 //smartdown.import=https://cdnjs.cloudflare.com/ajax/libs/jsxgraph/0.99.7/jsxgraphcore.js
@@ -192,7 +192,7 @@ this.depend = function() {
 };
 
 ````
-[s = d / t](:=distanceToggle=true) [d = s * t](:=speedToggle=true) Speed [](:-Speed/0/3/0.1) [](:!Speed)
+[r = d / t](:=distanceToggle=true) [d = r * t](:=speedToggle=true) Rate [](:-Speed/0/3/0.1) [](:!Speed)
 [Application Notes](::instructions1/tooltip,transparent)
 
 # :::: instructions1
@@ -203,7 +203,7 @@ this.depend = function() {
 
 ## Slopes and Areas on Curvy Graphs
 
-Imagine that **Curve A** describes the movement of an object through time.  We know that the speed during different time periods can be approximated by the slopes of straight lines. [s = d / t](:=distanceToggle2=true) For each of these time periods, we can also draw a corresponding speed times time rectangle. [d = s * t](:=speedToggle2=true). These rectangles are approximations of the **Curve B**, the speed curve.  Making our time periods smaller will improve our approximation. 
+Imagine that **Curve A** describes the movement of an object through time.  We know that the rate during different time periods can be approximated by the slopes of straight lines. [r = d / t](:=distanceToggle2=true) For each of these time periods, we can also draw a corresponding rate times time rectangle [d = r * t](:=speedToggle2=true). The height of these rectangles approximate **Curve B**, the rate curve.  Making our time periods smaller will improve our approximation. 
 Number of Time Periods [](:-segments/1/100/1) [](:!segments) 
 
 We could reverse this process and use rectangles under **Curve B** to generate the line segments of **Curve A**.
@@ -346,7 +346,7 @@ this.depend = function() {
 
 
 ```
-[s = d / t](:=distanceToggle2=true) [d = s * t](:=speedToggle2=true) Number of Divisions [](:-segments/1/100/1) [](:!segments) 
+[r = d / t](:=distanceToggle2=true) [d = r * t](:=speedToggle2=true) Number of Divisions [](:-segments/1/100/1) [](:!segments) 
 [Application Notes](::instructions2/tooltip/transparent)
 [Note](::note/tooltip,transparent) 
 
@@ -357,6 +357,13 @@ Drag the slider to the left and the right.
 # :::: note
 The aspect ration on this graph is not true for better viewing. 
 # ::::
+
+## It's Not Just About Distance, Speed and  Time
+
+
+1. cost, marginal cost, number of widgets
+
+2. 
 
 # --aliceblue ct
 ## Concluding Thoughts

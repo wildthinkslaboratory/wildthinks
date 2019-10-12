@@ -49,11 +49,14 @@ this.depend = function() {
 [Again](:=play=true)
 
 ### The First Graph
-[Read](::read1/transparent)
-# :::: read1
-The car is traveling at a constant speed of 5 meters per second. How far will the car go in 3 seconds? We know that the distance of a moving object is equal to the rate times the time.
-$$distance = speed \cdot time$$ 
-That means we can model the distance as the area of a rectangle where the length and height are the time and speed.
+
+The car is traveling at a constant speed of 5 meters per second. How far will the car go in 3 seconds? We know that the distance traveled by a moving object is equal to the [rate](::rate/tooltip,transparent) times the time.
+$$distance = rate \cdot time$$ 
+That means we can model the distance as the area of a rectangle where the length and height are the time and rate.
+
+# :::: rate
+I tend use the terms **rate** and **speed** interchangably. Rate is a more general term that measures how fast something is changing relative to something else.  Speed is more specific, measuring how fast an object's position is changing relative to time.
+# ::::
 ```javascript /autoplay
 
 const svgrect = 
@@ -61,7 +64,7 @@ const svgrect =
 <svg width="400" height="140">
   <text x="120" y="20" fill="black">time</text>
   <text x="115" y="90" fill="black">distance</text>
-  <text x="315" y="90" fill="black">speed</text>
+  <text x="315" y="90" fill="black">rate</text>
   <rect x="0" y="30" width="300" height="100" style="fill:blue;fill-opacity:0.4;stroke-width:3;stroke:rgb(0,0,0)" />
   Sorry, your browser does not support inline SVG.  
 </svg>
@@ -70,7 +73,7 @@ const svgrect =
 smartdown.setVariable('SVG1', svgrect);
 ```
 [](:!SVG1|svg)
-# ::::
+
 
 ```javascript /playable/autoplay
 //smartdown.import=https://cdnjs.cloudflare.com/ajax/libs/jsxgraph/0.99.7/jsxgraphcore.js
@@ -97,7 +100,7 @@ var xaxis = board0.create('axis', [[0, 0], [1,0]],
       }
       });
 var yaxis = board0.create('axis', [[0, 0], [0, 1]], 
-      {name:'speed (m/s)', 
+      {name:'rate (m/s)', 
       withLabel: true, 
       label: {
         fontSize: 20,
@@ -128,7 +131,7 @@ var timeText = board0.create('text', [
   function() { return x.X()/2 - 0.1; } ,5.5, 'time'], {fontSize:15});
 
 var rateText = board0.create('text', [
-  function() { return x.X() + 0.1; } ,2.5, 'speed'], {fontSize:15});
+  function() { return x.X() + 0.1; } ,2.5, 'rate'], {fontSize:15});
 
 ```
 [Application Notes](::instructions1/tooltip/transparent)
@@ -165,17 +168,15 @@ this.depend = function() {
 ```
 
 ### The Second Graph
-[Read](::read2/transparent)
-# :::: read2
-The car starts moving at time $t=0$ and gradually increases it's speed. We want to know the distance the car has traveled at time $t=4$.  We'd like to use a rectangle to model the distance in terms of speed and time again, but now the speed changes throughout the time period.  What value could we use for the height of the rectangle?
 
-It's easy to see that the average speed during this period is 2 meters per second so we could let that be the height of the rectangle. [Use average speed](:=useaverage=true) 
+The car starts moving at time $t=0$ and gradually increases it's speed. We want to know the distance the car has traveled at time $t=4$.  We'd like to use a rectangle to model the distance in terms of rate and time again, but now the rate changes throughout the time period.  What value could we use for the height of the rectangle?
+
+It's easy to see that the average rate during this period is 2 meters per second so we could let that be the height of the rectangle. [Use average rate](:=useaverage=true) 
 
 Another approach is to calculate the area of the shape formed under the graph from time $t=0$ to time $t=4$.  This shape is a triangle so the area will be half the base times the height.  [Use area under the curve](:=usecurve=true)
 
 Try both approaches.  Do they produce the same answer?
-# ::::
-![](https://gist.githubusercontent.com/wildthinkslaboratory/ac98c0bb68ccf7528dc39fa1922d2bdb/raw/bf7cdd57d3ea8bde3b39254210f69f271a9463b5/curvyspeed.mp3)
+
 ```javascript /playable/autoplay
 //smartdown.import=https://cdnjs.cloudflare.com/ajax/libs/jsxgraph/0.99.7/jsxgraphcore.js
 
@@ -204,7 +205,7 @@ var xaxis = board1.create('axis', [[0, 0], [1,0]],
       }
       });
 var yaxis = board1.create('axis', [[0, 0], [0, 1]], 
-      {name:'speed (m/s)', 
+      {name:'rate (m/s)', 
       withLabel: true, 
       label: {
         fontSize: 20,
@@ -278,19 +279,15 @@ this.depend = function() {
 ```
 ### A Third Curvy Graph
 
-[Read](::read3/transparent)
-# :::: read3
-How far has the car traveled after $4$ seconds?  The speed changes throughout our time period and it's not obvious what the average speed is.  How can we figure out the distance at time $t=4$?
+
+How far has the car traveled after $4$ seconds?  The rate changes throughout our time period and it's not obvious what the average rate is.  How can we figure out the distance at time $t=4$?
 
 We'll approximate it with a rectangle.  We'll use the speed at time $t=2$ as the height of the rectangle since that is right in the middle of our time period. [1 Rectangle](:=N=1) That gives us a distance of about 16 meters.
 
 How can we make our approximation more accurate?  How about dividing our time period in two and making two separate approximations and adding them together. [2 Rectangles](:=N=2) This estimates the distance at about 20 meters.
 
-Why stop at 2 when we can add more rectangles? Each rectangle is an estimate of the distance traveled  over a very small part of our time period.  
+Why stop at 2 when we can add more rectangles? [10 Rectangles?](:=N=10) Each rectangle is an estimate of the distance traveled  over a very small time interval.  
 
-# :::: 
-
-[1 Rectangle](:=N=1) [2 Rectangles](:=N=2) [4 Rectangles](:=N=4) 
 ```javascript /playable/autoplay
 //smartdown.import=https://cdnjs.cloudflare.com/ajax/libs/jsxgraph/0.99.7/jsxgraphcore.js
 
@@ -336,7 +333,7 @@ var area = board2.create('riemannsum',[g,nfun, 'middle',0,4],
   {strokeColor: 'blue', fillColor:'blue', fillOpacity:0.5});
 
 var areaText = board2.create('text',
-  [0.5,10, function(){ return 'Area of rectangles = ' + area.Value().toFixed(3); }], 
+  [0.5,10, function(){ return 'Area of rectangle(s) = ' + area.Value().toFixed(3); }], 
   {fontSize:20});
 
 // get the number of divisions

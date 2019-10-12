@@ -50,8 +50,8 @@ this.depend = function() {
 
 ### The First Graph
 
-How do we figure out the speed of the car from it's position graph?  If the car is traveling at a constant speed, we know that $distance = speed \cdot time$, so we have  
-$$speed = \frac{distance}{time}$$ 
+How do we figure out the speed of the car from it's position graph?  If the car is traveling at a constant rate, we know that $distance = rate \cdot time$, so we have  
+$$rate = \frac{distance}{time}$$ 
 
 
 
@@ -144,10 +144,10 @@ this.depend = function() {
 Drag the red dot to the left and right.  You can see the coordinates of a point by mousing over the point.
 # ::::
 
-Find the speed of the car at the given times.
-Speed at time 1 [](:?s11) m/s
-Speed at time 2 [](:?s12) m/s
-Speed at time 3 [](:?s13) m/s
+Find the rate of the car at the given times.
+Rate at time 1 [](:?s11) m/s
+Rate at time 2 [](:?s12) m/s
+Rate at time 3 [](:?s13) m/s
 
 
 ### A Second Curvy Graph
@@ -155,7 +155,7 @@ This time our distance graph is curvy.  How can we find the speed at time $t=1$?
 
 Let's do the usual thing again and improve our approximation. [Improve Approximation](:=improve=true) We see that the speed of the car between $t=1$ and time $t=2.5$ is approximately 1.75 meters per second.  
 
-Make the approximation better.  See if you can approximate the speed the car is going at time $t=1$.
+Make the approximation better.  See if you can approximate the rate the car is going at time $t=1$.
 
 
 ```javascript /playable/autoplay
@@ -293,15 +293,15 @@ this.depend = function() {
 Drag the red and green dots to the left and right. 
 # ::::
 
-Find the speed of the car at these times.
-Speed at time 1 [](:?s21) m/s
-Speed at time 2 [](:?s22) m/s
-Speed at time 3 [](:?s23) m/s
+Find the rate of the car at these times.
+Rate at time 1 [](:?s21) m/s
+Rate at time 2 [](:?s22) m/s
+Rate at time 3 [](:?s23) m/s
 
 
 ### A Third Graph
 
-New distance curve, but same idea.  Approximate the speed at the given times.
+New distance curve, but same idea.  Approximate the rate at the given times.
 
 ```javascript /playable/autoplay
 //smartdown.import=https://cdnjs.cloudflare.com/ajax/libs/jsxgraph/0.99.7/jsxgraphcore.js
@@ -436,17 +436,17 @@ this.depend = function() {
 ```
 [Straight Line Approximation](:=start2=true) [Improve Approximation](:=improve2=true) [Application Notes](::instructions2/tooltip/transparent)
 
-Find the speed of the car at these times.
-Speed at time 1 [](:?s31) m/s
-Speed at time 2 [](:?s32) m/s
-Speed at time 3 [](:?s33) m/s
+Find the rate of the car at these times.
+Rate at time 1 [](:?s31) m/s
+Rate at time 2 [](:?s32) m/s
+Rate at time 3 [](:?s33) m/s
 
 # --aliceblue ct
 ## Concluding Thoughts
 
 1. We continue to solve curvy problems with tiny straight line solutions.
 
-2. Did anyone notice that the speed graphs we computed here look familiar?  These are the exact same speed graphs we used in our [first curvy speed](:@CalculusPrimer/speed) problem.  The area under the speed curve told us the car's distance.  Now, the slope of a line on the distance curve gives us back the car's speed. This interesting connection between [slopes and areas](:@CalculusPrimer/ftc1) is what we'll think about next.
+2. Did anyone notice that the speed graphs we computed here look familiar?  These are the exact same speed graphs we used in our [first curvy speed](:@CalculusPrimer/speed) problem.  The area under the rate curve told us the car's distance.  Now, the slope of a line on the distance curve gives us back the car's rate. This interesting connection between [slopes and areas](:@CalculusPrimer/ftc1) is what we'll think about next.
 
 # --aliceblue
 
