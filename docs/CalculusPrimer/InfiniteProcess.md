@@ -1,6 +1,6 @@
 ### What is the Result of an Infinite Process?
 
-On the previous [page](:@CalculusPrimer/speed), we estimated the area under a curve with lot of tiny rectangles.  We made the rectangles smaller and smaller to get a more and more accurate estimates of the area.  A couple of questions:
+On the previous [pages](:@CalculusPrimer/speed), we estimated the area under a curve with lot of tiny rectangles.  We made the rectangles smaller and smaller to get a more and more accurate estimates of the area.  A couple of questions:
 
 **Questions:**
 - How many rectangles can we use to estimate the area under the curve?  
@@ -16,7 +16,7 @@ What does that really mean?
 
 From here you can choose your own adventure
 
-1. Don't think too much about it right now. In fact, simple belief and intuition sufficed in the study of calculus for 150 years.  Read this fabulous [quote from mathematician James Tanton](::tantonOnLimits/center,draggable,closeable,scrollable) and skip ahead to the next section on [Tangent Lines](:@CalculusPrimer).  You can always come back and do this page later. 
+1. Don't think too much about it right now. In fact, simple belief and intuition sufficed in the study of calculus for 150 years.  Read this fabulous [quote from mathematician James Tanton](::tantonOnLimits/center,draggable,closeable,scrollable) and skip ahead to the next section on [The Derivative](:@CalculusPrimer/Derivative).  You can always come back and do this page later. 
 
 # :::: tantonOnLimits
 ![icon](https://aperiodical.com/wp-content/uploads/2018/06/tanton-300x300.png)

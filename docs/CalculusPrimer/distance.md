@@ -50,7 +50,7 @@ this.depend = function() {
 
 ### The First Graph
 
-How do we figure out the speed of the car from it's position graph?  If the car is traveling at a constant rate, we know that $distance = rate \cdot time$, so we have  
+How do we figure out the speed of the car from it's position graph?  If the car is traveling at a constant rate, we know that $distance = rate \cdot time$, so we have a ratio
 $$rate = \frac{distance}{time}$$ 
 
 
@@ -149,9 +149,45 @@ Rate at time 1 [](:?s11) m/s
 Rate at time 2 [](:?s12) m/s
 Rate at time 3 [](:?s13) m/s
 
+The speed of the car is a ratio of distance to time.  In terms of geometry, this means that speed is the  [[](:!slope)](::pulldown1/tooltip,transparent) of the distance graph.
+
+
+# :::: pulldown1
+[](:Xa1) intercept
+[](:Xa2) length
+[](:Xa3) slope
+# ::::
+
+```javascript/autoplay
+smartdown.setVariable('a1', false);
+smartdown.setVariable('a2', false);
+smartdown.setVariable('a3', false);
+smartdown.setVariable('slope', '________');
+
+this.dependOn = ['a1', 'a2', 'a3'];
+
+this.depend = function() {
+  if (env.a1 == false && env.a2 == false && env.a3 == true) {
+      smartdown.setVariable('slope', 'slope');
+      smartdown.showDisclosure('correct','','bottomright,transparent,shadow'); 
+      setTimeout(function () {
+           smartdown.hideDisclosure('correct','','bottomright'); 
+      }, 3000);
+    } 
+  };
+```
 
 ### A Second Curvy Graph
-This time our distance graph is curvy.  How can we find the speed at time $t=1$? We'll use the usual strategy, we'll approximate it with a straight line.  [Straight Line Approximation](:=start1=true) This tells us that between time $t=1$ and time $t=4$, the car travels at approximately 2.5 meters per second.
+This time our distance graph is curvy.  How can we find the speed at time $t=1$? We'll use the usual strategy, we'll approximate it with a straight line.  [Straight Line Approximation](:=start1=true) A line between two points like this is called a [secant line](::secant/button,transparent).  
+
+# :::: secant
+# --outlinebox
+**Definition 1**
+A **secant line** of a graph $y=f(x)$ is any line that intersects the graph in at least two distinct points.
+# --outlinebox
+# ::::
+
+The slope of the secant line tells us that between time $t=1$ and time $t=4$, the car travels at approximately 2.5 meters per second.
 
 Let's do the usual thing again and improve our approximation. [Improve Approximation](:=improve=true) We see that the speed of the car between $t=1$ and time $t=2.5$ is approximately 1.75 meters per second.  
 
@@ -224,7 +260,7 @@ var secantSlope = function() {
 
 // print the slope of the secant line
 var slopeText = board1.create('text',[1,10,
-  function(){ return 'Slope of Line = '+ secantSlope(); }], {fontSize:30, visible:false});
+  function(){ return 'Slope of Secant Line = '+ secantSlope(); }], {fontSize:20, visible:false});
 
 
 var p1 = board1.create('point', [1,1], {name:'',visible:false, fixed:true, color:'orange'});
@@ -298,6 +334,7 @@ Rate at time 1 [](:?s21) m/s
 Rate at time 2 [](:?s22) m/s
 Rate at time 3 [](:?s23) m/s
 
+When we have a curvy graph, we can estimate the speed with a secant line that goes through two points on the distance graph.  The approximation gets better and better as the two points get closer and closer together.
 
 ### A Third Graph
 
@@ -369,7 +406,7 @@ var secantSlope = function() {
 
 // print the slope of the secant line
 var slopeText = board2.create('text',[1,25,
-  function(){ return 'Slope of Line = '+ secantSlope(); }], {fontSize:30, visible:false});
+  function(){ return 'Slope of Secant Line = '+ secantSlope(); }], {fontSize:20, visible:false});
 
 
 var p1 = board2.create('point', [1,1], {name:'',visible:false, fixed:true, color:'orange'});
@@ -446,7 +483,10 @@ Rate at time 3 [](:?s33) m/s
 
 1. We continue to solve curvy problems with tiny straight line solutions.
 
-2. Did anyone notice that the speed graphs we computed here look familiar?  These are the exact same speed graphs we used in our [first curvy speed](:@CalculusPrimer/speed) problem.  The area under the rate curve told us the car's distance.  Now, the slope of a line on the distance curve gives us back the car's rate. This interesting connection between [slopes and areas](:@CalculusPrimer/ftc1) is what we'll think about next.
+2. When we have a curvy graph, we can estimate the speed of the car with a secant on the distance graph.  The approximation gets better and better as the two points defining the secant line get closer and closer together.
+
+
+3. Did anyone notice that the speed graphs we computed here look familiar?  These are the exact same speed graphs we used in our [first curvy speed](:@CalculusPrimer/speed) problem.  The area under the rate curve told us the car's distance.  Now, the slope of a line on the distance curve gives us back the car's rate. This interesting connection between [slopes and areas](:@CalculusPrimer/ftc1) is what we'll think about next.
 
 # --aliceblue
 

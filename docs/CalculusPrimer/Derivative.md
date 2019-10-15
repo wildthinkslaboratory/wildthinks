@@ -1,54 +1,14 @@
 
+## Finding the Derivative of a Function
 
-## How do you find the Tangent Line?
+Here is a graph showing the function $f(x) = x^2$.  We know how to estimate the rate the function is changing at certain points by looking at the slope of a secant line.  Go ahead and find the rate of change at the following points.  
 
+Rate of change at $x=1$ [](:?f1) 
+Rate of change at $x=2$ [](:?f2) 
+Rate of change at $x=3$ [](:?f3) 
 
-### Problem
+So far we've had nice computer apps to help us find the rate of change.  What if we don't have a computer?  Also, we don't want to just find the rate of change at a few points.  We want a function that tells us the rate of change for any value of $x$.  
 
-We want to find the slope of the tangent line to the function $f(x) = \frac{x^2}{4} - 1$
-```javascript /playable/autoplay/inline
-//smartdown.import=https://cdnjs.cloudflare.com/ajax/libs/jsxgraph/0.99.7/jsxgraphcore.js
-
-smartdown.importCssUrl('https://cdnjs.cloudflare.com/ajax/libs/jsxgraph/0.99.7/jsxgraph.css');
-
-const myDiv = this.div;
-myDiv.style.width = '100%';
-myDiv.style.height = '100%';
-myDiv.style.margin = 'auto';
-myDiv.innerHTML = `<div id='box1' class='jxgbox' style='height:300px; width:300px;'>`;
-
-// create the board
-board = JXG.JSXGraph.initBoard('box1', {boundingbox:[-8,13,8,-3], keepaspectratio:true, axis:true});
-
-// parabala and it's derivative
-var f = function(x) { return  x*x/4 - 1; };
-var df = function(x) { return x/2; }
-var graph_f = board.create('functiongraph', [f,-10,10]);
-
-// point x on axis we want to get derivative value
-var x = board.create('point', [4,0], {name:'x', size:3, color:'blue', fixed:true});
-var fx = board.create('point', [4,f(4)], {name:'', color:'blue', fixed:true});
-
-```
-at the point where $x=4$. 
-
-It's not obvious what to do.  A line is determined by two points or a point and a slope. The **slope** $m$ of a line determined by points $(x_1,y_1)$ and $(x_2,y_2)$ is the change in $y$ values divided by the change in $x$ values.  
-$$ m = \frac{y_2 - y_1}{x_2 - x_1}.$$
-
-
-We want to find the slope of the tangent line at $x=4$, but we have just one point and no slope. 
-
-### Solution
-What if we pick another point on the function a little to the left or a little to the right of $x=4$.  We can draw a line between these two points and figure out the slope of that line.  A line that intersects the function twice like this is called a **secant** line. The slope of the **secant** line through two points $(x,f(x))$ and $(x+h,f(x+h))$ on function $f(x)$ is
-$$ \frac{f(x + h) - f(x)}{h}$$
-Take a moment to look at this definition and make sure you understand it. Notice that it's just the normal definition of slope, the change in $y$ values divided by the change in $x$ values.
-
-# --outlinebox question
-**Question**
-What value does the slope of the secant get **close** to as we get **closer and closer** to $h=0$ without ever reaching it?
-# --outlinebox
-
-Use the graph of the secant line in the app below to figure out what the slope of the tangent line is at $x=4$.  You can drag the large red dot right and left to see different secant lines.
 ```javascript /playable/autoplay
 //smartdown.import=https://cdnjs.cloudflare.com/ajax/libs/jsxgraph/0.99.7/jsxgraphcore.js
 
@@ -58,55 +18,79 @@ const myDiv = this.div;
 myDiv.style.width = '100%';
 myDiv.style.height = '100%';
 myDiv.style.margin = 'auto';
-myDiv.innerHTML = `<div id='box2' class='jxgbox' style='height:600px;'>`;
+myDiv.innerHTML = `<div id='box1' class='jxgbox' style='height:500px;'>`;
 
+JXG.Options.axis.ticks.majorHeight = 40;
 // create the board
-board = JXG.JSXGraph.initBoard('box2', {boundingbox:[-10,9,10,-4], keepaspectratio:true, axis:true});
+board0 = JXG.JSXGraph.initBoard('box1', {boundingbox:[-5,10,5,-3], keepaspectratio:false, axis:false});
+
+var xaxis = board0.create('axis', [[0, 0], [1,0]], 
+      {name:'x', 
+      withLabel: true,
+      label: {
+        fontSize: 20,
+        position: 'rt',  // possible values are 'lft', 'rt', 'top', 'bot'
+        offset: [-20, 20]   // (in pixels)
+      }
+      });
+var yaxis = board0.create('axis', [[0, 0], [0, 1]], 
+      {name:'y', 
+      withLabel: true, 
+      label: {
+        fontSize: 20,
+        position: 'rt',  // possible values are 'lft', 'rt', 'top', 'bot'
+        offset: [-30, -20]   // (in pixels)
+        }
+      });   
 
 // parabala and it's derivative
-var f = function(x) { return  x*x/4 - 1; };
-var df = function(x) { return x/2; }
-var graph_f = board.create('functiongraph', [f,-10,10]);
+var f = function(x) { return  x*x; };
+var df = function(x) { return 2 * x; }
+var graph_f = board0.create('functiongraph', [f,-10,10]);
 
 // point x on axis we want to get derivative value
-var x = board.create('point', [4,0], {name:'x', size:3, color:'blue', fixed:true});
-var fx = board.create('point', [4,f(4)], {name:'', color:'blue', fixed:true});
+var x = board0.create('glider', [1,0, xaxis], {name:'x', size:6});
+var fx = board0.create('point', [ 
+	function() { return x.X(); },
+	function() { return f(x.X()); }], {name:'', color:'blue', fixed:true});
 
 // the slider point for the secant
-var x_h = board.create('glider', [x.X() + 1, 0, board.defaultAxes.x], {name:'x + h', size:6} ); 
+var x_h = board0.create('glider', [x.X() + 1, 0, xaxis], {name:'x + h', size:6, color:'green'} ); 
 
 // sliding point on parabala 
-var fx_h = board.create('point', [
+var fx_h = board0.create('point', [
                 function() { return x_h.X(); }, 
                 function() { return f(x_h.X()); }
-          ], {name:'', color: 'red', fixed: true, size:3});
+          ], {name:'', color: 'blue', fixed: true, size:3});
 
 // secant line
-var secant = board.create('line', [fx, fx_h], {strokeColor:'#FF5522'});
+var secant = board0.create('line', [fx, fx_h], {strokeColor:'#FF5522'});
 var secantSlope = function() { 
 	if (x.X() == x_h.X()) { return "UNDEFINED: divide by zero"; }
 	return ((f(x.X()) - f(x_h.X()))/(x.X() - x_h.X())).toFixed(3).toString(); 
 }
 
 // print the slope of the secant line
-var slopeText = board.create('text',[8,3,
-	function(){ return 'Slope of Secant Line = '+ secantSlope(); }], {fontSize:30});
+var slopeText = board0.create('text',[-4,-2,
+	function(){ return 'Slope of Secant Line = '+ secantSlope(); }], {fontSize:20});
 
-var hText = board.create('text',[8,1.5,
-	function(){ return 'h = '+ (x_h.X() - x.X()).toFixed(3); }], {fontSize:30});
+var hText = board0.create('text',[-4,-1,
+	function(){ return 'h = '+ (x_h.X() - x.X()).toFixed(3); }], {fontSize:20});
 
 
-var p = board.create('point', [ function() { return x_h.X(); }, f(4)], {visible:false});
+var p = board0.create('point', [ 
+	function() { return x_h.X(); }, 
+	function() { return f(x.X());}], {visible:false});
 
-var rise = board.create('line', [fx_h, p], {color:'black', strokeWidth:1, straightFirst:false, straightLast:false, dash:2});
-var run = board.create('line', [fx, p], {color:'black', strokeWidth:1, straightFirst:false, straightLast:false, dash:2});
-var riseText = board.create('text', [
+var rise = board0.create('line', [fx_h, p], {color:'black', strokeWidth:1, straightFirst:false, straightLast:false, dash:2});
+var run = board0.create('line', [fx, p], {color:'black', strokeWidth:1, straightFirst:false, straightLast:false, dash:2});
+var riseText = board0.create('text', [
 	function() { if (x_h.X() > x.X()) { return x_h.X() + 0.1; } 
 				 return x_h.X() - 1.5; },
 	function() { return (f(x_h.X()) - f(x.X()))/2 + f(x.X()); },
 	'f(x+h) - f(x)'], {fontSize:12});
 
-var runText = board.create('text', [
+var runText = board0.create('text', [
 	function() { return x.X() + (x_h.X() - x.X())/2; },
 	function() { return f(x.X()) - 0.3; },
 	'h'], {fontSize:12});
@@ -114,77 +98,105 @@ var runText = board.create('text', [
  
 ```
 
-# --partialborder q1
-What is the slope of the tangent line when $x = 4$? [](:?answer1)
-# --partialborder
+# --outlinebox b
+[**Definition 2**](::important/tooltip,transparent) 
+The **derivative** of a function $f$ begins with the [slope of a secant line](:=showSecant=true). It's the change in $y$ over the change in $x$.  Then we let the points defining our secant line get very [close together](::instructions1/tooltip,transparent) by letting the value of $h$ get very small. We call this taking the limit as $h$ goes to $0$. [limit](:=showLimit=true)
+[](:!formula1|markdown)
 
-```javascript/autoplay
-smartdown.setVariable('answer1', '');
-this.dependOn = ['answer1'];
+# :::: important
+# --colorbox a
+### This is the most important definition in all of calculus
+Take your time. Use the app to decipher the symbols. Try to understand this before moving on.
+# --colorbox
+# ::::
+# --outlinebox
 
+# :::: instructions1
+Drag the green dot towards the red dot.
+# ::::
+The definition of the derivative describes a process you've already done many times in this primer! Great we have a definition, but what do we do with it?
+
+```javascript /autoplay
+
+var limit = '\\lim_{h \\to 0}';
+var secantSlope = '\\frac{f(x+h) - f(x)}{h}'
+
+
+smartdown.setVariable('showSecant', false);
+smartdown.setVariable('showLimit', false);
+smartdown.setVariable('formula1', '');
+this.dependOn = ['showSecant','showLimit'];
 this.depend = function() {
-  if (env.answer1.trim() == '2') {
-      smartdown.showDisclosure('righton','','bottomright');  
-      smartdown.showDisclosure('disc1', '', 'transparent');
-      setTimeout(function () {
-           smartdown.hideDisclosure('righton','','bottomright'); 
-      }, 3000);
-    } 
+	if (env.showSecant == true && env.showLimit == false) {
+		smartdown.setVariable('formula1', '$$' + secantSlope + '$$');
+	}
+	if (env.showSecant == true && env.showLimit == true) {
+		smartdown.setVariable('formula1', '$$' + limit + secantSlope + '$$');
+	}
+
   };
 ```
 
-# :::: righton
 
-# --colorbox right
-right on! :thumbsup:
-# --colorbox
+```javascript /autoplay
 
+var limitpre = '$$\\lim_{h \\to 0} \\frac{';
+var f_x = 'f(x)';
+var f_xh = 'f(x+h)';
+var limitpost = '}{h}$$';
+
+var makelimit = function() {
+	return limitpre + f_x + '-' + f_xh + limitpost;
+};
+
+smartdown.setVariable('f', '');
+smartdown.setVariable('fx_h', '')
+smartdown.setVariable('formula', makelimit());
+this.dependOn = ['f', 'fx_h'];
+this.depend = function() {
+	if (env.f == 'x^2') {
+		f_x = env.f;
+		smartdown.setVariable('formula', makelimit());
+	}
+	else {
+		f_x = 'f(x)';
+		smartdown.setVariable('formula', makelimit());
+	}
+
+	if (env.fx_h == '(x+h)^2') {
+		f_xh = env.fx_h;
+		smartdown.setVariable('formula', makelimit());
+	}
+	else {
+		f_xh = 'f(x+h)';
+		smartdown.setVariable('formula', makelimit());
+	}
+
+	if (env.f == 'x^2' && env.fx_h == '(x+h)^2') {
+		smartdown.showDisclosure('expand','','transparent'); 
+	}
+  };
+```
+
+
+
+[f(x)](:?f)
+[f(x + h)](:?fx_h)
+[](:!formula|markdown)
+
+# :::: expand
+OK, hang in there for some algebra. Let's expand the $(x+h)^2$ term. 
+$$\lim_{h \to 0} \frac{x^2 - (x^2 -2xh + h^2)}{h}$$
+Combine like terms 
+$$\lim_{h \to 0} \frac{2xh - h^2}{h}$$
+Cancel the $h$'s from the numerator and denominator
+$$\lim_{h \to 0} 2x - h$$
+As $h$ gets really close to zero, this will become the function
+$$f'(x) = 2x$$
 # ::::
 
 
-# :::: disc1
-
-Congratulations! You just did some calculus. If we let the value of $h$ get very small, the slope of the secant line gets closer and closer to the slope of the tangent.  The slope of the secant line is actually undefined when $h=0$.  We aren't allowed to divide by zero. But it's ok.  When we zoom in close around $x=4$, we can see what's happening.  We don't have to move $h$ all the way to $0$ to see where slope is  going to end up.
-
-Here is the definition of the derivative.  Compare it to the definition of the secant line from above. 
-# --aliceblue derivative3 
-# --colorbox derivative2
-# --outlinebox derivative
-**Definition of the Derivative**
-$$ f'(x) = \lim_{h \to 0} \frac{f(x + h) - f(x)}{h}$$
-# --outlinebox
-# --colorbox
-# --aliceblue
-
-The notation $f'(x)$ is how we represent a function that is a derivative of some function $f(x)$.  Similarly, if we took the derivative of a function $g(x)$ we'd call it $g'(x)$.  The other new notation here is $$ \lim_{h \to 0}$$. This means we let the values of $h$ in the expression get really close to the value $0$.
-
-# :::: temp
-What is a tangent line?
-Why is it hard to calculate?
-
-notes on notation: different notations for derivative
-
-Introduce the term **derivative**. 
-Don't memorize this formula, remember that it is a slope and then you can always construct it.
-
-So there's the definition of the derivative and then
-
-### Short cut rules
-
-- sums
-- single polynomial
-- products
-- quotients
-- trig
-- chain rule
-- inverse function
-
-Rolle's Theorem 
-Related Rate problems
-Implicit differentiation
-# ::::
 
 [Applications of Derivaties](:@CalculusPrimer/AppDerivatives)
 [Back to Home Page](:@CalculusPrimer/Home)
 
-# ::::

@@ -360,9 +360,8 @@ The aspect ration on this graph is not true for better viewing.
 
 ## It's Not Just About Distance, Speed and Time
 
-So far, all our examples are about the movement of an object through time, but all continuous functions have a rate of change that we will want to understand. 
+Here we have a function that describes the cost of making widgets in terms of the number of widgets we make.  What's the cost of producing one more widget?  It depends on how many widgets you've made.  To understand the cost function, we can look at the **marginal cost** function which tells us the rate at which the cost function is changing.  Instead of distance equals rate times time we have the number of widgets times the marginal cost is the cost.
 
-For example, here we have a function that describes the cost of making widgets in terms of the number of widgets we make.  What's the cost of producing one more widget?  It depends on how many widgets you've made.  To understand the cost function, we can look at the **marginal cost** function which tells us the rate at which the cost function is changing.  In stead of distance equals rate times time we have 
 
 ```javascript /autoplay
 
@@ -479,6 +478,12 @@ Number of Divisions [](:-segments2/1/100/1) [](:!segments2) [Application Notes](
 Drag the red dot to the left and right to determine the distance that the car travels. 
 # ::::
 
+So far, all our examples are about the movement of an object through time, but all continuous functions have a rate of change that we will want to understand. 
+
+This type of analysis applies to all continuous functions.  If we have a function $f(x)$
+
+
+
 
 # --aliceblue ct
 ## Concluding Thoughts
@@ -486,6 +491,7 @@ Drag the red dot to the left and right to determine the distance that the car tr
 1. Slopes and areas are inverses of each other.  
 
 2. We can see this in simple distance equals rate times time problems and we can see it in the tiny straight line approach we use to solve curvy problems.
+
 
 3. There are many examples of problems that can be solved with slopes and areas. We can apply this type of analysis any time we want to understand how a function is changing.
 

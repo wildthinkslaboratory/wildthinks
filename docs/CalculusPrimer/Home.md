@@ -80,7 +80,7 @@ Mouse over text often has important instructions!
 Calculus is not hard for the reasons you may think.  Calculus is hard because 
 	1. there's a lot of new [notation](::notation/tooltip,transparent).  
 	2. solving a calculus problem often requires a lot of steps with lots and lots of messy algebra. 
-We aren't going to do those things in this primer.
+Much of this primer can be managaged without any notation or algebra. 
 [Close](::hard)
 # ::::
 
@@ -130,34 +130,11 @@ This Calculus Primer is dedicated to Izzy and Andre: two highly creative and rig
 3. [Another Curvy Speed Question](:@CalculusPrimer/distance)
 4. [Slopes and Areas](:@CalculusPrimer/ftc1)
 5. [The Result of an Infinite Process](:@CalculusPrimer/InfiniteProcess)
-6. [Tangent Lines](:@CalculusPrimer)
-7. [The Derivative](:@CalculusPrimer)
-8. [Applications of the Derivative](:@CalculusPrimer)
-9. [The Integral](:@CalculusPrimer)
-10. [Applications of Integration](:@CalculusPrimer)
-11. [The Fundamental Theorem of Calculus](:@CalculusPrimer)
+6. [The Derivative](:@CalculusPrimer/Derivative)
+7. [Applications of the Derivative](:@CalculusPrimer)
+8. [The Integral](:@CalculusPrimer)
+9. [Applications of Integration](:@CalculusPrimer)
+10. [The Fundamental Theorem of Calculus](:@CalculusPrimer)
 
 ##### [Back to WildThinks Homepage](:@Home)
-
-# :::: todo
-TODO
-___
-
-Read more calculus books and do more problems.
-
-4 weeks.
-
-3-4 really good real world problems
-Animations and physical model
-Puzzles for each problem that require calculus
-
-Decide what the full story is.  It needs to be unified.  What should a student walk away remembering?
-
-1. definition of a derivative and how to use it.
-2. definition of an integral and how to use it.
-3. Fundamental theorem of calculus?
-4. Anything else?
-
-
-# ::::
 
