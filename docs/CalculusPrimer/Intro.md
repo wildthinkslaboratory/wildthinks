@@ -75,11 +75,9 @@ from *Burn Math Class* by Jason Wilkes
 
 ### Example 1: Area of a Circle
 
-[Read](::circleApp/transparent)
-![](https://gist.github.com/wildthinkslaboratory/ac98c0bb68ccf7528dc39fa1922d2bdb/raw/25cdd12010ff563e89b8963523c1ff1f02bd2d1d/circleAreaApp.mp3)
-# :::: circleApp
+
 We'll divide our circle into 4 pie pieces.  We have two views of our pieces, first inside the circle and second, arranged in line with the pieces alternating directions. We'll approximate the area of the circle by calculating the area of the four triangles.  Currently our approximation is too small since the triangles don't cover all the area in the circle.  To improve our approximation we can increase the number of triangles.
-# ::::
+
 
 # :::: instructions2
 Drag the slider to the left and the right.
@@ -215,7 +213,7 @@ c2.updateDataArray = function() {
 board.update();
 
 ```
-As we add more and more triangles, our approximation gets better and better. The rearranged version of the circle looks more and more like a rectangle as the number of triangles gets larger. The height of the rectangle is approaching $r$ the radius of the circle.  The length of the rectangle is getting closer to $\pi r$ which is half of the circumference of the circle. The area of this rectangle is getting closer and closer to [[](:!areaCircle)](::pulldown1/tooltip/transparent).
+As we add more and more triangles, our approximation gets better and better. The rearranged version of the circle looks more and more like a rectangle. The height of the rectangle is approaching $r$ the radius of the circle.  The length of the rectangle is getting closer to $\pi r$ which is half of the circumference of the circle. The area of this rectangle is getting closer and closer to [[](:!areaCircle)](::pulldown1/tooltip/transparent).
 
 # :::: pulldown1
 [](:Xa1) 64

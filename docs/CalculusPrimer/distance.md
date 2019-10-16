@@ -261,6 +261,8 @@ var secantSlope = function() {
 // print the slope of the secant line
 var slopeText = board1.create('text',[1,10,
   function(){ return 'Slope of Secant Line = '+ secantSlope(); }], {fontSize:20, visible:false});
+var hText = board1.create('text',[1,7,
+  function(){ return 'h = '+ (x_h.X() - x.X()).toFixed(3); }], {fontSize:20, visible:false});
 
 
 var p1 = board1.create('point', [1,1], {name:'',visible:false, fixed:true, color:'orange'});
@@ -289,7 +291,8 @@ this.depend = function() {
       gx.setAttribute({visible:true});
       x_h.setAttribute({visible:true});
       gx_h.setAttribute({visible:true});
-      slopeText.setAttribute({visible:true});      
+      slopeText.setAttribute({visible:true});
+      hText.setAttribute({visible:true});      
     }
     if (env.s21 == 1) {
       p1.setAttribute({visible:true});
@@ -320,6 +323,7 @@ this.depend = function() {
       x_h.setAttribute({visible:false});
       gx_h.setAttribute({visible:false});
       slopeText.setAttribute({visible:false});
+      hText.setAttribute({visible:false});
     }
 };
 ```
@@ -334,7 +338,7 @@ Rate at time 1 [](:?s21) m/s
 Rate at time 2 [](:?s22) m/s
 Rate at time 3 [](:?s23) m/s
 
-When we have a curvy graph, we can estimate the speed with a secant line that goes through two points on the distance graph.  The approximation gets better and better as the two points get closer and closer together.
+When we have a curvy graph, we can estimate the speed by looking at the slope of a secant line that goes through two points on the distance graph.  The approximation gets better and better as the two points get closer and closer together.
 
 ### A Third Graph
 
@@ -407,6 +411,8 @@ var secantSlope = function() {
 // print the slope of the secant line
 var slopeText = board2.create('text',[1,25,
   function(){ return 'Slope of Secant Line = '+ secantSlope(); }], {fontSize:20, visible:false});
+var hText = board2.create('text',[1,20,
+  function(){ return 'h = '+ (x_h.X() - x.X()).toFixed(3); }], {fontSize:20, visible:false});
 
 
 var p1 = board2.create('point', [1,1], {name:'',visible:false, fixed:true, color:'orange'});
@@ -435,7 +441,8 @@ this.depend = function() {
       gx.setAttribute({visible:true});
       x_h.setAttribute({visible:true});
       gx_h.setAttribute({visible:true});
-      slopeText.setAttribute({visible:true});      
+      slopeText.setAttribute({visible:true});  
+      hText.setAttribute({visible:true});    
     }
 
     if (env.s31 == 1) {
@@ -467,6 +474,7 @@ this.depend = function() {
       x_h.setAttribute({visible:false});
       gx_h.setAttribute({visible:false});
       slopeText.setAttribute({visible:false});
+      hText.setAttribute({visible:false});
     }
 };
 
@@ -483,7 +491,7 @@ Rate at time 3 [](:?s33) m/s
 
 1. We continue to solve curvy problems with tiny straight line solutions.
 
-2. When we have a curvy graph, we can estimate the speed of the car with a secant on the distance graph.  The approximation gets better and better as the two points defining the secant line get closer and closer together.
+2. When we have a curvy graph, we can estimate the speed of the car with the slope of a secant on the distance graph.  The approximation gets better and better as the two points defining the secant line get closer and closer together.
 
 
 3. Did anyone notice that the speed graphs we computed here look familiar?  These are the exact same speed graphs we used in our [first curvy speed](:@CalculusPrimer/speed) problem.  The area under the rate curve told us the car's distance.  Now, the slope of a line on the distance curve gives us back the car's rate. This interesting connection between [slopes and areas](:@CalculusPrimer/ftc1) is what we'll think about next.

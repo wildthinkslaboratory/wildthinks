@@ -7,7 +7,17 @@ Rate of change at $x=1$ [](:?f1)
 Rate of change at $x=2$ [](:?f2) 
 Rate of change at $x=3$ [](:?f3) 
 
-So far we've had nice computer apps to help us find the rate of change.  What if we don't have a computer?  Also, we don't want to just find the rate of change at a few points.  We want a function that tells us the rate of change for any value of $x$.  
+So far we've had nice computer apps to help us find the rate of change.  What if we don't have a computer?  Also, we don't want to just find the rate of change at a few points.  We want a function that tells us the rate of change for any value of $x$.  But first a [WARNING](::warn/button,center,shadow,outline,lightbox,transparent).
+
+# :::: warn
+# --colorbox c
+So far we've avoided a lot of notation and algebra. The truth is you've been taking derivatives of functions already (possibly without knowing that was what you were doing).  However, if you want to see a formal definition of what a derivative is, some notation and algebra is required.  We'll try to make it as painless as possible.
+[Close](::warn)
+# --colorbox
+# ::::
+
+[Application Notes](::instructions1/tooltip/transparent)
+
 
 ```javascript /playable/autoplay
 //smartdown.import=https://cdnjs.cloudflare.com/ajax/libs/jsxgraph/0.99.7/jsxgraphcore.js
@@ -47,6 +57,7 @@ var yaxis = board0.create('axis', [[0, 0], [0, 1]],
 var f = function(x) { return  x*x; };
 var df = function(x) { return 2 * x; }
 var graph_f = board0.create('functiongraph', [f,-10,10]);
+//var graph_df = board0.create('functiongraph', [df,-10,10],{strokeColor: '#11AA66', visible:true});
 
 // point x on axis we want to get derivative value
 var x = board0.create('glider', [1,0, xaxis], {name:'x', size:6});
@@ -95,26 +106,57 @@ var runText = board0.create('text', [
 	function() { return f(x.X()) - 0.3; },
 	'h'], {fontSize:12});
 
+smartdown.setVariable('f1', '');
+smartdown.setVariable('f2', '');
+smartdown.setVariable('f3', '');
+
+this.dependOn = ['f1','f2','f3'];
+this.depend = function() {
+    if (env.f1 == 2) {
+      smartdown.showDisclosure('correct','','bottomright,transparent,shadow'); 
+      setTimeout(function () {
+           smartdown.hideDisclosure('correct','','bottomright'); 
+      }, 3000);
+    }
+    if (env.f2 == 4) {
+      smartdown.showDisclosure('correct','','bottomright,transparent,shadow'); 
+      setTimeout(function () {
+           smartdown.hideDisclosure('correct','','bottomright'); 
+      }, 3000);
+    }
+    if (env.f3 == 6) {
+      smartdown.showDisclosure('correct','','bottomright,transparent,shadow'); 
+      setTimeout(function () {
+           smartdown.hideDisclosure('correct','','bottomright'); 
+      }, 3000);
+    }
+    if (env.f1 == 2 && env.f2 == 4 && env.f3 == 6) {
+      x.setPositionDirectly(JXG.COORDS_BY_USER, [1,0]); 
+      x_h.setPositionDirectly(JXG.COORDS_BY_USER, [2,0]); 
+	  x.prepareUpdate().update(true).updateRenderer();
+      x_h.prepareUpdate().update(true).updateRenderer();
+      fx.prepareUpdate().update(true).updateRenderer();
+      fx_h.prepareUpdate().update(true).updateRenderer();
+      board0.update();
+    }
+};
  
 ```
 
 # --outlinebox b
-[**Definition 2**](::important/tooltip,transparent) 
-The **derivative** of a function $f$ begins with the [slope of a secant line](:=showSecant=true). It's the change in $y$ over the change in $x$.  Then we let the points defining our secant line get very [close together](::instructions1/tooltip,transparent) by letting the value of $h$ get very small. We call this taking the limit as $h$ goes to $0$. [limit](:=showLimit=true)
+[**Definition 2**](::important/tooltip) 
+The **derivative** of a function $f$ begins with the [slope of a secant line](:=showSecant=true). It's the change in $y$ over the change in $x$ for the two points on the secant.  Then we let the points defining our secant line get very [close together](::instructions1/tooltip,transparent) by letting the value of $h$ get very small. We call this taking the limit as $h$ goes to $0$. [limit](:=showLimit=true)
 [](:!formula1|markdown)
+# --outlinebox
 
 # :::: important
-# --colorbox a
-### This is the most important definition in all of calculus
-Take your time. Use the app to decipher the symbols. Try to understand this before moving on.
-# --colorbox
+##### This is the most important definition in all of calculus
 # ::::
-# --outlinebox
 
 # :::: instructions1
 Drag the green dot towards the red dot.
 # ::::
-The definition of the derivative describes a process you've already done many times in this primer! Great we have a definition, but what do we do with it?
+The definition of the derivative describes a process you've already done many times in this primer! 
 
 ```javascript /autoplay
 
@@ -137,6 +179,25 @@ this.depend = function() {
   };
 ```
 
+## Using the Definition of the Derivative
+Great we have a definition, but what do we do with it?  The definition of the derivative is a general formula meaning you can use it for any continuous function.  We want to use it for the function $f(x) = x^2$.  We need to take our definition and replace the general references to a function $f(x)$ and $f(x+h)$ with expressions for our specific function. Type in the more specific expressions below.
+
+$f(x)$ becomes [](:?f) [Formatting Tips](::tips/tooltip,transparent)
+$f(x+h)$ becomes [](:?fx_h)
+[](:!formula2|markdown)
+
+
+# :::: tips
+- exponents $x^y$ can be entered as `x^y`
+- don't forget parentheses where needed
+# ::::
+
+# :::: algebra
+Now we have to do some algebra. First we [expand](:=expand=true) $(x+h)^2$.  Then we [combine](:=combine=true) like terms. [Cancel](:=cancel=true) the $h$'s.  Finally we evaluate the limit. To do this, think about what would happen to the expression $2x + h$ as the value of $h$ gets close to $0$. It becomes the expression $2x$.  Therefore, the derivative of $f(x) = x^2$ is
+$$f'(x) = 2x$$
+We can use this function to find the instantaneous rate of change of our function for any value of $x$.
+# :::: 
+
 
 ```javascript /autoplay
 
@@ -146,57 +207,73 @@ var f_xh = 'f(x+h)';
 var limitpost = '}{h}$$';
 
 var makelimit = function() {
-	return limitpre + f_x + '-' + f_xh + limitpost;
+	return limitpre + f_xh + '-' + f_x + limitpost;
 };
 
 smartdown.setVariable('f', '');
 smartdown.setVariable('fx_h', '')
-smartdown.setVariable('formula', makelimit());
+smartdown.setVariable('formula2', makelimit());
 this.dependOn = ['f', 'fx_h'];
 this.depend = function() {
 	if (env.f == 'x^2') {
 		f_x = env.f;
-		smartdown.setVariable('formula', makelimit());
+		smartdown.setVariable('formula2', makelimit());
 	}
 	else {
 		f_x = 'f(x)';
-		smartdown.setVariable('formula', makelimit());
+		smartdown.setVariable('formula2', makelimit());
 	}
 
 	if (env.fx_h == '(x+h)^2') {
 		f_xh = env.fx_h;
-		smartdown.setVariable('formula', makelimit());
+		smartdown.setVariable('formula2', makelimit());
 	}
 	else {
 		f_xh = 'f(x+h)';
-		smartdown.setVariable('formula', makelimit());
+		smartdown.setVariable('formula2', makelimit());
 	}
 
 	if (env.f == 'x^2' && env.fx_h == '(x+h)^2') {
-		smartdown.showDisclosure('expand','','transparent'); 
+		smartdown.showDisclosure('algebra','','transparent'); 
 	}
+  };
+```
+
+```javascript /autoplay
+var start = '\\lim_{h \\to 0} \\frac{(x+h)^2 - x^2}{h}';
+var algebra1 = '= \\lim_{h \\to 0} \\frac{x^2 + 2hx + h^2 - x^2}{h}';
+var algebra2 = ' = \\lim_{h \\to 0} \\frac{2hx + h^2}{h}';
+var algebra3 =  '= \\lim_{h \\to 0} 2x + h';
+
+smartdown.setVariable('expand', false);
+smartdown.setVariable('combine', false);
+smartdown.setVariable('cancel', false);
+//smartdown.setVariable('formula3', '$$' + start + '$$');
+this.dependOn = ['expand','combine','cancel'];
+this.depend = function() {
+	if (env.expand == true && env.combine == false && env.cancel == false) {
+		smartdown.setVariable('formula2', '$$' + start + algebra1 + '$$');
+	}
+	if (env.expand == true && env.combine == true && env.cancel == false) {
+		smartdown.setVariable('formula2', '$$' + start + algebra1 + algebra2 + '$$');
+	}	
+	if (env.expand == true && env.combine == true && env.cancel == true) {
+		smartdown.setVariable('formula2', '$$' + start + algebra1 + algebra2 + algebra3 + '$$');
+	}
+
   };
 ```
 
 
 
-[f(x)](:?f)
-[f(x + h)](:?fx_h)
-[](:!formula|markdown)
-
-# :::: expand
-OK, hang in there for some algebra. Let's expand the $(x+h)^2$ term. 
-$$\lim_{h \to 0} \frac{x^2 - (x^2 -2xh + h^2)}{h}$$
-Combine like terms 
-$$\lim_{h \to 0} \frac{2xh - h^2}{h}$$
-Cancel the $h$'s from the numerator and denominator
-$$\lim_{h \to 0} 2x - h$$
-As $h$ gets really close to zero, this will become the function
-$$f'(x) = 2x$$
-# ::::
-
-
-
 [Applications of Derivaties](:@CalculusPrimer/AppDerivatives)
 [Back to Home Page](:@CalculusPrimer/Home)
+
+
+# :::: correct
+# --colorbox right
+correct! :grinning:
+# --colorbox
+# ::::
+
 
