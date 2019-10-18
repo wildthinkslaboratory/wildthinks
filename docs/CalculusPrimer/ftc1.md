@@ -203,9 +203,9 @@ this.depend = function() {
 
 ## Slopes and Areas on Curvy Graphs
 
-Imagine that **Curve A** describes the position of an object through time. It's a distance function.  Imagine we pick two points on the curve. [r = d / t](:=distanceToggle2=true) The slope of the line through these points tells us the average speed travelled during that time period.  There is always a corresponding rectangle that expresses the distance travelled as the product of the rate and the time. [d = r * t](:=speedToggle2=true)
+Imagine that **Curve A** describes the position of an object through time. It's a distance function.  Imagine we pick two points on the curve. [r = d / t](:=distanceToggle2=true) The slope of the line through these points tells us the average speed traveled during that time period.  There is always a corresponding rectangle that expresses the distance traveled as the product of the rate and the time. [d = r * t](:=speedToggle2=true)
 
-We can do this for multiple time periods. [4 time periods](:=toggleArray=true)
+We can do this for multiple time periods. [multiple periods](:=toggleArray=true)
 We can make the time periods smaller. [10 time periods](:=segments=10)
 
 ```javascript /playable/autoplay
@@ -222,7 +222,7 @@ myDiv.innerHTML = `<div id='box2' class='jxgbox' style='height:500px;'>`;
 
 JXG.Options.axis.ticks.majorHeight = 40;
 // create the board
-board1 = JXG.JSXGraph.initBoard('box2', {boundingbox:[-4,16,4,-4], keepaspectratio:false, axis:false});
+board1 = JXG.JSXGraph.initBoard('box2', {boundingbox:[-1,16,8,-4], keepaspectratio:false, axis:false});
 
 var xaxis = board1.create('axis', [[0, 0], [1,0]], 
       {name:'', 
@@ -245,12 +245,12 @@ var yaxis = board1.create('axis', [[0, 0], [0, 1]],
 
 
  
-var d = function(t) { return Math.pow(t,4)/8 - 2 * (t) * (t) + 12; };
-var d_graph = board1.create('functiongraph', [d,-6,6], {strokeColor:'#DDDDDD', strokeWidth:2});
-var dText = board1.create('text', [-3.5,7, 'Curve A']);
-var s = function(t) { return 4 * Math.pow(t,3)/8 - 4 * t; }
-var s_graph = board1.create('functiongraph', [s,-6,6], {strokeColor:'purple', strokeWidth:4, visible:false});
-var sText = board1.create('text', [-3.5,-2, 'Curve B'],{visible:false});
+var d = function(t) { return Math.pow(t-4,4)/8 - 2 * (t-4) * (t-4) + 12; };
+var d_graph = board1.create('functiongraph', [d,0,8], {strokeColor:'#DDDDDD', strokeWidth:2});
+var dText = board1.create('text', [1.5,7, 'Curve A']);
+var s = function(t) { return 4 * Math.pow(t-4,3)/8 - 4 * (t-4); }
+var s_graph = board1.create('functiongraph', [s,0,8], {strokeColor:'purple', strokeWidth:4, visible:false});
+var sText = board1.create('text', [1.5,-2, 'Curve B'],{visible:false});
 
 var tinylines = board1.create('curve', [[0],[0]],{strokecolor:'blue', strokeWidth:2, visible:false}); 
 tinylines.updateDataArray = function() { 
@@ -258,7 +258,7 @@ tinylines.updateDataArray = function() {
     let delta = 8/N;
     let x = [];
     let y = [];
-    for (let i=-4; i <= 4.01; i += delta) {
+    for (let i=0; i <= 8.01; i += delta) {
         x.push(i);
         y.push(d(i));
     }
@@ -271,9 +271,9 @@ var rectangles = board1.create('curve', [[0],[0]],{fillColor:'#7700FF', fillOpac
 rectangles.updateDataArray = function() {
 
     let delta = 8/N;
-    let x = [-4];
+    let x = [0];
     let y = [0];
-    for (let i=-4; i < 4; i += delta) {
+    for (let i=0; i < 8; i += delta) {
         let slope = (d(i + delta) - d(i)) / delta ;
         x.push(i);  // four points of our rectangle
         y.push(slope);
@@ -288,8 +288,8 @@ rectangles.updateDataArray = function() {
     this.dataY = y;
 };
 
-var t1 = board1.create('point', [-2, 0], {name: '', size:3, color:'blue', visible:false});
-var t2 = board1.create('point', [0, 0], {name: '', size:3, color:'blue', visible:false});
+var t1 = board1.create('point', [2, 0], {name: '', size:3, color:'blue', visible:false});
+var t2 = board1.create('point', [4, 0], {name: '', size:3, color:'blue', visible:false});
 
 var d1 = board1.create('point', [
     function() { return t1.X(); },
@@ -432,7 +432,7 @@ Number of Divisions [](:-segments/1/100/1) [](:!segments)
 Drag the slider to the left and right.
 # ::::
 
-As the time periods get very small, the rectangles define a new function that relates to Curve A.  [show rectangle curve](:=toggleCurveB=true) This function gives the height of our rectangels, which is $r$ the rate at which the object is moving at a given time.
+As the time periods get very small, the rectangles define a new function that relates to Curve A.  [show rectangle curve](:=toggleCurveB=true) This function gives the height of our rectangels, which is $r$ the rate at which the object is moving at a given time. It's our speed curve.
 
 # --aliceblue ct
 ## Concluding Thoughts
