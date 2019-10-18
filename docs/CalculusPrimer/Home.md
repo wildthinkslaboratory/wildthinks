@@ -74,6 +74,7 @@ Buttons always do something interesting or reveal more information.
 Mouse over text often has important instructions!
 # ::::
 
+# :::: calc_hard
 3. Calculus is [hard](::hard), but this primer isn't!
 
 # :::: hard
@@ -86,6 +87,8 @@ Much of this primer can be managaged without any notation or algebra.
 
 # :::: notation
 ![fullwidth](https://online-learning.harvard.edu/sites/default/files/styles/header/public/course/asset-v1_HarvardX%2BCalcAPL1x%2B2T2017%2Btype%40asset%2Bblock%40TITLE-Calculus-Applied-2120x1192-NO-SPOTLIGHT%202.png?itok=crWwjmVi)
+# ::::
+
 # ::::
 
 ```javascript/autoplay
@@ -139,3 +142,5 @@ This Calculus Primer is dedicated to Izzy and Andre: two highly creative and rig
 
 ##### [Back to WildThinks Homepage](:@Home)
 
+
+Quilting example

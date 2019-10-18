@@ -203,11 +203,10 @@ this.depend = function() {
 
 ## Slopes and Areas on Curvy Graphs
 
-Imagine that **Curve A** describes the movement of an object through time.  We know that the rate during different time periods can be approximated by the slopes of straight lines. [r = d / t](:=distanceToggle2=true) For each of these time periods, we can also draw a corresponding rate times time rectangle [d = r * t](:=speedToggle2=true). The height of these rectangles approximate **Curve B**, the rate curve.  Making our time periods smaller will improve our approximation. 
-Number of Time Periods [](:-segments/1/100/1) [](:!segments) 
+Imagine that **Curve A** describes the position of an object through time. It's a distance function.  Imagine we pick two points on the curve. [r = d / t](:=distanceToggle2=true) The slope of the line through these points tells us the average speed travelled during that time period.  There is always a corresponding rectangle that expresses the distance travelled as the product of the rate and the time. [d = r * t](:=speedToggle2=true)
 
-We could reverse this process and use rectangles under **Curve B** to generate the line segments of **Curve A**.
-
+We can do this for multiple time periods. [4 time periods](:=toggleArray=true)
+We can make the time periods smaller. [10 time periods](:=segments=10)
 
 ```javascript /playable/autoplay
 //smartdown.import=https://cdnjs.cloudflare.com/ajax/libs/jsxgraph/0.99.7/jsxgraphcore.js
@@ -246,12 +245,12 @@ var yaxis = board1.create('axis', [[0, 0], [0, 1]],
 
 
  
-var d = function(t) { return Math.pow(t,4)/8 - 2 * t * t + 12; };
+var d = function(t) { return Math.pow(t,4)/8 - 2 * (t) * (t) + 12; };
 var d_graph = board1.create('functiongraph', [d,-6,6], {strokeColor:'#DDDDDD', strokeWidth:2});
 var dText = board1.create('text', [-3.5,7, 'Curve A']);
 var s = function(t) { return 4 * Math.pow(t,3)/8 - 4 * t; }
-var s_graph = board1.create('functiongraph', [s,-6,6], {strokeColor:'#DDDDDD', strokeWidth:2});
-var sText = board1.create('text', [-3.5,-2, 'Curve B']);
+var s_graph = board1.create('functiongraph', [s,-6,6], {strokeColor:'purple', strokeWidth:4, visible:false});
+var sText = board1.create('text', [-3.5,-2, 'Curve B'],{visible:false});
 
 var tinylines = board1.create('curve', [[0],[0]],{strokecolor:'blue', strokeWidth:2, visible:false}); 
 tinylines.updateDataArray = function() { 
@@ -289,71 +288,151 @@ rectangles.updateDataArray = function() {
     this.dataY = y;
 };
 
-var turnOffDistance = function() {
-  tinylines.setAttribute({visible:false})
-}
+var t1 = board1.create('point', [-2, 0], {name: '', size:3, color:'blue', visible:false});
+var t2 = board1.create('point', [0, 0], {name: '', size:3, color:'blue', visible:false});
 
-var turnOnDistance = function() {
-  tinylines.setAttribute({visible:true})
-}
+var d1 = board1.create('point', [
+    function() { return t1.X(); },
+    function() { return d(t1.X()); } 
+  ], {name:'', color:'blue', fixed:true, size:2, visible:false});
 
-var turnOffSpeed = function() {
-  rectangles.setAttribute({visible:false});
-}
+var d2 = board1.create('point', [
+    function() { return t2.X(); },
+    function() { return d(t2.X()); } 
+  ], {name:'', color:'blue', fixed:true, size:2, visible:false});
 
-var turnOnSpeed = function() {
-  rectangles.setAttribute({visible:true});
-}
+var dline = board1.create('line', [d1, d2], {strokeColor:'blue', straightFirst:false, straightLast:false, visible:false});
 
-smartdown.setVariable('segments', 4);
-var N = 4;
+var d3 = board1.create('point', [
+    function() { return t2.X(); },
+    function() { return d(t1.X()); } 
+  ], {name:'', color:'blue', fixed:true, size:2, visible:false});
+
+var drise = board1.create('line', [d3, d2], {strokeColor:'black', dash:2, straightFirst:false, straightLast:false, visible:false});
+var drun = board1.create('line', [d1, d3], {strokeColor:'black', dash:2, straightFirst:false, straightLast:false, visible:false});
+
+var driseText = board1.create('text', [
+  function() { if (t2.X() > t1.X()) { return t2.X() + 0.1; } 
+         return t2.X() - 0.3; },
+  function() { return (d(t2.X()) - d(t1.X()))/2 + d(t1.X()); },
+  'd'], {fontSize:12, visible:false});
+
+var drunText = board1.create('text', [
+  function() { return t1.X() + (t2.X() - t1.X())/2; },
+  function() { if (t2.X() > t1.X()) { return d(t1.X()) - 0.5;} 
+                return d(t1.X()) + 0.10; },
+  't'], {fontSize:12, visible:false});
+
+var dslopeText = board1.create('text', [
+  function() { if (t2.X() > t1.X()) { return t1.X() + (t2.X() - t1.X())/2 - 0.5; } 
+         return t1.X() + (t2.X() - t1.X())/2 + 0.2; },
+  function() { return (d(t2.X()) - d(t1.X()))/2 + d(t1.X()); },
+  'slope = r'], {fontSize:12, visible:false});
+
+var slope = (d(t2.X()) - d(t1.X())) / (t2.X() - t1.X());
+var s1 = board1.create('point', [t1.X(), slope], {name:'', fixed:true, visible:false});
+
+var s2 = board1.create('point', [t2.X(), slope], {name:'', fixed:true, visible:false});
+
+var srect = board1.create('polygon',[t1,s1,s2,t2],{fillColor:'#7700FF',visible:false});
+
+var slengthText = board1.create('text', [t1.X() + (t2.X() - t1.X())/2, slope + 0.8, 't'], {fontSize:12, visible:false});
+
+var sheightText = board1.create('text', [t2.X() + 0.1, slope/2, 'r'], {fontSize:12, visible:false});
+
+var sareaText = board1.create('text', [ t1.X() + (t2.X() - t1.X())/2,  slope/2 + 0.2, 'd'], {fontSize:12, visible:false});
+
+
+smartdown.setVariable('segments', 3);
+var N = 3;
+var oldN = 3;
 smartdown.setVariable('distanceToggle2', false);
 smartdown.setVariable('speedToggle2', false);
+smartdown.setVariable('toggleArray', false);
+smartdown.setVariable('toggleCurveB', false);
 var speedOn = false;
 var distanceOn = false;
 
+
 // get the number of triangles from smartdown cell
-this.dependOn = ['segments','distanceToggle2','speedToggle2'];
+this.dependOn = ['segments','distanceToggle2','speedToggle2', 'toggleArray', 'toggleCurveB'];
 this.depend = function() {
-  if (env.distanceToggle2 == true) {
-    if (distanceOn) { 
-      turnOffDistance();
-      distanceOn = false;
-    }
-    else {
-      turnOnDistance();
-      distanceOn = true;
-    }
-    smartdown.setVariable('distanceToggle2',false);
-  }
-    
-  if (env.speedToggle2 == true) {
-    if (speedOn) { 
-      turnOffSpeed();
-      speedOn = false;
-    }
-    else {
-      turnOnSpeed();
-      speedOn = true;
-    }
-    smartdown.setVariable('speedToggle2',false);
-  }
 
   board1.suspendUpdate();
-  N = parseInt(env.segments);
+
+  if (env.distanceToggle2 == true && env.toggleArray == false) {
+    d1.setAttribute({visible:true});
+    d2.setAttribute({visible:true});
+    drise.setAttribute({visible:true});
+    drun.setAttribute({visible:true});
+    dline.setAttribute({visible:true});
+    driseText.setAttribute({visible:true});
+    drunText.setAttribute({visible:true});
+    dslopeText.setAttribute({visible:true});
+  }
+  
+  if (env.speedToggle2 == true && env.toggleArray == false) {
+    smartdown.setVariable('segments', 4);
+  }
+
+  if (env.toggleArray == true) {
+    tinylines.setAttribute({visible:true});
+    rectangles.setAttribute({visible:true});
+    d1.setAttribute({visible:false});
+    d2.setAttribute({visible:false});
+  }
+
+  var P = parseInt(env.segments);
+  if (P != N) {
+    oldN = N;
+    N = P;    
+  }
+  
+  if (N == 4) {
+    drise.setAttribute({visible:true});
+    drun.setAttribute({visible:true});
+    dline.setAttribute({visible:true});
+    driseText.setAttribute({visible:true});
+    drunText.setAttribute({visible:true});
+    dslopeText.setAttribute({visible:true});
+    srect.setAttribute({visible:true});
+    slengthText.setAttribute({visible:true});
+    sheightText.setAttribute({visible:true});
+    sareaText.setAttribute({visible:true});
+  }
+  else {
+    if (oldN == 4) {
+      drise.setAttribute({visible:false});
+      drun.setAttribute({visible:false});
+      dline.setAttribute({visible:false});
+      driseText.setAttribute({visible:false});
+      drunText.setAttribute({visible:false});
+      dslopeText.setAttribute({visible:false});
+      srect.setAttribute({visible:false});
+      slengthText.setAttribute({visible:false});
+      sheightText.setAttribute({visible:false});
+      sareaText.setAttribute({visible:false});
+    }
+  }
+
+  if (env.toggleCurveB == true) {
+    s_graph.setAttribute({visible:true});
+    sText.setAttribute({visible:true});
+  }
+
   board1.unsuspendUpdate();
 };
 
 
 ```
-[r = d / t](:=distanceToggle2=true) [d = r * t](:=speedToggle2=true) Number of Divisions [](:-segments/1/100/1) [](:!segments) 
+Number of Divisions [](:-segments/1/100/1) [](:!segments) 
 [Application Notes](::instructions2/tooltip/transparent)
 
 # :::: instructions2
-Drag the slider to the left and the right.
+Drag the slider to the left and right.
 # ::::
 
-
+As the time periods get very small, the rectangles define a new function that relates to Curve A.  [show rectangle curve](:=toggleCurveB=true) This function gives the height of our rectangels, which is $r$ the rate at which the object is moving at a given time.
 
 # --aliceblue ct
 ## Concluding Thoughts
