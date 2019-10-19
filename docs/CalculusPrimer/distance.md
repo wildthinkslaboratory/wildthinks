@@ -187,7 +187,7 @@ A **secant line** of a graph $y=f(x)$ is any line that intersects the graph in a
 # --outlinebox
 # ::::
 
-The slope of the secant line tells us that between time $t=1$ and time $t=4$, the car travels at approximately 2.5 meters per second.
+The slope of the secant line tells us that between time $t=1$ and time $t=4$, the average speed of the car is $2.5$ meters per second.
 
 Let's do the usual thing again and improve our approximation. [Improve Approximation](:=improve=true) We see that the speed of the car between $t=1$ and time $t=2.5$ is approximately 1.75 meters per second.  
 
@@ -494,7 +494,7 @@ Rate at time 3 [](:?s33) m/s
 2. When we have a curvy graph, we can estimate the speed of the car with the slope of a secant on the distance graph.  The approximation gets better and better as the two points defining the secant line get closer and closer together.
 
 
-3. Did anyone notice that the speed graphs we computed here look familiar?  These are the exact same speed graphs we used in our [first curvy speed](:@CalculusPrimer/speed) problem.  The area under the rate curve told us the car's distance.  Now, the slope of a line on the distance curve gives us back the car's rate. This interesting connection between [slopes and areas](:@CalculusPrimer/ftc1) is what we'll think about next.
+3. Did anyone notice that the speed graphs we computed here look familiar?  These are the exact same speed graphs we used in our [first curvy speed](:@CalculusPrimer/speed) problem.  The area under the speed curve told us the car's distance.  Now, the slope of a line on the distance curve gives us back the car's speed. This interesting connection between [slopes and areas](:@CalculusPrimer/ftc1) is what we'll think about next.
 
 # --aliceblue
 

@@ -74,7 +74,7 @@ smartdown.setVariable('SVG1', svgrect);
 ```
 [](:!SVG1|svg)
 
-
+Here's a graph showing the car's speed.  The speed stays at a constang $5$ meters per second.
 ```javascript /playable/autoplay
 //smartdown.import=https://cdnjs.cloudflare.com/ajax/libs/jsxgraph/0.99.7/jsxgraphcore.js
 

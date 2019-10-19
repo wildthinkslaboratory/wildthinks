@@ -201,6 +201,9 @@ this.depend = function() {
 - Use the slider to adjust the speed.
 # ::::
 
+It's strangely a lot to take in when you think about it.  It's easy to see that the value of $t$ is the same in both cases.  So are the values of $r$, even though in one case $r$ is a slope and the other $r$ is a vertical length.  The values of $d$ are also the same.  In one case $d$ is a vertical height and the other its a two dimensional area.  It's just two ways to write the same equation.
+
+
 ## Slopes and Areas on Curvy Graphs
 
 Imagine that **Curve A** describes the position of an object through time. It's a distance function.  Imagine we pick two points on the curve. [r = d / t](:=distanceToggle2=true) The slope of the line through these points tells us the average speed traveled during that time period.  There is always a corresponding rectangle that expresses the distance traveled as the product of the rate and the time. [d = r * t](:=speedToggle2=true)
@@ -432,7 +435,7 @@ Number of Divisions [](:-segments/1/100/1) [](:!segments)
 Drag the slider to the left and right.
 # ::::
 
-As the time periods get very small, the rectangles define a new function that relates to Curve A.  [show rectangle curve](:=toggleCurveB=true) This function gives the height of our rectangels, which is $r$ the rate at which the object is moving at a given time. It's our speed curve.
+As the time periods get very small, the rectangles define a new function that relates to Curve A.  It's related by the function $d = r \cdot t$.  [show rectangle curve](:=toggleCurveB=true) This function gives the height of our rectangels, which is $r$ the rate at which the object is moving at a given time. It's our speed curve.
 
 # --aliceblue ct
 ## Concluding Thoughts

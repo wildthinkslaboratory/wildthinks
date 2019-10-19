@@ -127,12 +127,16 @@ This Calculus Primer is dedicated to Izzy and Andre: two highly creative and rig
 [Close](::dedication)
 # --colorbox
 # ::::
-### Begin Here
+## Begin Here
+
+#### The Primer
 1. [The Main Idea](:@CalculusPrimer/Intro)
 2. [A Curvy Speed Question](:@CalculusPrimer/speed)
 3. [Another Curvy Speed Question](:@CalculusPrimer/distance)
 4. [Slopes and Areas](:@CalculusPrimer/ftc1)
 5. [More Slopes and Areas](:@CalculusPrimer)
+
+#### Calculus
 6. [The Result of an Infinite Process](:@CalculusPrimer/InfiniteProcess)
 7. [The Derivative](:@CalculusPrimer/Derivative)
 8. [Practice With the Definition of Derivative](:@CalculusPrimer/DerivativePractice)
