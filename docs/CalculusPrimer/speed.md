@@ -175,7 +175,7 @@ It's easy to see that the average rate during this period is 2 meters per second
 
 Another approach is to calculate the area of the shape formed under the graph from time $t=0$ to time $t=4$.  This shape is a triangle so the area will be half the base times the height.  [Use area under the curve](:=usecurve=true)
 
-Try both approaches.  Do they produce the same answer?
+Try both approaches.  Do they produce the same answer?  How are these two shapes related?
 
 ```javascript /playable/autoplay
 //smartdown.import=https://cdnjs.cloudflare.com/ajax/libs/jsxgraph/0.99.7/jsxgraphcore.js

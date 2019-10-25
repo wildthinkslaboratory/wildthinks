@@ -1,10 +1,10 @@
 
 ## How Do You Find the Area of a Curvy Shape?
 
-You know how to find the area of a square, a triangle or a trapezoid.  With the exception of circles, almost everything you've learned about geometry deals with straight lines.  How do we find the area of the curvy shape below?  
+You know how to find the area of a rectangle, a triangle or a trapezoid, but how do we compute the area of the strange curvy shape below?
 
 # :::: instructions1
-Drag the red dots along the curve to investigate the area of the shaded region.
+Drag the red and green dots to the left and right to investigate the area of the shaded region.
 # ::::
 Area of Shaded Region [](:?area) [Application Notes](::instructions1/tooltip/transparent)
 ```javascript /playable/autoplay
@@ -18,50 +18,30 @@ myDiv.style.height = '100%';
 myDiv.style.margin = 'auto';
 myDiv.innerHTML = `<div id='box0' class='jxgbox' style='height:300px;'>`;
 
-
+JXG.Options.axis.ticks.majorHeight = 40;
 // create the board
-board0 = JXG.JSXGraph.initBoard('box0', {boundingbox:[-4,22,5,-2], keepaspectratio:false, axis:false});
+board0 = JXG.JSXGraph.initBoard('box0', {boundingbox:[-2,40,8,-6], keepaspectratio:false, axis:true});
 
  // parabala and it's derivative
-var g = function(x) { return  10 * Math.cos(Math.PI * x) + 10; };
-var graph_g = board0.create('functiongraph', [g,-5,5], {strokeColor:'#7700FF'});
-var i1 = board0.create('integral', [[-1.6, 3], graph_g], {fillColor:'#0077FF', fillOpacity:0.3});
+var g = function(x) { return  - Math.pow(x,3) + 6 * x * x; };
+var graph_g = board0.create('functiongraph', [g,-3,10], {strokeColor:'#7700FF'});
+var x = board0.create('glider', [0, 0, board0.defaultAxes.x], {name: '', size:5});
+var xh = board0.create('glider', [6, 0, board0.defaultAxes.x], {name: '', color:'green', size:5});
+var i1 = board0.create('integral', [[
+  function() { return x.X(); },
+  function() { return xh.X();}], graph_g], {fillColor:'#0077FF', fillOpacity:0.3});
 
 smartdown.setVariable('area', i1.Value().toFixed(4));
 board0.on('update', function() {
   smartdown.setVariable('area', i1.Value().toFixed(4));
 });
 
+
+
 ```
------
 
-We can see that the area of one of these blue lumps is [[](:!twenty)](::pulldown2/tooltip/transparent), but how did we come up with that value?  Answer: we used calculus.
+Calculus is all about working with curvy shapes.  Finding the area of curvy shapes is just one of the many cool things we can do with calculus.
 
-# :::: pulldown2
-[](:Xa7) 7
-[](:Xa8) 20
-[](:Xa9) 300
-# ::::
-
-
-```javascript/autoplay
-smartdown.setVariable('a7', false);
-smartdown.setVariable('a8', false);
-smartdown.setVariable('a9', false);
-smartdown.setVariable('twenty', '________');
-
-this.dependOn = ['a7', 'a8', 'a9'];
-
-this.depend = function() {
-  if (env.a7 == false && env.a8 == true && env.a9 == false) {
-      smartdown.setVariable('twenty', '20');
-      smartdown.showDisclosure('correct','','bottomright,transparent,shadow'); 
-      setTimeout(function () {
-           smartdown.hideDisclosure('correct','','bottomright'); 
-      }, 3000);
-    } 
-  };
-```
 
 ## The Main Idea of Calculus
 
@@ -75,9 +55,9 @@ from *Burn Math Class* by Jason Wilkes
 
 ### Example 1: Area of a Circle
 
+Let's take a circle and divide it into four pieces. [4 pieces](:=pieces=true)  Now let's lay those pieces out in a line with the pieces alternating directions. [pieces in a line](:=inLine=true) 
 
-We'll divide our circle into 4 pie pieces.  We have two views of our pieces, first inside the circle and second, arranged in line with the pieces alternating directions. We'll approximate the area of the circle by calculating the area of the four triangles.  Currently our approximation is too small since the triangles don't cover all the area in the circle.  To improve our approximation we can increase the number of triangles.
-
+The four red triangles give us an approximation of the circle's area, but it's not a very good one.  We can see that the triangles don't cover all the area in the circle.  Our approximation would be better if we had more triangles.  Drag the slider to the right to get more triangles.
 
 # :::: instructions2
 Drag the slider to the left and the right.
@@ -95,27 +75,20 @@ const myDiv = this.div;
 myDiv.style.width = '100%';
 myDiv.style.height = '100%';
 myDiv.style.margin = 'auto';
-myDiv.innerHTML = `<div id='box1' class='jxgbox' style='height:600px;'>`;
+myDiv.innerHTML = `<div id='box1' class='jxgbox' style='height:400px;'>`;
 
 smartdown.setVariable('triangles', 4);
 var N = 4;
 
-// get the number of triangles from smartdown cell
-this.dependOn = ['triangles'];
-this.depend = function() {
-  board.suspendUpdate();
-  N = parseInt(env.triangles);
-  board.unsuspendUpdate();
-};
 
 // create the board
 board = JXG.JSXGraph.initBoard('box1', {boundingbox:[-1.5,2,8,-1], keepaspectratio:true, axis:false});
 
 // dimensions of the final rectangle with labels
-var rText = board.create('text',[2.85,0.5,'r'], {fontSize:16, fixed:true});
-var rText = board.create('text',[5.4,1.6,'&#960 r'], {fontSize:16, fixed:true});
-var rDim = board.create('line',[[3,0],[3,1]], {straightFirst:false, straightLast:false, strokeWidth:2, color:'black', fixed:true});
-var cDim = board.create('line',[[3.9,1.5],[3.9 + Math.PI,1.5]], {straightFirst:false, straightLast:false, strokeWidth:2, color:'black', fixed:true});
+var rText = board.create('text',[2.85,0.5,'r'], {fontSize:16, fixed:true, visible:false});
+var cText = board.create('text',[5.4,1.7,'&#960 r'], {fontSize:16, fixed:true, visible:false});
+var rDim = board.create('line',[[3,0],[3,1]], {straightFirst:false, straightLast:false, strokeWidth:2, color:'black', fixed:true, visible:false});
+var cDim = board.create('line',[[3.9,1.5],[3.9 + Math.PI,1.5]], {straightFirst:false, straightLast:false, strokeWidth:2, color:'black', fixed:true, visible:false});
 
 // draw the circle
 var circ = board.create('circle',[[1,0],1],{strokeWidth:1, strokecolor:'blue', strokeWidth:2});
@@ -125,7 +98,7 @@ var r = 1;
 
 
 // draw the rearranged triangles curves
-var rectArcs = board.create('curve', [[0],[0]],{strokecolor:'blue', strokeWidth:2}); 
+var rectArcs = board.create('curve', [[0],[0]],{strokecolor:'blue', strokeWidth:2, visible:false}); 
 rectArcs.updateDataArray = function() {  
     let x = [xshift];
     let y = [0];
@@ -157,7 +130,7 @@ rectArcs.updateDataArray = function() {
 
 
 // draw the red triangles in the rearranged triangles
-var c1 = board.create('curve', [[0],[0]],{strokecolor:'red', strokeWidth:2}); 
+var c1 = board.create('curve', [[0],[0]],{strokecolor:'red', strokeWidth:2, visible:false}); 
 c1.updateDataArray = function() { 
     let x = [xshift];  // put the starting point in
     let y = [0];
@@ -185,7 +158,7 @@ c1.updateDataArray = function() {
 }
 
 // draw red triangles in circle
-var c2 = board.create('curve', [[0],[0]],{strokecolor:'red', strokeWidth:2}); 
+var c2 = board.create('curve', [[0],[0]],{strokecolor:'red', strokeWidth:2,visible:false}); 
 c2.updateDataArray = function() {
     let px = circ.midpoint.X(); 
     let py = circ.midpoint.Y();  
@@ -212,8 +185,39 @@ c2.updateDataArray = function() {
             
 board.update();
 
+smartdown.setVariable('pieces', false);
+smartdown.setVariable('inLine', false);
+smartdown.setVariable('showradius', false);
+smartdown.setVariable('showcirc', false);
+
+this.dependOn = ['pieces','inLine', 'triangles', 'showradius', 'showcirc'];
+this.depend = function() {
+  if (env.pieces == true) {
+    c2.setAttribute({visible:true});
+  }
+  if (env.inLine == true) {
+    c1.setAttribute({visible:true});
+    rectArcs.setAttribute({visible:true});
+  }
+  if (env.showradius == true) {
+    rText.setAttribute({visible:true});
+    rDim.setAttribute({visible:true});
+  }
+  if (env.showcirc == true) {
+    cText.setAttribute({visible:true});
+    cDim.setAttribute({visible:true});
+  }
+
+  board.suspendUpdate();
+  N = parseInt(env.triangles);
+  board.unsuspendUpdate();
+}
+
+
 ```
-As we add more and more triangles, our approximation gets better and better. The rearranged version of the circle looks more and more like a rectangle. The height of the rectangle is approaching $r$ the radius of the circle.  The length of the rectangle is getting closer to $\pi r$ which is half of the circumference of the circle. The area of this rectangle is getting closer and closer to [[](:!areaCircle)](::pulldown1/tooltip/transparent).
+As we add more and more triangles, our approximation gets better. The rearranged version of the circle looks more and more like a rectangle. What are the dimensions of this rectangle?  The height of the rectangle is getting very close to the radius of the cirle. [circle radius](:=showradius=true)  
+
+Look at what happens to the circumference of the circle in the rectangle. Half the circumference is along the top of the rectangle and the other half is along the bottom. The length of the rectangle is getting closer to $\pi r$ which is half of the circumference of the circle. [show half circumference](:=showcirc=true) The area of this rectangle is getting closer and closer to [[](:!areaCircle)](::pulldown1/tooltip/transparent). 
 
 # :::: pulldown1
 [](:Xa1) 64
@@ -261,7 +265,7 @@ const myDiv = this.div;
 myDiv.style.width = '100%';
 myDiv.style.height = '100%';
 myDiv.style.margin = 'auto';
-myDiv.innerHTML = `<div id='box2' class='jxgbox' style='height:600px;'>`;
+myDiv.innerHTML = `<div id='box2' class='jxgbox' style='height:400px;'>`;
 
 smartdown.setVariable('polygon', 4);
 var N = 4;
@@ -458,6 +462,7 @@ Calculus is an ingenious and practical way to achieve this process.  The magic h
 
 # --outlinebox q1
 #### Question
+
 ```javascript /playable/autoplay
 //smartdown.import=https://cdnjs.cloudflare.com/ajax/libs/jsxgraph/0.99.7/jsxgraphcore.js
 
@@ -469,16 +474,19 @@ myDiv.style.height = '100%';
 myDiv.style.margin = 'auto';
 myDiv.innerHTML = `<div id='box5' class='jxgbox' style='height:300px;'>`;
 
-
+JXG.Options.axis.ticks.majorHeight = 40;
 // create the board
-board5 = JXG.JSXGraph.initBoard('box5', {boundingbox:[-4,22,5,-2], keepaspectratio:false, axis:false});
+board5 = JXG.JSXGraph.initBoard('box5', {boundingbox:[-2,40,8,-6], keepaspectratio:false, axis:true});
 
  // parabala and it's derivative
-var g = function(x) { return  10 * Math.cos(Math.PI * x) + 10; };
-var graph_g = board5.create('functiongraph', [g,-5,5], {strokeColor:'#7700FF'});
-var i1 = board5.create('integral', [[-3, 3], graph_g], {fillColor:'#0077FF', fillOpacity:0.3});
+var g = function(x) { return  - Math.pow(x,3) + 6 * x * x; };
+var graph_g = board5.create('functiongraph', [g,-3,10], {strokeColor:'#7700FF'});
+var i1 = board5.create('integral', [[0,6], graph_g], {fillColor:'#0077FF', fillOpacity:0.3});
+
 
 ```
+
+
 Returning to our original question, try to think of a strategy to approximate the area of the shaded region that involves lots of tiny straight line shapes? How would you do it?
 # --outlinebox
 # --aliceblue

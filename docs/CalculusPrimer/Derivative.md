@@ -264,7 +264,73 @@ this.depend = function() {
   };
 ```
 
+# :::: instructions4
+Drag the slider to the left and the right.
+# ::::
+h [](:-h/0.001/2/0.001) [](:!h) [Application Notes](::instructions4/tooltip/transparent)
+```javascript /playable/autoplay
+//smartdown.import=https://cdnjs.cloudflare.com/ajax/libs/jsxgraph/0.99.7/jsxgraphcore.js
 
+smartdown.importCssUrl('https://cdnjs.cloudflare.com/ajax/libs/jsxgraph/0.99.7/jsxgraph.css');
+
+console.log('test log');
+
+const myDiv = this.div;
+myDiv.style.width = '100%';
+myDiv.style.height = '100%';
+myDiv.style.margin = 'auto';
+myDiv.innerHTML = `<div id='box4' class='jxgbox' style='height:600px;'>`;
+
+smartdown.setVariable('h', 2);
+var h = 2;
+
+JXG.Options.axis.ticks.majorHeight = 40;
+// create the board
+board4 = JXG.JSXGraph.initBoard('box4', {boundingbox:[-10,8,10,-2], keepaspectratio:true, axis:false});
+
+var xaxis = board4.create('axis', [[0, 0], [1,0]], 
+      {name:'x', 
+      withLabel: true,
+      label: {
+        fontSize: 20,
+        position: 'rt',  // possible values are 'lft', 'rt', 'top', 'bot'
+        offset: [-20, 20]   // (in pixels)
+      }
+      });
+var yaxis = board4.create('axis', [[0, 0], [0, 1]], 
+      {name:'y', 
+      withLabel: true, 
+      label: {
+        fontSize: 20,
+        position: 'rt',  // possible values are 'lft', 'rt', 'top', 'bot'
+        offset: [-30, -20]   // (in pixels)
+        }
+      });   
+// get the number of triangles from smartdown cell
+this.dependOn = ['h'];
+this.depend = function() {
+  board4.suspendUpdate();
+  h = parseFloat(env.h);
+  board4.unsuspendUpdate();
+};
+
+ // parabala and it's derivative
+var dfh = function(x) { return 2 * x + h; };
+var graph_dfh = board4.create('functiongraph', [dfh,-5,5], {strokeWidth:2});
+var df = function(x) { return 2 * x; };
+var graph_df = board4.create('functiongraph', [df,-5,5], {strokeColor:'#333377', strokeWidth:1});
+
+var p = board4.create('point', [1, function() { return dfh(1); }], {visible:false});
+var hline = board4.create('line', [p, [1,2]], {color:'black', strokeWidth:1, straightFirst:false, straightLast:false, dash:2});
+
+var hText = board4.create('text', [ 1.1,
+	function() { return 2 + h / 2; },
+	'h'], {fontSize:12});
+
+var t1 = board4.create('text', [3.8,7, 'g(x) = 2x'],{fontSize:15});
+
+var dfhText = board4.create('text', [1.5, function() { return 5 + h; }, 'f\'(x) = 2x + h'], {fontSize:15});
+```
 
 [Applications of Derivaties](:@CalculusPrimer/AppDerivatives)
 [Back to Home Page](:@CalculusPrimer/Home)

@@ -115,6 +115,7 @@ Button Clicked! :zap:
 # :::: books
 **Books** I used to build these pages:
 *Thinking Mathematics: Volume 6, Some Calculus* by James Tanton
+*Infinite Powers: How Calculus Reveals the Secrets of the Universe* by Steven Strogatz
 *The Art of Problem Solving: Calculus* by David Patrick
 *Calculus with Analytic Geometry* by George E. Simmons
 *Burn Math Class* by Jason Wilkes
@@ -127,19 +128,19 @@ This Calculus Primer is dedicated to Izzy and Andre: two highly creative and rig
 [Close](::dedication)
 # --colorbox
 # ::::
-## Begin Here
 
-#### The Primer
+
+#### Chapter 1: A Primer
 1. [The Main Idea](:@CalculusPrimer/Intro)
 2. [A Curvy Speed Question](:@CalculusPrimer/speed)
 3. [Another Curvy Speed Question](:@CalculusPrimer/distance)
 4. [Slopes and Areas](:@CalculusPrimer/ftc1)
-5. [More Slopes and Areas](:@CalculusPrimer)
+5. [More Slopes and Areas](:@CalculusPrimer/ftc2)
 
-#### Calculus
-6. [The Result of an Infinite Process](:@CalculusPrimer/InfiniteProcess)
-7. [The Derivative](:@CalculusPrimer/Derivative)
-8. [Practice With the Definition of Derivative](:@CalculusPrimer/DerivativePractice)
+#### Chapter 2: Calculus
+6. [The Result of an Infinite Process](:@CalculusPrimer)
+7. [The Derivative](:@CalculusPrimer)
+8. [Practice With the Definition of Derivative](:@CalculusPrimer)
 9. [Short Cut Rules](:@CalculusPrimer)
 10. [The Integral](:@CalculusPrimer)
 11. [The Fundamental Theorem of Calculus](:@CalculusPrimer)
