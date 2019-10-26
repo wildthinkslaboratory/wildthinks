@@ -5,9 +5,7 @@
 This rectangle is adjustable because you can change the $x$ axis interval by dragging the green and red dots.  Green for 'go' and red for 'stop' to indicate the beginning and end of interval.  The rectangle will snap to the function if dragged close to it.  Once snapped it tends to stay snapped if you continue to adjust the interval unless you drag to quickly. Area is shown on mouseover.
 
 **Problems**
-- coloring is bad.  There seems to be a bug in jsxgraph polygon class that isn't setting the stroke color. We are possibly stuck with blue stroke color.
 - It's hard to do layout because all positions are set with x, y coordinates.  How do you center text if you don't know the width of the text and conversion factor from pixels to x, y dimensions.
-- The neighborhood around function for which we snapToFunction also needs to scale with the x, y dimensions.  The rectangle needs to know something about the x,y dimensions.
 
 ----
 

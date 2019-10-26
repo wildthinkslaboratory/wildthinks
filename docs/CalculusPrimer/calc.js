@@ -5,8 +5,10 @@
   - why doesn't strokeColor work?  Maybe a bug in jsxgraph?
 */
 function AdjustableRectangle(b,X1,X2,hf,attr) {
-  let error = 0.5;
-  let board = b;            
+
+  let board = b;   
+  let boundingBox = board.getBoundingBox();
+  let error = (boundingBox[1] - boundingBox[3]) / 50;        
   let heightFunction = hf;  // function that determines it's height
 
   // the x interval that rectangle lives on
@@ -18,7 +20,7 @@ function AdjustableRectangle(b,X1,X2,hf,attr) {
 
   // a vertical line and glider that is used as a handle to adjust height of rectangle
   let vline = board.create('line', [[midX,0], [midX,1]], {visible:false});
-  let glider = board.create('glider', [midX(), heightFunction(midX()), vline], {name: '', size:4, color:'purple'});
+  let glider = board.create('glider', [midX(), heightFunction(midX()), vline], {name: '', size:4, color:'#1111CC'});
 
   // the two points that define the top of rectangle
   let f1 = board.create('point', [function() { return x1.X(); },  function() { return glider.Y();}], {visible:false});
