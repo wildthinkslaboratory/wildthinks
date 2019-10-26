@@ -1,41 +1,3 @@
-/*
-
-- How do you add a rectangle? Do you click where you want it?
-- How do you connect a rectangle to a curve?
-
-- A rectangle needs to always snap to the x axis. 
-- It can also snap to a curve.
-
-*/
-
-
-function Rectangle(b, X1, X2, hf, attr) {
-  let board = b;
-  let heightFunction = hf;
-
-  let x1 = X1; // the x interval that rectangle lives on
-  let x2 = X2;
-  let bottom1 = board.create('point', [x1,0], {visible:false});
-  let bottom2 = board.create('point', [x2,0], {visible:false});
-  let midX = function() { return x1 + (x2 - x1)/2 ; };
-
-  // a vertical line and glider that is used as a handle to adjust height of rectangle
-  let vline = board.create('line', [[midX,0], [midX,1]], {visible:false});
-  let glider = board.create('glider', [midX(), heightFunction(midX()), vline], {name: '', size:4, color:'purple'});
-
-  // the two points that define the top of rectangle
-  let top1 = board.create('point', [x1, function() { return glider.Y();}], {visible:false});
-  let top2 = board.create('point', [x2, function() { return glider.Y();}], {visible:false});
-
-  let rect = board.create('polygon',[bottom1, top1, top2, bottom2],attr);
-
-  this.height = function() { return glider.Y(); };
-  this.setHeight = function(h) {       
-    glider.setPositionDirectly(JXG.COORDS_BY_USER, [glider.X(),h]); 
-    glider.prepareUpdate().update(true).updateRenderer();
-  };
-  this.getMidX = function() { return midX(); };
-};
 
 
 /*
@@ -62,18 +24,20 @@ function AdjustableRectangle(b,X1,X2,hf,attr) {
   let f1 = board.create('point', [function() { return x1.X(); },  function() { return glider.Y();}], {visible:false});
   let f2 = board.create('point', [function() { return x2.X(); } , function() { return glider.Y();}], {visible:false});
 
-  let rect = board.create('polygon',[x1, f1, f2, x2], {strokeColor: '#333333',fillColor:'#1111FF', hasInnerPoints:true});
+  let rect = board.create('polygon',
+    [x1, f1, f2, x2], {strokeColor: '#333333',fillColor:'#1111FF', hasInnerPoints:true});
+  let area = function() { return ((x2.X() - x1.X()) * glider.Y()).toFixed(3); }
   let rText = board.create('text', [
     function() { return midX();},
     function() { return glider.Y() / 2; },
-    ''
-    ], {fontSize:15});
+    area
+    ], {fontSize:15, visible:false});
 
   rect.on('over', function(e){
-    rText.setText( ((x2.X() - x1.X()) * glider.Y()).toFixed(3) );
+    rText.setAttribute({visible:true});
   });
   rect.on('out', function(e){
-    rText.setText( '' );
+    rText.setAttribute({visible:false});
   });
 
 
@@ -98,49 +62,80 @@ function AdjustableRectangle(b,X1,X2,hf,attr) {
   }
 };
 
-function RectArray(b, N, X1, X2, h, F, attr) {
-  let board = b;
-  let rects = [];
-  let x1 = X1;
-  let x2 = X2;
-  let f = F;
-  let n = N;
-  let attributes = attr;
-  let error = 0.5;
-
-  let delta = (x2 - x1)/n;
-  for (let i=x1; i < x2; i += delta) {
-    rects.push(new Rectangle(board,i,i+delta,h,attributes));
-  }
 
 
-  this.area = function() {
-    let a = 0;
-    for (i=0; i < rects.length; i++) {
-      a += delta * rects[i].height();
-    }
-    return a;
-  };
+// function FixedRectangle(b, X1, X2, hf, attr) {
+//   let board = b;
+//   let heightFunction = hf;
 
-  this.snapToFunction = function() {
-    for (let i=0; i < rects.length; i++) {
-      let currentH = rects[i].height();
-      let functionH = f(rects[i].getMidX());
-      if (currentH <= functionH + error && currentH >= functionH - error) {
-        rects[i].setHeight(functionH);
-      }
-    }
-  };
+//   let x1 = X1; // the x interval that rectangle lives on
+//   let x2 = X2;
+//   let bottom1 = board.create('point', [x1,0], {visible:false});
+//   let bottom2 = board.create('point', [x2,0], {visible:false});
+//   let midX = function() { return x1 + (x2 - x1)/2 ; };
 
-  this.snapAllToFunction = function() {
-    for (let i=0; i < rects.length; i++) {
-      rects[i].setHeight(f(rects[i].getMidX()));
-    }
-    board.update();
-  };
+//   // a vertical line and glider that is used as a handle to adjust height of rectangle
+//   let vline = board.create('line', [[midX,0], [midX,1]], {visible:false});
+//   let glider = board.create('glider', [midX(), heightFunction(midX()), vline], {name: '', size:4, color:'purple'});
+
+//   // the two points that define the top of rectangle
+//   let top1 = board.create('point', [x1, function() { return glider.Y();}], {visible:false});
+//   let top2 = board.create('point', [x2, function() { return glider.Y();}], {visible:false});
+
+//   let rect = board.create('polygon',[bottom1, top1, top2, bottom2],attr);
+
+//   this.height = function() { return glider.Y(); };
+//   this.setHeight = function(h) {       
+//     glider.setPositionDirectly(JXG.COORDS_BY_USER, [glider.X(),h]); 
+//     glider.prepareUpdate().update(true).updateRenderer();
+//   };
+//   this.getMidX = function() { return midX(); };
+// };
 
 
-}
+// function RectArray(b, N, X1, X2, h, F, attr) {
+//   let board = b;
+//   let rects = [];
+//   let x1 = X1;
+//   let x2 = X2;
+//   let f = F;
+//   let n = N;
+//   let attributes = attr;
+//   let error = 0.5;
+
+//   let delta = (x2 - x1)/n;
+//   for (let i=x1; i < x2; i += delta) {
+//     rects.push(new Rectangle(board,i,i+delta,h,attributes));
+//   }
+
+
+//   this.area = function() {
+//     let a = 0;
+//     for (i=0; i < rects.length; i++) {
+//       a += delta * rects[i].height();
+//     }
+//     return a;
+//   };
+
+//   this.snapToFunction = function() {
+//     for (let i=0; i < rects.length; i++) {
+//       let currentH = rects[i].height();
+//       let functionH = f(rects[i].getMidX());
+//       if (currentH <= functionH + error && currentH >= functionH - error) {
+//         rects[i].setHeight(functionH);
+//       }
+//     }
+//   };
+
+//   this.snapAllToFunction = function() {
+//     for (let i=0; i < rects.length; i++) {
+//       rects[i].setHeight(f(rects[i].getMidX()));
+//     }
+//     board.update();
+//   };
+
+
+// }
 
 
 
@@ -161,9 +156,9 @@ function RectArray(b, N, X1, X2, h, F, attr) {
 })(this, function (exports) {
   'use strict';
 
-  exports.Rectangle = Rectangle;
+//  exports.Rectangle = Rectangle;
   exports.AdjustableRectangle = AdjustableRectangle;
-  exports.RectArray = RectArray;
+//  exports.RectArray = RectArray;
 
 });
 

@@ -7,7 +7,6 @@ This rectangle is adjustable because you can change the $x$ axis interval by dra
 **Problems**
 - coloring is bad.  There seems to be a bug in jsxgraph polygon class that isn't setting the stroke color. We are possibly stuck with blue stroke color.
 - It's hard to do layout because all positions are set with x, y coordinates.  How do you center text if you don't know the width of the text and conversion factor from pixels to x, y dimensions.
-- The area text doesn't update unless you mouse out and then mouse over again.
 - The neighborhood around function for which we snapToFunction also needs to scale with the x, y dimensions.  The rectangle needs to know something about the x,y dimensions.
 
 ----
