@@ -31,11 +31,11 @@ board0 = JXG.JSXGraph.initBoard('box1', {boundingbox:[-5,5,5,-5], keepaspectrati
 var c = function(x) { return 2; }
 var l = function(x) { return x; }
 var p = function(x) { return x * x * x / 25; };
-var c_graph = board0.create('functiongraph', [c,-5,5], {visible:false});
-var l_graph = board0.create('functiongraph', [l,-5,5], {visible:true});
-var p_graph = board0.create('functiongraph', [p,-5,5], {visible:false});
+var c_graph = board0.create('functiongraph', [c,-5,5], {strokeColor:'#777777', visible:false});
+var l_graph = board0.create('functiongraph', [l,-5,5], {strokeColor:'#777777', visible:true});
+var p_graph = board0.create('functiongraph', [p,-5,5], {strokeColor:'#777777', visible:false});
 
-var r = new calclib.AdjustableRectangle(board0, 1, 3, l, {strokeColor: '#333333',fillColor:'#1111FF'});
+var r = new calclib.AdjustableRectangle(board0, 1, 3, l, {fillColor:'#1111FF'});
 
 board0.on('update', function(e) {
   r.snapToFunction();

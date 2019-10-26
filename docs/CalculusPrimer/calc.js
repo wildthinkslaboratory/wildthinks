@@ -1,7 +1,6 @@
 
 
 /*
-  - how do I center the area text? not easy
   - why doesn't strokeColor work?  Maybe a bug in jsxgraph?
 */
 function AdjustableRectangle(b,X1,X2,hf,attr) {
@@ -62,6 +61,38 @@ function AdjustableRectangle(b,X1,X2,hf,attr) {
   this.setFunction = function(f) { 
     heightFunction = f; 
   }
+};
+
+
+
+/*
+  - why doesn't strokeColor work?  Maybe a bug in jsxgraph?
+*/
+function SecantLine(b,X1,X2,F) {
+
+  let board = b;   
+  let boundingBox = board.getBoundingBox();
+     
+  let f = F;  
+
+  // the x interval that secant line lives on
+  // in this class this interval is adjustable
+  let xline = board.create('line', [[0,0],[1,0]], {visible:false});
+  let x1 = board.create('glider', [X1,0,xline], {name: '', size:5, color:'green'});
+  let x2 = board.create('glider', [X2,0,xline], {name: '', size:5, color:'red'});
+  let midX = function() { return x1.X() + (x2.X() - x1.X())/2 ; };
+
+  // the two points that define the top of rectangle
+  let f1 = board.create('point', [function() { return x1.X(); },  function() { return f(x1.X());}], {color: 'blue', size:2, name:'', visible:true});
+  let f2 = board.create('point', [function() { return x2.X(); } , function() { return f(x2.X());}], {color: 'blue', size:2, name:'', visible:true});
+
+  let line = board.create('line', [f1, f2], {strokeColor:'blue', strokeWidth:2, straightFirst:false, straightLast:false, visible:true});
+  let slope = function() { return  (f(x2.X()) - f(x1.X())) / (x2.X() - x1.X()); }
+
+
+  // functions we are exporting
+
+  this.setFunction = function(F) { f = F; }
 };
 
 
@@ -158,8 +189,8 @@ function AdjustableRectangle(b,X1,X2,hf,attr) {
 })(this, function (exports) {
   'use strict';
 
-//  exports.Rectangle = Rectangle;
   exports.AdjustableRectangle = AdjustableRectangle;
+  exports.SecantLine = SecantLine;
 //  exports.RectArray = RectArray;
 
 });
