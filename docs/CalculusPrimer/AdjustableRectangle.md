@@ -4,9 +4,6 @@
 
 This rectangle is adjustable because you can change the $x$ axis interval by dragging the green and red dots.  Green for 'go' and red for 'stop' to indicate the beginning and end of interval.  The rectangle will snap to the function if dragged close to it.  Once snapped it tends to stay snapped if you continue to adjust the interval unless you drag to quickly. Area is shown on mouseover.
 
-**Problems**
-- It's hard to do layout because all positions are set with x, y coordinates.  How do you center text if you don't know the width of the text and conversion factor from pixels to x, y dimensions.
-
 ----
 
 [constant](:=constant=true) [linear](:=linear=true) [polynomial](:=polynomial=true)

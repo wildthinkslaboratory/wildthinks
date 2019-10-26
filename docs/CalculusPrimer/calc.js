@@ -30,7 +30,7 @@ function AdjustableRectangle(b,X1,X2,hf,attr) {
     [x1, f1, f2, x2], {strokeColor: '#333333',fillColor:'#1111FF', hasInnerPoints:true});
   let area = function() { return ((x2.X() - x1.X()) * glider.Y()).toFixed(3); }
   let rText = board.create('text', [
-    function() { return midX();},
+    function() { return midX() - error;},
     function() { return glider.Y() / 2; },
     area
     ], {fontSize:15, visible:false});
