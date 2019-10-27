@@ -74,3 +74,4 @@ this.depend = function() {
 
 
 ````
+[Adjustable Secant Rectangle](:@CalculusPrimer/AdjustableSecantRect)

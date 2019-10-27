@@ -73,3 +73,5 @@ this.depend = function() {
 
 
 ````
+
+[Adjustable Secant](:@CalculusPrimer/AdjustableSecantLine)
