@@ -1,6 +1,11 @@
-### Adjustable Rectangle Class
+### Adjustable Secant Line Class
 
-This rectangle is adjustable because you can change the $x$ axis interval by dragging the green and red dots.  Green for 'go' and red for 'stop' to indicate the beginning and end of interval.  The rectangle will snap to the function if dragged close to it.  Once snapped it tends to stay snapped if you continue to adjust the interval unless you drag to quickly. Area is shown on mouseover.
+# --outlinebox
+**Definition 1**
+A **secant line** of a graph $y=f(x)$ is any line that intersects the graph in at least two distinct points.
+# --outlinebox
+
+An adjustable secant line  can be added to a function $y = f(x)$.  The $x$ interval on the $x$ axis can be adjusted by dragging the green and red dots.  Green for 'go' and red for 'stop' to indicate the beginning and end of interval.  The slope of the secant line is shown on mouseover.
 
 ----
 
@@ -34,7 +39,7 @@ var l_graph = board0.create('functiongraph', [l,-5,5], {strokeColor:'#777777', v
 var p_graph = board0.create('functiongraph', [p,-5,5], {strokeColor:'#777777', visible:false});
 
 
-var s = new calclib.SecantLine(board0, 1, 3, l);
+var s = new calclib.AdjSecant(board0, 1, 3, l);
 
 
 smartdown.setVariable('constant', false);

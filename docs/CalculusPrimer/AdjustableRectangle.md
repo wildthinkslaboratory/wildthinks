@@ -35,7 +35,7 @@ var c_graph = board0.create('functiongraph', [c,-5,5], {strokeColor:'#777777', v
 var l_graph = board0.create('functiongraph', [l,-5,5], {strokeColor:'#777777', visible:true});
 var p_graph = board0.create('functiongraph', [p,-5,5], {strokeColor:'#777777', visible:false});
 
-var r = new calclib.AdjustableRectangle(board0, 1, 3, l, {fillColor:'#1111FF'});
+var r = new calclib.AdjRectangle(board0, 1, 3, l);
 
 board0.on('update', function(e) {
   r.snapToFunction();
