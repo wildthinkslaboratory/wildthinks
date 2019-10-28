@@ -1,6 +1,8 @@
 
 
-
+/*
+This class holds the board and sizing data.            
+*/
 class BoardInfo {
   constructor(b) {
     this.board = b;
@@ -11,71 +13,68 @@ class BoardInfo {
 }
 
 
-// function XInterval(b, X1, X2) {
-//   let xline = b.create('line', [[0,0],[1,0]], {visible:false});
-//   this.x1 = b.create('glider', [X1,0,xline], {name: '', size:5, color:'green'});
-//   this.x2 = b.create('glider', [X2,0,xline], {name: '', size:5, color:'red'});
-// }
-
-// XInterval.prototype.midX = function() {
-//     return this.x1.X() + (this.x2.X() - this.x1.X()) / 2;
-// }
-
-
+/*
+   This creates an interval on the X axis.  The interval can be resized with two gliders x1 and x2 on 
+   the X axis.  There is also a vertical glider midY in the middle of the interval.
+*/
 class XInterval {
   constructor(b, X1, X2) {
     let xline = b.create('line', [[0,0],[1,0]], {visible:false});
     this.x1 = b.create('glider', [X1,0,xline], {name: '', size:5, color:'green'});
     this.x2 = b.create('glider', [X2,0,xline], {name: '', size:5, color:'red'});
+    this.midX = this.midX.bind(this);
+    let vline = b.create('line', [[this.midX ,0], [this.midX, 1]], {visible:false});
+    this.midY = b.create('glider', [this.midX(), 0, vline], {name: '', size:4, color:'#1111CC'});
   }
 
   midX() {
     return this.x1.X() + (this.x2.X() - this.x1.X()) / 2;
   }
+
 }
 
-/*
-  - why doesn't strokeColor work on polygon?  Maybe a bug in jsxgraph?
-  - I want these to be light weight classes.  What data is repeated?  Just the board stuff?
-  - Can I share code between classes (inheritance or as members) or will this mess up the dependences?
-  - Why can I put midX in XInterval?
-  - Next our midinterval glider
-  - Then all the rectangle stuff.  It's dependent on board dims, x interval, a height function (passed in)
 
-*/
-function AdjRectangle(b,X1,X2,F) {
 
-  let board = b;
-  let bi = new BoardInfo(b); 
-  let visible = false;   
-  let heightFunction = F;  // function that determines it's height
+function AdjRectangle(binfo, xinterval, F) {
 
-  let X = new XInterval(b, X1, X2);
-  let midX = function() { return X.midX(); }
-  let x1 = function() { return X.x1.X(); }
-  let x2 = function() { return X.x2.X(); }
+  let board = binfo.board;
+  let bi = binfo; 
+  let verticalAdjust = true;  // allow vertical adjusting
+  let showAnnotations = false;   
+  let attachedFunction = F;  // function that determines it's height
 
-  let vline = b.create('line', [[midX ,0], [midX,1]], {visible:false});
-  let glider = b.create('glider', [midX(), heightFunction(midX()), vline], {name: '', size:4, color:'#1111CC'});
-
+  let xint = xinterval;
+  let height = function() {
+      if (verticalAdjust) { return xint.midY.Y(); }
+      else { return attachedFunction(xint.midX()); }
+  };
 
   // the two points that define the top of rectangle
-  let f1 = board.create('point', [x1,  function() { return glider.Y();}], {visible:false});
-  let f2 = board.create('point', [x2 , function() { return glider.Y();}], {visible:false});
+  let f1 = board.create('point', [function() { return xint.x1.X(); }, height], {visible:false});
+  let f2 = board.create('point', [function() { return xint.x2.X(); }, height], {visible:false});
 
   let rect = board.create('polygon',
-    [X.x1, f1, f2, X.x2], {strokeColor: '#333333',fillColor:'#1111FF', hasInnerPoints:true});
+    [xint.x1, f1, f2, xint.x2], {strokeColor: '#333333',fillColor:'#1111FF', hasInnerPoints:true});
 
-  let area = function() { return ((X.x2.X() - X.x1.X()) * glider.Y()).toFixed(3); }
+  let area = function() { return ((xint.x2.X() - xint.x1.X()) * height()).toFixed(3); }
   
-  let aText = board.create('text', [
-    function() { return midX() - bi.Xerror;},
-    function() { return glider.Y() / 2; },
+  // these components are all part of the annotation
+  let areaText = board.create('text', [
+    function() { return xint.midX() - bi.Xerror;},
+    function() { return height() / 2; },
     area
     ], {fontSize:15, visible:false});
   
-  let p1 = board.create('point',[ function() { return X.x2.X() + bi.Xerror / 2; }, function() { return glider.Y(); }],{visible:false});
-  let p2 = board.create('point',[ function() { return X.x2.X() +  bi.Xerror / 2; }, 0 ],{visible:false});
+  let p1 = board.create('point',[
+    function() { return xint.x2.X() + bi.Xerror / 2; }, 
+    height
+    ],{visible:false});
+
+  let p2 = board.create('point',[
+    function() { return xint.x2.X() +  bi.Xerror / 2; }, 
+    0 
+    ],{visible:false});
+
   let dimensionLine = board.create('segment', [p1,p2], {
     strokeColor:'black', 
     strokeWidth:2, 
@@ -83,58 +82,53 @@ function AdjRectangle(b,X1,X2,F) {
     lastArrow:true, 
     visible:false});
   let dimensionText = board.create('text', [
-    function() { return X.x2.X() + bi.Xerror; } ,
-    function () { return glider.Y() / 2; },
-    function() { return glider.Y().toFixed(3); }
+    function() { return xint.x2.X() + bi.Xerror; } ,
+    function () { return height() / 2; },
+    function() { return height().toFixed(3); }
     ],{fontSize: 15, visible:false});
 
+
   rect.on('over', function(e){
-    aText.setAttribute({visible:true});
-    dimensionText.setAttribute({visible:true});
-    dimensionLine.setAttribute({visible:true});
+    turnOnAnnotations();
   });
+
   rect.on('out', function(e){
-    if (!visible) {
-      aText.setAttribute({visible:false});
-      dimensionText.setAttribute({visible:false});
-      dimensionLine.setAttribute({visible:false});
+    if (!showAnnotations) {
+      turnOffAnnotations();
     }
   });
 
+  function turnOnAnnotations() {
+    areaText.setAttribute({visible:true});
+    dimensionText.setAttribute({visible:true});
+    dimensionLine.setAttribute({visible:true});
+  }
+
+  function turnOffAnnotations() {
+    areaText.setAttribute({visible:false});
+    dimensionText.setAttribute({visible:false});
+    dimensionLine.setAttribute({visible:false});
+  }
 
   // functions we are exporting
-  this.height = function() { return glider.Y(); };
   this.setHeight = function(h) {       
-    glider.setPositionDirectly(JXG.COORDS_BY_USER, [glider.X(),h]); 
-    glider.prepareUpdate().update(true).updateRenderer();
+    xint.midY.setPositionDirectly(JXG.COORDS_BY_USER, [xint.midY.X(),h]); 
+    xint.midY.prepareUpdate().update(true).updateRenderer();
   };
-  this.getMidX = function() { return midX(); };
 
   this.snapToFunction = function() {
-    let currentH = glider.Y();
-    let functionH = heightFunction(midX());
+    let currentH = height();
+    let functionH = attachedFunction(xint.midX());
     if (currentH <= functionH + bi.Yerror && currentH >= functionH - bi.Yerror) {
-      this.setHeight(heightFunction(midX()));
+      this.setHeight(attachedFunction(xint.midX()));
     }
   };
 
   this.setFunction = function(f) { 
-    heightFunction = f; 
+    attachedFunction = f; 
   };
-
-  this.setAreaText = function(b) {
-    if (b) {
-      aText.setAttribute({visible:true});
-      visible = true;
-
-    }
-    else {
-      aText.setAttribute({visible:false});
-      visible = false;
-    }
-  };
-
 };
+
 
 
 
@@ -195,57 +189,44 @@ function AdjSecant(b,X1,X2,F) {
 };
 
 
-function AdjSecantRect(b, X1, X2, F, attr, d) {
-  let board = b;
-  let derivative = d; 
-  let boundingBox = board.getBoundingBox();
-  let error = (boundingBox[1] - boundingBox[3]) / 50;   
-  let Xerror = (boundingBox[2] - boundingBox[0]) / 50;   
+function AdjSecantRect(binfo, xinterval, F, d) {
+  let board = binfo.board; 
+  let bi = binfo;
   let textVisible = false;
   let f = F;
-
+  let derivative = d; 
   
-  // the x interval that secant line lives on
-  // in this class this interval is adjustable
-  let xline = board.create('line', [[0,0],[1,0]], {visible:false});
-  let x1 = board.create('glider', [X1,0,xline], {name: '', size:5, color:'green'});
-  let x2 = board.create('glider', [X2,0,xline], {name: '', size:5, color:'red'});
-  let midX = function() { return x1.X() + (x2.X() - x1.X())/2 ; };
-
+  let xint = xinterval;
 
   let slope = function() { 
     if (derivative) {
-      return f(midX());      // height of rectangle is f is derivative
+      return f(xint.midX());      // height of rectangle is f is derivative
     }
-    return  (f(x2.X()) - f(x1.X())) / (x2.X() - x1.X());  // slope of secant 
+    return  (f(xint.x2.X()) - f(xint.x1.X())) / (xint.x2.X() - xint.x1.X());  // slope of secant 
   };
 
   let area = function() { 
-    return (x2.X() - x1.X()) * slope(); 
+    return (xint.x2.X() - xint.x1.X()) * slope(); 
   };
   let areaText = function() { return area().toFixed(3); }
 
-  // a vertical line and glider that is used as a handle to adjust height of rectangle
-  let vline = board.create('line', [[midX,0], [midX,1]], {visible:false});
-  let constant = board.create('glider', [midX(), 0, vline], {name: '', size:4, color:'#1111CC'});
-
   let f1y =   function() { 
-      if (derivative) { return constant.Y(); }
-      return f(x1.X());
+      if (derivative) { return xint.midY.Y(); }
+      return f(xint.x1.X());
     };
 
   let f2y =    function() { 
-      if (derivative) { return constant.Y() + area(); }
-      return f(x2.X());
+      if (derivative) { return xint.midY.Y() + area(); }
+      return f(xint.x2.X());
     };
 
   // the two points on the secant line
   let f1 = board.create('point', [
-    function() { return x1.X(); },  
+    function() { return xint.x1.X(); },  
     f1y], 
     {color: 'blue', size:3, name:'', visible:true});
   let f2 = board.create('point', [
-    function() { return x2.X(); } , 
+    function() { return xint.x2.X(); } , 
     f2y ], 
     {color: 'blue', size:3, name:'', visible:true});
 
@@ -254,14 +235,14 @@ function AdjSecantRect(b, X1, X2, F, attr, d) {
   let slopeText = function() { return slope().toFixed(3); }
 
   let sText = board.create('text', [
-    function() { return midX() - 2 * error;},
-    function() { return f1.Y() + (f2.Y() - f1.Y()) / 2 + error; },
+    function() { return xint.midX() - 2 * bi.Yerror;},
+    function() { return f1.Y() + (f2.Y() - f1.Y()) / 2 + bi.Yerror; },
     slopeText
     ], {fontSize:15, visible:false});
 
 
-  let p3 = board.create('point',[ function() { return x2.X(); }, f2y],{visible:false});
-  let p4 = board.create('point',[ function() { return x2.X(); }, f1y ],{visible:false});
+  let p3 = board.create('point',[ function() { return xint.x2.X(); }, f2y],{visible:false});
+  let p4 = board.create('point',[ function() { return xint.x2.X(); }, f1y ],{visible:false});
 
   let dimLine1 = board.create('segment', [p3,p4], {
     strokeColor:'black', 
@@ -271,7 +252,7 @@ function AdjSecantRect(b, X1, X2, F, attr, d) {
     visible:false});
 
   let dimText1 = board.create('text', [
-    function() { return x2.X() + Xerror/2; } ,
+    function() { return xint.x2.X() + bi.Xerror/2; } ,
     function () { return f1y() + area() / 2; },
     areaText
     ],{fontSize: 15, visible:false});
@@ -292,21 +273,21 @@ function AdjSecantRect(b, X1, X2, F, attr, d) {
 
   // the two points that define the top of rectangle
 
-  let r1 = board.create('point', [function() { return x1.X(); }, slope ], {visible:false});
-  let r2 = board.create('point', [function() { return x2.X(); }, slope ], {visible:false});
+  let r1 = board.create('point', [function() { return xint.x1.X(); }, slope ], {visible:false});
+  let r2 = board.create('point', [function() { return xint.x2.X(); }, slope ], {visible:false});
 
   let rect = board.create('polygon',
-    [x1, r1, r2, x2], {strokeColor: '#333333',fillColor:'#1111FF', hasInnerPoints:true});
+    [xint.x1, r1, r2, xint.x2], {strokeColor: '#333333',fillColor:'#1111FF', hasInnerPoints:true});
 
 
   let aText = board.create('text', [
-    function() { return midX() - error;},
+    function() { return xint.midX() - bi.Yerror;},
     function() { return slope() / 2; },
     areaText
     ], {fontSize:15, visible:false});
 
-  let p1 = board.create('point',[ function() { return x2.X() + Xerror / 2; }, slope],{visible:false});
-  let p2 = board.create('point',[ function() { return x2.X() +  Xerror / 2; }, 0 ],{visible:false});
+  let p1 = board.create('point',[ function() { return xint.x2.X() + bi.Xerror / 2; }, slope],{visible:false});
+  let p2 = board.create('point',[ function() { return xint.x2.X() +  bi.Xerror / 2; }, 0 ],{visible:false});
 
   let dimensionLine = board.create('segment', [p1,p2], {
     strokeColor:'black', 
@@ -315,7 +296,7 @@ function AdjSecantRect(b, X1, X2, F, attr, d) {
     lastArrow:true, 
     visible:false});
   let dimensionText = board.create('text', [
-    function() { return x2.X() + Xerror; } ,
+    function() { return xint.x2.X() + bi.Xerror; } ,
     function () { return slope() / 2; },
     slopeText
     ],{fontSize: 15, visible:false});

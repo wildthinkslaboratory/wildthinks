@@ -17,6 +17,9 @@ smartdown.importCssUrl('https://cdnjs.cloudflare.com/ajax/libs/jsxgraph/0.99.7/j
 //smartdown.import=/CalculusPrimer/calc.js
 
 
+
+
+
 const myDiv = this.div;
 myDiv.style.width = '100%';
 myDiv.style.height = '100%';
@@ -35,7 +38,10 @@ var c_graph = board0.create('functiongraph', [c,-5,5], {strokeColor:'#777777', v
 var l_graph = board0.create('functiongraph', [l,-5,5], {strokeColor:'#777777', visible:true});
 var p_graph = board0.create('functiongraph', [p,-5,5], {strokeColor:'#777777', visible:false});
 
-var r = new calclib.AdjRectangle(board0, 1, 3, l);
+var xInterval = new XInterval(board0, 1, 3);
+var boardInfo = new BoardInfo(board0);
+var r = new calclib.AdjRectangle(boardInfo, xInterval, l);
+
 
 board0.on('update', function(e) {
   r.snapToFunction();
