@@ -205,9 +205,7 @@ function AdjSecantRect(binfo, xinterval, F, d) {
     return  (f(xint.x2.X()) - f(xint.x1.X())) / (xint.x2.X() - xint.x1.X());  // slope of secant 
   };
 
-  let area = function() { 
-    return (xint.x2.X() - xint.x1.X()) * slope(); 
-  };
+  let area = function() { return (xint.x2.X() - xint.x1.X()) * slope(); };
   let areaText = function() { return area().toFixed(3); }
 
   let f1y =   function() { 
