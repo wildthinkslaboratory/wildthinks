@@ -51,3 +51,4 @@ for (let i=0; i < 6; i++) {
 
 
 ````
+[Rectangle Array](:@CalculusPrimer/RectangleArray)

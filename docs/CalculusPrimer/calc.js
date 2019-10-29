@@ -279,78 +279,131 @@ function AdjSecantRect(binfo, xinterval, F, d) {
 
 };
 
-// function FixedRectangle(b, X1, X2, hf, attr) {
-//   let board = b;
-//   let heightFunction = hf;
-
-//   let x1 = X1; // the x interval that rectangle lives on
-//   let x2 = X2;
-//   let bottom1 = board.create('point', [x1,0], {visible:false});
-//   let bottom2 = board.create('point', [x2,0], {visible:false});
-//   let midX = function() { return x1 + (x2 - x1)/2 ; };
-
-//   // a vertical line and glider that is used as a handle to adjust height of rectangle
-//   let vline = board.create('line', [[midX,0], [midX,1]], {visible:false});
-//   let glider = board.create('glider', [midX(), heightFunction(midX()), vline], {name: '', size:4, color:'purple'});
-
-//   // the two points that define the top of rectangle
-//   let top1 = board.create('point', [x1, function() { return glider.Y();}], {visible:false});
-//   let top2 = board.create('point', [x2, function() { return glider.Y();}], {visible:false});
-
-//   let rect = board.create('polygon',[bottom1, top1, top2, bottom2],attr);
-
-//   this.height = function() { return glider.Y(); };
-//   this.setHeight = function(h) {       
-//     glider.setPositionDirectly(JXG.COORDS_BY_USER, [glider.X(),h]); 
-//     glider.prepareUpdate().update(true).updateRenderer();
-//   };
-//   this.getMidX = function() { return midX(); };
-// };
 
 
-// function RectArray(b, N, X1, X2, h, F, attr) {
-//   let board = b;
-//   let rects = [];
-//   let x1 = X1;
-//   let x2 = X2;
-//   let f = F;
-//   let n = N;
-//   let attributes = attr;
-//   let error = 0.5;
+function RectangleArray(binfo, xinterval, F, N ) {
+  let board = binfo.board;
+  let bi = binfo;  
+  let xint = xinterval;  
+  let f = F;  
+  let n = N;
 
-//   let delta = (x2 - x1)/n;
-//   for (let i=x1; i < x2; i += delta) {
-//     rects.push(new Rectangle(board,i,i+delta,h,attributes));
-//   }
+  let rectangles = board.create('curve', [[0],[0]],
+    {strokeColor: '#333333',fillColor:'#2222FF', 
+    fillOpacity:0.3, highlightFillColor:'#FF2222', 
+    highlightFillOpacity:0.3, hasInnerPoints:true});
+  
+  let area = 0;
+  rectangles.updateDataArray = function() {
+
+    area = 0;
+    let delta = (xint.x2.X() - xint.x1.X()) / N;
+    let x = [xint.x1.X()];
+    let y = [0];
+    let lastRect = xint.x2.X() - delta + 0.01;
+    for (let i=xint.x1.X(); i < lastRect; i += delta) {
+
+        let height = f(i + delta/2, delta);
+        x.push(i);  // four points of our rectangle
+        y.push(height);
+
+        x.push(i + delta);
+        y.push(height);
+
+        x.push(i + delta);
+        y.push(0);
+
+        area += delta * height;
+    }
+
+    this.dataX = x;
+    this.dataY = y;
+
+  };
+
+  let areaText = board.create('text', [
+    function() { return xint.x2.X() - 2 * bi.Xerror;},
+    function() { 
+      if (f(xint.x2.X()) <= 0) { return bi.Yerror * 2; }
+      return - bi.Yerror * 2;
+    },
+    function() { return 'A = ' + area.toFixed(3).toString(); }
+    ], {fontSize:15, visible:true});
+  
+
+  this.setFunction = function(F) { f = F; };
+  this.setN = function(n) { N = n; }
+
+}
 
 
-//   this.area = function() {
-//     let a = 0;
-//     for (i=0; i < rects.length; i++) {
-//       a += delta * rects[i].height();
-//     }
-//     return a;
-//   };
+function SecantArray(binfo, xinterval, F, N ) {
+  let board = binfo.board;
+  let bi = binfo;  
+  let xint = xinterval;  
+  let f = F;  
+  let n = N;
 
-//   this.snapToFunction = function() {
-//     for (let i=0; i < rects.length; i++) {
-//       let currentH = rects[i].height();
-//       let functionH = f(rects[i].getMidX());
-//       if (currentH <= functionH + error && currentH >= functionH - error) {
-//         rects[i].setHeight(functionH);
-//       }
-//     }
-//   };
+  let secants = board.create('curve', [[0],[0]],
+    {strokecolor:'blue', strokeWidth:2}); 
 
-//   this.snapAllToFunction = function() {
-//     for (let i=0; i < rects.length; i++) {
-//       rects[i].setHeight(f(rects[i].getMidX()));
-//     }
-//     board.update();
-//   };
+  secants.updateDataArray = function() { 
+
+    let cum = 0;
+    let delta = (xint.x2.X() - xint.x1.X()) / N;
+    let x = [];
+    let y = [];
+    let lastPoint = xint.x2.X() + 0.01;
+    for (let i=xint.x1.X(); i <= lastPoint; i += delta) {
+        x.push(i);
+        let [dy, c] = f(i, delta, cum);
+        y.push(dy + c);
+        cum += dy;
+    }
+    this.dataX = x;
+    this.dataY = y;
+  };
+
+  this.setFunction = function(F) { f = F; };
+  this.setN = function(n) { N = n; }
+}
 
 
-// }
+// there's a problem passing functions to other array classes
+function SecantRectangleArray(binfo, xinterval, F, N, d) {
+  let board = binfo.board;
+  let bi = binfo;  
+  let xint = xinterval;  
+  let f = F;  
+  let n = N;
+  let rateCurve = d; 
+  let showAnnotations = false;
+ 
+  if (rateCurve) { xint.midY.setAttribute({visible:true}); }
+
+  let rectangleFunction = function(x, delta=0) { 
+    if (rateCurve) {
+      return f(x);      // height of rectangle is f is rateCurve
+    }
+    return  (f(x + delta/2) - f(x - delta/2)) / delta;  // slope of secant 
+  };
+
+  let secantFunction = function(x, delta, cum) {
+    if (rateCurve) {
+      return [f(x - delta/2) * delta, cum ];
+    }
+    return [f(x), 0];
+  };
+
+  let rectangles = new RectangleArray(binfo, xinterval, rectangleFunction, N);
+  let secants = new SecantArray(binfo, xinterval, secantFunction, N);
+  this.setFunction = function(F) { f = F; };
+  this.setN = function(n) { 
+    rectangles.setN(n); 
+    secants.setN(n);
+  }
+
+} 
 
 
 
@@ -374,6 +427,9 @@ function AdjSecantRect(binfo, xinterval, F, d) {
   exports.AdjRectangle = AdjRectangle;
   exports.AdjSecant = AdjSecant;
   exports.AdjSecantRect = AdjSecantRect;
+  exports.RectangleArray = RectangleArray;
+  exports.SecantArray = SecantArray;
+  exports.SecantRectangleArray = SecantRectangleArray;
 
 });
 
