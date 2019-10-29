@@ -38,8 +38,9 @@ var c_graph = board0.create('functiongraph', [c,-5,5], {strokeColor:'#777777', v
 var l_graph = board0.create('functiongraph', [l,-5,5], {strokeColor:'#777777', visible:true});
 var p_graph = board0.create('functiongraph', [p,-5,5], {strokeColor:'#777777', visible:false});
 
-
-var s = new calclib.AdjSecant(board0, 1, 3, l);
+var xInterval = new XInterval(board0, 1, 3);
+var boardInfo = new BoardInfo(board0);
+var s = new calclib.AdjSecant(boardInfo, xInterval, l);
 
 
 smartdown.setVariable('constant', false);

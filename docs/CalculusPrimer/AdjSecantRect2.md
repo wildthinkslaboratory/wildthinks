@@ -39,12 +39,14 @@ var l_graph = board0.create('functiongraph', [l,-5,5], {strokeColor:'#777777', v
 var p_graph = board0.create('functiongraph', [p,-5,5], {strokeColor:'#777777', visible:false});
 
 
-var s1 = new calclib.AdjSecantRect(board0, -3, -2, l, {}, true);
-var s2 = new calclib.AdjSecantRect(board0, -2, -1, l, {}, true);
-var s3 = new calclib.AdjSecantRect(board0, -1, 0, l, {}, true);
-var s4 = new calclib.AdjSecantRect(board0, 0, 1, l, {}, true);
-var s5 = new calclib.AdjSecantRect(board0, 1, 2, l, {}, true);
-var s6 = new calclib.AdjSecantRect(board0, 2, 3, l, {}, true);
+var boardInfo = new BoardInfo(board0);
+var segments = []
+for (let i=0; i < 6; i++) {
+	var xInterval = new XInterval(board0, i-3, i-2);
+	segments.push(new calclib.AdjSecantRect(boardInfo, xInterval, l, true));
+}
+
+
 
 
 

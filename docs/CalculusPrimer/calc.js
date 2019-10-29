@@ -24,7 +24,7 @@ class XInterval {
     this.x2 = b.create('glider', [X2,0,xline], {name: '', size:5, color:'red'});
     this.midX = this.midX.bind(this);
     let vline = b.create('line', [[this.midX ,0], [this.midX, 1]], {visible:false});
-    this.midY = b.create('glider', [this.midX(), 0, vline], {name: '', size:4, color:'#1111CC'});
+    this.midY = b.create('glider', [this.midX(), 0, vline], {name: '', size:4, color:'#1111CC', visible:false});
   }
 
   midX() {
@@ -35,15 +35,16 @@ class XInterval {
 
 
 
-function AdjRectangle(binfo, xinterval, F) {
+function AdjRectangle(binfo, xinterval, F, vAdjust = true) {
 
   let board = binfo.board;
   let bi = binfo; 
-  let verticalAdjust = true;  // allow vertical adjusting
+  let verticalAdjust = vAdjust;  // allow vertical adjusting
   let showAnnotations = false;   
   let attachedFunction = F;  // function that determines it's height
 
   let xint = xinterval;
+  if (verticalAdjust) { xint.midY.setAttribute({visible:true}); }
   let height = function() {
       if (verticalAdjust) { return xint.midY.Y(); }
       else { return attachedFunction(xint.midX()); }
@@ -53,7 +54,7 @@ function AdjRectangle(binfo, xinterval, F) {
   let f1 = board.create('point', [function() { return xint.x1.X(); }, height], {visible:false});
   let f2 = board.create('point', [function() { return xint.x2.X(); }, height], {visible:false});
 
-  let rect = board.create('polygon',
+  this.rect = board.create('polygon',
     [xint.x1, f1, f2, xint.x2], {strokeColor: '#333333',fillColor:'#1111FF', hasInnerPoints:true});
 
   let area = function() { return ((xint.x2.X() - xint.x1.X()) * height()).toFixed(3); }
@@ -88,11 +89,11 @@ function AdjRectangle(binfo, xinterval, F) {
     ],{fontSize: 15, visible:false});
 
 
-  rect.on('over', function(e){
+  this.rect.on('over', function(e){
     turnOnAnnotations();
   });
 
-  rect.on('out', function(e){
+  this.rect.on('out', function(e){
     if (!showAnnotations) {
       turnOffAnnotations();
     }
@@ -127,6 +128,12 @@ function AdjRectangle(binfo, xinterval, F) {
   this.setFunction = function(f) { 
     attachedFunction = f; 
   };
+
+
+  this.annotationsOn = function() { turnOnAnnotations(); }
+  this.annotationsOff = function() { turnOffAnnotations(); }
+  this.annotationsOn = this.annotationsOn.bind(this);
+  this.annotationsOff = this.annotationsOff.bind(this);
 };
 
 
@@ -135,206 +142,138 @@ function AdjRectangle(binfo, xinterval, F) {
 /*
   - why doesn't strokeColor work?  Maybe a bug in jsxgraph?
 */
-function AdjSecant(b,X1,X2,F) {
+function AdjSecant(binfo, xinterval, F) {
 
-  let board = b;   
-  let boundingBox = board.getBoundingBox();
-  let error = (boundingBox[1] - boundingBox[3]) / 50;   
-  let Xerror = (boundingBox[2] - boundingBox[0]) / 50;   
+  let board = binfo.board;
+  let bi = binfo;    
   let f = F;  
-  let slopeVisible = false;
+  let showAnnotations = false;
 
-  // the x interval that secant line lives on
-  // in this class this interval is adjustable
-  let xline = board.create('line', [[0,0],[1,0]], {visible:false});
-  let x1 = board.create('glider', [X1,0,xline], {name: '', size:5, color:'green'});
-  let x2 = board.create('glider', [X2,0,xline], {name: '', size:5, color:'red'});
-  let midX = function() { return x1.X() + (x2.X() - x1.X())/2 ; };
+  let xint = xinterval;
+  
+  let f1 = board.create('point', [
+    function() { return xint.x1.X(); },  
+    function() { return f(xint.x1.X());}
+    ], {color: 'blue', size:3, name:'', visible:true});
+  let f2 = board.create('point', [
+    function() { return xint.x2.X(); } , 
+    function() { return f(xint.x2.X());}
+    ], {color: 'blue', size:3, name:'', visible:true});
 
-  // the two points that define the top of rectangle
-  let f1 = board.create('point', [function() { return x1.X(); },  function() { return f(x1.X());}], {color: 'blue', size:3, name:'', visible:true});
-  let f2 = board.create('point', [function() { return x2.X(); } , function() { return f(x2.X());}], {color: 'blue', size:3, name:'', visible:true});
+  this.line = board.create('line', [f1, f2], {strokeColor:'blue', strokeWidth:3, straightFirst:false, straightLast:false, visible:true});
+  let slope = function() { return  ((f(xint.x2.X()) - f(xint.x1.X())) / (xint.x2.X() - xint.x1.X())).toFixed(3); }
 
-  let line = board.create('line', [f1, f2], {strokeColor:'blue', strokeWidth:3, straightFirst:false, straightLast:false, visible:true});
-  let slope = function() { return  ((f(x2.X()) - f(x1.X())) / (x2.X() - x1.X())).toFixed(3); }
-
-  let sText = board.create('text', [
-    function() { return midX() - 2 * error;},
-    function() { return f1.Y() + (f2.Y() - f1.Y()) / 2 + error; },
+  let slopeText = board.create('text', [
+    function() { return xint.midX() - 2 * bi.Xerror;},
+    function() { return f1.Y() + (f2.Y() - f1.Y()) / 2 + bi.Yerror; },
     slope
     ], {fontSize:15, visible:false});
 
-  line.on('over', function(e){
-    sText.setAttribute({visible:true});
+  let p3 = board.create('point',[ function() { return xint.x2.X(); }, function() { return f2.Y(); }],{visible:false});
+  let p4 = board.create('point',[ function() { return xint.x2.X(); }, function() { return f1.Y(); } ],{visible:false});
+
+  let dimensionLine = board.create('segment', [p3,p4], {
+    strokeColor:'black', 
+    strokeWidth:2, 
+    firstArrow:true, 
+    lastArrow:true, 
+    visible:false});
+
+  let dimensionText = board.create('text', [
+    function() { return xint.x2.X() + bi.Xerror/2; } ,
+    function () { return f1.Y() + (f2.Y() - f1.Y()) / 2; },
+    function() { return (f2.Y() - f1.Y()).toFixed(3); }
+    ],{fontSize: 15, visible:false});
+
+
+  this.line.on('over', function(e){
+    turnOnAnnotations();
   });
-  line.on('out', function(e){
-    if (!slopeVisible) {
-      sText.setAttribute({visible:false});
+  this.line.on('out', function(e){
+    if (!showAnnotations) {
+      turnOffAnnotations();
     }
   });
+
+  function turnOnAnnotations() {
+    slopeText.setAttribute({visible:true});
+    dimensionText.setAttribute({visible:true});
+    dimensionLine.setAttribute({visible:true});
+  }
+
+  function turnOffAnnotations() {
+    slopeText.setAttribute({visible:false});
+    dimensionText.setAttribute({visible:false});
+    dimensionLine.setAttribute({visible:false});
+  }
+
 
   this.setFunction = function(F) { f = F; };
 
-  this.setSlopeText = function(b) {
-    if (b) {
-      sText.setAttribute({visible:true});
-      slopeVisible = true;
-
-    }
-    else {
-      sText.setAttribute({visible:false});
-      slopeVisible = false;
-    }
-  };
+  this.annotationsOn = function() { turnOnAnnotations(); }
+  this.annotationsOff = function() { turnOffAnnotations(); }
+  this.annotationsOn = this.annotationsOn.bind(this);
+  this.annotationsOff = this.annotationsOff.bind(this);
 };
 
 
 function AdjSecantRect(binfo, xinterval, F, d) {
   let board = binfo.board; 
   let bi = binfo;
-  let textVisible = false;
   let f = F;
-  let derivative = d; 
+  let rateCurve = d; 
+  let showAnnotations = false;
   
   let xint = xinterval;
+  xint.midY.setAttribute({visible:true});
 
-  let slope = function() { 
-    if (derivative) {
-      return f(xint.midX());      // height of rectangle is f is derivative
+  let rectangleFunction = function() { 
+    if (rateCurve) {
+      return f(xint.midX());      // height of rectangle is f is rateCurve
     }
     return  (f(xint.x2.X()) - f(xint.x1.X())) / (xint.x2.X() - xint.x1.X());  // slope of secant 
   };
 
-  let area = function() { return (xint.x2.X() - xint.x1.X()) * slope(); };
-  let areaText = function() { return area().toFixed(3); }
-
-  let f1y =   function() { 
-      if (derivative) { return xint.midY.Y(); }
-      return f(xint.x1.X());
-    };
-
-  let f2y =    function() { 
-      if (derivative) { return xint.midY.Y() + area(); }
-      return f(xint.x2.X());
-    };
-
-  // the two points on the secant line
-  let f1 = board.create('point', [
-    function() { return xint.x1.X(); },  
-    f1y], 
-    {color: 'blue', size:3, name:'', visible:true});
-  let f2 = board.create('point', [
-    function() { return xint.x2.X(); } , 
-    f2y ], 
-    {color: 'blue', size:3, name:'', visible:true});
-
-  let line = board.create('line', [f1, f2], 
-    {strokeColor:'blue', strokeWidth:3, straightFirst:false, straightLast:false, visible:true});
-  let slopeText = function() { return slope().toFixed(3); }
-
-  let sText = board.create('text', [
-    function() { return xint.midX() - 2 * bi.Yerror;},
-    function() { return f1.Y() + (f2.Y() - f1.Y()) / 2 + bi.Yerror; },
-    slopeText
-    ], {fontSize:15, visible:false});
-
-
-  let p3 = board.create('point',[ function() { return xint.x2.X(); }, f2y],{visible:false});
-  let p4 = board.create('point',[ function() { return xint.x2.X(); }, f1y ],{visible:false});
-
-  let dimLine1 = board.create('segment', [p3,p4], {
-    strokeColor:'black', 
-    strokeWidth:2, 
-    firstArrow:true, 
-    lastArrow:true, 
-    visible:false});
-
-  let dimText1 = board.create('text', [
-    function() { return xint.x2.X() + bi.Xerror/2; } ,
-    function () { return f1y() + area() / 2; },
-    areaText
-    ],{fontSize: 15, visible:false});
-
-  this.setSlopeText = function(b) {
-    if (b) {
-      sText.setAttribute({visible:true});
-      slopeVisible = true;
-
+  let secantFunction = function(x) {
+    if (rateCurve) {
+      if (x == xint.x1.X()) { return xint.midY.Y(); }
+      else { return xint.midY.Y() + f(xint.midX()) * (xint.x2.X() - xint.x1.X()); }
     }
-    else {
-      sText.setAttribute({visible:false});
-      slopeVisible = false;
-    }
+    return f(x);
   };
 
+  let rectangle = new AdjRectangle(bi, xint, rectangleFunction, false);
+  let secant = new AdjSecant(bi, xint, secantFunction, false);
+
   this.setFunction = function(F) { f = F; };
+  this.setRateCurve = function(b) { 
+    rateCurve = b; 
+    if (rateCurve) { xint.midY.setAttribute({visible:true}); }
+    else { xint.midY.setAttribute({visible:false}); }
+    
+  }
 
-  // the two points that define the top of rectangle
-
-  let r1 = board.create('point', [function() { return xint.x1.X(); }, slope ], {visible:false});
-  let r2 = board.create('point', [function() { return xint.x2.X(); }, slope ], {visible:false});
-
-  let rect = board.create('polygon',
-    [xint.x1, r1, r2, xint.x2], {strokeColor: '#333333',fillColor:'#1111FF', hasInnerPoints:true});
-
-
-  let aText = board.create('text', [
-    function() { return xint.midX() - bi.Yerror;},
-    function() { return slope() / 2; },
-    areaText
-    ], {fontSize:15, visible:false});
-
-  let p1 = board.create('point',[ function() { return xint.x2.X() + bi.Xerror / 2; }, slope],{visible:false});
-  let p2 = board.create('point',[ function() { return xint.x2.X() +  bi.Xerror / 2; }, 0 ],{visible:false});
-
-  let dimensionLine = board.create('segment', [p1,p2], {
-    strokeColor:'black', 
-    strokeWidth:2, 
-    firstArrow:true, 
-    lastArrow:true, 
-    visible:false});
-  let dimensionText = board.create('text', [
-    function() { return xint.x2.X() + bi.Xerror; } ,
-    function () { return slope() / 2; },
-    slopeText
-    ],{fontSize: 15, visible:false});
-
-
-  line.on('over', function(e){
-    sText.setAttribute({visible:true});
-    aText.setAttribute({visible:true});
-    dimensionText.setAttribute({visible:true});
-    dimensionLine.setAttribute({visible:true});
-    dimText1.setAttribute({visible:true});
-    dimLine1.setAttribute({visible:true});
+  rectangle.rect.on('over', function(e){
+    rectangle.annotationsOn();
+    secant.annotationsOn();
   });
-  line.on('out', function(e){
-    if (!textVisible) {
-      sText.setAttribute({visible:false});
-      aText.setAttribute({visible:false});
-         dimensionText.setAttribute({visible:false});
-    dimensionLine.setAttribute({visible:false});
-        dimText1.setAttribute({visible:false});
-    dimLine1.setAttribute({visible:false});
+
+  rectangle.rect.on('out', function(e){
+    if (!showAnnotations) {
+      rectangle.annotationsOff();
+      secant.annotationsOff();
     }
   });
 
-  rect.on('over', function(e){
-    sText.setAttribute({visible:true});
-    aText.setAttribute({visible:true});
-       dimensionText.setAttribute({visible:true});
-    dimensionLine.setAttribute({visible:true});
-        dimText1.setAttribute({visible:true});
-    dimLine1.setAttribute({visible:true});
+  secant.line.on('over', function(e){
+    rectangle.annotationsOn();
+    secant.annotationsOn();
   });
-  rect.on('out', function(e){
-    if (!textVisible) {
-      sText.setAttribute({visible:false});
-      aText.setAttribute({visible:false});
-      dimensionText.setAttribute({visible:false});
-      dimensionLine.setAttribute({visible:false});
-            dimText1.setAttribute({visible:false});
-    dimLine1.setAttribute({visible:false});
+
+  secant.line.on('out', function(e){
+    if (!showAnnotations) {
+      rectangle.annotationsOff();
+      secant.annotationsOff();
     }
   });
 

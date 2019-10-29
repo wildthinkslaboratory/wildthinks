@@ -9,7 +9,7 @@ An adjustable secant line  can be added to a function $y = f(x)$.  The $x$ inter
 
 ----
 
-[constant](:=constant=true) [linear](:=linear=true) [polynomial](:=polynomial=true)
+[constant](:=constant=true) [linear](:=linear=true) [polynomial](:=polynomial=true) [attach rectangle](:=rectangle_curve=true) [attach secant](:=secant_curve=true)
 ```javascript /playable/autoplay
 //smartdown.import=https://cdnjs.cloudflare.com/ajax/libs/jsxgraph/0.99.7/jsxgraphcore.js
 
@@ -40,14 +40,16 @@ var p_graph = board0.create('functiongraph', [p,-5,5], {strokeColor:'#777777', v
 
 var xInterval = new XInterval(board0, 1, 3);
 var boardInfo = new BoardInfo(board0);
-var s = new calclib.AdjSecantRect(boardInfo, xInterval, l, true);
+var s = new calclib.AdjSecantRect(boardInfo, xInterval, l, false);
 
 
 smartdown.setVariable('constant', false);
 smartdown.setVariable('linear', true);
 smartdown.setVariable('polynomial', false);
+smartdown.setVariable('secant_curve', true);
+smartdown.setVariable('rectangle_curve', false);
 
-this.dependOn = ['constant', 'linear', 'polynomial'];
+this.dependOn = ['constant', 'linear', 'polynomial', 'rectangle_curve', 'secant_curve'];
 this.depend = function() {
 	if (env.constant == true) {
 		smartdown.setVariable('constant', false);
@@ -70,8 +72,17 @@ this.depend = function() {
 		p_graph.setAttribute({visible:true});
 		s.setFunction(p);
 	}
+	if (env.rectangle_curve == true) {
+		smartdown.setVariable('rectangle_curve', false);
+		s.setRateCurve(true);
+	}
+	if (env.secant_curve == true) {
+		smartdown.setVariable('secant_curve', false);
+		s.setRateCurve(false);
+	}
 	board0.update();
 }
+
 
 
 ````
