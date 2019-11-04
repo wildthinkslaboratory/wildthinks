@@ -6,6 +6,7 @@ This rectangle is adjustable because you can change the $x$ axis interval by dra
 ----
 
 [constant](:=constant=true) [linear](:=linear=true) [polynomial](:=polynomial=true)
+[Approximation Quality](:!quality)
 ```javascript /playable/autoplay
 //smartdown.import=https://cdnjs.cloudflare.com/ajax/libs/jsxgraph/0.99.7/jsxgraphcore.js
 
@@ -23,11 +24,27 @@ myDiv.innerHTML = `<div id='box1' class='jxgbox' style='height:800px;'>`;
 
 JXG.Options.axis.ticks.majorHeight = 40;
 // create the board
-board0 = JXG.JSXGraph.initBoard('box1', {boundingbox:[-5,5,5,-5], keepaspectratio:false, axis:true});
+board0 = JXG.JSXGraph.initBoard('box1', {boundingbox:[-1,20,5,-5], keepaspectratio:false, axis:true});
 
-var l = function(x) { return x; }
+var l = function(x) { return x * x; }
 var l_graph = board0.create('functiongraph', [l,-5,5], {strokeColor:'#777777', visible:true});
 var boardInfo = new BoardInfo(board0);
+var rectangles = [];
+
+smartdown.setVariable('quality', 0);
+let computeError = function() {
+	let area = 0;
+	for (let i=0; i < rectangles.length; i++) {
+		area += rectangles[i].area();
+	}
+
+	smartdown.setVariable('quality', (100 * area * 3 / 64).toFixed(2));
+
+};
+
+board0.on('update', function() {
+	computeError();
+});
 
 this.div.onmousedown = function(e) { 
 	
@@ -37,10 +54,12 @@ this.div.onmousedown = function(e) {
 	console.log('width', width, 'mouse x', e.clientX);
 	let percent = e.clientX / width;
 	let x = lx + (rx - lx) * percent;
-  	var xInterval = new XInterval(board0, x, x+1);
-	var r = new calclib.AdjRectangle(boardInfo, xInterval, l);
+  	var xInterval = new XInterval(board0, x, x+ 0.5);
+	rectangles.push(new calclib.AdjRectangle(boardInfo, xInterval, l, false));
 
 }
+
+
 ````
 
 [Adjustable Secant](:@CalculusPrimer/AdjustableSecantLine)

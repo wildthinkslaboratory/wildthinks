@@ -41,7 +41,7 @@ var p_graph = board0.create('functiongraph', [p,-5,5], {strokeColor:'#777777', v
 
 var xInterval = new XInterval(board0, 1, 3);
 var boardInfo = new BoardInfo(board0);
-var secantRectangleArray = new calclib.SecantRectangleArray(boardInfo, xInterval, l, env.num, true);
+var rectangleArray = new calclib.RectangleArray(boardInfo, xInterval, l, env.num);
 
 
 
@@ -52,25 +52,25 @@ this.depend = function() {
 		c_graph.setAttribute({visible:true});
 		l_graph.setAttribute({visible:false});
 		p_graph.setAttribute({visible:false});
-		secantRectangleArray.setFunction(c);
+		rectangleArray.setFunction(c);
 	}
 	if (env.linear == true) {
 		smartdown.setVariable('linear', false);
 		c_graph.setAttribute({visible:false});
 		l_graph.setAttribute({visible:true});
 		p_graph.setAttribute({visible:false});
-		secantRectangleArray.setFunction(l);
+		rectangleArray.setFunction(l);
 	}
 	if (env.polynomial == true) {
 		smartdown.setVariable('polynomial', false);
 		c_graph.setAttribute({visible:false});
 		l_graph.setAttribute({visible:false});
 		p_graph.setAttribute({visible:true});
-		secantRectangleArray.setFunction(p);
+		rectangleArray.setFunction(p);
 	}
 
 	if (env.num != oldN) {
-		secantRectangleArray.setN(env.num);
+		rectangleArray.setN(env.num);
 		oldN = env.num;
 	}
 	board0.update();
@@ -78,4 +78,4 @@ this.depend = function() {
 
 ````
 
-[Adjustable Secant](:@CalculusPrimer/AdjustableSecantLine)
+[Secant Array](:@CalculusPrimer/SecantArray)

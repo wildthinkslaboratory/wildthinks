@@ -4,8 +4,9 @@ This rectangle is adjustable because you can change the $x$ axis interval by dra
 
 ----
 
-[constant](:=constant=true) [linear](:=linear=true) [polynomial](:=polynomial=true)
+[constant](:=constant=true) [linear](:=linear=true) [polynomial](:=polynomial=true) [e to the x](:=exp=true)
 N [](:-num/1/100/1) [](:!num) 
+[attach rectangle](:=rectangle_curve=true) [attach secant](:=secant_curve=true)
 ```javascript /playable/autoplay
 //smartdown.import=https://cdnjs.cloudflare.com/ajax/libs/jsxgraph/0.99.7/jsxgraphcore.js
 
@@ -25,9 +26,13 @@ myDiv.innerHTML = `<div id='box1' class='jxgbox' style='height:800px;'>`;
 smartdown.setVariable('constant', false);
 smartdown.setVariable('linear', true);
 smartdown.setVariable('polynomial', false);
-smartdown.setVariable('num', 2);
+smartdown.setVariable('exp', false);
+smartdown.setVariable('num', 20);
 let oldN = 20;
+smartdown.setVariable('secant_curve', true);
+smartdown.setVariable('rectangle_curve', false);
 
+JXG.Options.text.useMathJax = true;
 JXG.Options.axis.ticks.majorHeight = 40;
 // create the board
 board0 = JXG.JSXGraph.initBoard('box1', {boundingbox:[-5,5,5,-5], keepaspectratio:false, axis:true});
@@ -35,50 +40,70 @@ board0 = JXG.JSXGraph.initBoard('box1', {boundingbox:[-5,5,5,-5], keepaspectrati
 var c = function(x) { return 2; }
 var l = function(x) { return x; }
 var p = function(x) { return x * x * x / 25; };
-var cA = function(x) { return [2,0]; }
-var lA = function(x, dummy1, dummy2) { return [x,0]; }
-var pA = function(x) { return [x * x * x / 25,0]; };
+var e = function(x) { return Math.exp(x); }
 var c_graph = board0.create('functiongraph', [c,-5,5], {strokeColor:'#777777', visible:false});
 var l_graph = board0.create('functiongraph', [l,-5,5], {strokeColor:'#777777', visible:true});
 var p_graph = board0.create('functiongraph', [p,-5,5], {strokeColor:'#777777', visible:false});
+var e_graph = board0.create('functiongraph', [e,-5,5], {strokeColor:'#777777', visible:false});
 
 var xInterval = new XInterval(board0, 1, 3);
 var boardInfo = new BoardInfo(board0);
-var secantArray = new calclib.SecantArray(boardInfo, xInterval, lA, env.num);
+var secantRectangleArray = new calclib.SecantRectangleArray(boardInfo, xInterval, l, env.num, false);
 
 
 
-this.dependOn = ['constant', 'linear', 'polynomial', 'num'];
+this.dependOn = ['constant', 'linear', 'polynomial', 'exp', 'num', 'rectangle_curve', 'secant_curve'];
 this.depend = function() {
 	if (env.constant == true) {
 		smartdown.setVariable('constant', false);
 		c_graph.setAttribute({visible:true});
 		l_graph.setAttribute({visible:false});
 		p_graph.setAttribute({visible:false});
-		secantArray.setFunction(cA);
+		e_graph.setAttribute({visible:false});
+		secantRectangleArray.setFunction(c);
 	}
 	if (env.linear == true) {
 		smartdown.setVariable('linear', false);
 		c_graph.setAttribute({visible:false});
 		l_graph.setAttribute({visible:true});
 		p_graph.setAttribute({visible:false});
-		secantArray.setFunction(lA);
+		e_graph.setAttribute({visible:false});
+		secantRectangleArray.setFunction(l);
 	}
 	if (env.polynomial == true) {
 		smartdown.setVariable('polynomial', false);
 		c_graph.setAttribute({visible:false});
 		l_graph.setAttribute({visible:false});
 		p_graph.setAttribute({visible:true});
-		secantArray.setFunction(pA);
+		e_graph.setAttribute({visible:false});
+		secantRectangleArray.setFunction(p);
+	}
+
+	if (env.exp == true) {
+		smartdown.setVariable('polynomial', false);
+		c_graph.setAttribute({visible:false});
+		l_graph.setAttribute({visible:false});
+		p_graph.setAttribute({visible:false});
+		e_graph.setAttribute({visible:true});
+		secantRectangleArray.setFunction(e);
 	}
 
 	if (env.num != oldN) {
-		secantArray.setN(env.num);
+		secantRectangleArray.setN(env.num);
 		oldN = env.num;
+	}
+
+	if (env.rectangle_curve == true) {
+		smartdown.setVariable('rectangle_curve', false);
+		secantRectangleArray.setRateCurve(true);
+	}
+	if (env.secant_curve == true) {
+		smartdown.setVariable('secant_curve', false);
+		secantRectangleArray.setRateCurve(false);
 	}
 	board0.update();
 }
 
 ````
 
-[Adjustable Secant](:@CalculusPrimer/AdjustableSecantLine)
+[Adjustable Rectangle](:@CalculusPrimer/AdjustableRectangle)
