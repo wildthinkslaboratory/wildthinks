@@ -45,7 +45,7 @@ class XInterval {
 
 
 
-function AdjRectangle(binfo, xinterval, F, vAdjust = true) {
+function AdjRectangle(binfo, xinterval, F, vAdjust = false) {
 
   let board = binfo.board;
   let bi = binfo; 
@@ -178,20 +178,20 @@ function AdjSecant(binfo, xinterval, F) {
   let f1 = board.create('point', [
     function() { return xint.x1.X(); },  
     function() { return f(xint.x1.X());}
-    ], {color: 'blue', size:3, name:'', visible:true});
+  ], {color: 'blue', size:3, name:'', visible:true});
   let f2 = board.create('point', [
     function() { return xint.x2.X(); } , 
     function() { return f(xint.x2.X());}
-    ], {color: 'blue', size:3, name:'', visible:true});
+  ], {color: 'blue', size:3, name:'', visible:true});
 
   this.line = board.create('line', [f1, f2], {strokeColor:'blue', strokeWidth:3, straightFirst:false, straightLast:false, visible:true});
-  let slope = function() { return  ((f(xint.x2.X()) - f(xint.x1.X())) / (xint.x2.X() - xint.x1.X())).toFixed(3); }
+  let slope = function() { return  ((f(xint.x2.X()) - f(xint.x1.X())) / (xint.x2.X() - xint.x1.X())).toFixed(3); };
 
   let slopeText = board.create('text', [
     function() { return xint.midX() - 4 * bi.Xerror;},
     function() { return f1.Y() + (f2.Y() - f1.Y()) / 2 + bi.Yerror; },
     function() { return 'slope = ' + slope(); }
-    ], {fontSize:15, visible:false});
+  ], {fontSize:15, visible:false});
 
   let p3 = board.create('point',[ function() { return xint.x2.X(); }, function() { return f2.Y(); }],{visible:false});
   let p4 = board.create('point',[ function() { return xint.x2.X(); }, function() { return f1.Y(); } ],{visible:false});
@@ -207,13 +207,13 @@ function AdjSecant(binfo, xinterval, F) {
     function() { return xint.x2.X() + bi.Xerror/2; } ,
     function () { return f1.Y() + (f2.Y() - f1.Y()) / 2; },
     function() { return (f2.Y() - f1.Y()).toFixed(3); }
-    ],{fontSize: 15, visible:false});
+  ],{fontSize: 15, visible:false});
 
 
-  this.line.on('over', function(e){
+  this.line.on('over', function(){
     turnOnAnnotations();
   });
-  this.line.on('out', function(e){
+  this.line.on('out', function(){
     if (!showAnnotations) {
       turnOffAnnotations();
     }
@@ -234,15 +234,26 @@ function AdjSecant(binfo, xinterval, F) {
 
   this.setFunction = function(F) { f = F; };
 
-  this.annotationsOn = function() { turnOnAnnotations(); }
-  this.annotationsOff = function() { turnOffAnnotations(); }
+  this.annotationsOn = function() { turnOnAnnotations(); };
+  this.annotationsOff = function() { turnOffAnnotations(); };
   this.annotationsOn = this.annotationsOn.bind(this);
   this.annotationsOff = this.annotationsOff.bind(this);
-};
+
+  this.delete = function() {
+    board.removeObject(dimensionLine);
+    board.removeObject(dimensionText);
+    board.removeObject(p3);
+    board.removeObject(p4);
+    board.removeObject(slopeText);
+    board.removeObject(this.line);
+    board.removeObject(f1);
+    board.removeObject(f2);
+    xint.delete();
+  };
+}
 
 
-function AdjSecantRect(binfo, xinterval, F, d) {
-  let board = binfo.board; 
+function AdjSecantRect(binfo, xinterval, F, d = false) {
   let bi = binfo;
   let f = F;
   let rateCurve = d; 
@@ -275,33 +286,39 @@ function AdjSecantRect(binfo, xinterval, F, d) {
     if (rateCurve) { xint.midY.setAttribute({visible:true}); }
     else { xint.midY.setAttribute({visible:false}); }
     
-  }
+  };
 
-  rectangle.rect.on('over', function(e){
+  rectangle.rect.on('over', function(){
     rectangle.annotationsOn();
     secant.annotationsOn();
   });
 
-  rectangle.rect.on('out', function(e){
+  rectangle.rect.on('out', function(){
     if (!showAnnotations) {
       rectangle.annotationsOff();
       secant.annotationsOff();
     }
   });
 
-  secant.line.on('over', function(e){
+  secant.line.on('over', function(){
     rectangle.annotationsOn();
     secant.annotationsOn();
   });
 
-  secant.line.on('out', function(e){
+  secant.line.on('out', function(){
     if (!showAnnotations) {
       rectangle.annotationsOff();
       secant.annotationsOff();
     }
   });
 
-};
+  this.delete = function() {
+    rectangle.delete();
+    secant.delete();
+    xint.delete();
+  };
+
+}
 
 
 
@@ -310,12 +327,11 @@ function RectangleArray(binfo, xinterval, F, N ) {
   let bi = binfo;  
   let xint = xinterval;  
   let f = F;  
-  let n = N;
 
   let rectangles = board.create('curve', [[0],[0]],
     {strokeColor: '#333333',fillColor:'#2222FF', 
-    fillOpacity:0.3, highlightFillColor:'#FF2222', 
-    highlightFillOpacity:0.3, hasInnerPoints:true});
+      fillOpacity:0.3, highlightFillColor:'#FF2222', 
+      highlightFillOpacity:0.3, hasInnerPoints:true});
   
   let area = 0;
   rectangles.updateDataArray = function() {
@@ -327,17 +343,17 @@ function RectangleArray(binfo, xinterval, F, N ) {
     let lastRect = xint.x2.X() - delta + 0.01;
     for (let i=xint.x1.X(); i < lastRect; i += delta) {
 
-        let height = f(i + delta/2, delta);
-        x.push(i);  // four points of our rectangle
-        y.push(height);
+      let height = f(i + delta/2, delta);
+      x.push(i);  // four points of our rectangle
+      y.push(height);
 
-        x.push(i + delta);
-        y.push(height);
+      x.push(i + delta);
+      y.push(height);
 
-        x.push(i + delta);
-        y.push(0);
+      x.push(i + delta);
+      y.push(0);
 
-        area += delta * height;
+      area += delta * height;
     }
 
     this.dataX = x;
@@ -352,12 +368,16 @@ function RectangleArray(binfo, xinterval, F, N ) {
       return - bi.Yerror * 2;
     },
     function() { return 'Area = ' + area.toFixed(3).toString(); }
-    ], {fontSize:15, visible:true});
+  ], {fontSize:15, visible:true});
   
 
   this.setFunction = function(F) { f = F; };
-  this.setN = function(n) { N = n; }
-
+  this.setN = function(n) { N = n; };
+  this.delete = function() {
+    board.removeObject(areaText);
+    board.removeObject(rectangles);
+    xint.delete();
+  };
 }
 
 
@@ -366,7 +386,6 @@ function SecantArray(binfo, xinterval, F, N ) {
   let bi = binfo;  
   let xint = xinterval;  
   let f = F;  
-  let n = N;
 
   let secants = board.create('curve', [[0],[0]],
     {strokecolor:'blue', strokeWidth:2}); 
@@ -381,11 +400,11 @@ function SecantArray(binfo, xinterval, F, N ) {
     let y = [];
     let lastPoint = xint.x2.X() + 0.01;
     for (let i=xint.x1.X(); i <= lastPoint; i += delta) {
-        x.push(i);
-        let [dy, c, constant] = f(i, delta, deltaY);
-        y.push(dy + c + constant);
-        deltaY += dy;
-        if (i <= xint.x1.X()) { firstY = y[y.length - 1]; }
+      x.push(i);
+      let [dy, c, constant] = f(i, delta, deltaY);
+      y.push(dy + c + constant);
+      deltaY += dy;
+      if (i <= xint.x1.X()) { firstY = y[y.length - 1]; }
     }
     lastY = y[y.length - 1];
     this.dataX = x;
@@ -396,23 +415,24 @@ function SecantArray(binfo, xinterval, F, N ) {
     function() { return xint.x2.X() - bi.Xerror;},
     function() { return lastY - 2*bi.Yerror; },
     function() { return 'vertical \n change = ' + (lastY - firstY).toFixed(3).toString(); }
-    ], {fontSize:15, visible:true});
+  ], {fontSize:15, visible:true});
   
 
   this.setFunction = function(F) { f = F; };
-  this.setN = function(n) { N = n; }
+  this.setN = function(n) { N = n; };
+  this.delete = function() {
+    board.removeObject(deltaYText);
+    board.removeObject(secants);
+    xint.delete();
+  };
 }
 
 
 // there's a problem passing functions to other array classes
-function SecantRectangleArray(binfo, xinterval, F, N, d) {
-  let board = binfo.board;
-  let bi = binfo;  
+function SecantRectangleArray(binfo, xinterval, F, N, d = false) {
   let xint = xinterval;  
   let f = F;  
-  let n = N;
   let rateCurve = d; 
-  let showAnnotations = false;
  
   if (rateCurve) { xint.midY.setAttribute({visible:true}); }
 
@@ -436,14 +456,20 @@ function SecantRectangleArray(binfo, xinterval, F, N, d) {
   this.setN = function(n) { 
     rectangles.setN(n); 
     secants.setN(n);
-  }
+  };
 
   this.setRateCurve = function(b) { 
     rateCurve = b; 
     if (rateCurve) { xint.midY.setAttribute({visible:true}); }
     else { xint.midY.setAttribute({visible:false}); }
     
-  }
+  };
+
+  this.delete = function() {
+    rectangles.delete();
+    secants.delete();
+    xint.delete();
+  };
 
 } 
 
@@ -451,6 +477,57 @@ function SecantRectangleArray(binfo, xinterval, F, N, d) {
 function WorkSpace(b) {
   let board = b;
   let boardInfo = new BoardInfo(b);
+  let elements = [];
+
+  this.addElement = function(m, xPlacement, f) {
+
+    let startx = board.getBoundingBox()[0];
+    let endx = board.getBoundingBox()[2];
+    let x1 = startx + (endx - startx) * xPlacement;
+    let x2 = x1 + 5 * boardInfo.Xerror;
+    let xinterval = new XInterval(board, x1, x2);
+
+    switch(m) {
+        
+    case 0: 
+      elements.push({type:'rectangle', value: new AdjRectangle(boardInfo, xinterval, f)});
+      break;
+
+    case 1:
+      elements.push({type:'secant', value: new AdjSecant(boardInfo, xinterval, f)});
+      break;
+
+    case 2:
+      elements.push({type:'secant rectangle', value: new AdjSecantRect(boardInfo, xinterval, f)});
+      break;
+
+    case 3:
+      elements.push({type:'rectangle array', value: new RectangleArray(boardInfo, xinterval, f, 20)});
+      break;
+
+    case 4:
+      let fA = function(x) { return [f(x),0,0]; };
+      elements.push({type:'secant array', value: new SecantArray(boardInfo, xinterval, fA, 20)});
+      break;
+
+    case 5:
+      elements.push({type:'secant rectangle array', value: new SecantRectangleArray(boardInfo, xinterval, f, 20)});
+      break;
+
+    default: 
+      console.log('bad element type', m);
+      break;
+
+    }
+  };
+
+  this.undo = function() {
+    if (elements.length > 0 ) {
+      elements[elements.length - 1].value.delete();
+      elements.pop();
+    }
+
+  };
 
 }
 
