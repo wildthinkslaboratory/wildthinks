@@ -152,6 +152,34 @@ class ToolPanel extends ButtonArray {
     return ['', false, buttonID];
   }
 }
+
+class CalculusToolbar extends ToolPanel {
+  constructor(playablep5) {
+    super(playablep5, 55, 15, 15);
+
+    let rectImg = playablep5.loadImage('CalculusPrimer/images/rectButton.png');
+    let rectImg2 = playablep5.loadImage('CalculusPrimer/images/rectButton2.png');
+    let secantImg = playablep5.loadImage('CalculusPrimer/images/secantButton.png');
+    let secantImg2 = playablep5.loadImage('CalculusPrimer/images/secantButton2.png');
+    let rectSecantImg = playablep5.loadImage('CalculusPrimer/images/rectSecantButton.png');
+    let rectSecantImg2 = playablep5.loadImage('CalculusPrimer/images/rectSecantButton2.png');
+    let rectArrayImg = playablep5.loadImage('CalculusPrimer/images/rectArray.png');
+    let rectArrayImg2 = playablep5.loadImage('CalculusPrimer/images/rectArray2.png');
+    let secantArrayImg = playablep5.loadImage('CalculusPrimer/images/secantArray.png');
+    let secantArrayImg2 = playablep5.loadImage('CalculusPrimer/images/secantArray2.png');
+    let secantRectArrayImg = playablep5.loadImage('CalculusPrimer/images/secantRectArray.png');
+    let secantRectArrayImg2 = playablep5.loadImage('CalculusPrimer/images/secantRectArray2.png');
+
+    this.addButton('rectangle', rectImg, rectImg2);
+    this.addButton('secant', secantImg, secantImg2);
+    this.addButton('rectSecant', rectSecantImg, rectSecantImg2);
+    this.addButton('rectangleArray', rectArrayImg, rectArrayImg2);
+    this.addButton('secantArray', secantArrayImg, secantArrayImg2);
+    this.addButton('secantRectangleArray', secantRectArrayImg, secantRectArrayImg2);
+
+    this.initialize();
+  }
+}
 ///////////////////////////////////////////////////////////////////////////////////////
 
 (function (global, factory) {
@@ -171,6 +199,7 @@ class ToolPanel extends ButtonArray {
 
   exports.ButtonArray = ButtonArray;
   exports.ToolPanel = ToolPanel;
+  exports.CalculusToolbar = CalculusToolbar;
 
 
 });

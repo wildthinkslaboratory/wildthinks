@@ -1,4 +1,4 @@
-zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz
+# Toolbar Demo
 
 # :::: controlPanel
 # --aliceblue
@@ -18,43 +18,15 @@ myDiv.style.background = '#EEEEEE';
 myDiv.style.border = '1px solid gray';
 myDiv.style.borderRadius = '8px';
 
-let width = 55;
-let xSpacer = 15;
-let ySpacer = 15;
 let numButtons = 6;
-let B = new ToolPanel(p5, width, xSpacer, ySpacer);
-let rectImg, rectImg2, secantImg, secantImg2, rectArray, rectArray2, secantArray, secantArray2, secantRectArray, secantRectArray2;
-
-
+let xSpacer = 15, ySpacer = 15, width = 55;
+let B = new CalculusToolbar(p5);
 
 
 p5.setup = function() { 
   var canvasWidth = xSpacer + (width + xSpacer) * numButtons;  // set the size of the playable
   var canvasHeight = width + 2 * ySpacer;
   p5.createCanvas(canvasWidth,canvasHeight);     // create the canvas we will draw on
-
-  rectImg = p5.loadImage('CalculusPrimer/images/rectButton.png');
-  rectImg2 = p5.loadImage('CalculusPrimer/images/rectButton2.png');
-  secantImg = p5.loadImage('CalculusPrimer/images/secantButton.png');
-  secantImg2 = p5.loadImage('CalculusPrimer/images/secantButton2.png');
-  rectSecantImg = p5.loadImage('CalculusPrimer/images/rectSecantButton.png');
-  rectSecantImg2 = p5.loadImage('CalculusPrimer/images/rectSecantButton2.png');
-  rectArrayImg = p5.loadImage('CalculusPrimer/images/rectArray.png');
-  rectArrayImg2 = p5.loadImage('CalculusPrimer/images/rectArray2.png');
-  secantArrayImg = p5.loadImage('CalculusPrimer/images/secantArray.png');
-  secantArrayImg2 = p5.loadImage('CalculusPrimer/images/secantArray2.png');
-  secantRectArrayImg = p5.loadImage('CalculusPrimer/images/secantRectArray.png');
-  secantRectArrayImg2 = p5.loadImage('CalculusPrimer/images/secantRectArray2.png');
-
-
-  B.addButton('rectangle', rectImg, rectImg2);
-  B.addButton('secant', secantImg, secantImg2);
-  B.addButton('rectSecant', rectSecantImg, rectSecantImg2);
-  B.addButton('rectangleArray', rectArrayImg, rectArrayImg2);
-  B.addButton('secantArray', secantArrayImg, secantArrayImg2);
-  B.addButton('secantRectangleArray', secantRectArrayImg, secantRectArrayImg2);
-
-  B.initialize();
 };
 
 

@@ -432,7 +432,7 @@ function AdjSecant(binfo, xinterval, F) {
   this.line = board.create('line', [f1, f2], {
     strokeColor: colors.stroke, 
     highlightStrokeColor: colors.stroke,
-    strokeWidth:3, 
+    strokeWidth:4, 
     straightFirst:false, 
     straightLast:false, 
     visible:true});

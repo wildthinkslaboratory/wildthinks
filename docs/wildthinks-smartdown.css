@@ -8,6 +8,9 @@
 
 /* Text-spacing stuff */
 
+.wildthinks-theme.smartdown-container {
+  width: 100%;
+}
 
 .wildthinks-theme.smartdown-container ul,
 .wildthinks-theme.smartdown-container h1,
