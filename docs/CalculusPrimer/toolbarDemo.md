@@ -66,7 +66,10 @@ p5.mousePressed = function()                     // this function is called ever
 {
   const [name, state, id] = B.mousePressed();
   
-  smartdown.setVariable('mode', id);
+  if (id != -1) {
+    smartdown.setVariable('mode', id);
+  }
+  
 
   // EnergyHack to enable looping for duration of drag.
   p5.loop();
@@ -156,7 +159,9 @@ this.div.onmousedown = function(e) {
   let width = this.offsetWidth;
   let percent = e.clientX / width;
 
-  workspace.addElement(env.mode, percent, f);
+  if (env.mode >= 0) {
+    workspace.addElement(env.mode, percent, f);
+  }
 
 };
 
