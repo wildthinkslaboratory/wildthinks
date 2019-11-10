@@ -146,7 +146,10 @@ var yaxis = board0.create('axis', [[0, 0], [0, 1]],
 
 
 
-var l_graph = board0.create('functiongraph', [f,0,xhigh], {strokeColor:'#999999', strokeWidth:3, visible:true});
+var l_graph = board0.create('functiongraph', [f,0,xhigh], {
+  strokeColor:'#777777', 
+  strokeWidth:1, 
+  visible:true});
 
 var workspace = new WorkSpace(board0);
 
