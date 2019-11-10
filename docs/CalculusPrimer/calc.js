@@ -1,17 +1,19 @@
 
 
+
+
 class Slider {
-  constructor(b, binfo, xfunction, yfunction, low, high, name) {
+  constructor(b, binfo, xfunction, yfunction, low, high, name, sliderWidth) {
     this.board = b;
     this.low = low;
     this.high = high;
     this.xf = xfunction;
     this.yf = yfunction;
-    this.xdelta = binfo.Xerror * 3;
+    this.xdelta = sliderWidth;
     this.name = name;
 
     this.l1 = b.create('segment', [[xfunction, yfunction], [
-      function() { return xfunction() + binfo.Xerror * 3; },yfunction]], {
+      function() { return xfunction() + sliderWidth; },yfunction]], {
       strokeColor:'black', 
       strokeWidth:1,  
       visible:true
@@ -22,7 +24,8 @@ class Slider {
       name: '', 
       size:6, 
       strokeColor: 'black', 
-      fillColor:'white'
+      fillColor:'white',
+      showInfoBox:false
     });
 
     this.gliderX = this.gliderX.bind(this);
@@ -37,8 +40,8 @@ class Slider {
     this.Value = this.Value.bind(this);
     this.stringValue = this.stringValue.bind(this);
 
-    this.text2 = b.create('text', [
-      function() { return  xfunction() + binfo.Xerror * 3.5; },
+    this.text = b.create('text', [
+      function() { return  xfunction() + sliderWidth + binfo.Xerror; },
       yfunction,
       this.stringValue], {fontSize:12}
     );
@@ -59,8 +62,7 @@ class Slider {
 
   delete() {
     if (!this.dead) {  // only delete it once
-      this.board.removeObject(this.text2);
-      this.board.removeObject(this.text1);
+      this.board.removeObject(this.text);
       this.board.removeObject(this.l2);
       this.board.removeObject(this.g);
       this.board.removeObject(this.l1);
@@ -70,8 +72,8 @@ class Slider {
 }
 
 class IntSlider extends Slider {
-  constructor(b, binfo, xfunction, yfunction, low, high, name) {
-    super(b, binfo, xfunction, yfunction, low, high, name);
+  constructor(b, binfo, xfunction, yfunction, low, high, name, sliderWidth) {
+    super(b, binfo, xfunction, yfunction, low, high, name, sliderWidth);
   }
 
   Value() {
@@ -81,12 +83,47 @@ class IntSlider extends Slider {
 
 class BoolButton extends Slider {
   constructor(b, binfo, xfunction, yfunction, name) {
-    super(b, binfo, xfunction, yfunction, 0, 2, name);
+    super(b, binfo, xfunction, yfunction, 0, 2, name, 0.01);
+    this.state = false;
+    this.toggle = this.toggle.bind(this);
+    this.showText = this.showText.bind(this);
+    this.hideText = this.hideText.bind(this);
+    this.g.on('up', this.toggle);
+    this.g.on('over', this.showText);
+    this.g.on('out', this.hideText);
+    this.g.setAttribute({fillColor:'#8844FF', strokeColor:'#555555'});
+    this.text.setAttribute({visible:false, strokeColor:'#888888'});
   }
 
   Value() {
-    if (super.Value() < 1) return false;
-    return true;
+    return this.state;
+  }
+
+  stringValue() { 
+    if (this.state) {
+      return 'attach secant';
+    }
+    else {
+      return 'attach rectangle';
+    }
+  }
+
+  toggle() {
+    if (this.state) {
+      this.g.setAttribute({fillColor:'#8844FF'});
+    }
+    else {
+      this.g.setAttribute({fillColor:'#EEDDFF'});
+    }
+    this.state = !this.state;
+  }
+
+  showText() {
+    this.text.setAttribute({visible:true});
+  }
+
+  hideText() {
+    this.text.setAttribute({visible:false});
   }
 }
 
@@ -116,7 +153,8 @@ class XInterval {
     this.x2 = b.create('glider', [X2,0,this.xline], {name: '', size:5, color:'red'});
     this.midX = this.midX.bind(this);
     this.vline = b.create('line', [[this.midX ,0], [this.midX, 1]], {visible:false});
-    this.midY = b.create('glider', [this.midX(), 0, this.vline], {name: '', size:4, color:'#1111CC', visible:false});
+    this.midY = b.create('glider', [this.midX(), 0, this.vline], {
+      name: '', size:4, color:'#1155CC', visible:false, showInfoBox:false});
   }
 
   midX() {
@@ -156,7 +194,13 @@ function AdjRectangle(binfo, xinterval, F, vAdjust = false) {
   let f2 = board.create('point', [function() { return xint.x2.X(); }, height], {visible:false});
 
   this.rect = board.create('polygon',
-    [xint.x1, f1, f2, xint.x2], {strokeColor: '#333333',fillColor:'#1111FF', hasInnerPoints:true});
+    [xint.x1, f1, f2, xint.x2], {
+      strokeColor: '#1155CC',
+      fillColor:'#66AAFF', 
+      highlightStrokeColor:'#DD3333',
+      highlightFillColor:'#FF2222', 
+      hasInnerPoints:true
+    });
 
   let area = function() { return ((xint.x2.X() - xint.x1.X()) * height()).toFixed(3); };
   
@@ -252,6 +296,99 @@ function AdjRectangle(binfo, xinterval, F, vAdjust = false) {
 }
 
 
+function DisplayRectangle(binfo, xinterval, lname, wname, Aname) {
+
+  let board = binfo.board;
+  let bi = binfo; 
+
+  let xint = xinterval;
+  xint.midY.setAttribute({visible:true});
+
+  let height = function() { return xint.midY.Y(); };
+
+  // the two points that define the top of rectangle
+  let f1 = board.create('point', [function() { return xint.x1.X(); }, height], {visible:false});
+  let f2 = board.create('point', [function() { return xint.x2.X(); }, height], {visible:false});
+
+  this.rect = board.create('polygon',
+    [xint.x1, f1, f2, xint.x2], {strokeColor: '#333333',fillColor:'#66AAFF', hasInnerPoints:true});
+
+  let area = function() { return ((xint.x2.X() - xint.x1.X()) * height()).toFixed(2); };
+  
+  // these components are all part of the annotation
+  let areaText = board.create('text', [
+    function() { return xint.midX() - bi.Xerror;},
+    function() { return height() / 2; },
+    function() { return Aname + ' = ' + area(); }
+  ], {fontSize:15, visible:true});
+  
+  let p1 = board.create('point',[
+    function() { return xint.x2.X() + bi.Xerror / 2; }, 
+    height
+  ],{visible:false});
+
+  let p2 = board.create('point',[
+    function() { return xint.x2.X() +  bi.Xerror / 2; }, 
+    0 
+  ],{visible:false});
+
+  let dimensionLine = board.create('segment', [p1,p2], {
+    strokeColor:'black', 
+    strokeWidth:2, 
+    firstArrow:true, 
+    lastArrow:true, 
+    visible:true});
+  let dimensionText = board.create('text', [
+    function() { return xint.x2.X() + bi.Xerror; } ,
+    function () { return height() / 2; },
+    function() { return wname + ' = ' + height().toFixed(2); }
+  ],{fontSize: 15, visible:true});
+
+  let p3 = board.create('point',[
+    function() { return xint.x1.X(); }, 
+    function() { return height() + bi.Yerror; }
+  ],{visible:false});
+
+  let p4 = board.create('point',[
+    function() { return xint.x2.X(); }, 
+    function() { return height() + bi.Yerror; }
+  ],{visible:false});
+
+  let dimensionLine2 = board.create('segment', [p3,p4], {
+    strokeColor:'black', 
+    strokeWidth:2, 
+    firstArrow:true, 
+    lastArrow:true, 
+    visible:true});
+
+  let dimensionText2 = board.create('text', [
+    function() { return xint.x1.X() + (xint.x2.X() - xint.x1.X())/2 - bi.Xerror; } ,
+    function () { return height() + 2 * bi.Yerror; },
+    function() { return lname + ' = ' + (xint.x2.X() - xint.x1.X()).toFixed(2); }
+  ],{fontSize: 15, visible:true});
+
+  this.setHeight = function(h) { 
+    xint.midY.moveTo([xint.midY.X(), h]);
+  };
+
+  
+  this.area = function() { return (xint.x2.X() - xint.x1.X()) * height(); };
+
+  this.delete = function() {
+    board.removeObject(dimensionLine2);
+    board.removeObject(dimensionText2);
+    board.removeObject(dimensionLine);
+    board.removeObject(dimensionText);
+    board.removeObject(p2);
+    board.removeObject(p1);
+    board.removeObject(areaText);
+    board.removeObject(this.rect);
+    board.removeObject(f1);
+    board.removeObject(f2);
+    xint.delete();
+  };
+}
+
 
 
 /*
@@ -269,13 +406,18 @@ function AdjSecant(binfo, xinterval, F) {
   let f1 = board.create('point', [
     function() { return xint.x1.X(); },  
     function() { return f(xint.x1.X());}
-  ], {color: 'blue', size:3, name:'', visible:true});
+  ], {color: '#1155CC', size:3, name:'', visible:true});
   let f2 = board.create('point', [
     function() { return xint.x2.X(); } , 
     function() { return f(xint.x2.X());}
-  ], {color: 'blue', size:3, name:'', visible:true});
+  ], {color: '#1155CC', size:3, name:'', visible:true});
 
-  this.line = board.create('line', [f1, f2], {strokeColor:'blue', strokeWidth:3, straightFirst:false, straightLast:false, visible:true});
+  this.line = board.create('line', [f1, f2], {
+    strokeColor:'#1155CC', 
+    strokeWidth:3, 
+    straightFirst:false, 
+    straightLast:false, 
+    visible:true});
   let slope = function() { return  ((f(xint.x2.X()) - f(xint.x1.X())) / (xint.x2.X() - xint.x1.X())).toFixed(3); };
 
   let slopeText = board.create('text', [
@@ -352,8 +494,8 @@ function AdjSecantRect(binfo, xinterval, F) {
   let xint = xinterval;
   xint.midY.setAttribute({visible:true});
 
-  let xslider = function() { return xinterval.x2.X() + binfo.Xerror; };
-  let yslider = function() { return  binfo.Yerror; };
+  let xslider = function() { return xinterval.x1.X() + 0.5 * binfo.Xerror; };
+  let yslider = function() { return binfo.Yerror; };
   let attachButton = new BoolButton(binfo.board, binfo, xslider, yslider, 'attach');
 
 
@@ -371,6 +513,8 @@ function AdjSecantRect(binfo, xinterval, F) {
     }
     return f(x);
   };
+
+
 
   let rectangle = new AdjRectangle(bi, xint, rectangleFunction, false);
   let secant = new AdjSecant(bi, xint, secantFunction, false);
@@ -425,10 +569,15 @@ function RectangleArray(binfo, xinterval, F, ns) {
   let f = F;  
   let Nslider = ns;
 
-  let rectangles = board.create('curve', [[0],[0]],
-    {strokeColor: '#333333',fillColor:'#2222FF', 
-      fillOpacity:0.3, highlightFillColor:'#FF2222', 
-      highlightFillOpacity:0.3, hasInnerPoints:true});
+  let rectangles = board.create('curve', [[0],[0]], {
+    strokeColor: '#1155CC',
+    fillColor:'#66AAFF', 
+    fillOpacity:0.3, 
+    highlightStrokeColor:'#DD3333',
+    highlightFillColor:'#FF2222', 
+    highlightFillOpacity:0.3, 
+    hasInnerPoints:true
+  });
   
   let area = 0;
   rectangles.updateDataArray = function() {
@@ -487,7 +636,7 @@ function SecantArray(binfo, xinterval, F, ns) {
   let Nslider = ns;
 
   let secants = board.create('curve', [[0],[0]],
-    {strokecolor:'blue', strokeWidth:2}); 
+    {strokecolor:'#1155CC', strokeWidth:4}); 
 
   let lastY = 0;
   let firstY = 0;
@@ -592,6 +741,7 @@ function WorkSpace(b) {
     let xinterval = new XInterval(board, x1, x2);
     let xslider = function() { return xinterval.x2.X() + boardInfo.Xerror; };
     let yslider = function() { return  boardInfo.Yerror; };
+    let sliderWidth = boardInfo.Xerror * 3;
 
 
     switch(m) {
@@ -610,7 +760,7 @@ function WorkSpace(b) {
 
     case 3:
     {
-      let Nslider = new IntSlider(board, boardInfo, xslider, yslider, 1, 100, 'N');
+      let Nslider = new IntSlider(board, boardInfo, xslider, yslider, 1, 100, 'N', sliderWidth);
       elements.push({type:'rectangle array', value: new RectangleArray(boardInfo, xinterval, f, Nslider)});
       break;
     }
@@ -618,7 +768,7 @@ function WorkSpace(b) {
 
     case 4:
     {
-      let Nslider = new IntSlider(board, boardInfo, xslider, yslider, 1, 100, 'N');
+      let Nslider = new IntSlider(board, boardInfo, xslider, yslider, 1, 100, 'N',sliderWidth);
       let fA = function(x) { return [f(x),0,0]; };
       elements.push({type:'secant array', value: new SecantArray(boardInfo, xinterval, fA, Nslider)});
       break;
@@ -626,7 +776,7 @@ function WorkSpace(b) {
 
     case 5:
     {
-      let Nslider = new IntSlider(board, boardInfo, xslider, yslider, 1, 100, 'N');
+      let Nslider = new IntSlider(board, boardInfo, xslider, yslider, 1, 100, 'N', sliderWidth);
       elements.push({type:'secant rectangle array', value: new SecantRectangleArray(boardInfo, xinterval, f, Nslider)});
       break;
     }
@@ -645,6 +795,10 @@ function WorkSpace(b) {
       elements.pop();
     }
 
+  };
+
+  this.resize = function(canvasWidth, canvasHeight) { 
+    board.resizeContainer(canvasWidth, canvasHeight);
   };
 
 }
@@ -674,6 +828,7 @@ function WorkSpace(b) {
   exports.SecantRectangleArray = SecantRectangleArray;
   exports.WorkSpace = WorkSpace;
   exports.Slider = Slider;
+  exports.DisplayRectangle = DisplayRectangle;
 
 });
 
