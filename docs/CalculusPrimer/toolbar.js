@@ -123,10 +123,7 @@ class ButtonArray {
     } 
   }
 
-  slideInButton(name, img, img2) {
-
-  }
-
+  size() { return this.buttons.length; }
 }
 
 class ToolPanel extends ButtonArray {
@@ -180,6 +177,27 @@ class CalculusToolbar extends ToolPanel {
     this.initialize();
   }
 }
+
+class ResourcePanel extends ToolPanel {
+  constructor(playablep5) {
+    super(playablep5, 55, 15, 15);
+    let rectImg = playablep5.loadImage('CalculusPrimer/images/rectButton.png');
+    let rectImg2 = playablep5.loadImage('CalculusPrimer/images/rectButton2.png');
+    this.addButton('rectangle', rectImg, rectImg2);
+    this.addButton('rectangle', rectImg, rectImg2);
+    this.addButton('rectangle', rectImg, rectImg2);
+  }
+
+  removeActiveButton() {
+    for (let i=0; i < this.buttons.length; i++) {
+      if (this.buttons[i].state) {
+        this.removeButton(i);
+        this.state = 0;
+        break;
+      }
+    }
+  }
+}
 ///////////////////////////////////////////////////////////////////////////////////////
 
 (function (global, factory) {
@@ -200,6 +218,7 @@ class CalculusToolbar extends ToolPanel {
   exports.ButtonArray = ButtonArray;
   exports.ToolPanel = ToolPanel;
   exports.CalculusToolbar = CalculusToolbar;
+  exports.ResourcePanel = ResourcePanel;
 
 
 });
