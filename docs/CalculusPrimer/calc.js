@@ -1,6 +1,23 @@
+const blue = '#66AAFF';
+const darkblue = '#1155CC';
+const lightgray = '#CCCCCC';
+const mediumgray = '#888888';
+const darkgray = '#333333';
+const darktomato = '#DD3333';
+const tomato = '#FF2222'; 
 
+class AppColors {
+  constructor() {
+    this.fill = blue;
+    this.stroke = darkblue;
+    this.highlightFill = tomato;
+    this.highlightStroke = darktomato;
+    this.lightAnnote = mediumgray;
+    this.darkAnnote = darkgray;
+  }
+}
 
-
+let colors = new AppColors();
 
 class Slider {
   constructor(b, binfo, xfunction, yfunction, low, high, name, sliderWidth) {
@@ -92,7 +109,7 @@ class BoolButton extends Slider {
     this.g.on('over', this.showText);
     this.g.on('out', this.hideText);
     this.g.setAttribute({fillColor:'#8844FF', strokeColor:'#555555'});
-    this.text.setAttribute({visible:false, strokeColor:'#888888'});
+    this.text.setAttribute({visible:false, strokeColor:colors.lightAnnote});
   }
 
   Value() {
@@ -154,7 +171,7 @@ class XInterval {
     this.midX = this.midX.bind(this);
     this.vline = b.create('line', [[this.midX ,0], [this.midX, 1]], {visible:false});
     this.midY = b.create('glider', [this.midX(), 0, this.vline], {
-      name: '', size:4, color:'#1155CC', visible:false, showInfoBox:false});
+      name: '', size:4, color:colors.stroke, visible:false, showInfoBox:false});
   }
 
   midX() {
@@ -195,10 +212,10 @@ function AdjRectangle(binfo, xinterval, F, vAdjust = false) {
 
   this.rect = board.create('polygon',
     [xint.x1, f1, f2, xint.x2], {
-      strokeColor: '#1155CC',
-      fillColor:'#66AAFF', 
-      highlightStrokeColor:'#DD3333',
-      highlightFillColor:'#FF2222', 
+      strokeColor: colors.stroke,
+      fillColor:colors.fill, 
+      highlightStrokeColor:colors.highlightStroke,
+      highlightFillColor:colors.highlightFill, 
       hasInnerPoints:true
     });
 
@@ -222,7 +239,7 @@ function AdjRectangle(binfo, xinterval, F, vAdjust = false) {
   ],{visible:false});
 
   let dimensionLine = board.create('segment', [p1,p2], {
-    strokeColor:'black', 
+    strokeColor:colors.lightAnnote, 
     strokeWidth:2, 
     firstArrow:true, 
     lastArrow:true, 
@@ -231,7 +248,7 @@ function AdjRectangle(binfo, xinterval, F, vAdjust = false) {
     function() { return xint.x2.X() + bi.Xerror; } ,
     function () { return height() / 2; },
     function() { return height().toFixed(3); }
-  ],{fontSize: 15, visible:false});
+  ],{ strokeColor:colors.lightAnnote, fontSize: 15, visible:false});
 
 
   this.rect.on('over', function(){
@@ -311,7 +328,7 @@ function DisplayRectangle(binfo, xinterval, lname, wname, Aname) {
   let f2 = board.create('point', [function() { return xint.x2.X(); }, height], {visible:false});
 
   this.rect = board.create('polygon',
-    [xint.x1, f1, f2, xint.x2], {strokeColor: '#333333',fillColor:'#66AAFF', hasInnerPoints:true});
+    [xint.x1, f1, f2, xint.x2], {strokeColor: '#333333',fillColor:colors.fill, hasInnerPoints:true});
 
   let area = function() { return ((xint.x2.X() - xint.x1.X()) * height()).toFixed(2); };
   
@@ -320,7 +337,7 @@ function DisplayRectangle(binfo, xinterval, lname, wname, Aname) {
     function() { return xint.midX() - bi.Xerror;},
     function() { return height() / 2; },
     function() { return Aname + ' = ' + area(); }
-  ], {fontSize:15, visible:true});
+  ], { strokeColor: colors.darkAnnote, fontSize:15, visible:true});
   
   let p1 = board.create('point',[
     function() { return xint.x2.X() + bi.Xerror / 2; }, 
@@ -333,7 +350,7 @@ function DisplayRectangle(binfo, xinterval, lname, wname, Aname) {
   ],{visible:false});
 
   let dimensionLine = board.create('segment', [p1,p2], {
-    strokeColor:'black', 
+    strokeColor: colors.darkAnnote, 
     strokeWidth:2, 
     firstArrow:true, 
     lastArrow:true, 
@@ -342,7 +359,7 @@ function DisplayRectangle(binfo, xinterval, lname, wname, Aname) {
     function() { return xint.x2.X() + bi.Xerror; } ,
     function () { return height() / 2; },
     function() { return wname + ' = ' + height().toFixed(2); }
-  ],{fontSize: 15, visible:true});
+  ],{strokeColor: colors.darkAnnote, fontSize: 15, visible:true});
 
   let p3 = board.create('point',[
     function() { return xint.x1.X(); }, 
@@ -355,7 +372,7 @@ function DisplayRectangle(binfo, xinterval, lname, wname, Aname) {
   ],{visible:false});
 
   let dimensionLine2 = board.create('segment', [p3,p4], {
-    strokeColor:'black', 
+    strokeColor: colors.darkAnnote, 
     strokeWidth:2, 
     firstArrow:true, 
     lastArrow:true, 
@@ -365,7 +382,7 @@ function DisplayRectangle(binfo, xinterval, lname, wname, Aname) {
     function() { return xint.x1.X() + (xint.x2.X() - xint.x1.X())/2 - bi.Xerror; } ,
     function () { return height() + 2 * bi.Yerror; },
     function() { return lname + ' = ' + (xint.x2.X() - xint.x1.X()).toFixed(2); }
-  ],{fontSize: 15, visible:true});
+  ],{strokeColor: colors.darkAnnote, fontSize: 15, visible:true});
 
   this.setHeight = function(h) { 
     xint.midY.moveTo([xint.midY.X(), h]);
@@ -406,14 +423,15 @@ function AdjSecant(binfo, xinterval, F) {
   let f1 = board.create('point', [
     function() { return xint.x1.X(); },  
     function() { return f(xint.x1.X());}
-  ], {color: '#1155CC', size:3, name:'', visible:true});
+  ], {color: colors.stroke, size:3, name:'', visible:true});
   let f2 = board.create('point', [
     function() { return xint.x2.X(); } , 
     function() { return f(xint.x2.X());}
-  ], {color: '#1155CC', size:3, name:'', visible:true});
+  ], {color: colors.stroke, size:3, name:'', visible:true});
 
   this.line = board.create('line', [f1, f2], {
-    strokeColor:'#1155CC', 
+    strokeColor: colors.stroke, 
+    highlightStrokeColor: colors.stroke,
     strokeWidth:3, 
     straightFirst:false, 
     straightLast:false, 
@@ -424,13 +442,13 @@ function AdjSecant(binfo, xinterval, F) {
     function() { return xint.midX() - 4 * bi.Xerror;},
     function() { return f1.Y() + (f2.Y() - f1.Y()) / 2 + bi.Yerror; },
     function() { return 'slope = ' + slope(); }
-  ], {fontSize:15, visible:false});
+  ], {strokeColor: colors.lightAnnote, fontSize:15, visible:false});
 
   let p3 = board.create('point',[ function() { return xint.x2.X(); }, function() { return f2.Y(); }],{visible:false});
   let p4 = board.create('point',[ function() { return xint.x2.X(); }, function() { return f1.Y(); } ],{visible:false});
 
   let dimensionLine = board.create('segment', [p3,p4], {
-    strokeColor:'black', 
+    strokeColor: colors.lightAnnote, 
     strokeWidth:2, 
     firstArrow:true, 
     lastArrow:true, 
@@ -440,7 +458,7 @@ function AdjSecant(binfo, xinterval, F) {
     function() { return xint.x2.X() + bi.Xerror/2; } ,
     function () { return f1.Y() + (f2.Y() - f1.Y()) / 2; },
     function() { return (f2.Y() - f1.Y()).toFixed(3); }
-  ],{fontSize: 15, visible:false});
+  ],{strokeColor: colors.lightAnnote, fontSize: 15, visible:false});
 
 
   this.line.on('over', function(){
@@ -571,10 +589,10 @@ function RectangleArray(binfo, xinterval, F, ns) {
 
   let rectangles = board.create('curve', [[0],[0]], {
     strokeColor: '#1155CC',
-    fillColor:'#66AAFF', 
+    fillColor:colors.fill, 
     fillOpacity:0.3, 
-    highlightStrokeColor:'#DD3333',
-    highlightFillColor:'#FF2222', 
+    highlightStrokeColor:colors.highlightStroke,
+    highlightFillColor:colors.highlightFill, 
     highlightFillOpacity:0.3, 
     hasInnerPoints:true
   });
