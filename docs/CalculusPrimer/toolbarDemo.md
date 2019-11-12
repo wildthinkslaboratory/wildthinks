@@ -125,7 +125,7 @@ var l_graph = board0.create('functiongraph', [f,0,xhigh], {
 
 var workspace = new WorkSpace(board0);
 
-console.log(JXG.COORDS_BY_USER);
+
 
 smartdown.setVariable('mode', 0);
 smartdown.setVariable('undo', false);

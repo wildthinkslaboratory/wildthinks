@@ -16,6 +16,10 @@ myDiv.style.borderRadius = '8px';
 let numButtons = 6;
 let xSpacer = 15, ySpacer = 15, width = 55;
 let B = new ResourcePanel(p5);
+for (let i=0; i < 3; i++) {
+  B.addButton('rectangle');
+}
+
 
 
 p5.setup = function() { 
@@ -128,7 +132,6 @@ var l_graph = board0.create('functiongraph', [f,0,xhigh], {
 
 var workspace = new WorkSpace(board0);
 
-console.log(JXG.COORDS_BY_USER);
 
 smartdown.setVariable('num', 3);
 smartdown.setVariable('active', false);
@@ -150,5 +153,5 @@ this.sizeChanged = function() {
   workspace.resize(myDiv.offsetWidth, myDiv.offsetHeight);
 };
 
-````
+```
 

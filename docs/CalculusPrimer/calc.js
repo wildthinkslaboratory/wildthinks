@@ -1,4 +1,5 @@
 const blue = '#66AAFF';
+const brightblue = '#00AAFF';
 const darkblue = '#1155CC';
 const lightgray = '#CCCCCC';
 const mediumgray = '#888888';
@@ -10,8 +11,8 @@ class AppColors {
   constructor() {
     this.fill = blue;
     this.stroke = darkblue;
-    this.highlightFill = tomato;
-    this.highlightStroke = darktomato;
+    this.highlightFill = brightblue;
+    this.highlightStroke = darkblue;
     this.lightAnnote = mediumgray;
     this.darkAnnote = darkgray;
   }
@@ -27,7 +28,7 @@ class Slider {
     this.xf = xfunction;
     this.yf = yfunction;
     this.xdelta = sliderWidth;
-    this.name = name;
+    this.name = name; 
 
     this.l1 = b.create('segment', [[xfunction, yfunction], [
       function() { return xfunction() + sliderWidth; },yfunction]], {
@@ -172,12 +173,18 @@ class XInterval {
     this.vline = b.create('line', [[this.midX ,0], [this.midX, 1]], {visible:false});
     this.midY = b.create('glider', [this.midX(), 0, this.vline], {
       name: '', size:4, color:colors.stroke, visible:false, showInfoBox:false});
+    this.snapToGrid = true;
+    this.checkSnapToGrid = this.checkSnapToGrid.bind(this);
+    this.snapMargin = 0.05;
+    this.board.on('update', this.checkSnapToGrid);
+
   }
 
   midX() {
     return this.x1.X() + (this.x2.X() - this.x1.X()) / 2;
   }
 
+  setSnapMargin(margin) { this.snapMargin = margin; }
   delete() {
     this.board.removeObject(this.xline);
     this.board.removeObject(this.x1);
@@ -186,6 +193,33 @@ class XInterval {
     this.board.removeObject(this.midY);
 
   }
+
+  checkSnapToGrid() {
+    if (this.snapToGrid) {
+      let floor = Math.floor(this.x1.X());
+      if (this.x1.X() < floor + this.snapMargin) {
+        this.x1.moveTo([floor,0]);
+      }
+      else {
+        let ceiling = Math.ceil(this.x1.X());
+        if (this.x1.X() > ceiling - this.snapMargin) {
+          this.x1.moveTo([ceiling,0]);
+        }
+      }
+      floor = Math.floor(this.x2.X());
+      if (this.x2.X() < floor + this.snapMargin) {
+        this.x2.moveTo([floor,0]);
+      }
+      else {
+        let ceiling = Math.ceil(this.x2.X());
+        if (this.x2.X() > ceiling - this.snapMargin) {
+          this.x2.moveTo([ceiling,0]);
+        }
+      }
+    }
+  }
+
+  turnOffSnapToGrid() { this.snapToGrid = false; }
 
 }
 
@@ -317,10 +351,12 @@ function DisplayRectangle(binfo, xinterval, lname, wname, Aname) {
 
   let board = binfo.board;
   let bi = binfo; 
+  let areaName = Aname;
+  let lengthName = lname;
+  let widthName = wname;
 
   let xint = xinterval;
-  xint.midY.setAttribute({visible:true});
-
+  xint.midY.setAttribute({visible:true}); 
   let height = function() { return xint.midY.Y(); };
 
   // the two points that define the top of rectangle
@@ -330,13 +366,21 @@ function DisplayRectangle(binfo, xinterval, lname, wname, Aname) {
   this.rect = board.create('polygon',
     [xint.x1, f1, f2, xint.x2], {strokeColor: '#333333',fillColor:colors.fill, hasInnerPoints:true});
 
-  let area = function() { return ((xint.x2.X() - xint.x1.X()) * height()).toFixed(2); };
-  
+  let area = function() { return (xint.x2.X() - xint.x1.X()) * height(); };
+  let getAreaName = function() { return areaName; };
+  let getLengthName = function() { return lengthName; };
+  let getWidthName = function() { return widthName; };
+  let getAreaText = function() { return getAreaName() + ' = ' + area().toFixed(2); };
+  let getWidthText = function() { return getWidthName() + ' = ' + height().toFixed(2); };
+  let getLengthText = function() { return getLengthName() + ' = ' + (xint.x2.X() - xint.x1.X()).toFixed(2); };
+
+
+
   // these components are all part of the annotation
   let areaText = board.create('text', [
     function() { return xint.midX() - bi.Xerror;},
     function() { return height() / 2; },
-    function() { return Aname + ' = ' + area(); }
+    getAreaText
   ], { strokeColor: colors.darkAnnote, fontSize:15, visible:true});
   
   let p1 = board.create('point',[
@@ -358,7 +402,7 @@ function DisplayRectangle(binfo, xinterval, lname, wname, Aname) {
   let dimensionText = board.create('text', [
     function() { return xint.x2.X() + bi.Xerror; } ,
     function () { return height() / 2; },
-    function() { return wname + ' = ' + height().toFixed(2); }
+    getWidthText
   ],{strokeColor: colors.darkAnnote, fontSize: 15, visible:true});
 
   let p3 = board.create('point',[
@@ -381,15 +425,22 @@ function DisplayRectangle(binfo, xinterval, lname, wname, Aname) {
   let dimensionText2 = board.create('text', [
     function() { return xint.x1.X() + (xint.x2.X() - xint.x1.X())/2 - bi.Xerror; } ,
     function () { return height() + 2 * bi.Yerror; },
-    function() { return lname + ' = ' + (xint.x2.X() - xint.x1.X()).toFixed(2); }
+    getLengthText
   ],{strokeColor: colors.darkAnnote, fontSize: 15, visible:true});
 
   this.setHeight = function(h) { 
     xint.midY.moveTo([xint.midY.X(), h]);
   };
 
-  
-  this.area = function() { return (xint.x2.X() - xint.x1.X()) * height(); };
+  this.setNames = function(A, l, w, color) {
+    areaName = A;
+    lengthName = l;
+    widthName = w;
+    this.rect.setAttribute({fillColor:color});
+  };
+
+
+
 
   this.delete = function() {
     board.removeObject(dimensionLine2);
@@ -749,6 +800,7 @@ function WorkSpace(b) {
   let board = b;
   let boardInfo = new BoardInfo(b);
   let elements = [];
+  let snapMargin = 0.05;
 
   this.addElement = function(m, xPlacement, f) {
 
@@ -757,6 +809,7 @@ function WorkSpace(b) {
     let x1 = startx + (endx - startx) * xPlacement;
     let x2 = x1 + 5 * boardInfo.Xerror;
     let xinterval = new XInterval(board, x1, x2);
+    xinterval.setSnapMargin(snapMargin);
     let xslider = function() { return xinterval.x2.X() + boardInfo.Xerror; };
     let yslider = function() { return  boardInfo.Yerror; };
     let sliderWidth = boardInfo.Xerror * 3;
@@ -817,6 +870,18 @@ function WorkSpace(b) {
 
   this.resize = function(canvasWidth, canvasHeight) { 
     board.resizeContainer(canvasWidth, canvasHeight);
+  };
+
+  this.setSnapMargin = function(margin) { snapMargin = margin; };
+
+  this.getArea = function() {
+    let area = 0;
+    for (let i = 0; i < elements.length; i++) {
+      if (elements[i].type == 'rectangle') {
+        area += elements[i].value.area();
+      }
+    }
+    return area;
   };
 
 }
