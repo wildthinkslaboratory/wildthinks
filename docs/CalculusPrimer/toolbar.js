@@ -170,7 +170,7 @@ class ToolPanel extends ButtonArray {
       this.buttons[this.state].state = false;
       this.buttons[buttonID].state = true;
       this.state = buttonID;
-      return [this.buttons[buttonID].name, this.buttons[buttonID].state, buttonID];
+      return [toolTypes[this.buttons[buttonID].name], this.buttons[buttonID].state, buttonID];
     }
     return ['', false, buttonID];
   }

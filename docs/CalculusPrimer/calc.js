@@ -176,7 +176,7 @@ class XInterval {
     this.snapToGrid = true;
     this.checkSnapToGrid = this.checkSnapToGrid.bind(this);
     this.snapMargin = 0.05;
-    this.board.on('update', this.checkSnapToGrid);
+    this.onUpdate = this.onUpdate.bind(this);
 
   }
 
@@ -219,26 +219,63 @@ class XInterval {
     }
   }
 
+  onUpdate() { this.checkSnapToGrid(); }
+
   turnOffSnapToGrid() { this.snapToGrid = false; }
 
 }
 
 
 
-function AdjRectangle(binfo, xinterval, F, vAdjust = false) {
+function AdjRectangle(binfo, xinterval, F, rectNames = ['','','']) {
 
   let board = binfo.board;
   let bi = binfo; 
-  let verticalAdjust = vAdjust;  // allow vertical adjusting
   let showAnnotations = false;   
   let attachedFunction = F;  // function that determines it's height
-
+  let areaName = rectNames[0];
+  let lengthName = rectNames[1];
+  let widthName = rectNames[2];
   let xint = xinterval;
+  let useNames = false;
+  let verticalAdjust = false;  // allow vertical adjusting
+  let useFunction = true;
+
+
   if (verticalAdjust) { xint.midY.setAttribute({visible:true}); }
   let height = function() {
-    if (verticalAdjust) { return xint.midY.Y(); }
+    if (verticalAdjust || !useFunction) { return xint.midY.Y(); }
     else { return attachedFunction(xint.midX()); }
   };
+
+  let area = function() { return (xint.x2.X() - xint.x1.X()) * height(); };
+  let getAreaName = function() { return areaName; };
+  let getLengthName = function() { return lengthName; };
+  let getWidthName = function() { return widthName; };
+  let getAreaText = function() { 
+    let prefix = '';
+    if (useNames) {
+      prefix = getAreaName() + ' = ';
+    }
+    return prefix + area().toFixed(2); 
+  };
+  let getWidthText = function() { 
+    let prefix = '';
+    if (useNames) {
+      prefix = getWidthName() + ' = ';
+    }
+    return prefix + height().toFixed(2); 
+  };
+  let getLengthText = function() { 
+    let prefix = '';
+    if (useNames) {
+      prefix = getLengthName() + ' = ';
+    }
+    return prefix + (xint.x2.X() - xint.x1.X()).toFixed(2); 
+  };
+
+  
+
 
   // the two points that define the top of rectangle
   let f1 = board.create('point', [function() { return xint.x1.X(); }, height], {visible:false});
@@ -253,13 +290,12 @@ function AdjRectangle(binfo, xinterval, F, vAdjust = false) {
       hasInnerPoints:true
     });
 
-  let area = function() { return ((xint.x2.X() - xint.x1.X()) * height()).toFixed(3); };
   
   // these components are all part of the annotation
   let areaText = board.create('text', [
     function() { return xint.midX() - bi.Xerror;},
     function() { return height() / 2; },
-    area
+    getAreaText
   ], {fontSize:15, visible:false});
   
   let p1 = board.create('point',[
@@ -281,8 +317,31 @@ function AdjRectangle(binfo, xinterval, F, vAdjust = false) {
   let dimensionText = board.create('text', [
     function() { return xint.x2.X() + bi.Xerror; } ,
     function () { return height() / 2; },
-    function() { return height().toFixed(3); }
+    getWidthText
   ],{ strokeColor:colors.lightAnnote, fontSize: 15, visible:false});
+
+  let p3 = board.create('point',[
+    function() { return xint.x1.X(); }, 
+    function() { return height() + bi.Yerror; }
+  ],{visible:false});
+
+  let p4 = board.create('point',[
+    function() { return xint.x2.X(); }, 
+    function() { return height() + bi.Yerror; }
+  ],{visible:false});
+
+  let dimensionLine2 = board.create('segment', [p3,p4], {
+    strokeColor: colors.lightAnnote, 
+    strokeWidth:2, 
+    firstArrow:true, 
+    lastArrow:true, 
+    visible:false});
+
+  let dimensionText2 = board.create('text', [
+    function() { return xint.x1.X() + (xint.x2.X() - xint.x1.X())/2 - bi.Xerror; } ,
+    function () { return height() + 2 * bi.Yerror; },
+    getLengthText
+  ],{strokeColor: colors.lightAnnote, fontSize: 15, visible:false});
 
 
   this.rect.on('over', function(){
@@ -299,12 +358,16 @@ function AdjRectangle(binfo, xinterval, F, vAdjust = false) {
     areaText.setAttribute({visible:true});
     dimensionText.setAttribute({visible:true});
     dimensionLine.setAttribute({visible:true});
+    dimensionText2.setAttribute({visible:true});
+    dimensionLine2.setAttribute({visible:true});
   }
 
   function turnOffAnnotations() {
     areaText.setAttribute({visible:false});
     dimensionText.setAttribute({visible:false});
     dimensionLine.setAttribute({visible:false});
+    dimensionText2.setAttribute({visible:false});
+    dimensionLine2.setAttribute({visible:false});
   }
 
   // functions we are exporting
@@ -314,16 +377,18 @@ function AdjRectangle(binfo, xinterval, F, vAdjust = false) {
   };
 
   this.snapToFunction = function() {
-    let currentH = height();
-    let functionH = attachedFunction(xint.midX());
-    if (currentH <= functionH + bi.Yerror && currentH >= functionH - bi.Yerror) {
-      this.setHeight(attachedFunction(xint.midX()));
+    if (useFunction) {
+      let currentH = height();
+      let functionH = attachedFunction(xint.midX());
+      if (currentH <= functionH + bi.Yerror && currentH >= functionH - bi.Yerror) {
+        this.setHeight(attachedFunction(xint.midX()));
+      }
     }
   };
 
-  this.setFunction = function(f) { 
-    attachedFunction = f; 
-  };
+  // this.setFunction = function(f) { 
+  //   attachedFunction = f; 
+  // };
 
 
   this.annotationsOn = function() { turnOnAnnotations(); };
@@ -333,120 +398,23 @@ function AdjRectangle(binfo, xinterval, F, vAdjust = false) {
 
   this.area = function() { return (xint.x2.X() - xint.x1.X()) * height(); };
 
-  this.delete = function() {
-    board.removeObject(dimensionLine);
-    board.removeObject(dimensionText);
-    board.removeObject(p2);
-    board.removeObject(p1);
-    board.removeObject(areaText);
-    board.removeObject(this.rect);
-    board.removeObject(f1);
-    board.removeObject(f2);
-    xint.delete();
+  this.setUseNames = function(b) { useNames = b; };
+  this.setUseFunction = function(b) { useFunction = b; };
+  this.setVerticalAdjust = function(b) { 
+    verticalAdjust = b; 
+    if (verticalAdjust) {
+      xint.midY.setAttribute({visible:true}); 
+      xint.midY.moveTo([xint.midY.X(), bi.Yerror * 5]);
+    }
   };
-}
-
-
-function DisplayRectangle(binfo, xinterval, lname, wname, Aname) {
-
-  let board = binfo.board;
-  let bi = binfo; 
-  let areaName = Aname;
-  let lengthName = lname;
-  let widthName = wname;
-
-  let xint = xinterval;
-  xint.midY.setAttribute({visible:true}); 
-  let height = function() { return xint.midY.Y(); };
-
-  // the two points that define the top of rectangle
-  let f1 = board.create('point', [function() { return xint.x1.X(); }, height], {visible:false});
-  let f2 = board.create('point', [function() { return xint.x2.X(); }, height], {visible:false});
-
-  this.rect = board.create('polygon',
-    [xint.x1, f1, f2, xint.x2], {strokeColor: '#333333',fillColor:colors.fill, hasInnerPoints:true});
-
-  let area = function() { return (xint.x2.X() - xint.x1.X()) * height(); };
-  let getAreaName = function() { return areaName; };
-  let getLengthName = function() { return lengthName; };
-  let getWidthName = function() { return widthName; };
-  let getAreaText = function() { return getAreaName() + ' = ' + area().toFixed(2); };
-  let getWidthText = function() { return getWidthName() + ' = ' + height().toFixed(2); };
-  let getLengthText = function() { return getLengthName() + ' = ' + (xint.x2.X() - xint.x1.X()).toFixed(2); };
-
-
-
-  // these components are all part of the annotation
-  let areaText = board.create('text', [
-    function() { return xint.midX() - bi.Xerror;},
-    function() { return height() / 2; },
-    getAreaText
-  ], { strokeColor: colors.darkAnnote, fontSize:15, visible:true});
-  
-  let p1 = board.create('point',[
-    function() { return xint.x2.X() + bi.Xerror / 2; }, 
-    height
-  ],{visible:false});
-
-  let p2 = board.create('point',[
-    function() { return xint.x2.X() +  bi.Xerror / 2; }, 
-    0 
-  ],{visible:false});
-
-  let dimensionLine = board.create('segment', [p1,p2], {
-    strokeColor: colors.darkAnnote, 
-    strokeWidth:2, 
-    firstArrow:true, 
-    lastArrow:true, 
-    visible:true});
-  let dimensionText = board.create('text', [
-    function() { return xint.x2.X() + bi.Xerror; } ,
-    function () { return height() / 2; },
-    getWidthText
-  ],{strokeColor: colors.darkAnnote, fontSize: 15, visible:true});
-
-  let p3 = board.create('point',[
-    function() { return xint.x1.X(); }, 
-    function() { return height() + bi.Yerror; }
-  ],{visible:false});
-
-  let p4 = board.create('point',[
-    function() { return xint.x2.X(); }, 
-    function() { return height() + bi.Yerror; }
-  ],{visible:false});
-
-  let dimensionLine2 = board.create('segment', [p3,p4], {
-    strokeColor: colors.darkAnnote, 
-    strokeWidth:2, 
-    firstArrow:true, 
-    lastArrow:true, 
-    visible:true});
-
-  let dimensionText2 = board.create('text', [
-    function() { return xint.x1.X() + (xint.x2.X() - xint.x1.X())/2 - bi.Xerror; } ,
-    function () { return height() + 2 * bi.Yerror; },
-    getLengthText
-  ],{strokeColor: colors.darkAnnote, fontSize: 15, visible:true});
-
-  this.setHeight = function(h) { 
-    xint.midY.moveTo([xint.midY.X(), h]);
-  };
-
-  this.setNames = function(A, l, w, color) {
-    areaName = A;
-    lengthName = l;
-    widthName = w;
-    this.rect.setAttribute({fillColor:color});
-  };
-
-
-
 
   this.delete = function() {
     board.removeObject(dimensionLine2);
     board.removeObject(dimensionText2);
     board.removeObject(dimensionLine);
     board.removeObject(dimensionText);
+    board.removeObject(p3);
+    board.removeObject(p4);
     board.removeObject(p2);
     board.removeObject(p1);
     board.removeObject(areaText);
@@ -454,6 +422,11 @@ function DisplayRectangle(binfo, xinterval, lname, wname, Aname) {
     board.removeObject(f1);
     board.removeObject(f2);
     xint.delete();
+  };
+
+  this.onUpdate = function() {
+    xint.onUpdate();
+    this.snapToFunction();
   };
 }
 
@@ -801,6 +774,20 @@ function WorkSpace(b) {
   let boardInfo = new BoardInfo(b);
   let elements = [];
   let snapMargin = 0.05;
+  let rectangleNames = ['', '', ''];
+  let useRectangleNames = false;
+  let rectangleUseFunction = true;
+  let rectangleVerticalAdjust = false;
+
+  board.on('update', function() {
+    for (let i = 0; i < elements.length; i++) {
+      if (elements[i].type = 'rectangle') {
+        elements[i].value.onUpdate();
+      }
+    }
+  });
+
+  this.setRectangleNames = function(names) { rectangleNames = names; };
 
   this.addElement = function(m, xPlacement, f) {
 
@@ -818,7 +805,10 @@ function WorkSpace(b) {
     switch(m) {
         
     case 0: 
-      elements.push({type:'rectangle', value: new AdjRectangle(boardInfo, xinterval, f)});
+      elements.push({type:'rectangle', value: new AdjRectangle(boardInfo, xinterval, f, rectangleNames)});
+      if (useRectangleNames) { elements[elements.length - 1].value.setUseNames(true); }
+      elements[elements.length - 1].value.setUseFunction(rectangleUseFunction);
+      elements[elements.length - 1].value.setVerticalAdjust(rectangleVerticalAdjust);
       break;
 
     case 1:
@@ -852,6 +842,9 @@ function WorkSpace(b) {
       break;
     }
  
+    case 6: 
+      elements.push({type:'display rectangle', value: new DisplayRectangle(boardInfo, xinterval, f)});
+      break;
 
     default: 
       console.log('bad element type', m);
@@ -873,16 +866,21 @@ function WorkSpace(b) {
   };
 
   this.setSnapMargin = function(margin) { snapMargin = margin; };
+  this.setUseRectangleNames = function(b) { useRectangleNames = b; };
+  this.setRectangleVerticalAdjust = function(b) { rectangleVerticalAdjust = b; };
+  this.setRectangleUseFunction = function(b) { rectangleUseFunction = b; };
 
   this.getArea = function() {
     let area = 0;
     for (let i = 0; i < elements.length; i++) {
-      if (elements[i].type == 'rectangle') {
+      let t = elements[i].type;
+      if (t == 'rectangle' || t == 'display rectangle') {
         area += elements[i].value.area();
       }
     }
     return area;
   };
+
 
 }
 
@@ -911,7 +909,6 @@ function WorkSpace(b) {
   exports.SecantRectangleArray = SecantRectangleArray;
   exports.WorkSpace = WorkSpace;
   exports.Slider = Slider;
-  exports.DisplayRectangle = DisplayRectangle;
 
 });
 
