@@ -1,27 +1,9 @@
 # Rectangle 
-3
-3
-3
-3
-3
-3
-
-
-
-
-////////////////////////////////////////////////////////////////////////////////////
-
-# :::: prompt
-# --aliceblue
-[?](::clue/button,transparent,draggable,closeable,center,shadow)[Calculate Percent Error](:=compute=true) [](:!error)
-# --aliceblue
-# ::::
-
 
 # :::: clue
 # --outlinebox
-##### Car Ride
-We know the speed that a car is traveling at all times.  Use the speed of the car to infer the distance the car has traveled after 4 seconds.
+##### Rocket Launch
+Here is a graph showing the speed of a rocket during it's first launch phase. What is the height of the rocket 120 seconds after lift off?  
 # --outlinebox
 # ::::
 
@@ -31,36 +13,23 @@ We know the speed that a car is traveling at all times.  Use the speed of the ca
 # --colorbox
 # ::::
 
-
 # :::: toolbar
+[?](::clue/button,transparent,draggable,closeable,center,shadow) You have a rectangle array! 
 
 ```p5js /autoplay
-///////////////////////////////////////////////////////////////////
-// this is a script for a RESOURCE PANEL toolbar
-///////////////////////////////////////////////////////////////////
-
-
 // import the calc library
 //smartdown.import=/CalculusPrimer/toolbar.js
 
 
 const myDiv = this.div;
-myDiv.style.background = '#EEEEEE';
-myDiv.style.border = '1px solid gray';
+myDiv.style.background = '#FFFFFF';
 myDiv.style.borderRadius = '8px';
 
 let numButtons = 6;
-let xSpacer = 15, ySpacer = 15, width = 55;
+let xSpacer = 10, ySpacer = 10, width = 40;
 let B = new ResourcePanel(p5);
-smartdown.setVariable('mode', 0);
+B.addButton('rectangle array');
 
-///////////////////////////////////////////////////////////////////
-// Add the buttons you want on your resource panel
-// NOTE:  The value of page variable env.num should match the number of buttons you add here
-
-B.addButton('rectangle'); 
-
-///////////////////////////////////////////////////////////////////
 
 
 p5.setup = function() { 
@@ -70,47 +39,56 @@ p5.setup = function() {
 };
 
 
-p5.draw = function() {  // draw the buttons
-  B.draw();
+p5.draw = function() {
+  B.draw(p5.mouseX,p5.mouseY);
 }
 
-p5.mousePressed = function()     // this function is called everytime the user clicks the mouse
+p5.mousePressed = function()                     // this function is called everytime the user clicks the mouse
 {
-  const [buttonType, state, id] = B.mousePressed();  // returns info on the button pushed
-  
-  if (id != -1) {                              // if it's a valid button
-    smartdown.setVariable('mode', buttonType);         // set page mode correct type of button
-    smartdown.setVariable('active', true);     // alert page we have an active button
+  const [name, state, id] = B.mousePressed();
+
+  if (id != -1) {
+    smartdown.setVariable('mode', name);
+    smartdown.setVariable('active', true);
   }
   
-  p5.loop();    // EnergyHack to enable looping for duration of drag.
+
+  // EnergyHack to enable looping for duration of drag.
+  p5.loop();
+
 };
 
 
-p5.mouseReleased = function() {     // this function is called when the user releases the mouse
-                                    // button after a click.
+p5.mouseReleased = function() {                  // this function is called when the user releases the mouse
+                          // button after a click.
 
   // EnergyHack to stop looping 5 sec after release.
-  window.setTimeout(function() {
-    p5.noLoop();
-  }, 5000);
+//  window.setTimeout(function() {
+//    p5.noLoop();
+//  }, 5000);
 };
-
 
 this.dependOn = ['num'];
 this.depend = function() {
-  
-  if (env.num < B.size()) {  // If we have more buttons than the page has elements, delete the active button
-    B.removeActiveButton();  // we've used this resouce
+  if (env.num < B.size()) {
+    B.removeActiveButton();
     smartdown.setVariable('active', false);
   }
 };
 
 ```
+[Submit Solution](:=compute=true)
 # ::::
 
+# :::: success
+Error of [](:!error)%.  Success!  Less than 4% error achieved.
+# ::::
 
-```javascript /autoplay/kiosk
+# :::: keeptrying
+Error of [](:!error)%. Keep trying.  The error must be below 4%.
+# ::::
+
+```javascript /autoplay
 //smartdown.import=https://cdnjs.cloudflare.com/ajax/libs/jsxgraph/0.99.7/jsxgraphcore.js
 
 smartdown.importCssUrl('https://cdnjs.cloudflare.com/ajax/libs/jsxgraph/0.99.7/jsxgraph.css');
@@ -118,34 +96,32 @@ smartdown.importCssUrl('https://cdnjs.cloudflare.com/ajax/libs/jsxgraph/0.99.7/j
 // import the calc library
 //smartdown.import=/CalculusPrimer/calc.js
 
-smartdown.showDisclosure('toolbar','','transparent,center,draggable');
-smartdown.showDisclosure('prompt','','transparent,center,draggable');
+smartdown.showDisclosure('toolbar','','transparent');
 
 const myDiv = this.div;
 myDiv.style.width = '100%';
 myDiv.style.height = '100%';
 myDiv.style.margin = 'auto';
-myDiv.innerHTML = `<div id='top' style='height:200px; width:100%; border:1px solid gray;background:#EEFFCC;border-radius:8px;'></div><div id='bottom' style='height:600px; width:100%; border: 1px solid gray;background:#FFFFFF;border-radius:8px;';></div>`;
+//myDiv.innerHTML = `<div id='box1' class='jxgbox' style='height:800px;'>`;
+myDiv.innerHTML = `<div id='left' style='height:700px; width:70%; float:left; border:1px solid gray;background:#FFFFFF;border-radius:8px;'></div><div id='right' style='height:700px; width:29%; float:left; border: 1px solid gray;background:#CCEEFF;border-radius:8px;';></div>`;
+let xlow = -30;
+let xhigh = 180;
+let ylow = -200;
+let yhigh = 2000;
 
 
+let c = 19 / 7200;
+let f = function(x) { return c * Math.pow(x,3) / 3; };
 
-let xlow = -1;
-let xhigh = 5;
-let ylow = -3;
-let yhigh = 25;
-
-let f = function(x) { return 4 * x; };
-let answer = 32;
-
-// create the first board
 JXG.Options.axis.ticks.majorHeight = 40;
-board0 = JXG.JSXGraph.initBoard('bottom', {boundingbox:[xlow,yhigh,xhigh,ylow], keepaspectratio:false, axis:false});
+// create the board
+board0 = JXG.JSXGraph.initBoard('left', {boundingbox:[xlow,yhigh,xhigh,ylow], keepaspectratio:false, axis:false});
 
 let xaxis = board0.create('axis', [[0, 0], [1,0]], 
   {name:'time (s)', 
     withLabel: true,
     label: {
-      fontSize: 20,
+      fontSize: 15,
       position: 'rt',  // possible values are 'lft', 'rt', 'top', 'bot'
       offset: [-80, 20]   // (in pixels)
     }
@@ -155,20 +131,23 @@ let yaxis = board0.create('axis', [[0, 0], [0, 1]],
   {name:'rate (m/s)', 
     withLabel: true, 
     label: {
-      fontSize: 20,
+      fontSize: 15,
       position: 'rt',  // possible values are 'lft', 'rt', 'top', 'bot'
-      offset: [-120, -20]   // (in pixels)
+      offset: [-80, -20]   // (in pixels)
     }
   });   
 
-let p0 = board0.create('point', [4,16],{name:'', color:'#7777DD'});
 
-let vgraph = board0.create('functiongraph', [f,0,xhigh], {
+board1 = JXG.JSXGraph.initBoard('right', {boundingbox:[-1,60000,2,-5000], keepaspectratio:false, axis:true});
+
+board0.addChild(board1);
+
+let vgraph = board0.create('functiongraph', [f,0,120], {
   strokeColor:'#7777DD', 
   strokeWidth:1, 
   visible:true});
 
-let vtext = board0.create('text', [3.5,17, 'speed of car'], {
+let vtext = board0.create('text', [100,1400, 'speed of rocket'], {
   fontSize:15,
   strokeColor:'#7777DD', 
   visible:false
@@ -182,106 +161,53 @@ vgraph.on('out', function() {
   vtext.setAttribute({visible:false});
 });
 
+let pstart = board0.create('point', [0,0],{name:'', color:'#7777DD'});
+let p1 = board0.create('point', [120, f(120)],{ color:'#7777DD',name:''});
 
 let workspace = new WorkSpace(board0);
+workspace.setSnapMargin(0.5);
 
-
-
-////////////////////////////////////////////////////////////////////////////////////
-// Here is where you configure the workspace based on what elements you want to 
-// add.  
-
-workspace.setSnapMargin(0.05);
-workspace.setRectangleNames(['distance', 'time', 'rate']);
-workspace.setUseRectangleNames(true);
-workspace.setRectangleVerticalAdjust(true);
-workspace.setRectangleUseFunction(true);
-
-////////////////////////////////////////////////////////////////////////////////////
-
-let Atext = board0.create('text', [
-  xlow + 0.25 * (xhigh - xlow), 
-  ylow + 0.8 * (yhigh - ylow),
-  function() { return 'Total Area = ' + workspace.getArea().toFixed(2); }], {
+let Atext = board0.create('text', [25,1400, 
+  function() { return 'Total Area = ' + workspace.getArea().toFixed(0); }], {
   fontSize:20,
   visible:true
 });
 
+//let rocket = board1.create('point',[1, function() { return workspace.getArea(); }],{name:''});
 
-board1 = JXG.JSXGraph.initBoard('top', {boundingbox:[-20,5,100,-2], keepaspectratio:false, axis:false});
+let rocketurl = 'https://gist.githubusercontent.com/wildthinkslaboratory/ac98c0bb68ccf7528dc39fa1922d2bdb/raw/cab590371e4346929cf9096e53d163e772e1d132/rocket.png';
+let rocket = board1.create('image',[rocketurl, [0.9,function() { return workspace.getArea() - 3000; }], [0.2,3000]]);
 
-board0.addChild(board1);
-
-let xaxis1 = board1.create('axis', [[0, 0], [1,0]], 
-  {name:'meters', 
-    withLabel: true,
-    label: {
-      fontSize: 20,
-      position: 'rt',  // possible values are 'lft', 'rt', 'top', 'bot'
-      offset: [-80, 20]   // (in pixels)
-    }
-  });
-
-let yaxis1 = board1.create('axis', [[0, 0], [0, 1]], 
-  {name:'', 
-    withLabel: false, 
-    label: {
-      fontSize: 20,
-      position: 'rt',  // possible values are 'lft', 'rt', 'top', 'bot'
-      offset: [-120, -20]   // (in pixels)
-    },
-    ticks: {visible:false}
-  }); 
-
-
-let carurl = 'https://gist.githubusercontent.com/wildthinkslaboratory/ac98c0bb68ccf7528dc39fa1922d2bdb/raw/9e01e8197b3bf685747ae134de3d75feb64ea6f4/car.png';
-let car = board1.create('image',[carurl, [function() { return workspace.getArea() -4 ; },-0.2], [4,1]]);
-
-let p2 = board1.create('point',[0, 1.2],{visible:false});
-let p3 = board1.create('point',[function() { return workspace.getArea(); }, 1.2],{visible:false});
+let p2 = board1.create('point',[1.2, 0],{visible:false});
+let p3 = board1.create('point',[1.2, function() { return workspace.getArea(); }],{visible:false});
 
 let dimensionLine = board1.create('segment', [p2,p3], {
   strokeColor:'#999999', 
   strokeWidth:2, 
   firstArrow:true, 
   lastArrow:true, 
-  visible:false});
+  visible:true});
 
 let dimensionText = board1.create('text', [
-  function() { return workspace.getArea() / 2; },
-  1.6,
-  function() { return workspace.getArea().toFixed(2); }
-],{ strokeColor:'#999999', fontSize: 15, visible:false});
+  1.3,
+  function () { return workspace.getArea() / 2; },
+  function() { return workspace.getArea().toFixed(0); }
+],{ strokeColor:'#999999', fontSize: 15, visible:true});
 
-car.on('over', function() {
-  dimensionLine.setAttribute({visible:true});
-  dimensionText.setAttribute({visible:true});
-});
-
-car.on('out', function() {
-  dimensionLine.setAttribute({visible:false});
-  dimensionText.setAttribute({visible:false});
-});
 
 let computeError = function() {
-  return 100 * Math.abs(1 - workspace.getArea() / answer);
+  return 100 * Math.abs(1 - workspace.getArea() / 45600);
 };
-
-let Etext = board0.create('text', [
-  xlow + 0.25 * (xhigh - xlow), 
-  ylow + 0.75 * (yhigh - ylow), 
-  function() { return 'Percent Error = ' + computeError().toFixed(3); }], {
-  fontSize:20,
-  visible:true
-});
 
 smartdown.setVariable('num', 1);
 smartdown.setVariable('active', false);
+smartdown.setVariable('mode', 0);
 
 this.div.onmousedown = function(e) { 
   
-  let width = this.offsetWidth;
-  let percent = e.clientX / width;
+  let width = myDiv.offsetWidth;
+  let margin = (window.innerWidth - width)/2;
+  let percent = (e.clientX - margin) / (width * 0.7);
 
   if (env.num > 0 && env.active) {
     workspace.addElement(env.mode, percent, f);
@@ -290,9 +216,16 @@ this.div.onmousedown = function(e) {
 
 };
 
+// let Etext = board0.create('text', [25,1300, 
+//   function() { return 'Percent Error = ' + computeError().toFixed(3); }], {
+//   fontSize:20,
+//   visible:true
+// });
 
 this.sizeChanged = function() {
-  workspace.resize(myDiv.offsetWidth, myDiv.offsetHeight);
+  let width = myDiv.offsetWidth;
+  board0.resizeContainer(width * 0.7, 700);
+  board1.resizeContainer(width * 0.29, 700);
 };
 
 smartdown.setVariable('compute', false);
@@ -302,6 +235,15 @@ this.depend = function() {
   if (env.compute == true) {
     smartdown.setVariable('error', computeError().toFixed(2));
     smartdown.setVariable('compute', false);
+
+    if (env.error < 5.0) {
+      smartdown.showDisclosure('success','','draggable,closeable,center,shadow');
+      smartdown.hideDisclosure('keeptrying','','');
+    }
+    else {
+      smartdown.showDisclosure('keeptrying','','draggable,closeable,center,shadow');
+      smartdown.hideDisclosure('success','','');
+    }
   }
 };
 

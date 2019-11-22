@@ -82,6 +82,19 @@ class ButtonArray {
     this.ySpacer = ySpacer;
   }
 
+  inButton(i,x,y) {
+    if (y < this.ySpacer || y > (this.ySpacer + this.width)) {
+      return false;
+    }
+
+    let left = (this.xSpacer + this.width) * i;
+    let right = left + this.width;
+    if (x > left && x < right) {
+      return true;
+    }
+    return false;
+  }
+
   getButtonID(x, y) {
     let result = -1;
     const W = this.xSpacer + this.width;
@@ -115,14 +128,19 @@ class ButtonArray {
     return result;
   }
 
-  draw() { 
+  draw(mouseX,mouseY) { 
     this.p5.clear();                          
     for (let i=0; i < this.buttons.length; i++) {
-      this.p5.fill(this.buttons[i].getColor());
+      if (this.inButton(i,mouseX,mouseY)) {
+        this.p5.fill('#AACCFF');
+      }
+      else{
+        this.p5.fill(this.buttons[i].getColor());
+      }
       this.p5.stroke(this.buttons[i].getStroke());
       this.p5.strokeWeight(2);
       let x = i * (this.width + this.xSpacer) + this.xSpacer;
-      this.p5.rect(x, this.ySpacer, this.width, this.width, 10);  
+      this.p5.rect(x, this.ySpacer, this.width, this.width, 5);  
       this.p5.image(this.buttons[i].getImage(), x, this.ySpacer, this.width, this.width);
       // let [tx, ty] = centerTextInRect(this.p5, x, this.ySpacer, this.width, this.width, this.buttons[i].name);
       // this.p5.fill('#000000');
@@ -178,7 +196,7 @@ class ToolPanel extends ButtonArray {
 
 class CalculusToolbar extends ToolPanel {
   constructor(playablep5) {
-    super(playablep5, 55, 15, 15);
+    super(playablep5, 40, 10, 10);
     loadImages(playablep5);
 
     for (let key in toolTypes) {
@@ -192,7 +210,7 @@ class CalculusToolbar extends ToolPanel {
 
 class ResourcePanel extends ToolPanel {
   constructor(playablep5) {
-    super(playablep5, 55, 15, 15);
+    super(playablep5, 40, 10, 10);
     loadImages(playablep5);
   }
 

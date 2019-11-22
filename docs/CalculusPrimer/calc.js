@@ -2,7 +2,7 @@ const blue = '#66AAFF';
 const brightblue = '#00AAFF';
 const darkblue = '#1155CC';
 const lightgray = '#CCCCCC';
-const mediumgray = '#888888';
+const mediumgray = '#AAAAAA';
 const darkgray = '#333333';
 const darktomato = '#DD3333';
 const tomato = '#FF2222'; 
@@ -371,9 +371,10 @@ function AdjRectangle(binfo, xinterval, F, rectNames = ['','','']) {
   }
 
   // functions we are exporting
-  this.setHeight = function(h) {       
-    xint.midY.setPositionDirectly(JXG.COORDS_BY_USER, [xint.midY.X(),h]); 
-    xint.midY.prepareUpdate().update(true).updateRenderer();
+  this.setHeight = function(h) {    
+    if (verticalAdjust) {
+      xint.midY.moveTo([xint.midY.X(),h]); 
+    }   
   };
 
   this.snapToFunction = function() {
@@ -396,6 +397,14 @@ function AdjRectangle(binfo, xinterval, F, rectNames = ['','','']) {
   this.annotationsOn = this.annotationsOn.bind(this);
   this.annotationsOff = this.annotationsOff.bind(this);
 
+  this.showAnnotations = function(b) { 
+    showAnnotations = b; 
+    if (showAnnotations) {
+      turnOnAnnotations();
+    }
+
+  };
+
   this.area = function() { return (xint.x2.X() - xint.x1.X()) * height(); };
 
   this.setUseNames = function(b) { useNames = b; };
@@ -405,6 +414,18 @@ function AdjRectangle(binfo, xinterval, F, rectNames = ['','','']) {
     if (verticalAdjust) {
       xint.midY.setAttribute({visible:true}); 
       xint.midY.moveTo([xint.midY.X(), bi.Yerror * 5]);
+    }
+  };
+
+  this.setFillColor = function(color) { 
+    this.rect.setAttribute({fillColor:color});
+  };
+
+  this.setNames = function(n) { 
+    if (n.length == 3) {
+      areaName = n[0];
+      lengthName = n[1];
+      widthName = n[2];
     }
   };
 
@@ -666,6 +687,9 @@ function RectangleArray(binfo, xinterval, F, ns) {
     Nslider.delete();
     xint.delete();
   };
+
+  this.onUpdate = function() { xint.onUpdate(); };
+  this.area = function() { return area; };
 }
 
 
@@ -869,6 +893,13 @@ function WorkSpace(b) {
   this.setUseRectangleNames = function(b) { useRectangleNames = b; };
   this.setRectangleVerticalAdjust = function(b) { rectangleVerticalAdjust = b; };
   this.setRectangleUseFunction = function(b) { rectangleUseFunction = b; };
+
+  this.getElement = function(i) { 
+    if (i < elements.length) {
+      return elements[i].value;
+    }
+    return -1;
+  };
 
   this.getArea = function() {
     let area = 0;
