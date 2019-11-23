@@ -252,6 +252,9 @@ this.sizeChanged = function() {
   workspace.resize(myDiv.offsetWidth, myDiv.offsetHeight);
 };
 
+board0.on('update', function() {
+  workspace.boardUpdate();
+});
 
 ```
 

@@ -406,6 +406,7 @@ function AdjRectangle(binfo, xinterval, F, rectNames = ['','','']) {
   };
 
   this.area = function() { return (xint.x2.X() - xint.x1.X()) * height(); };
+  this.x2 = function() { return xint.x2.X(); };
 
   this.setUseNames = function(b) { useNames = b; };
   this.setUseFunction = function(b) { useFunction = b; };
@@ -529,6 +530,7 @@ function AdjSecant(binfo, xinterval, F) {
 
 
   this.setFunction = function(F) { f = F; };
+  this.x2 = function() { return xint.x2.X(); };
 
   this.annotationsOn = function() { turnOnAnnotations(); };
   this.annotationsOff = function() { turnOffAnnotations(); };
@@ -620,7 +622,7 @@ function AdjSecantRect(binfo, xinterval, F) {
     xint.delete();
     attachButton.delete();
   };
-
+  this.x2 = function() { return xint.x2.X(); };
 }
 
 
@@ -690,6 +692,7 @@ function RectangleArray(binfo, xinterval, F, ns) {
 
   this.onUpdate = function() { xint.onUpdate(); };
   this.area = function() { return area; };
+  this.x2 = function() { return xint.x2.X(); };
 }
 
 
@@ -740,6 +743,7 @@ function SecantArray(binfo, xinterval, F, ns) {
     Nslider.delete();
     xint.delete();
   };
+  this.x2 = function() { return xint.x2.X(); };
 }
 
 
@@ -789,7 +793,7 @@ function SecantRectangleArray(binfo, xinterval, F, ns) {
     xint.delete();
     attachButton.delete();
   };
-
+  this.x2 = function() { return xint.x2.X(); };
 } 
 
 
@@ -803,13 +807,13 @@ function WorkSpace(b) {
   let rectangleUseFunction = true;
   let rectangleVerticalAdjust = false;
 
-  board.on('update', function() {
+  this.boardUpdate = function() {
     for (let i = 0; i < elements.length; i++) {
       if (elements[i].type = 'rectangle') {
         elements[i].value.onUpdate();
       }
     }
-  });
+  };
 
   this.setRectangleNames = function(names) { rectangleNames = names; };
 
@@ -912,7 +916,17 @@ function WorkSpace(b) {
     return area;
   };
 
+  this.maxX = function() {
+    if (elements.length == 0) return 0;
 
+    let maxX = elements[0].value.x2();
+    for (let i = 1; i < elements.length; i++) {
+      if (elements[i].value.x2() > maxX) {
+        maxX = elements[i].value.x2();
+      }
+    }
+    return maxX;
+  };
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////

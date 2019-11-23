@@ -1,5 +1,3 @@
-# Rectangle 
-
 # :::: clue
 # --outlinebox
 ##### Car Ride
@@ -100,7 +98,7 @@ const myDiv = this.div;
 myDiv.style.width = '100%';
 myDiv.style.height = '100%';
 myDiv.style.margin = 'auto';
-myDiv.innerHTML = `<div id='top' style='height:200px; width:100%; border:1px solid gray;background:#EEFFCC;border-radius:8px;'></div><div id='bottom' style='height:600px; width:100%; border: 1px solid gray;background:#FFFFFF;border-radius:8px;';></div>`;
+myDiv.innerHTML = `<div id='top' style='height:100px; width:100%; border:1px solid gray;background:#EEFFCC;border-radius:8px;'></div><div id='bottom' style='height:600px; width:100%; border: 1px solid gray;background:#FFFFFF;border-radius:8px;';></div>`;
 
 
 
@@ -211,10 +209,10 @@ let yaxis1 = board1.create('axis', [[0, 0], [0, 1]],
 
 
 let carurl = 'https://gist.githubusercontent.com/wildthinkslaboratory/ac98c0bb68ccf7528dc39fa1922d2bdb/raw/9e01e8197b3bf685747ae134de3d75feb64ea6f4/car.png';
-let car = board1.create('image',[carurl, [function() { return workspace.getArea() -4 ; },-0.2], [4,1]]);
+let car = board1.create('image',[carurl, [function() { return workspace.getArea() -4 ; },-0.2], [4,2]]);
 
-let p2 = board1.create('point',[0, 1.2],{visible:false});
-let p3 = board1.create('point',[function() { return workspace.getArea(); }, 1.2],{visible:false});
+let p2 = board1.create('point',[0, 2.2],{visible:false});
+let p3 = board1.create('point',[function() { return workspace.getArea(); }, 2.2],{visible:false});
 
 let dimensionLine = board1.create('segment', [p2,p3], {
   strokeColor:'#999999', 
@@ -225,7 +223,7 @@ let dimensionLine = board1.create('segment', [p2,p3], {
 
 let dimensionText = board1.create('text', [
   function() { return workspace.getArea() / 2; },
-  1.6,
+  2.9,
   function() { return workspace.getArea().toFixed(2); }
 ],{ strokeColor:'#999999', fontSize: 15, visible:true});
 
@@ -247,9 +245,13 @@ this.div.onmousedown = function(e) {
 
 this.sizeChanged = function() {
   workspace.resize(myDiv.offsetWidth, 600);
-  board1.resizeContainer(myDiv.offsetWidth, 200);
+  board1.resizeContainer(myDiv.offsetWidth, 100);
 };
 
+
+board0.on('update', function() {
+  workspace.boardUpdate();
+});
 
 ```
 

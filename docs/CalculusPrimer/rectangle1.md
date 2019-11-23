@@ -1,5 +1,3 @@
-# Rectangle 
-
 Here.  Have a rectangle.
 # :::: toolbar
 ```p5js /autoplay
@@ -112,15 +110,7 @@ It could represent a distance.
 
 # ::::
 
-# :::: clue5
-# --aliceblue
- - need the midY to snap to grid
- - need 'drag me' text on mouse over points
- - need better text notes.  What do I really want to show people?
- - need to teach people how to use the tool bar.
-# --aliceblue
 
-# ::::
 
 ```javascript /autoplay
 //smartdown.import=https://cdnjs.cloudflare.com/ajax/libs/jsxgraph/0.99.7/jsxgraphcore.js
@@ -136,7 +126,7 @@ const myDiv = this.div;
 myDiv.style.width = '100%';
 myDiv.style.height = '100%';
 myDiv.style.margin = 'auto';
-myDiv.innerHTML = `<div id='box' class='jxgbox' style='height:700px'>`;
+myDiv.innerHTML = `<div id='box' class='jxgbox' style='height:600px'>`;
 
 // create the first board
 JXG.Options.axis.ticks.majorHeight = 40;
@@ -228,7 +218,7 @@ this.div.onmousedown = function(e) {
 
 
 this.sizeChanged = function() {
-  board0.resizeContainer(myDiv.offsetWidth, 700);
+  board0.resizeContainer(myDiv.offsetWidth, 600);
 };
 
 smartdown.setVariable('show1', false);
@@ -247,7 +237,7 @@ this.depend = function() {
   if (env.show2 == true) {
     smartdown.setVariable('show2', false);
     smartdown.hideDisclosure('clue1','','');
-    smartdown.showDisclosure('clue2','','transparent,draggable,center,shadow');
+    smartdown.showDisclosure('clue2','','transparent,draggable,topright,shadow');
     rectangle.setNames(['distance', 'time', 'rate']);
     rectangle.setFillColor('#AAFF88');
     board0.update();
@@ -255,7 +245,7 @@ this.depend = function() {
   if (env.show3 == true) {
     smartdown.setVariable('show3', false);
     smartdown.hideDisclosure('clue2','','');
-    smartdown.showDisclosure('clue3','','transparent,draggable,center,shadow');
+    smartdown.showDisclosure('clue3','','transparent,draggable,topright,shadow');
     rectangle.setNames(['earnings', 'principle', 'interest rate']);
     rectangle.setFillColor('#88FFAA');
     board0.update();

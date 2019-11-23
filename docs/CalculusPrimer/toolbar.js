@@ -173,6 +173,7 @@ class ButtonArray {
 class ToolPanel extends ButtonArray {
   constructor(playablep5, width, xSpacer, ySpacer) {
     super(playablep5, width, xSpacer, ySpacer);
+    loadImages(playablep5);
     this.state = 0;
   }
 
@@ -192,26 +193,28 @@ class ToolPanel extends ButtonArray {
     }
     return ['', false, buttonID];
   }
+
+  addButton(toolType) {
+    let value = toolTypes[toolType];
+    super.addButton(toolType, images[value][0], images[value][1]);
+  }
 }
 
 class CalculusToolbar extends ToolPanel {
   constructor(playablep5) {
     super(playablep5, 40, 10, 10);
-    loadImages(playablep5);
 
     for (let key in toolTypes) {
       let value = toolTypes[key];
       this.addButton(key, images[value][0], images[value][1]);
     }
     this.initialize();
-    console.log('in constructor');
   }
 }
 
 class ResourcePanel extends ToolPanel {
   constructor(playablep5) {
     super(playablep5, 40, 10, 10);
-    loadImages(playablep5);
   }
 
   removeActiveButton() {
@@ -222,11 +225,6 @@ class ResourcePanel extends ToolPanel {
         break;
       }
     }
-  }
-
-  addButton(toolType) {
-    let value = toolTypes[toolType];
-    super.addButton(toolType, images[value][0], images[value][1]);
   }
 }
 ///////////////////////////////////////////////////////////////////////////////////////

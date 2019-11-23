@@ -247,5 +247,8 @@ this.depend = function() {
   }
 };
 
+board0.on('update', function() {
+  workspace.boardUpdate();
+});
 ```
 
