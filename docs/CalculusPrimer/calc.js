@@ -74,6 +74,12 @@ class Slider {
     return this.low + (this.high - this.low) * percent;
   }
 
+  setValue(v) {
+    if (v < this.low || v > this.high) return;
+    let percent = (v - this.low)/(this.high - this.low);
+    this.g.moveTo([this.xf() + percent * this.xdelta ,this.yf()]);
+  }
+
   stringValue() {
     return this.name + '        ' + this.Value().toString();
   }
@@ -97,6 +103,7 @@ class IntSlider extends Slider {
   Value() {
     return Math.floor(super.Value());
   }
+
 }
 
 class BoolButton extends Slider {
@@ -806,6 +813,7 @@ function WorkSpace(b) {
   let useRectangleNames = false;
   let rectangleUseFunction = true;
   let rectangleVerticalAdjust = false;
+  let defaultArrayN = 10;
 
   this.boardUpdate = function() {
     for (let i = 0; i < elements.length; i++) {
@@ -850,6 +858,7 @@ function WorkSpace(b) {
     case 3:
     {
       let Nslider = new IntSlider(board, boardInfo, xslider, yslider, 1, 100, 'N', sliderWidth);
+      Nslider.setValue(defaultArrayN);
       elements.push({type:'rectangle array', value: new RectangleArray(boardInfo, xinterval, f, Nslider)});
       break;
     }
@@ -897,6 +906,7 @@ function WorkSpace(b) {
   this.setUseRectangleNames = function(b) { useRectangleNames = b; };
   this.setRectangleVerticalAdjust = function(b) { rectangleVerticalAdjust = b; };
   this.setRectangleUseFunction = function(b) { rectangleUseFunction = b; };
+  this.setDefaultArrayN = function(n) { defaultArrayN = n; };
 
   this.getElement = function(i) { 
     if (i < elements.length) {
@@ -929,6 +939,75 @@ function WorkSpace(b) {
   };
 }
 
+function SingleFunctionBoard(divName, bBox, F, attributes) {
+
+  // default values
+  let xName = '';
+  let yName = '';
+  let startX = bBox[0];
+  let endX = bBox[2];
+  let flabelX = 0;
+  let flabelY = 0;
+  let flabel = '';
+  if ('xName' in attributes) { xName = attributes.xName; }
+  if ('yName' in attributes) { yName = attributes.yName; }
+  if ('startX' in attributes) { startX = attributes.startX; }
+  if ('endX' in attributes) { endX = attributes.endX; }
+  if ('flabel' in attributes) { flabel = attributes.flabel; }
+  if ('flabelX' in attributes) { flabelX = attributes.flabelX; }
+  if ('flabelY' in attributes) { flabelY = attributes.flabelY; }
+  let f = F;
+  
+  // create the board and axes
+  JXG.Options.axis.ticks.majorHeight = 40;
+  this.board = JXG.JSXGraph.initBoard(divName, 
+    { boundingbox:bBox, keepaspectratio:false, axis:false, showCopyright:false});
+
+  let xaxis = this.board.create('axis', [[0, 0], [1,0]], 
+    {name:xName, 
+      withLabel: true,
+      label: {
+        fontSize: 15,
+        position: 'rt',  // possible values are 'lft', 'rt', 'top', 'bot'
+        offset: [-80, 20]   // (in pixels)
+      }
+    });
+
+  let yaxis = this.board.create('axis', [[0, 0], [0, 1]], 
+    {name:yName, 
+      withLabel: true, 
+      label: {
+        fontSize: 15,
+        position: 'rt',  // possible values are 'lft', 'rt', 'top', 'bot'
+        offset: [-90, -20]   // (in pixels)
+      }
+    });   
+
+  let pI = this.board.create('point', [startX, f(startX)],{name:'', color:'#7777DD', fixed:true});
+  let pF = this.board.create('point', [endX,f(endX)],{name:'', color:'#7777DD', fixed:true});
+
+  let f_graph = this.board.create('functiongraph', [f,startX,bBox[2]], {
+    strokeColor:'#7777DD', 
+    strokeWidth:1, 
+    visible:true});
+
+  let ftext = this.board.create('text', [flabelX, flabelY, flabel], {
+    fontSize:15,
+    strokeColor:'#7777DD', 
+    visible:false
+  });
+
+  f_graph.on('over', function() {
+    ftext.setAttribute({visible:true});
+  });
+
+  f_graph.on('out', function() {
+    ftext.setAttribute({visible:false});
+  });
+
+
+}
+
 ///////////////////////////////////////////////////////////////////////////////////////
 
 (function (global, factory) {
@@ -954,6 +1033,7 @@ function WorkSpace(b) {
   exports.SecantRectangleArray = SecantRectangleArray;
   exports.WorkSpace = WorkSpace;
   exports.Slider = Slider;
+  exports.SingleFunctionBoard = SingleFunctionBoard;
 
 });
 

@@ -267,10 +267,10 @@ let workColor = function(w) {
   let x = maxWork - w;
   let r = 240 + 15 * (x / maxWork);
   let g = 100 + 155 * x / maxWork;
-  let b = 100 + 100 * x / maxWork;
+  let b = 100 + 135 * x / maxWork;
   return 'rgb(' + r.toString() + ',' + g.toString() + ',' + b.toString() + ')';
 };
-let start = 10;
+
 
 this.div.onmousedown = function(e) { 
   

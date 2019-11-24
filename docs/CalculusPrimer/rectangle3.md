@@ -1,5 +1,3 @@
-# Rectangle 
-
 # :::: clue
 # --outlinebox
 ##### Car Ride
@@ -10,9 +8,18 @@ It may help to figure out the average speed that the car travels during that tim
 # --outlinebox
 # ::::
 
+# :::: notes
+# --aliceblue
+##### Notes
+Distance equals rate times time  
+$$d = r \cdot t$$
+can be modeled with a rectangle.
+# --aliceblue
+# ::::
+
 
 # :::: toolbar
-[?](::clue/button,transparent,draggable,closeable,center,shadow) 
+[N](::notes/button,transparent,draggable,closeable,center,shadow) [?](::clue/button,transparent,draggable,closeable,center,shadow) [Submit Solution](:=compute=true) Here's another rectangle. 
 
 ```p5js /autoplay
 ///////////////////////////////////////////////////////////////////
@@ -27,21 +34,23 @@ const myDiv = this.div;
 myDiv.style.background = '#FFFFFF';
 myDiv.style.borderRadius = '8px';
 
-let numButtons = 6;
+let maxButtons = 6;
 let xSpacer = 15, ySpacer = 5, width = 55;
 let B = new ResourcePanel(p5);
 
 ///////////////////////////////////////////////////////////////////
 // Add the buttons you want on your resource panel
-// NOTE:  The value of page variable env.num should match the number of buttons you add here
+// NOTE:  The value of page variable env.numButtons should match the number of buttons you add here
 
 B.addButton('rectangle'); 
+
+smartdown.setVariable('numButtons', 1);  // keep track of number of buttons
 
 ///////////////////////////////////////////////////////////////////
 
 
 p5.setup = function() { 
-  let canvasWidth = xSpacer + (width + xSpacer) * numButtons;  // set the size of the playable
+  let canvasWidth = xSpacer + (width + xSpacer) * maxButtons;  // set the size of the playable
   let canvasHeight = width + 2 * ySpacer;
   p5.createCanvas(canvasWidth,canvasHeight);     // create the canvas we will draw on
 };
@@ -51,16 +60,17 @@ p5.draw = function() {  // draw the buttons
   B.draw(p5.mouseX,p5.mouseY);
 }
 
+
 p5.mousePressed = function()     // this function is called everytime the user clicks the mouse
 {
-  const [buttonType, state, id] = B.mousePressed();  // returns info on the button pushed
+  const [bType, state, id] = B.mousePressed();  // returns info on the button pushed
   
   if (id != -1) {                              // if it's a valid button
-    smartdown.setVariable('mode', buttonType);         // set page mode correct type of button
+    smartdown.setVariable('buttonType', bType);         // set page mode correct type of button
     smartdown.setVariable('active', true);     // alert page we have an active button
   }
   
-  p5.loop();    // EnergyHack to enable looping for duration of drag.
+  // p5.loop();    // EnergyHack to enable looping for duration of drag.
 };
 
 
@@ -68,24 +78,37 @@ p5.mouseReleased = function() {     // this function is called when the user rel
                                     // button after a click.
 
   // EnergyHack to stop looping 5 sec after release.
-  window.setTimeout(function() {
-    p5.noLoop();
-  }, 5000);
+//  window.setTimeout(function() {
+//    p5.noLoop();
+//  }, 5000);
 };
 
-smartdown.setVariable('mode', 0);
+
+//////////////////////////////////////////////////////////////////////////////
+// Event handling
+
+smartdown.setVariable('buttonType', 0);
 smartdown.setVariable('active', false);
-smartdown.setVariable('num', 1);
-this.dependOn = ['num'];
+
+this.dependOn = ['numButtons'];  // if we're removing buttons the numButtons will go down
 this.depend = function() {
   
-  if (env.num < B.size()) {  // If we have more buttons than the page has elements, delete the active button
-     B.removeActiveButton();  // we've used this resouce
+  if (env.numButtons < B.size()) {  // If we have more buttons than the page has elements, delete the active button
+     B.removeActiveButton();  // we've used this resource
      smartdown.setVariable('active', false);
   }
 };
 
 ```
+# ::::
+
+# :::: success
+Success! 
+[Continue](:@CalculusPrimer/rectangle4)
+# ::::
+
+# :::: keeptrying
+Keep trying. 
 # ::::
 
 
@@ -103,9 +126,12 @@ const myDiv = this.div;
 myDiv.style.width = '100%';
 myDiv.style.height = '100%';
 myDiv.style.margin = 'auto';
-myDiv.innerHTML = `<div id='top' style='height:200px; width:100%; border:1px solid gray;background:#EEFFCC;border-radius:8px;'></div><div id='bottom' style='height:600px; width:100%; border: 1px solid gray;background:#FFFFFF;border-radius:8px;';></div>`;
+myDiv.innerHTML = `<div id='top' style='height:100px; width:100%; border:1px solid gray;background:#EEFFCC;border-radius:8px;'></div><div id='bottom' style='height:600px; width:100%; border: 1px solid gray;background:#FFFFFF;border-radius:8px;';></div>`;
 
-
+let workspaceDivWidth = 1;
+let pictureDivWidth = 1;
+let workspaceDivHeight = 600;
+let pictureDivHeight = 100;
 
 let xlow = -1;
 let xhigh = 5;
@@ -113,58 +139,13 @@ let ylow = -3;
 let yhigh = 25;
 
 let f = function(x) { return 2 * x; };
-let answer = 16;
-
-// create the first board
-JXG.Options.axis.ticks.majorHeight = 40;
-board0 = JXG.JSXGraph.initBoard('bottom', {boundingbox:[xlow,yhigh,xhigh,ylow], keepaspectratio:false, axis:false, showCopyright:false});
-
-let xaxis = board0.create('axis', [[0, 0], [1,0]], 
-  {name:'time (s)', 
-    withLabel: true,
-    label: {
-      fontSize: 20,
-      position: 'rt',  // possible values are 'lft', 'rt', 'top', 'bot'
-      offset: [-80, 20]   // (in pixels)
-    }
-  });
-
-let yaxis = board0.create('axis', [[0, 0], [0, 1]], 
-  {name:'rate (m/s)', 
-    withLabel: true, 
-    label: {
-      fontSize: 20,
-      position: 'rt',  // possible values are 'lft', 'rt', 'top', 'bot'
-      offset: [-120, -20]   // (in pixels)
-    }
-  });   
-
-let pstart = board0.create('point', [0,0],{name:'', color:'#7777DD'});
-let p0 = board0.create('point', [4,8],{name:'', color:'#7777DD', fixed:true});
-
-let vgraph = board0.create('functiongraph', [f,0,xhigh], {
-  strokeColor:'#7777DD', 
-  strokeWidth:1, 
-  visible:true});
-
-let vtext = board0.create('text', [3.5,9, 'speed of car'], {
-  fontSize:15,
-  strokeColor:'#7777DD', 
-  visible:false
-});
-
-vgraph.on('over', function() {
-  vtext.setAttribute({visible:true});
-});
-
-vgraph.on('out', function() {
-  vtext.setAttribute({visible:false});
-});
+let sfboard = new SingleFunctionBoard('bottom', 
+  [-1,25,5,-3], 
+  f,
+  { xName: 'time (s)', yName: 'speed (m/s)', startX:0, endX:4, flabel: 'speed of car', flabelX:3.5, flabelY:9});
 
 
-let workspace = new WorkSpace(board0);
-
-
+let workspace = new WorkSpace(sfboard.board);
 
 ////////////////////////////////////////////////////////////////////////////////////
 // Here is where you configure the workspace based on what elements you want to 
@@ -178,7 +159,7 @@ workspace.setRectangleUseFunction(true);
 
 ////////////////////////////////////////////////////////////////////////////////////
 
-let Atext = board0.create('text', [
+let Atext = sfboard.board.create('text', [
   xlow + 0.25 * (xhigh - xlow), 
   ylow + 0.8 * (yhigh - ylow),
   function() { return 'Total Area = ' + workspace.getArea().toFixed(2); }], {
@@ -187,9 +168,13 @@ let Atext = board0.create('text', [
 });
 
 
-board1 = JXG.JSXGraph.initBoard('top', {boundingbox:[-20,5,100,-2], keepaspectratio:false, axis:false, showCopyright:false});
+/////////////////////////////////////////////////////////////////////////////////////////
+// second board
 
-board0.addChild(board1);
+
+let board1 = JXG.JSXGraph.initBoard('top', {boundingbox:[-20,5,100,-2], keepaspectratio:false, axis:false, showCopyright:false});
+
+sfboard.board.addChild(board1);
 
 let xaxis1 = board1.create('axis', [[0, 0], [1,0]], 
   {name:'meters', 
@@ -214,10 +199,10 @@ let yaxis1 = board1.create('axis', [[0, 0], [0, 1]],
 
 
 let carurl = 'https://gist.githubusercontent.com/wildthinkslaboratory/ac98c0bb68ccf7528dc39fa1922d2bdb/raw/9e01e8197b3bf685747ae134de3d75feb64ea6f4/car.png';
-let car = board1.create('image',[carurl, [function() { return workspace.getArea() -4 ; },-0.2], [4,1]]);
+let car = board1.create('image',[carurl, [function() { return workspace.getArea() -4 ; },-0.2], [4,2]]);
 
-let p2 = board1.create('point',[0, 1.2],{visible:false});
-let p3 = board1.create('point',[function() { return workspace.getArea(); }, 1.2],{visible:false});
+let p2 = board1.create('point',[0, 2.2],{visible:false});
+let p3 = board1.create('point',[function() { return workspace.getArea(); }, 2.2],{visible:false});
 
 let dimensionLine = board1.create('segment', [p2,p3], {
   strokeColor:'#999999', 
@@ -228,33 +213,68 @@ let dimensionLine = board1.create('segment', [p2,p3], {
 
 let dimensionText = board1.create('text', [
   function() { return workspace.getArea() / 2; },
-  1.6,
+  2.9,
   function() { return workspace.getArea().toFixed(2); }
 ],{ strokeColor:'#999999', fontSize: 15, visible:true});
 
+/////////////////////////////////////////////////////////////////////////////////////////
 
+// Event handling
+let checkAnswer = function() {
+  return workspace.getArea() == 16;
+};
 
-this.div.onmousedown = function(e) { 
-  
+let useButton = function(mouseX, buttonType) {
   let width = myDiv.offsetWidth;
   let margin = (window.innerWidth - width)/2;
-  let percent = (e.clientX - margin) / width;
+  let percent = (mouseX - margin) / width;
+  workspace.addElement(buttonType, percent, f);
+  smartdown.setVariable('numButtons', env.numButtons - 1);  // keep track of resources
+  console.log('num buttons', env.numButtons);
+};
 
-  if (env.num > 0 && env.active) {
-    workspace.addElement(env.mode, percent, f);
-    smartdown.setVariable('num', env.num - 1);
+this.div.onmousedown = function(e) { 
+  if (env.numButtons > 0 && env.active) {
+    useButton(e.clientX, env.buttonType);
   }
-
 };
 
 
 this.sizeChanged = function() {
-  workspace.resize(myDiv.offsetWidth, myDiv.offsetHeight);
+  workspace.resize(myDiv.offsetWidth * workspaceDivWidth, workspaceDivHeight);       
+  board1.resizeContainer(myDiv.offsetWidth * pictureDivWidth, pictureDivHeight);
 };
 
-board0.on('update', function() {
-  workspace.boardUpdate();
+
+sfboard.board.on('update', function() {
+  workspace.boardUpdate();              // hook up workspace update functions
 });
+
+smartdown.setVariable('compute', false);
+smartdown.setVariable('error', 100);
+smartdown.setVariable('undo', false);
+
+this.dependOn = ['compute', 'undo'];
+this.depend = function() {
+  if (env.compute == true) {
+    smartdown.setVariable('compute', false);
+    if (checkAnswer()) {
+      smartdown.showDisclosure('success','','draggable,closeable,center,shadow');
+      smartdown.hideDisclosure('keeptrying','','');
+    }
+    else {
+      smartdown.showDisclosure('keeptrying','','draggable,closeable,center,shadow');
+      smartdown.hideDisclosure('success','','');
+    }
+  }
+
+  // if (env.undo == true) {                // uncomment if you want an undo button
+  //   workspace.undo();
+  //   smartdown.setVariable('undo', false);
+  // }
+};
+
+
 
 ```
 
