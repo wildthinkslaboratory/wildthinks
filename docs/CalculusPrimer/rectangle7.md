@@ -1,60 +1,81 @@
-# Rectangle 
-
 # :::: clue
 # --outlinebox
 ##### Spring Pull
-When we pull on a spring, the amount of force required changes with the distance the spring is stretched. How much work is done if we stretch the spring from zero to 8 centimeters?    
+When we pull on a spring, the amount of force required changes with the distance the spring is stretched. How much work is done if we stretch the spring from zero to 8 centimeters? 
 # --outlinebox
 # ::::
 
+# :::: notes
+# --aliceblue
+##### Notes
+Work equals force times distance
+$$W = F \cdot d$$
+can be modeled with a rectangle.
+# --aliceblue
+# ::::
+
+
 # :::: toolbar
-[?](::clue/button,transparent,draggable,closeable,center,shadow) Tool Panel
+[N](::notes/button,transparent,draggable,closeable,center,shadow) [?](::clue/button,transparent,draggable,closeable,center,shadow) [Submit Solution](:=compute=true) [Undo](:=undo=true)
+
 ```p5js /autoplay
+///////////////////////////////////////////////////////////////////
+// this is a script for a RESOURCE PANEL toolbar
+///////////////////////////////////////////////////////////////////
+
+
 // import the calc library
 //smartdown.import=/CalculusPrimer/toolbar.js
 
-
 const myDiv = this.div;
-myDiv.style.background = '#EEEEEE';
-myDiv.style.border = '1px solid gray';
+myDiv.style.background = '#FFFFFF';
 myDiv.style.borderRadius = '8px';
 
-let numButtons = 6;
-let xSpacer = 10, ySpacer = 10, width = 40;
-let B = new ToolPanel(p5,width,xSpacer,ySpacer);
+let maxButtons = 6;
+let xSpacer = 10, ySpacer = 5, width = 40;
+let B = new ToolPanel(p5,40, 10, 10);
+
+
+///////////////////////////////////////////////////////////////////
+// Add the buttons you want on your resource panel
+// NOTE:  The value of page variable env.numButtons should match the number of buttons you add here
+
 B.addButton('rectangle');
 B.addButton('rectangle array');
 B.initialize();
 
+smartdown.setVariable('numButtons', 2);  // keep track of number of buttons
+
+///////////////////////////////////////////////////////////////////
+
 
 p5.setup = function() { 
-  var canvasWidth = xSpacer + (width + xSpacer) * numButtons;  // set the size of the playable
-  var canvasHeight = width + 2 * ySpacer;
+  let canvasWidth = xSpacer + (width + xSpacer) * maxButtons;  // set the size of the playable
+  let canvasHeight = width + 2 * ySpacer;
   p5.createCanvas(canvasWidth,canvasHeight);     // create the canvas we will draw on
 };
 
 
-p5.draw = function() {
+p5.draw = function() {  // draw the buttons
   B.draw(p5.mouseX,p5.mouseY);
 }
 
-p5.mousePressed = function()                     // this function is called everytime the user clicks the mouse
+
+p5.mousePressed = function()     // this function is called everytime the user clicks the mouse
 {
-  const [name, state, id] = B.mousePressed();
+  const [bType, state, id] = B.mousePressed();  // returns info on the button pushed
   
-  if (id != -1) {
-    smartdown.setVariable('mode', name);
+  if (id != -1) {                              // if it's a valid button
+    smartdown.setVariable('buttonType', bType);         // set page mode correct type of button
+    smartdown.setVariable('active', true);     // alert page we have an active button
   }
   
-
-  // EnergyHack to enable looping for duration of drag.
-  p5.loop();
-
+  // p5.loop();    // EnergyHack to enable looping for duration of drag.
 };
 
 
-p5.mouseReleased = function() {                  // this function is called when the user releases the mouse
-                          // button after a click.
+p5.mouseReleased = function() {     // this function is called when the user releases the mouse
+                                    // button after a click.
 
   // EnergyHack to stop looping 5 sec after release.
 //  window.setTimeout(function() {
@@ -62,10 +83,34 @@ p5.mouseReleased = function() {                  // this function is called when
 //  }, 5000);
 };
 
-```
 
-[Submit Solution](:=compute=true)
+//////////////////////////////////////////////////////////////////////////////
+// Event handling
+
+smartdown.setVariable('buttonType', 0);
+smartdown.setVariable('active', false);
+
+this.dependOn = ['numButtons'];  // if we're removing buttons the numButtons will go down
+this.depend = function() {
+  
+  if (env.numButtons < B.size()) {  // If we have more buttons than the page has elements, delete the active button
+     B.removeActiveButton();  // we've used this resource
+     smartdown.setVariable('active', false);
+  }
+};
+
+```
 # ::::
+
+# :::: success
+Success! 
+[Continue](:@CalculusPrimer/rectangle8)
+# ::::
+
+# :::: keeptrying
+Keep trying. 
+# ::::
+
 
 ```javascript /autoplay
 //smartdown.import=https://cdnjs.cloudflare.com/ajax/libs/jsxgraph/0.99.7/jsxgraphcore.js
@@ -81,11 +126,12 @@ const myDiv = this.div;
 myDiv.style.width = '100%';
 myDiv.style.height = '100%';
 myDiv.style.margin = 'auto';
-myDiv.innerHTML = `<div id='top' style='height:200px; width:100%; border:1px solid gray;background:#FFFFEE;border-radius:8px;'></div><div id='bottom' style='height:600px; width:100%; border: 1px solid gray;background:#FFFFFF;border-radius:8px;';></div>`;
+myDiv.innerHTML = `<div id='top' style='height:200px; width:100%; border:1px solid gray;background:#FFFFEE;border-radius:8px;'></div><div id='bottom' style='height:500px; width:100%; border: 1px solid gray;background:#FFFFFF;border-radius:8px;';></div>`;
 
-
-
-
+let workspaceDivWidth = 1;
+let pictureDivWidth = 1;
+let workspaceDivHeight = 500;
+let pictureDivHeight = 200;
 
 let xlow = -2;
 let xhigh = 10;
@@ -94,59 +140,13 @@ let yhigh = 20;
 
 let k = 2;
 let f = function(x) { return k * x; };
-let answer = 32;
-
-// create the first board
-JXG.Options.axis.ticks.majorHeight = 40;
-board0 = JXG.JSXGraph.initBoard('bottom', {boundingbox:[xlow,yhigh,xhigh,ylow], keepaspectratio:false, axis:false, showCopyright:false});
-
+let sfboard = new SingleFunctionBoard('bottom', 
+  [xlow,yhigh,xhigh,ylow], 
+  f,
+  { xName: 'distance (cm)', yName: 'force', startX:0, endX:8, flabel: 'force of spring', flabelX:5, flabelY:15});
 
 
-let xaxis = board0.create('axis', [[0, 0], [1,0]], 
-  {name:'distance (cm)', 
-    withLabel: true,
-    label: {
-      fontSize: 20,
-      position: 'rt',  // possible values are 'lft', 'rt', 'top', 'bot'
-      offset: [-80, 20]   // (in pixels)
-    }
-  });
-
-let yaxis = board0.create('axis', [[0, 0], [0, 1]], 
-  {name:'force', 
-    withLabel: true, 
-    label: {
-      fontSize: 20,
-      position: 'rt',  // possible values are 'lft', 'rt', 'top', 'bot'
-      offset: [-120, -20]   // (in pixels)
-    }
-  });   
-
-let pstart = board0.create('point', [0,0],{name:'', color:'#7777DD', fixed:true});
-let p0 = board0.create('point', [8,f(8)],{name:'', color:'#7777DD', fixed:true});
-
-let vgraph = board0.create('functiongraph', [f,0,xhigh], {
-  strokeColor:'#7777DD', 
-  strokeWidth:1, 
-  visible:true});
-
-let vtext = board0.create('text', [5, -15, 'force of spring'], {
-  fontSize:15,
-  strokeColor:'#7777DD', 
-  visible:false
-});
-
-vgraph.on('over', function() {
-  vtext.setAttribute({visible:true});
-});
-
-vgraph.on('out', function() {
-  vtext.setAttribute({visible:false});
-});
-
-let workspace = new WorkSpace(board0);
-
-
+let workspace = new WorkSpace(sfboard.board);
 
 ////////////////////////////////////////////////////////////////////////////////////
 // Here is where you configure the workspace based on what elements you want to 
@@ -155,23 +155,25 @@ let workspace = new WorkSpace(board0);
 workspace.setSnapMargin(0.05);
 workspace.setRectangleNames(['work', 'distance', 'force']);
 workspace.setUseRectangleNames(true);
-workspace.setRectangleVerticalAdjust(true);
-workspace.setRectangleUseFunction(true);
+
 
 ////////////////////////////////////////////////////////////////////////////////////
 
-let Atext = board0.create('text', [
+let Atext = sfboard.board.create('text', [
   xlow + 0.25 * (xhigh - xlow), 
-  ylow + 0.9 * (yhigh - ylow),
-  function() { return 'Total Area = '; }], {
+  ylow + 0.8 * (yhigh - ylow),
+  function() { return 'Total Area = ' + workspace.getArea().toFixed(2); }], {
   fontSize:20,
   visible:true
 });
 
 
+/////////////////////////////////////////////////////////////////////////////////////////
+// second board
+
 board1 = JXG.JSXGraph.initBoard('top', {boundingbox:[-2,8,10,-2], keepaspectratio:false, axis:false, showCopyright:false});
 
-board0.addChild(board1);
+sfboard.board.addChild(board1);
 
 let xaxis1 = board1.create('axis', [[0, 0], [1,0]], 
   {name:'distance (cm)', 
@@ -220,49 +222,7 @@ let dimensionLine = board1.create('segment', [s1,s2], {
   lastArrow:false, 
   visible:true});
 
-
-
-// let f1 = board1.create('point',[0, 1.2],{visible:false});
-// let f2 = board1.create('point',[function() { return workspace.getArea(); }, 1.2],{visible:false});
-
-// let dimensionLine = board1.create('segment', [p2,p3], {
-//   strokeColor:'#999999', 
-//   strokeWidth:2, 
-//   firstArrow:true, 
-//   lastArrow:true, 
-//   visible:true});
-
-// let dimensionText = board1.create('text', [
-//   function() { return workspace.getArea() / 2; },
-//   1.6,
-//   function() { return workspace.getArea().toFixed(2); }
-// ],{ strokeColor:'#999999', fontSize: 15, visible:true});
-
-// car.on('over', function() {
-//   dimensionLine.setAttribute({visible:true});
-//   dimensionText.setAttribute({visible:true});
-// });
-
-// car.on('out', function() {
-//   dimensionLine.setAttribute({visible:false});
-//   dimensionText.setAttribute({visible:false});
-// });
-
-// let computeError = function() {
-//   return 100 * Math.abs(1 - workspace.getArea() / answer);
-// };
-
-// let Etext = board0.create('text', [
-//   xlow + 0.25 * (xhigh - xlow), 
-//   ylow + 0.75 * (yhigh - ylow), 
-//   function() { return 'Percent Error = ' + computeError().toFixed(3); }], {
-//   fontSize:20,
-//   visible:true
-// });
-
-// smartdown.setVariable('num', 1);
-// smartdown.setVariable('active', false);
-let maxWork = 100;
+let maxWork = 80;
 let workColor = function(w) { 
   let x = maxWork - w;
   let r = 240 + 15 * (x / maxWork);
@@ -271,38 +231,63 @@ let workColor = function(w) {
   return 'rgb(' + r.toString() + ',' + g.toString() + ',' + b.toString() + ')';
 };
 
+/////////////////////////////////////////////////////////////////////////////////////////
 
-this.div.onmousedown = function(e) { 
-  
+// Event handling
+let checkAnswer = function() {
+  return workspace.getArea() == 64;
+};
+
+let useButton = function(mouseX, buttonType) {
   let width = myDiv.offsetWidth;
   let margin = (window.innerWidth - width)/2;
-  let percent = (e.clientX - margin) / width;
+  let percent = (mouseX - margin) / (width * workspaceDivWidth);
+  workspace.addElement(buttonType, percent, f);
+  // smartdown.setVariable('numButtons', env.numButtons - 1);  // keep track of resources
+};
 
-  if (env.mode >= 0) {
-    workspace.addElement(env.mode, percent, f);
+this.div.onmousedown = function(e) { 
+  if (env.numButtons > 0 && env.active) {
+    useButton(e.clientX, env.buttonType);
   }
-  
 };
 
 
-// this.sizeChanged = function() {
-//   workspace.resize(myDiv.offsetWidth, myDiv.offsetHeight);
-// };
+this.sizeChanged = function() {
+  workspace.resize(myDiv.offsetWidth * workspaceDivWidth, workspaceDivHeight);       
+  board1.resizeContainer(myDiv.offsetWidth * pictureDivWidth, pictureDivHeight);
+};
 
-// smartdown.setVariable('compute', false);
-// smartdown.setVariable('error', 100);
-// this.dependOn = ['compute'];
-// this.depend = function() {
-//   if (env.compute == true) {
-//     smartdown.setVariable('error', computeError().toFixed(2));
-//     smartdown.setVariable('compute', false);
-//   }
-// };
 
-board0.on('update', function() {
-  workspace.boardUpdate();
+sfboard.board.on('update', function() {
+  workspace.boardUpdate();              // hook up workspace update functions
   myDiv.children[0].style.background = workColor(workspace.getArea());
 });
+
+smartdown.setVariable('compute', false);
+smartdown.setVariable('error', 100);
+smartdown.setVariable('undo', false);
+
+this.dependOn = ['compute', 'undo'];
+this.depend = function() {
+  if (env.compute == true) {
+    smartdown.setVariable('compute', false);
+    if (checkAnswer()) {
+      smartdown.showDisclosure('success','','draggable,closeable,center,shadow');
+      smartdown.hideDisclosure('keeptrying','','');
+    }
+    else {
+      smartdown.showDisclosure('keeptrying','','draggable,closeable,center,shadow');
+      smartdown.hideDisclosure('success','','');
+    }
+  }
+
+  if (env.undo == true) {                // uncomment if you want an undo button
+    workspace.undo();
+    smartdown.setVariable('undo', false);
+  }
+};
+
 
 
 ```

@@ -35,7 +35,7 @@ myDiv.style.background = '#FFFFFF';
 myDiv.style.borderRadius = '8px';
 
 let maxButtons = 6;
-let xSpacer = 15, ySpacer = 5, width = 55;
+let xSpacer = 10, ySpacer = 5, width = 40;
 let B = new ResourcePanel(p5);
 
 ///////////////////////////////////////////////////////////////////
@@ -227,10 +227,9 @@ let checkAnswer = function() {
 let useButton = function(mouseX, buttonType) {
   let width = myDiv.offsetWidth;
   let margin = (window.innerWidth - width)/2;
-  let percent = (mouseX - margin) / width;
+  let percent = (mouseX - margin) / (width * workspaceDivWidth);
   workspace.addElement(buttonType, percent, f);
   smartdown.setVariable('numButtons', env.numButtons - 1);  // keep track of resources
-  console.log('num buttons', env.numButtons);
 };
 
 this.div.onmousedown = function(e) { 

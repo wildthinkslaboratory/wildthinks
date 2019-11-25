@@ -32,7 +32,7 @@ myDiv.style.background = '#FFFFFF';
 myDiv.style.borderRadius = '8px';
 
 let maxButtons = 6;
-let xSpacer = 15, ySpacer = 5, width = 55;
+let xSpacer = 10, ySpacer = 5, width = 40;
 let B = new ResourcePanel(p5);
 
 ///////////////////////////////////////////////////////////////////
