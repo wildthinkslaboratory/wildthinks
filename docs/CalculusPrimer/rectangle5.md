@@ -102,7 +102,7 @@ this.depend = function() {
 # :::: success
 Success! 
 Error of [](:!error)%. 
-[Continue](:@CalculusPrimer/rectangle6)
+[Continue](:@CalculusPrimer/work)
 # ::::
 
 # :::: keeptrying

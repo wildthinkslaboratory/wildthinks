@@ -1,5 +1,12 @@
-Here.  Have a rectangle.
+
 # :::: toolbar
+# :::: withClue
+[?](::clue/button,transparent,draggable,topright,shadow) Here.  Have a rectangle.
+# ::::
+
+# :::: noClue
+Here.  Have a rectangle.
+# ::::
 ```p5js /autoplay
 ///////////////////////////////////////////////////////////////////
 // this is a script for a RESOURCE PANEL toolbar
@@ -75,37 +82,41 @@ this.depend = function() {
 
 ```
 # ::::
-# :::: question
-[?](:=show1=true)
+
+# :::: clue
+# --aliceblue
+We know that the area of a rectangle is the product of its length times its width.
+[>](:=show1=true)
+# --aliceblue
 # ::::
 
 # :::: clue1
 # --aliceblue
-A rectangle can represent a multiplication problem
+So the area of a rectangle is a great way to visually represent a multiplication problem
 $$ A \times B $$
-[Next](:=show2=true)
+[>](:=show2=true)
 # --aliceblue
 # ::::
 
 # :::: clue2
 # --aliceblue
-It could represent a distance.  
-[Next](:=show3=true)
+It could represent a distance as a product of rate times time.  
+[>](:=show3=true)
 # --aliceblue
 # ::::
 
 # :::: clue3
 # --aliceblue
  It could represent money.  
- [Next](:=show4=true)
+ [>](:=show4=true)
 # --aliceblue
 
 # ::::
 
 # :::: clue4
 # --aliceblue
- What kind of problems can you solve with a rectangle?
- [Next](:@CalculusPrimer/rectangle2)
+ Let's solve a problem with a rectangle.
+ [Continue](:@CalculusPrimer/rectangle2)
 # --aliceblue
 
 # ::::
@@ -121,6 +132,7 @@ smartdown.importCssUrl('https://cdnjs.cloudflare.com/ajax/libs/jsxgraph/0.99.7/j
 //smartdown.import=/CalculusPrimer/calc.js
 
 smartdown.showDisclosure('toolbar', '', 'transparent');
+smartdown.showDisclosure('noClue', '', 'transparent');
 
 const myDiv = this.div;
 myDiv.style.width = '100%';
@@ -211,7 +223,8 @@ this.div.onmousedown = function(e) {
   if (env.num > 0 && env.active) {
     createRectangle();
     smartdown.setVariable('num', env.num - 1);
-    smartdown.showDisclosure('question','','transparent');
+    smartdown.showDisclosure('withClue','','transparent');
+    smartdown.hideDisclosure('noClue','','transparent');
   }
 
 };
@@ -229,6 +242,7 @@ this.dependOn = ['show1', 'show2', 'show3', 'show4'];
 this.depend = function() {
   if (env.show1 == true) {
     smartdown.setVariable('show1', false);
+    smartdown.hideDisclosure('clue','','');
     smartdown.showDisclosure('clue1','','transparent,draggable,topright,shadow');
     rectangle.setNames(['A x B', 'A', 'B']);
     rectangle.setFillColor('#FFAA88');

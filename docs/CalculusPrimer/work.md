@@ -104,7 +104,7 @@ this.depend = function() {
 
 # :::: success
 Success! 
-[Continue](:@CalculusPrimer/rectangle8)
+[Continue](:@CalculusPrimer/balance)
 # ::::
 
 # :::: keeptrying

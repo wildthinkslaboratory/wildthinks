@@ -949,6 +949,7 @@ function SingleFunctionBoard(divName, bBox, F, attributes) {
   let flabelX = 0;
   let flabelY = 0;
   let flabel = '';
+  let endF = bBox[2];
   if ('xName' in attributes) { xName = attributes.xName; }
   if ('yName' in attributes) { yName = attributes.yName; }
   if ('startX' in attributes) { startX = attributes.startX; }
@@ -956,6 +957,7 @@ function SingleFunctionBoard(divName, bBox, F, attributes) {
   if ('flabel' in attributes) { flabel = attributes.flabel; }
   if ('flabelX' in attributes) { flabelX = attributes.flabelX; }
   if ('flabelY' in attributes) { flabelY = attributes.flabelY; }
+  if ('endF' in attributes) { endF = attributes.endF; }
   let f = F;
   
   // create the board and axes
@@ -986,7 +988,7 @@ function SingleFunctionBoard(divName, bBox, F, attributes) {
   let pI = this.board.create('point', [startX, f(startX)],{name:'', color:'#7777DD', fixed:true});
   let pF = this.board.create('point', [endX,f(endX)],{name:'', color:'#7777DD', fixed:true});
 
-  let f_graph = this.board.create('functiongraph', [f,startX,bBox[2]], {
+  let f_graph = this.board.create('functiongraph', [f,startX,endF], {
     strokeColor:'#7777DD', 
     strokeWidth:1, 
     visible:true});
