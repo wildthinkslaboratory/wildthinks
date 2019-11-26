@@ -107,7 +107,10 @@ this.depend = function() {
 
 # :::: success
 Success! 
-[Continue](:@CalculusPrimer/rectangle8)
+
+Thank you for testing my prototype!  
+
+It would be so helpful to me if you could fill out this short [feedback form](https://docs.google.com/forms/d/e/1FAIpQLSdVNvzSXPHYqIrtb_ftMRhK9qAg1I1Up2qdvV2Mmzk79LAnTQ/viewform) to help me make this lesson better.
 # ::::
 
 # :::: keeptrying
