@@ -1,19 +1,16 @@
 # :::: clue
 # --outlinebox
 ##### Car Ride
-The car begins from a stationary position and gradually increases it's speed.  How far has the car traveled after four seconds?  [Hint](::hint/transparent)
-# :::: hint
-It may help to figure out the average speed that the car travels during that time period.
-# ::::
+The car begins from a stationary position and gradually increases it's speed.  How far has the car traveled after 4 seconds?  
 # --outlinebox
 # ::::
 
 # :::: notes
 # --aliceblue
-##### Notes
-Distance equals rate times time  
+##### Note
+The area of a rectangle can represent a distance as a product of rate and time,  
 $$d = r \cdot t$$
-can be modeled with a rectangle.
+but what should the dimensions of this rectangle be?  The time interval is 4 seconds, but what is the rate?  It may help to figure out the average speed that the car travels during that time period.
 # --aliceblue
 # ::::
 

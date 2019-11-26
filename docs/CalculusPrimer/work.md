@@ -1,16 +1,19 @@
 # :::: clue
 # --outlinebox
 ##### Spring Pull
-When we pull on a spring, the amount of force required changes with the distance the spring is stretched. How much work is done if we stretch the spring from zero to 8 centimeters? 
+When we pull on a spring, the amount of force required changes with the distance the spring is stretched. The further we pull the spring from the origin, the harder it is to pull. How much work is done if we stretch the spring from zero to 8 centimeters? 
 # --outlinebox
 # ::::
 
 # :::: notes
 # --aliceblue
-##### Notes
-Work equals force times distance
+##### Note 1
+Work is equal to force times distance
 $$W = F \cdot d$$
-can be modeled with a rectangle.
+We can model work as the area of a rectangle whose dimensions are distance and force.
+
+##### Note 2
+It's hard to **see** the amount of work done in the picture of the spring.  A simple way to think about work (as opposed to force) is that doing work requires energy and makes you tired. To show how much work is being done, we change the color of the background.  As the amount of work done pulling the spring goes up, the background gets redder.
 # --aliceblue
 # ::::
 
@@ -179,7 +182,7 @@ let xaxis1 = board1.create('axis', [[0, 0], [1,0]],
   {name:'distance (cm)', 
     withLabel: true,
     label: {
-      fontSize: 20,
+      fontSize: 15,
       position: 'rt',  // possible values are 'lft', 'rt', 'top', 'bot'
       offset: [-80, 20]   // (in pixels)
     }
@@ -189,7 +192,7 @@ let yaxis1 = board1.create('axis', [[0, 0], [0, 1]],
   {name:'', 
     withLabel: false, 
     label: {
-      fontSize: 20,
+      fontSize: 15,
       position: 'rt',  // possible values are 'lft', 'rt', 'top', 'bot'
       offset: [-120, -20]   // (in pixels)
     },

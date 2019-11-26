@@ -7,16 +7,14 @@ The car travels at a constant speed of 10 meters per second.  How far has the ca
 
 # :::: notes
 # --aliceblue
-##### Notes
-Distance equals rate times time  
-$$d = r \cdot t$$
-can be modeled with a rectangle.
+##### Note
+
 # --aliceblue
 # ::::
 
 
 # :::: toolbar
-[N](::notes/button,transparent,draggable,closeable,center,shadow) [?](::clue/button,transparent,draggable,closeable,center,shadow) [Submit Solution](:=compute=true) Here's another rectangle. 
+[?](::clue/button,transparent,draggable,closeable,center,shadow) [Submit Solution](:=compute=true) Here's another rectangle. 
 
 ```p5js /autoplay
 ///////////////////////////////////////////////////////////////////

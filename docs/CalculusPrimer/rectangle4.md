@@ -7,16 +7,17 @@ Here is a graph showing the speed of a rocket during it's first launch phase. Wh
 
 # :::: notes
 # --aliceblue
-##### Note 1
-Distance equals rate times time, $d = r \cdot t$, can be modeled with a rectangle.
-##### Note 2
-We know that the distance traveled by the rocket can be modeled as the area of a rectangle.  The time will be 120 seconds, but what is the rate?  It's not clear what the average speed of the rocket is.  
+##### Note 
+A rectangle can represent a distance as a product of rate and time,  
+$$d = r \cdot t$$
+but what should the dimensions of this rectangle be?  The time will be 120 seconds, but what is the rate?  It's not clear what the average speed of the rocket is.  Here are a couple of possible solution ideas.
 
 **Option 1** 
-We could use a single rectangle and set the height of the rectangle to the speed of the rocket at time 60 seconds (the midpoint of the interval).  Go ahead and try it.  It doesn't lead to a good estimate, so the speed at 60 seconds is **not** the average speed for the rocket.
+We could use a single rectangle and set the height of the rectangle to the speed of the rocket at time 60 seconds (the midpoint of the interval).   
 
 **Option 2**
-We have four rectangles, so we could break the time period down into multiple intervals.  We can estimate the distance traveled during each interval and then add all the distances together to get an estimate for the total distance traveled.  Why does this lead to a better approximation?
+We have four rectangles, so we could break the time period down into multiple intervals.  We can estimate the distance traveled during each interval and then add all the distances together to get an estimate for the total distance traveled.  
+
 # --aliceblue
 # ::::
 

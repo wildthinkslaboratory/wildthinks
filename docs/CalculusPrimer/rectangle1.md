@@ -100,7 +100,7 @@ $$ A \times B $$
 
 # :::: clue2
 # --aliceblue
-It could represent a distance as a product of rate times time.  
+It could represent a distance as a product of rate and time.  
 [>](:=show3=true)
 # --aliceblue
 # ::::
@@ -260,7 +260,7 @@ this.depend = function() {
     smartdown.setVariable('show3', false);
     smartdown.hideDisclosure('clue2','','');
     smartdown.showDisclosure('clue3','','transparent,draggable,topright,shadow');
-    rectangle.setNames(['earnings', 'principle', 'interest rate']);
+    rectangle.setNames(['investment', 'principle', 'interest rate']);
     rectangle.setFillColor('#88FFAA');
     board0.update();
   }
