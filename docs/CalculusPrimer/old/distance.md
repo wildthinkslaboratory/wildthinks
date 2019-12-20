@@ -500,8 +500,8 @@ Rate at time 3 [](:?s33) m/s
 
 ### Coming Up Next
 
-[What's the Connection Between Slopes and Areas?](:@CalculusPrimer/ftc1)
-[Back to Home Page](:@CalculusPrimer/Home)
+[What's the Connection Between Slopes and Areas?](:@CalculusPrimer/old/ftc1)
+[Back to Home Page](:@CalculusPrimer/old/Home)
 
 
 

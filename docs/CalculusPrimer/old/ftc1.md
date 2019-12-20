@@ -448,7 +448,7 @@ As the time periods get very small, the rectangles define a new function that re
 
 ### Coming Up Next
 
-[More Slopes and Areas](:@CalculusPrimer/ftc2)
-[Back to Home Page](:@CalculusPrimer/Home)
+[More Slopes and Areas](:@CalculusPrimer/old/ftc2)
+[Back to Home Page](:@CalculusPrimer/old/Home)
 
 

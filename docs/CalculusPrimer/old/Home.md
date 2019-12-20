@@ -131,11 +131,11 @@ This Calculus Primer is dedicated to Izzy and Andre: two highly creative and rig
 
 
 #### Chapter 1: A Primer
-1. [The Main Idea](:@CalculusPrimer/Intro)
-2. [A Curvy Speed Question](:@CalculusPrimer/speed)
-3. [Another Curvy Speed Question](:@CalculusPrimer/distance)
-4. [Slopes and Areas](:@CalculusPrimer/ftc1)
-5. [More Slopes and Areas](:@CalculusPrimer/ftc2)
+1. [The Main Idea](:@CalculusPrimer/old/Intro)
+2. [A Curvy Speed Question](:@CalculusPrimer/old/speed)
+3. [Another Curvy Speed Question](:@CalculusPrimer/old/distance)
+4. [Slopes and Areas](:@CalculusPrimer/old/ftc1)
+5. [More Slopes and Areas](:@CalculusPrimer/old/ftc2)
 
 #### Chapter 2: Calculus
 6. [The Result of an Infinite Process](:@CalculusPrimer)

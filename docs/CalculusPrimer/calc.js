@@ -460,6 +460,212 @@ function AdjRectangle(binfo, xinterval, F, rectNames = ['','','']) {
 }
 
 
+function AdjRectangle2(binfo, xinterval, F, 
+  bf = function(x) { return 0; }, 
+  rectNames = ['','','']) {
+
+  let board = binfo.board;
+  let bi = binfo; 
+  let topFunction = F;  // function that determines it's height
+  let baseFunction = bf;
+  let xint = xinterval;
+
+  let showAnnotations = false;   
+  let areaName = rectNames[0];
+  let lengthName = rectNames[1];
+  let widthName = rectNames[2];
+  let useNames = false;
+
+  // here
+  let height = function() {
+    return topFunction(xint.midX()) - baseFunction(xint.midX());
+  };
+  let top = function() {
+    return topFunction(xint.midX());
+  };
+  let base = function() {
+    return baseFunction(xint.midX());
+  };
+
+
+  let area = function() { return (xint.x2.X() - xint.x1.X()) * height(); };
+  let getAreaName = function() { return areaName; };
+  let getLengthName = function() { return lengthName; };
+  let getWidthName = function() { return widthName; };
+  let getAreaText = function() { 
+    let prefix = '';
+    if (useNames) {
+      prefix = getAreaName() + ' = ';
+    }
+    return prefix + area().toFixed(2); 
+  };
+  let getWidthText = function() { 
+    let prefix = '';
+    if (useNames) {
+      prefix = getWidthName() + ' = ';
+    }
+    return prefix + height().toFixed(2); 
+  };
+  let getLengthText = function() { 
+    let prefix = '';
+    if (useNames) {
+      prefix = getLengthName() + ' = ';
+    }
+    return prefix + (xint.x2.X() - xint.x1.X()).toFixed(2); 
+  };
+
+  
+
+
+  // the two points that define the top of rectangle
+  let t1 = board.create('point', [function() { return xint.x1.X(); }, top ], {visible:false});
+  let t2 = board.create('point', [function() { return xint.x2.X(); }, top ], {visible:false});
+  let b1 = board.create('point', [function() { return xint.x1.X(); }, base ], {visible:false});
+  let b2 = board.create('point', [function() { return xint.x2.X(); }, base ], {visible:false});
+
+
+  this.rect = board.create('polygon',
+    [b1, t1, t2, b2], {
+      strokeColor: colors.stroke,
+      fillColor:colors.fill, 
+      highlightStrokeColor:colors.highlightStroke,
+      highlightFillColor:colors.highlightFill, 
+      hasInnerPoints:true
+    });
+
+  
+  // these components are all part of the annotation
+  let areaText = board.create('text', [
+    function() { return xint.midX() - bi.Xerror;},
+    function() { return base() + height() / 2; },
+    getAreaText
+  ], {fontSize:15, visible:false});
+  
+  let p1 = board.create('point',[
+    function() { return xint.x2.X() + bi.Xerror / 2; }, 
+    top
+  ],{visible:false});
+
+  let p2 = board.create('point',[
+    function() { return xint.x2.X() +  bi.Xerror / 2; }, 
+    base 
+  ],{visible:false});
+
+  let dimensionLine = board.create('segment', [p1,p2], {
+    strokeColor:colors.lightAnnote, 
+    strokeWidth:2, 
+    firstArrow:true, 
+    lastArrow:true, 
+    visible:false});
+  let dimensionText = board.create('text', [
+    function() { return xint.x2.X() + bi.Xerror; } ,
+    function () { return base() + height() / 2; },
+    getWidthText
+  ],{ strokeColor:colors.lightAnnote, fontSize: 15, visible:false});
+
+  let p3 = board.create('point',[
+    function() { return xint.x1.X(); }, 
+    function() { return base() + height() + bi.Yerror; }
+  ],{visible:false});
+
+  let p4 = board.create('point',[
+    function() { return xint.x2.X(); }, 
+    function() { return base() + height() + bi.Yerror; }
+  ],{visible:false});
+
+  let dimensionLine2 = board.create('segment', [p3,p4], {
+    strokeColor: colors.lightAnnote, 
+    strokeWidth:2, 
+    firstArrow:true, 
+    lastArrow:true, 
+    visible:false});
+
+  let dimensionText2 = board.create('text', [
+    function() { return xint.x1.X() + (xint.x2.X() - xint.x1.X())/2 - bi.Xerror; } ,
+    function () { return base() + height() + 2 * bi.Yerror; },
+    getLengthText
+  ],{strokeColor: colors.lightAnnote, fontSize: 15, visible:false});
+
+
+  this.rect.on('over', function(){
+    turnOnAnnotations();
+  });
+
+  this.rect.on('out', function(){
+    if (!showAnnotations) {
+      turnOffAnnotations();
+    }
+  });
+
+  function turnOnAnnotations() {
+    areaText.setAttribute({visible:true});
+    dimensionText.setAttribute({visible:true});
+    dimensionLine.setAttribute({visible:true});
+    dimensionText2.setAttribute({visible:true});
+    dimensionLine2.setAttribute({visible:true});
+  }
+
+  function turnOffAnnotations() {
+    areaText.setAttribute({visible:false});
+    dimensionText.setAttribute({visible:false});
+    dimensionLine.setAttribute({visible:false});
+    dimensionText2.setAttribute({visible:false});
+    dimensionLine2.setAttribute({visible:false});
+  }
+
+
+  this.annotationsOn = function() { turnOnAnnotations(); };
+  this.annotationsOff = function() { turnOffAnnotations(); };
+  this.annotationsOn = this.annotationsOn.bind(this);
+  this.annotationsOff = this.annotationsOff.bind(this);
+
+  this.showAnnotations = function(b) { 
+    showAnnotations = b; 
+    if (showAnnotations) {
+      turnOnAnnotations();
+    }
+
+  };
+
+  this.area = function() { return (xint.x2.X() - xint.x1.X()) * height(); };
+  this.x2 = function() { return xint.x2.X(); };
+
+  this.setUseNames = function(b) { useNames = b; };
+  this.setUseFunction = function(b) { useFunction = b; };
+
+
+  this.setFillColor = function(color) { 
+    this.rect.setAttribute({fillColor:color});
+  };
+
+  this.setNames = function(n) { 
+    if (n.length == 3) {
+      areaName = n[0];
+      lengthName = n[1];
+      widthName = n[2];
+    }
+  };
+
+  this.delete = function() {
+    board.removeObject(dimensionLine2);
+    board.removeObject(dimensionText2);
+    board.removeObject(dimensionLine);
+    board.removeObject(dimensionText);
+    board.removeObject(p3);
+    board.removeObject(p4);
+    board.removeObject(p2);
+    board.removeObject(p1);
+    board.removeObject(areaText);
+    board.removeObject(this.rect);
+    board.removeObject(f1);
+    board.removeObject(f2);
+    xint.delete();
+  };
+
+  this.onUpdate = function() {
+    xint.onUpdate();
+  };
+}
 
 /*
   - why doesn't strokeColor work?  Maybe a bug in jsxgraph?
@@ -950,6 +1156,7 @@ function SingleFunctionBoard(divName, bBox, F, attributes) {
   let flabelY = 0;
   let flabel = '';
   let endF = bBox[2];
+
   if ('xName' in attributes) { xName = attributes.xName; }
   if ('yName' in attributes) { yName = attributes.yName; }
   if ('startX' in attributes) { startX = attributes.startX; }
@@ -990,21 +1197,26 @@ function SingleFunctionBoard(divName, bBox, F, attributes) {
 
   let f_graph = this.board.create('functiongraph', [f,startX,endF], {
     strokeColor:'#7777DD', 
+    highlightStrokeColor:'#AAAAFF',
     strokeWidth:1, 
     visible:true});
 
+
+
   let ftext = this.board.create('text', [flabelX, flabelY, flabel], {
     fontSize:15,
-    strokeColor:'#7777DD', 
+    strokeColor:'#AAAAFF', 
     visible:false
   });
 
   f_graph.on('over', function() {
     ftext.setAttribute({visible:true});
+    f_graph.setAttribute({strokeWidth:3});
   });
 
   f_graph.on('out', function() {
     ftext.setAttribute({visible:false});
+    f_graph.setAttribute({strokeWidth:1});
   });
 
 
@@ -1036,6 +1248,7 @@ function SingleFunctionBoard(divName, bBox, F, attributes) {
   exports.WorkSpace = WorkSpace;
   exports.Slider = Slider;
   exports.SingleFunctionBoard = SingleFunctionBoard;
+  exports.AdjRectangle2 = AdjRectangle2;
 
 });
 

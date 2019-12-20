@@ -239,6 +239,7 @@ let workColor = function(w) {
 // Event handling
 let checkAnswer = function() {
   return workspace.getArea() == 64;
+  console.log('work',workspace.getArea());
 };
 
 let useButton = function(mouseX, buttonType) {

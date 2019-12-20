@@ -381,6 +381,6 @@ Number of Divisions [](:-segments2/1/100/1) [](:!segments2) [Application Notes](
 
 # --aliceblue
 
-[Result of an Infinte Process](:@CalculusPrimer/InfiniteProcess)
-[Back to Home Page](:@CalculusPrimer/Home)
+[Result of an Infinte Process](:@CalculusPrimer/old/InfiniteProcess)
+[Back to Home Page](:@CalculusPrimer/old/Home)
 

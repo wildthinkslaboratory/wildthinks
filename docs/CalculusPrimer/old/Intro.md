@@ -494,6 +494,6 @@ Returning to our original question, try to think of a strategy to approximate th
 
 ### Coming Up Next
 
-[Another Curvy Question](:@CalculusPrimer/speed)
-[Back to Home Page](:@CalculusPrimer/Home)
+[Another Curvy Question](:@CalculusPrimer/old/speed)
+[Back to Home Page](:@CalculusPrimer/old/Home)
 

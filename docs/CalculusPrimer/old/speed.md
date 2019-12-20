@@ -387,8 +387,8 @@ We should note that the computer continues to do a great job of adding up the ar
 
 ### Coming Up Next
 
-[Another Curvy Speed Question](:@CalculusPrimer/distance)
-[Back to Home Page](:@CalculusPrimer/Home)
+[Another Curvy Speed Question](:@CalculusPrimer/old/distance)
+[Back to Home Page](:@CalculusPrimer/old/Home)
 
 
 
