@@ -4,9 +4,9 @@ To whom it may concern,
 
 I am very interested in your curriculum writer position.  I've spent a lot of time on the Mathigon website over the past few years and both of my children have accounts and use your site.  I've been watching the site develop and have used it as inspiration for my own work in many ways.  
 
-I won't duplicate the contents of my attached [resume](https://gist.github.com/wildthinkslaboratory/ac98c0bb68ccf7528dc39fa1922d2bdb#file-heididixonresume-pdf) here except to say that my previous career was as a research scientist in artificial intelligence.  My research and job experience is mainly in finding solutions to NP-complete constraint satisfaction problems.  
+I won't duplicate the contents of my attached [resume](/HeidiDixonResume.pdf) here except to say that my previous career was as a research scientist in artificial intelligence.  My research and job experience is mainly in finding solutions to NP-complete constraint satisfaction problems.  
 
-My 'career' got sidetracked around 2013 when my younger son's difficulties in school and life reached a crisis.  I left my job as a research scientist to care for him and homeschool him.  In many ways, this career diversion led me to develop skills that you need in a curriculum writer.  These things are not on my resume so I'll tell you a bit about what I've been up to here.  The focus of my life since leaving work has been providing my children with the best mathematical and computer science education that I can.  I've spent a lot of time volunteering in my children's school systems, working with kids, developing teaching skills and curriculum.  I've been submerged in thinking about math and computer science education at the K-12 level. Here are some of my projects that I think overlap with Mathigon's goals and principles in the order that I worked on them.
+My 'career' got sidetracked around 2013 when my younger son's difficulties in school and life reached a crisis.  I left my job as a research scientist to care for him and homeschool him.  In many ways, this career diversion led me to develop skills that you need in a curriculum writer. The focus of my life since leaving work has been providing my children with the best mathematical and computer science education that I can.  I've spent a lot of time volunteering in my children's school systems, working with kids, developing teaching skills and curriculum.  I've been submerged in thinking about math and computer science education at the K-12 level. Here are some of my projects that I think overlap with Mathigon's goals and principles in the order that I worked on them.
 
 #### The Goldfish and Robin youtube channel
 This is a channel that was started and owned by my two sons.  James Tanton saw some of their videos and asked them to make videos for [Global Math Week](https://globalmathproject.org).  At that point we expanded the project to include lots of other kids.  I also taught the exploding dots curriculum at an after school program and we made Spanish Language videos with those kids. James Tanton came to visit us and filmed videos with us.  It was lots of fun!
@@ -20,7 +20,7 @@ The channel is no longer active.  All the kids have grown up and moved on to ot
 
 #### Wildthinks youtube channel
 
-I have my own youtube channel where I have one video on Exploding Dots and its connection to Kurt Gödel's incompleteness results. It has companion page with some interactive web activities on my [wildthinks](:@Strings) page.
+I have my own youtube channel where I have one video on Exploding Dots and its connection to Kurt Gödel's incompleteness results. It has a companion page with some interactive web activities on my [wildthinks](:@Strings) page.
 
 ![thumbnail](https://www.youtube.com/watch?v=oXyek2Q40AI)
 
@@ -32,10 +32,11 @@ This addition was completely inspired by the Mathigon website.  I really liked 
 #### The [wildthinks](https://wildthinks.org/#Home) website 
 This is my web site for explorable math explanations.  The two main explorations up right now are advanced topics written for [Global Math Week](https://globalmathproject.org).  These were my first attempts at javascript and explorable explanations. They are fairly naive in retrospect, but they were my first attempts.
 
+My website is hosted on GitHub.  I use git for all my version control and I'm familiar with GitHub flow.  
 
 #### Prototype of interactive calculus explorable
 
-Ultimately, I'd like to build a calculus toolset so users could solve interesting calculus problems without having to actually learn calculus.  This would serve as a primer for the study of calculus so students would enter calculus class with a strong geometric intuition about what calculus is and its motivation.  This is all very rough.  It's hard to share unfinished work, but currently it's what I have.  DISCLAIMER: I haven't tested this work on tablets, phones or browsers other than Safari. 
+Currently I'm building a calculus toolset so users could solve interesting calculus problems without having to actually learn calculus.  This would serve as a primer for the study of calculus so students would enter calculus class with a strong geometric intuition about what calculus is and its motivation.  This is all very rough.  It's hard to share unfinished work, but currently it's what I have.  DISCLAIMER: I haven't tested this work on tablets, phones or browsers other than Safari. 
 
 My original attemp is very Mathigon like in it's approach and I think it lays out the ideas I want to teach fairly well.  [Original Attempt](:@CalculusPrimer/old/Home)
 
@@ -47,5 +48,7 @@ Here's a prototype for a calculus toolkit.  It's modeled on [Euclidea](https://w
 
 #### Last Thoughts
  
-My website is hosted on GitHub.  I use git for all my version control and I'm familiar with GitHub flow.  
+I live in Eugene Oregon with my husband and two sons.  I'm still homeschooling my son and doing lots of mom stuff but I miss having a job.  My husband and I have discussed hiring a tutor for my son to free up time for me to go back to work.  I'd be very excited to participate in development at Mathigon.  
 
+Best Regards,
+Heidi Dixon
